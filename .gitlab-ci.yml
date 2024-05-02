@@ -1,31 +1,74 @@
-build-job:
-  tags:
-    - SET2024
-  stage: build
-  script:
-    - echo "Hello, $GITLAB_USER_LOGIN!"
+stages: # List of stages for jobs and their order of execution
+  - build
+  - test
+  - package
+  - deploy
 
-test-job1:
+.standard-rules:
+  rules:
+    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'  # Run for all changes to a merge request's source branch
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH       # Run for all changes to the default branch
+
+build-job:
+  stage: build
   tags:
     - SET2024
+  script:
+    - echo "Maven building started."
+    - "mvn -B -DskipTests clean package"
+    #- "mvn compile"
+
+test-job:
   stage: test
+  tags:
+    - SET2024
+  dependencies:
+    - build-job
   script:
     - echo "This job tests something"
+    - "mvn test"
 
-test-job2:
+test-new-tests:
+  stage: test
   tags:
     - SET2024
+  dependencies:
+    - build-job
+  script:
+    - echo "Testing"
+    - "mvn -Dtest=TestApp1 test"
+  allow_failure: true
+  # rules:
+    # - if: $CI_COMMIT_REF_NAME == 'test'
+
+verify-job:
   stage: test
+  tags:
+    - SET2024
+  dependencies:
+   - build-job
   script:
     - echo "This job tests something, but takes more time than test-job1."
-    - echo "After the echo commands complete, it runs the sleep command for 20 seconds"
-    - echo "which simulates a test that runs 20 seconds longer than test-job1"
-    - sleep 20
+    - "mvn verify"
+  # rules:
+    # - if: $CI_COMMIT_REF_NAME !~ test
 
-deploy-prod:
+package-prod:
+  stage: package
   tags:
     - SET2024
-  stage: deploy
   script:
-    - echo "This job deploys something from the $CI_COMMIT_BRANCH branch."
+    - echo "Maven package started"
+    - "mvn package"
+  environment: production
+
+deploy-prod:
+  stage: deploy
+  tags:
+    - SET2024
+  dependencies:
+    - package-prod
+  script:
+    - echo "Maven deploy started"
+    - "mvn deploy"
   environment: production
