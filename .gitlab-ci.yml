@@ -47,7 +47,7 @@ test-new-tests:
     - mvn test -Dtest="*New"
   allow_failure: true
   rules:
-    - if: $CI_COMMIT_BRANCH == develop
+    - if: $CI_COMMIT_BRANCH == "develop"
 
 verify-job:
   stage: test
