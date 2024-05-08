@@ -47,7 +47,7 @@ test-new-tests:
     - mvn test -Dtest="*New"
   allow_failure: true
   rules:
-    - if: $CI_COMMIT_REF_NAME == /test/
+    - if: $CI_COMMIT_MESSAGE == =~ /test/
 
 verify-job:
   stage: test
