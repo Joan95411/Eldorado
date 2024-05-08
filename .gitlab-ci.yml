@@ -34,7 +34,7 @@ test-implemented-tests:
     - build-job
   script:
     - echo "Running all tests."
-    - mvn test -Dtest=*!New*
+    - mvn test -Dtest=*Implemented
 
 test-new-tests:
   stage: test
