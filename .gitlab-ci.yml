@@ -69,6 +69,8 @@ package-prod:
     - echo "Maven package started"
     - mvn package -DskipTests
   environment: production
+#  rules:
+#    - if: $CI_COMMIT_BRANCH == "main"
 
 deploy-prod:
   stage: deploy
@@ -78,13 +80,15 @@ deploy-prod:
     - package-prod
   script:
     - echo "Maven deploy started"
-    - mvn deploy
+    - mvn deploy -DskipTests
 #    - mvn deploy -s $DEPLOY_SERVER -u $DEPLOY_USER -p $DEPLOY_PASSWORD
   environment: production
   artifacts:
     paths:
       - target/*.war
-#
+#  rules:
+#    - if: $CI_COMMIT_BRANCH == "main"
+
 #sigrid-ci:
 #  stage: report
 #  image:
