@@ -1,0 +1,17 @@
+{
+  "tiles": {
+    "0,0": {"color": "Green", "points": 1},
+    "0,1": {"color": "Blue", "points": 1},
+    "0,2": {"color": "Blue", "points": 1},
+    "0,3": {"color": "Blue", "points": 2},
+    "0,4": {"color": "Blue", "points": 2},
+    "0,5": {"color": "Blue", "points": 1},
+    "0,6": {"color": "Blue", "points": 1},
+    "0,7": {"color": "Blue", "points": 2},
+    "0,8": {"color": "Blue", "points": 1},
+    "0,9": {"color": "Blue", "points": 2},
+    "1,0": {"color": "Red", "points": 3},
+    "1,1": {"color": "Red", "points": 2},
+    "1,2": {"color": "Blue", "points": 2}
+  }
+}
