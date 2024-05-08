@@ -12,22 +12,46 @@ enum Terrain {
 
 //Enumeration for different types of cards
 enum CardType {
-    SAILOR,
-    EXPLORER,
-    TRAVELER,
-    COIN
+    GREEN,
+    YELLOW,
+    BLUE,
+    RAINBOW
 }
 
 //Class to represent a card
-class Card {
+abstract class Card {
     private CardType type;
 
-    public Card(CardType type) {
+    private String name;
+
+    private boolean getsRemoved;
+
+    private int cost;
+
+    public Card(CardType type, String name, boolean getsRemoved, int cost) {
         this.type = type;
+        this.name = name;
+        this.getsRemoved = getsRemoved;
+        this.cost = cost;
     }
 
     public CardType getType() {
         return type;
+    }
+}
+
+class ExpeditionCard extends Card{
+    private int power;
+    public ExpeditionCard(CardType type, String name, boolean getsRemoved, int cost, int power) {
+        super(type, name, getsRemoved, cost);
+        this.power = power;
+    }
+}
+
+class ActionCard extends Card{
+
+    public ActionCard(CardType type, String name, boolean getsRemoved, int cost) {
+        super(type, name, getsRemoved, cost);
     }
 }
 
