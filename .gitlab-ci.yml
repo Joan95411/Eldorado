@@ -26,7 +26,7 @@ build-job:
     paths:
       - ~/.m2/repository
 
-test-all:
+test-implemented-tests:
   stage: test
   tags:
     - SET2024
@@ -49,16 +49,18 @@ test-new-tests:
   rules:
     - if: $CI_COMMIT_REF_NAME == /test/
 
-#verify-job:
-#  stage: test
-#  tags:
-#    - SET2024
-#  dependencies:
-#   - build-job
-#  script:
-#    - echo "Running additional verification tests."
-#    - mvn verify
-#
+verify-job:
+  stage: test
+  tags:
+    - SET2024
+  dependencies:
+   - build-job
+  script:
+    - echo "Running additional verification tests."
+    - mvn verify
+  rules:
+    - if: $CI_COMMIT_BRANCH == main
+
 #package-prod:
 #  stage: package
 #  tags:
