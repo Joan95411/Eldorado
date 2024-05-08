@@ -13,10 +13,11 @@ target/
 *.ipr
 
 ### Eclipse ###
-.apt_generated
+/bin
 .classpath
-.factorypath
 .project
+.apt_generated
+.factorypath
 .settings
 .springBeans
 .sts4-cache
@@ -38,3 +39,4 @@ build/
 .DS_Store
 
 /target
+/out
