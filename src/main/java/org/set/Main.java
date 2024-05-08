@@ -1,4 +1,4 @@
-package src;
+package org.set;
 
 public class Main {
     public static void main(String[] args) {

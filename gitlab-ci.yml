@@ -83,7 +83,7 @@ deploy-prod:
     paths:
       - target/*.war
 
-sigridci:
+sigrid-ci:
   stage: report
   image:
     name: softwareimprovementgroup/sigridci
@@ -100,7 +100,7 @@ sigridci:
   rules:
     - if: $CI_MERGE_REQUEST_ID
     
-sigridpublish:
+sigrid-publish:
   stage: report
   image:
     name: softwareimprovementgroup/sigridci
