@@ -10,7 +10,7 @@ public class TestMain {
     }
 
     @Test
-    public void testNotImplemented() {
+    public void testNew() {
         assertEquals(10, Main.getLucky());
     }
 }

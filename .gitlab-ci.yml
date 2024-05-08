@@ -34,7 +34,7 @@ test-all:
     - build-job
   script:
     - echo "Running all tests."
-    - mvn test
+    - mvn test -Dtest="*Implemented"
 
 test-new-tests:
   stage: test
@@ -44,7 +44,7 @@ test-new-tests:
     - build-job
   script:
     - echo "Testing"
-    - mvn test -Dtest="*Implemented"
+    - mvn test -Dtest="*New"
   allow_failure: true
   rules:
     - if: $CI_COMMIT_REF_NAME == /test/
