@@ -45,10 +45,8 @@ test-new-tests:
     - echo "Testing"
     - mvn test -Dtest="*Implemented"
   allow_failure: true
-  only:
-      - branches: /^test$/
-  # rules:
-    # - if: $CI_COMMIT_REF_NAME == 'test'
+  rules:
+    - if: $CI_COMMIT_REF_NAME == /^test$/
 
 verify-job:
   stage: test
@@ -84,7 +82,7 @@ deploy-prod:
     paths:
       - target/*.war
 
-variables:
-  DEPLOY_SERVER: "your-deploy-server.com"
-  DEPLOY_USER: "username"
-  DEPLOY_PASSWORD: "${CI_JOB_TOKEN}
+# variables:
+#   DEPLOY_SERVER: "your-deploy-server.com"
+#   DEPLOY_USER: "username"
+#   DEPLOY_PASSWORD: "${CI_JOB_TOKEN}"
