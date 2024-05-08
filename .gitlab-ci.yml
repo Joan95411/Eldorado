@@ -59,7 +59,7 @@ verify-job:
     - echo "Running additional verification tests."
     - mvn verify
   rules:
-    - if: $CI_COMMIT_BRANCH == main
+    - if: $CI_COMMIT_BRANCH == "main"
 
 #package-prod:
 #  stage: package
