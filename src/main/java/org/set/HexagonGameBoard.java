@@ -1,7 +1,12 @@
 package org.set;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import java.awt.*;
 import javax.swing.*;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.Scanner;
 
 public class HexagonGameBoard extends JPanel {
@@ -10,13 +15,22 @@ public class HexagonGameBoard extends JPanel {
     private int hexSize;
     private int playerRow;
     private int playerCol;
+    private JSONObject tileData;
 
     public HexagonGameBoard(int numRows, int numCols, int hexSize) {
         this.numRows = numRows;
         this.numCols = numCols;
         this.hexSize = hexSize;
         setPreferredSize(new Dimension((int) (numCols * 1.5 * hexSize), (int) (numRows * Math.sqrt(3) * hexSize)));
+        try {
+        	String tileDataPath = "D:\\Joan\\orderList\\bin\\Hex\\tileData.json";
+            String tileDataJson = new String(Files.readAllBytes(new File(tileDataPath).toPath()));
+            tileData = new JSONObject(tileDataJson);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
+
 
     public void setPlayerPosition(int row, int col) {
         this.playerRow = row;
@@ -35,12 +49,36 @@ public class HexagonGameBoard extends JPanel {
                 if (col % 2 == 1) {
                     y += (int) (Math.sqrt(3) / 2 * hexSize);
                 }
-                drawHexagon(g2d, x, y, hexSize, Color.GRAY,row,col);
+                String key = row + "," + col;
+                JSONObject tileInfo;
+                try {
+                    tileInfo = tileData.getJSONObject("tiles").getJSONObject(key);
+                } catch (JSONException e) {
+                    // Handle exception when tile data is not found
+                    tileInfo = new JSONObject();
+                    tileInfo.put("color", "Grey");
+                    tileInfo.put("points", 0);
+                }
+                String colorName = tileInfo.getString("color");
+                Color color = getColorFromString(colorName);
+                int points = tileInfo.getInt("points");
+                drawHexagon(g2d, x, y, hexSize, color, row, col);
             }
         }
         drawPlayer(g2d, playerRow, playerCol);
     }
-
+    private Color getColorFromString(String colorName) {
+        switch (colorName) {
+            case "Red":
+                return Color.RED;
+            case "Green":
+                return Color.GREEN;
+            case "Blue":
+                return Color.BLUE;
+            default:
+                return Color.GRAY;
+        }
+    }
 
     private void drawHexagon(Graphics2D g2d, int x, int y, int size, Color color, int row, int col) {
         int[] xPoints = new int[6];
@@ -50,12 +88,12 @@ public class HexagonGameBoard extends JPanel {
             yPoints[i] = (int) (y + size * Math.sin(i * Math.PI / 3));
         }
         Color transparentColor = new Color(color.getRed(), color.getGreen(), color.getBlue(), 150); // Adjust the alpha value (0-255) as needed
-
+        
         g2d.setColor(transparentColor);
         g2d.fillPolygon(xPoints, yPoints, 6);
         g2d.setColor(Color.BLACK);
         g2d.drawPolygon(xPoints, yPoints, 6);
-
+        
         // Draw row and column numbers
         FontMetrics fm = g2d.getFontMetrics();
         String rowColStr = row + "," + col;

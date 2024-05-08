@@ -7,12 +7,12 @@ stages: # List of stages for jobs and their order of execution
 #  - deploy
   - report
 
-#.standard-rules:
-#  rules:
-#    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'  # Run for all changes to a merge request's source branch
-#    - or:
-#        - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH  # Run for pushes to default branch
-#        - if: $CI_COMMIT_TAG  # Run for tagged commits
+.standard-rules:
+  rules:
+    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'  # Run for all changes to a merge request's source branch
+    - or:
+        - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH  # Run for pushes to default branch
+        - if: $CI_COMMIT_TAG  # Run for tagged commits
 
 build-job:
   stage: build
@@ -34,7 +34,7 @@ test-implemented-tests:
     - build-job
   script:
     - echo "Running all tests."
-    - mvn test -Dtest="*Implemented"
+    - mvn test -Dtest="*!New*"
 
 test-new-tests:
   stage: test
@@ -47,7 +47,7 @@ test-new-tests:
     - mvn test -Dtest="*New"
   allow_failure: true
   rules:
-    - if: $CI_COMMIT_MESSAGE =~ /test/
+    - if: $CI_COMMIT_BRANCH == "develop"
 
 verify-job:
   stage: test
@@ -103,8 +103,8 @@ sigridci:
       junit: "sigrid-ci-output/sigridci-junit-format-report.xml"
     expire_in: 1 week
     when: always
-#  rules:
-#    - if: $CI_MERGE_REQUEST_ID
+  rules:
+    - if: $CI_MERGE_REQUEST_ID
 
 sigridpublish:
   stage: report
@@ -118,8 +118,8 @@ sigridpublish:
       - "sigrid-ci-output/*"
     expire_in: 1 week
     when: always
-#  rules:
-#    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
 
 # variables:
 #   DEPLOY_SERVER: "your-deploy-server.com"
