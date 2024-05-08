@@ -3,16 +3,16 @@ image: maven:latest
 stages: # List of stages for jobs and their order of execution
   - build
   - test
-  - package
-  - deploy
+#  - package
+#  - deploy
   - report
 
-.standard-rules:
-  rules:
-    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'  # Run for all changes to a merge request's source branch
-    - or:
-        - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH  # Run for pushes to default branch
-        - if: $CI_COMMIT_TAG  # Run for tagged commits
+#.standard-rules:
+#  rules:
+#    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'  # Run for all changes to a merge request's source branch
+#    - or:
+#        - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH  # Run for pushes to default branch
+#        - if: $CI_COMMIT_TAG  # Run for tagged commits
 
 build-job:
   stage: build
@@ -26,7 +26,7 @@ build-job:
     paths:
       - ~/.m2/repository
 
-test-all:
+test-implemented-tests:
   stage: test
   tags:
     - SET2024
@@ -34,7 +34,7 @@ test-all:
     - build-job
   script:
     - echo "Running all tests."
-    - mvn test
+    - mvn test -Dtest="*Implemented"
 
 test-new-tests:
   stage: test
@@ -44,10 +44,10 @@ test-new-tests:
     - build-job
   script:
     - echo "Testing"
-    - mvn test -Dtest="*Implemented"
+    - mvn test -Dtest="*New"
   allow_failure: true
   rules:
-    - if: $CI_COMMIT_REF_NAME == /^test$/
+    - if: $CI_COMMIT_MESSAGE =~ /test/
 
 verify-job:
   stage: test
@@ -58,37 +58,43 @@ verify-job:
   script:
     - echo "Running additional verification tests."
     - mvn verify
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
 
-package-prod:
-  stage: package
-  tags:
-    - SET2024
-  script:
-    - echo "Maven package started"
-    - mvn package
-  environment: production
+#package-prod:
+#  stage: package
+#  tags:
+#    - SET2024
+#  script:
+#    - echo "Maven package started"
+#    - mvn package
+#  environment: production
+#  rules:
+#    - if: $CI_COMMIT_BRANCH == "main"
 
-deploy-prod:
-  stage: deploy
-  tags:
-    - SET2024
-  dependencies:
-    - package-prod
-  script:
-    - echo "Maven deploy started"
-    - mvn deploy
-#    - mvn deploy -s $DEPLOY_SERVER -u $DEPLOY_USER -p $DEPLOY_PASSWORD
-  environment: production
-  artifacts:
-    paths:
-      - target/*.war
+#deploy-prod:
+#  stage: deploy
+#  tags:
+#    - SET2024
+#  dependencies:
+#    - package-prod
+#  script:
+#    - echo "Maven deploy started"
+#    - mvn deploy
+##    - mvn deploy -s $DEPLOY_SERVER -u $DEPLOY_USER -p $DEPLOY_PASSWORD
+#  environment: production
+#  artifacts:
+#    paths:
+#      - target/*.war
+#  rules:
+#    - if: $CI_COMMIT_BRANCH == "main"
 
 sigridci:
   stage: report
   image:
-    name: softwareimprovementgroup/sigridci
+    name: softwareimprovementgroup/sigridci:latest
   script:
-    - sigridci.py --customer <example_customer_name> --system <example_system_name> --source . 
+    - sigridci.py --customer utst --system team04 --source .
   allow_failure: true
   artifacts:
     paths:
@@ -97,23 +103,24 @@ sigridci:
       junit: "sigrid-ci-output/sigridci-junit-format-report.xml"
     expire_in: 1 week
     when: always
-  rules:
-    - if: $CI_MERGE_REQUEST_ID
-    
+#  rules:
+#    - if: $CI_MERGE_REQUEST_ID
+
 sigridpublish:
   stage: report
   image:
     name: softwareimprovementgroup/sigridci
   script:
-    - sigridci.py --customer <example_customer_name> --system <example_system_name> --source . --publish
+    - sigridci.py --customer utst --system team04 --source . --publish
   allow_failure: true
   artifacts:
     paths:
       - "sigrid-ci-output/*"
     expire_in: 1 week
     when: always
-  rules:
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+#  rules:
+#    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+
 # variables:
 #   DEPLOY_SERVER: "your-deploy-server.com"
 #   DEPLOY_USER: "username"

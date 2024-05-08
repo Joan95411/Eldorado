@@ -1,8 +1,9 @@
-package orderList;
+package org.set;
 
 import java.awt.*;
 import javax.swing.*;
 import java.util.Scanner;
+
 public class HexagonGameBoard extends JPanel {
     private int numRows;
     private int numCols;
@@ -39,7 +40,7 @@ public class HexagonGameBoard extends JPanel {
         }
         drawPlayer(g2d, playerRow, playerCol);
     }
-    
+
 
     private void drawHexagon(Graphics2D g2d, int x, int y, int size, Color color, int row, int col) {
         int[] xPoints = new int[6];
@@ -49,12 +50,12 @@ public class HexagonGameBoard extends JPanel {
             yPoints[i] = (int) (y + size * Math.sin(i * Math.PI / 3));
         }
         Color transparentColor = new Color(color.getRed(), color.getGreen(), color.getBlue(), 150); // Adjust the alpha value (0-255) as needed
-        
+
         g2d.setColor(transparentColor);
         g2d.fillPolygon(xPoints, yPoints, 6);
         g2d.setColor(Color.BLACK);
         g2d.drawPolygon(xPoints, yPoints, 6);
-        
+
         // Draw row and column numbers
         FontMetrics fm = g2d.getFontMetrics();
         String rowColStr = row + "," + col;
