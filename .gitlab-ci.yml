@@ -34,7 +34,7 @@ test-implemented-tests:
     - build-job
   script:
     - echo "Running all tests."
-    - mvn test -Dtest="*!New*"
+    - mvn test -Dtest=*!New*
 
 test-new-tests:
   stage: test
@@ -44,7 +44,7 @@ test-new-tests:
     - build-job
   script:
     - echo "Testing"
-    - mvn test -Dtest="*New"
+    - mvn test -Dtest=*New
   allow_failure: true
   rules:
     - if: $CI_COMMIT_BRANCH == "develop"
