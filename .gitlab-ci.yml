@@ -58,32 +58,32 @@ verify-job:
   script:
     - echo "Running additional verification tests."
     - mvn verify
-#  rules:
-#    - if: $CI_COMMIT_BRANCH == "main"
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
 
-#package-prod:
-#  stage: package
-#  tags:
-#    - SET2024
-#  script:
-#    - echo "Maven package started"
-#    - mvn package
-#  environment: production
-#
-#deploy-prod:
-#  stage: deploy
-#  tags:
-#    - SET2024
-#  dependencies:
-#    - package-prod
-#  script:
-#    - echo "Maven deploy started"
-#    - mvn deploy
-##    - mvn deploy -s $DEPLOY_SERVER -u $DEPLOY_USER -p $DEPLOY_PASSWORD
-#  environment: production
-#  artifacts:
-#    paths:
-#      - target/*.war
+package-prod:
+  stage: package
+  tags:
+    - SET2024
+  script:
+    - echo "Maven package started"
+    - mvn package
+  environment: production
+
+deploy-prod:
+  stage: deploy
+  tags:
+    - SET2024
+  dependencies:
+    - package-prod
+  script:
+    - echo "Maven deploy started"
+    - mvn deploy
+#    - mvn deploy -s $DEPLOY_SERVER -u $DEPLOY_USER -p $DEPLOY_PASSWORD
+  environment: production
+  artifacts:
+    paths:
+      - target/*.war
 #
 #sigrid-ci:
 #  stage: report
