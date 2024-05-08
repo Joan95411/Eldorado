@@ -5,6 +5,7 @@ stages: # List of stages for jobs and their order of execution
   - test
   - package
   - deploy
+  - report
 
 .standard-rules:
   rules:
@@ -82,6 +83,37 @@ deploy-prod:
     paths:
       - target/*.war
 
+sigridci:
+  stage: report
+  image:
+    name: softwareimprovementgroup/sigridci
+  script:
+    - sigridci.py --customer <example_customer_name> --system <example_system_name> --source . 
+  allow_failure: true
+  artifacts:
+    paths:
+      - "sigrid-ci-output/*"
+    reports:
+      junit: "sigrid-ci-output/sigridci-junit-format-report.xml"
+    expire_in: 1 week
+    when: always
+  rules:
+    - if: $CI_MERGE_REQUEST_ID
+    
+sigridpublish:
+  stage: report
+  image:
+    name: softwareimprovementgroup/sigridci
+  script:
+    - sigridci.py --customer <example_customer_name> --system <example_system_name> --source . --publish
+  allow_failure: true
+  artifacts:
+    paths:
+      - "sigrid-ci-output/*"
+    expire_in: 1 week
+    when: always
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
 # variables:
 #   DEPLOY_SERVER: "your-deploy-server.com"
 #   DEPLOY_USER: "username"
