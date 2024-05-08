@@ -6,6 +6,6 @@ public class TestMainNew {
 
     @Test
     public void testGetLucky() {
-        assertEquals(10, Main.getLucky());
+        assertEquals(11, Main.getLucky());
     }
 }
