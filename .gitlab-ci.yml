@@ -89,12 +89,12 @@ verify-job:
 #  rules:
 #    - if: $CI_COMMIT_BRANCH == "main"
 
-sigrid-ci:
+sigridci:
   stage: report
   image:
-    name: softwareimprovementgroup/sigridci
+    name: softwareimprovementgroup/sigridci:latest
   script:
-    - sigridci.py --customer <example_customer_name> --system <example_system_name> --source .
+    - sigridci.py --customer utst --system team04 --source .
   allow_failure: true
   artifacts:
     paths:
@@ -106,12 +106,12 @@ sigrid-ci:
 #  rules:
 #    - if: $CI_MERGE_REQUEST_ID
 
-sigrid-publish:
+sigridpublish:
   stage: report
   image:
     name: softwareimprovementgroup/sigridci
   script:
-    - sigridci.py --customer <example_customer_name> --system <example_system_name> --source . --publish
+    - sigridci.py --customer utst --system team04 --source . --publish
   allow_failure: true
   artifacts:
     paths:
