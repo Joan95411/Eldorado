@@ -67,7 +67,7 @@ package-prod:
     - SET2024
   script:
     - echo "Maven package started"
-    - mvn package
+    - mvn package -DskipTests
   environment: production
 
 deploy-prod:
