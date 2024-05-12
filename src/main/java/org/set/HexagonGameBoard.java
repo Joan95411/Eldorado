@@ -31,7 +31,7 @@ public class HexagonGameBoard extends JPanel  {
     
     private void loadTileData() {
         try {
-            String tileDataPath = "\set2024team04project\src\main\java\org\set\tileData.json";
+            String tileDataPath = "\\set2024team04project\\src\\main\\java\\org\\set\\tileData.json";
             String tileDataJson = new String(Files.readAllBytes(new File(tileDataPath).toPath()));
             JSONObject tileData = new JSONObject(tileDataJson);
             tileInfo = tileData.getJSONObject("tiles");
