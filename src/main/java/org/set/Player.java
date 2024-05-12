@@ -3,19 +3,16 @@ package org.set;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class Player {
+	public int id;
     private int currentRow;
     private int currentCol;
     public Color color;
-    public boolean turn;
 
-    public Player(int startRow, int startCol,Color selectedColor) {
-        this.currentRow = startRow;
-        this.currentCol = startCol;
+    public Player(int id,Color selectedColor) {
+        this.id=id;
         this.color=selectedColor;
-        setPlayerPosition(startRow,startCol);
     }
 
     public int getCurrentRow() {
@@ -32,8 +29,8 @@ public class Player {
     public void setPlayerPosition(int row, int col) {
         this.currentRow = row;
         this.currentCol = col;
-        
     }
+    
     
     public boolean isAtPosition(int row, int col) {
         return this.currentRow == row && this.currentCol == col;
