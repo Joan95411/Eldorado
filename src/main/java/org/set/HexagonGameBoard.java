@@ -17,6 +17,7 @@ public class HexagonGameBoard extends JPanel  {
     public int numCols;
     public int hexSize;
     public ArrayList<Player> players = new ArrayList<>();
+    private Map<String, Color> colorMap = new HashMap<>();
     public JSONObject tileInfo;
 
     public HexagonGameBoard(int numRows, int numCols, int hexSize) {
@@ -24,6 +25,7 @@ public class HexagonGameBoard extends JPanel  {
         this.numCols = numCols;
         this.hexSize = hexSize;
         setPreferredSize(new Dimension((int) (numCols * 1.5 * hexSize), (int) (numRows * Math.sqrt(3) * hexSize)));
+        setPlayerColors();
         loadTileData();
     }
     
@@ -75,8 +77,12 @@ public class HexagonGameBoard extends JPanel  {
         
     }
 
-    public Color getColorFromString(String colorName) {
-        Map<String, Color> colorMap = new HashMap<>();
+    public String getUniquePlayerColors(ArrayList<String> usedColors) {
+        for (String usedColor : usedColors) colorMap.keySet().remove(usedColor);
+        return colorMap.keySet().toString();
+    }
+
+    public void setPlayerColors() {
         colorMap.put("gray", Color.GRAY);
         colorMap.put("red", Color.RED);
         colorMap.put("yellow", Color.YELLOW);
@@ -84,7 +90,11 @@ public class HexagonGameBoard extends JPanel  {
         colorMap.put("blue", Color.BLUE);
         colorMap.put("pink", Color.PINK);
         colorMap.put("black", Color.BLACK);
-        return colorMap.getOrDefault(colorName.toLowerCase(), Color.WHITE);
+        colorMap.put("white", Color.WHITE);
+    }
+
+    public Color getColorFromString(String colorName) {
+        return colorMap.get(colorName.toLowerCase());
     }
     
     public boolean isValidPosition(int row, int col) {

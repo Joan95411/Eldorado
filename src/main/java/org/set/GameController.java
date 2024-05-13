@@ -1,19 +1,17 @@
 package org.set;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 public class GameController {
-    private HexagonGameBoard board;
+    private final Scanner scanner = new Scanner(System.in);
+    private final HexagonGameBoard board;
     public ArrayList<Player> players = new ArrayList<>();
-    private String GameState;
-    private Scanner scanner;
+    private String gameState;
 
     public GameController(HexagonGameBoard board) {
-        scanner = new Scanner(System.in);
-        this.board=board;
-        GameState="Game in process";
+        this.board = board;
+        gameState = "Game in process";
         addPlayer();
         placePlayersOnBoard();
         PlayerMoves();
@@ -22,27 +20,22 @@ public class GameController {
     public void addPlayer() {
     	System.out.println("How many players are playing?");
         int numPlayers = scanner.nextInt();
-
-        // Create an array to store player instances
-        players = new ArrayList<>(List.of(new Player[numPlayers]));
+        ArrayList<String> usedColors = new ArrayList<>();
 
         // Loop through each player
         for (int i = 0; i < numPlayers; i++) {
             // Ask each player to choose a color
-            System.out.println("Player " + (i+1) + ", choose your color:");
+            System.out.println("Player " + (i + 1) + ", choose your color " + board.getUniquePlayerColors(usedColors) + ": ");
             String color = scanner.next();
 
             // Create a new player instance with the chosen color
-            Player player;
+            players.add(new Player(board.getColorFromString(color)));
 
-            player = new Player(board.getColorFromString(color));
+            // Add the color to the used colors array
+            usedColors.add(color);
+        }
 
-            // Add the player to the players array
-            players.set(i, player);
-            
-    }
         board.players=players;
-        
     }
     private void placePlayersOnBoard() {
     	
@@ -104,7 +97,7 @@ public class GameController {
 
     private String displayGameState() {
         // Display the current state of the game, including the board and player positions
-        return GameState;
+        return gameState;
     }
 
     private boolean isGameOver() {
