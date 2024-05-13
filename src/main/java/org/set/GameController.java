@@ -3,13 +3,10 @@ package org.set;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import javax.swing.JFrame;
-
-import org.json.JSONObject;
 
 public class GameController {
     private HexagonGameBoard board;
-    private Player[] players;
+    public ArrayList<Player> players = new ArrayList<>();
     private String GameState;
     private Scanner scanner;
 
@@ -22,14 +19,12 @@ public class GameController {
         PlayerMoves();
     }
     
-    
-
     public void addPlayer() {
     	System.out.println("How many players are playing?");
         int numPlayers = scanner.nextInt();
 
         // Create an array to store player instances
-        players = new Player[numPlayers];
+        players = new ArrayList<>(List.of(new Player[numPlayers]));
 
         // Loop through each player
         for (int i = 0; i < numPlayers; i++) {
@@ -40,12 +35,13 @@ public class GameController {
             // Create a new player instance with the chosen color
             Player player;
 
-            player = new Player((i+1), board.getColorFromString(color));
-            
+            player = new Player(board.getColorFromString(color));
+
             // Add the player to the players array
-            players[i] = player;
+            players.set(i, player);
             
-    }board.players=players;
+    }
+        board.players=players;
         
     }
     private void placePlayersOnBoard() {
@@ -64,7 +60,7 @@ public class GameController {
             // Display the game state (e.g., board, player positions)
             displayGameState();
 
-            Player currentPlayer = players[currentPlayerIndex];
+            Player currentPlayer = players.get(currentPlayerIndex);
     	    System.out.println("Player " + (currentPlayerIndex+1) + "'s turn.");
     	    System.out.println("Enter row and column for player's position (e.g., '2 3'), or type 'stop' to end the game:");
 
@@ -94,7 +90,7 @@ public class GameController {
     	    }
 
     	    // Move to the next player
-    	    currentPlayerIndex = (currentPlayerIndex+1) % players.length;
+    	    currentPlayerIndex = (currentPlayerIndex+1) % players.size();
 
             // Check for end conditions or other game logic
             if (isGameOver()) {
@@ -105,8 +101,6 @@ public class GameController {
         // Game over, perform any cleanup or display final results
         endGame();
     }
-
-    
 
     private String displayGameState() {
         // Display the current state of the game, including the board and player positions
@@ -126,11 +120,5 @@ public class GameController {
         System.out.println("Game Over!");
         
     }
-    
-    
-    
-
-
-	
 }
 

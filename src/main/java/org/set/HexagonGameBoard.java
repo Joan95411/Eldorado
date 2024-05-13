@@ -1,26 +1,24 @@
 package org.set;
+
 import org.json.JSONException;
 import org.json.JSONObject;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+
 import javax.swing.*;
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.Scanner;
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class HexagonGameBoard extends JPanel  {
     public int numRows;
     public int numCols;
     public int hexSize;
-    public Player[] players;
+    public ArrayList<Player> players = new ArrayList<>();
     public JSONObject tileInfo;
+
     public HexagonGameBoard(int numRows, int numCols, int hexSize) {
         this.numRows = numRows;
         this.numCols = numCols;
@@ -31,7 +29,7 @@ public class HexagonGameBoard extends JPanel  {
     
     private void loadTileData() {
         try {
-            String tileDataPath = "\\set2024team04project\\src\\main\\java\\org\\set\\tileData.json";
+            String tileDataPath = "/Users/basabbink/Development/set2024team04project/src/main/java/org/set/tileData.json";
             String tileDataJson = new String(Files.readAllBytes(new File(tileDataPath).toPath()));
             JSONObject tileData = new JSONObject(tileDataJson);
             tileInfo = tileData.getJSONObject("tiles");
@@ -45,9 +43,8 @@ public class HexagonGameBoard extends JPanel  {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
-        if (tileInfo == null) {
-            loadTileData(); // Load tile data if not already loaded
-        }
+        if (tileInfo == null) loadTileData(); // Load tile data if not already loaded
+
         for (int row = 0; row < numRows; row++) {
             for (int col = 0; col < numCols; col++) {
                 int x = col * (int) (1.5 * hexSize);
@@ -70,13 +67,14 @@ public class HexagonGameBoard extends JPanel  {
                 
             }
         }
-        if (players != null && players.length > 0) {
+        if (players != null) {
             for (Player player : players) {
                 drawPlayer(g2d, player.getCurrentRow(), player.getCurrentCol(), player.getColor());
             }
         }
         
     }
+
     public Color getColorFromString(String colorName) {
         Map<String, Color> colorMap = new HashMap<>();
         colorMap.put("gray", Color.GRAY);
@@ -135,6 +133,7 @@ public class HexagonGameBoard extends JPanel  {
         if(points!=0){
         g2d.drawString(Points, (centerX-25) - rowColWidth / 2, (centerY-45) + rowColHeight / 2);}
     }
+
     public void drawPlayer(Graphics2D g2d, int row, int col, Color color) {
         // Calculate center of hexagon
         int x = col * (int) (1.5 * hexSize);
@@ -152,9 +151,5 @@ public class HexagonGameBoard extends JPanel  {
         g2d.fillPolygon(xPoints, yPoints, 8);
         
     }
-    
-     
-
-  
 }
 

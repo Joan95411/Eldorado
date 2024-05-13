@@ -5,13 +5,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Player {
+    private static int lastAssignedId = 0;
 	public int id;
     private int currentRow;
     private int currentCol;
     public Color color;
 
-    public Player(int id,Color selectedColor) {
-        this.id=id;
+    public Player(Color selectedColor) {
+        this.id = ++lastAssignedId;
         this.color=selectedColor;
     }
 
@@ -26,15 +27,16 @@ public class Player {
     public Color getColor() {
         return color;
     }
+
     public void setPlayerPosition(int row, int col) {
         this.currentRow = row;
         this.currentCol = col;
     }
     
-    
     public boolean isAtPosition(int row, int col) {
         return this.currentRow == row && this.currentCol == col;
     }
+
     public List<String> getNeighborLocations() {
         List<String> neighbors = new ArrayList<>();
         if (currentCol % 2 == 0) { // Check if current column is even
@@ -54,6 +56,7 @@ public class Player {
         }
         return neighbors;
     }
+
     public void printNeighbors(){
 		List<String> neighborLocations = getNeighborLocations(); // Get neighbor locations
         System.out.println("Neighbor locations:");
@@ -61,7 +64,5 @@ public class Player {
             System.out.println(location);
         }
 	}
-	
-    
 }
 
