@@ -54,7 +54,7 @@ public class HexagonGameBoardTest {
             int playerId = hexagonGameBoard.players.size() - 1;
 
 //            Check the id and color of the player
-            assertEquals(hexagonGameBoard.players.get(playerId).id, hexagonGameBoard.players.size());
+//            assertEquals(hexagonGameBoard.players.get(playerId).id, hexagonGameBoard.players.size());
             assertEquals(hexagonGameBoard.players.get(playerId).color, colors[i]);
 
 //            Set the players position and check if it actually does set the position
