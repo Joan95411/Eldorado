@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class HexagonGameBoardTest {
     public static Dotenv dotenv = Dotenv.configure().load();
-    public HexagonGameBoard hexagonGameBoard = new HexagonGameBoard(5, 5, 50);
+    public static HexagonGameBoard hexagonGameBoard = new HexagonGameBoard(5, 5, 50);
 
     @Test
     public void testHexagonGameBoard() {
@@ -69,10 +69,6 @@ public class HexagonGameBoardTest {
 
 //        TODO: This should fail because the max amount of players is reached
         hexagonGameBoard.players.add(new Player(colors[0]));
-    }
-
-    private void addPlayer(int index, int row, int col, Color color) {
-
     }
 
     @Test
