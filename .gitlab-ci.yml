@@ -1,4 +1,4 @@
-image: maven:latest
+image: maven:3.9.6
 
 stages: # List of stages for jobs and their order of execution
   - build
@@ -105,6 +105,12 @@ sigridpublish:
     when: always
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+
+sast:
+  stage: test
+
+include:
+  - template: Security/SAST.gitlab-ci.yml
 
 # variables:
 #   DEPLOY_SERVER: "your-deploy-server.com"
