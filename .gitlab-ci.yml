@@ -34,20 +34,7 @@ test-implemented-tests:
     - build-job
   script:
     - echo "Running all tests."
-    - mvn test -Dtest=*Implemented
-
-test-new-tests:
-  stage: test
-  tags:
-    - SET2024
-  dependencies:
-    - build-job
-  script:
-    - echo "Testing"
-    - mvn test -Dtest=*New
-  allow_failure: true
-  rules:
-    - if: $CI_COMMIT_BRANCH == "develop"
+    - mvn test
 
 verify-job:
   stage: test
@@ -58,8 +45,6 @@ verify-job:
   script:
     - echo "Running additional verification tests."
     - mvn verify
-  rules:
-    - if: $CI_COMMIT_BRANCH == "main"
 
 package-prod:
   stage: package
