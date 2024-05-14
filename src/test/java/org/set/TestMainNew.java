@@ -8,4 +8,10 @@ public class TestMainNew {
     public void testGetLucky() {
         assertEquals(1, 1);
     }
+
+//    @Test
+//    public void newFeature() {
+//        HexagonGameBoard hexagonGameBoard = new HexagonGameBoard(5, 5, 50);
+//        hexagonGameBoard.notImplemented();
+//    }
 }
