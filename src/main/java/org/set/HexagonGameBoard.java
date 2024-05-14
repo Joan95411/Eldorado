@@ -1,5 +1,6 @@
 package org.set;
 
+import io.github.cdimascio.dotenv.Dotenv;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -13,6 +14,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class HexagonGameBoard extends JPanel  {
+    public static Dotenv dotenv = Dotenv.configure().load();
+
     public int numRows;
     public int numCols;
     public int hexSize;
@@ -31,9 +34,11 @@ public class HexagonGameBoard extends JPanel  {
     
     private void loadTileData() {
         try {
-            String tileDataPath = "/Users/basabbink/Development/set2024team04project/src/main/java/org/set/tileData.json";
+            String tileDataPath = dotenv.get("TILEDATA_PATH");
+            if (tileDataPath == null) tileDataPath = "/src/main/java/org/set/tileData.json";
             String tileDataJson = new String(Files.readAllBytes(new File(tileDataPath).toPath()));
             JSONObject tileData = new JSONObject(tileDataJson);
+
             tileInfo = tileData.getJSONObject("tiles");
         } catch (IOException | JSONException e) {
             // Handle exceptions
@@ -161,5 +166,13 @@ public class HexagonGameBoard extends JPanel  {
         g2d.fillPolygon(xPoints, yPoints, 8);
         
     }
+//
+//    public void notImplemented() {
+//        try {
+//            throw new NotImplementedException();
+//        } catch (NotImplementedException e) {
+//            throw new RuntimeException(e);
+//        }
+//    }
 }
 

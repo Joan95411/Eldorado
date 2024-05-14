@@ -1,5 +1,6 @@
 package org.set;
 
+import io.github.cdimascio.dotenv.Dotenv;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
 
@@ -12,6 +13,7 @@ import java.nio.file.Files;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class HexagonGameBoardTest {
+    public static Dotenv dotenv = Dotenv.configure().load();
     public HexagonGameBoard hexagonGameBoard = new HexagonGameBoard(5, 5, 50);
 
     @Test
@@ -75,11 +77,12 @@ public class HexagonGameBoardTest {
 
     @Test
     public void testHexagonLoadTileData() throws IOException {
+        String tileDataPath = dotenv.get("TILEDATA_PATH");
         JSONObject tileInfo = null;
 
         HexagonGameBoard hexagonGameBoard = new HexagonGameBoard(5, 5, 50);
 
-        String tileDataPath = "/Users/basabbink/Development/set2024team04project/src/main/java/org/set/tileData.json";
+        if (tileDataPath == null) tileDataPath = "/src/main/java/org/set/tileData.json";
         String tileDataJson = new String(Files.readAllBytes(new File(tileDataPath).toPath()));
         JSONObject tileData = new JSONObject(tileDataJson);
         tileInfo = tileData.getJSONObject("tiles");
