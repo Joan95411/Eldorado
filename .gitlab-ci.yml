@@ -112,7 +112,8 @@ sast:
 include:
   - template: Security/SAST.gitlab-ci.yml
 
-# variables:
+variables:
+  TILE_DATA_PATH: "/src/main/java/org/set/tileData.json"
 #   DEPLOY_SERVER: "your-deploy-server.com"
 #   DEPLOY_USER: "username"
 #   DEPLOY_PASSWORD: "${CI_JOB_TOKEN}"
