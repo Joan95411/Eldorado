@@ -1,5 +1,4 @@
 package org.set;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.awt.*;
@@ -38,8 +37,8 @@ public class HexagonGameBoard extends JPanel  {
         coordinateList= Arrays.asList(
     		    new int[]{6, 4},
     		    new int[]{0, 8},
-    		    new int[]{-6, 3},
-    		    new int[]{0, 8}
+    		    new int[]{-6, 3}
+    		    //new int[]{0, 8}
     		);
     	loadTileData();
         initBoard();
