@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,6 +25,7 @@ public class HexagonGameBoard extends JPanel  {
     public List<Terrain> terrains;
     public List<Blockade> blocks;
     public List<WinningPiece> WP;
+    List<int[]> coordinateList;
     public HexagonGameBoard(int numRows, int numCols, int hexSize) {
         this.numRows = numRows;
         this.numCols = numCols;
@@ -33,16 +35,26 @@ public class HexagonGameBoard extends JPanel  {
         terrains=new ArrayList<>();
         blocks=new ArrayList<>();
         WP=new ArrayList<>();
-        loadTileData();
-        addTerrain(6, 4,terrains.get(0));
-        addTerrain(0, 8,terrains.get(1));
-        addTerrain(-6, 3,terrains.get(2));
-        addTerrain(0, 8,terrains.get(3));
-        addWinningPiece(0,24,WP.get(0));
-        
+        coordinateList= Arrays.asList(
+    		    new int[]{6, 4},
+    		    new int[]{0, 8},
+    		    new int[]{-6, 3},
+    		    new int[]{0, 8}
+    		);
+    	loadTileData();
+        initBoard();
+
+    	System.out.println(getTerrainIndexForTile(new Tile(4,16),tilesMap));
     }
     
-    
+    private void initBoard() {
+    	int i=0;
+    		for (int[] coordinates : coordinateList) {
+    		    addTerrain(coordinates[0], coordinates[1], terrains.get(i));
+    		    i++;
+    		}
+    		
+    }
     private void loadTileData() {
 
         Terrain terrainA=new Terrain();
@@ -107,9 +119,9 @@ public class HexagonGameBoard extends JPanel  {
         for (Blockade blockade : blocks) {
         	blockade.draw(g2d, hexSize,tilesMap);
         }
-        for (WinningPiece wp : WP) {
-        	wp.draw(g2d, hexSize,tilesMap);
-        }
+        
+        WP.get(WP.size() - 1).draw(g2d, hexSize,tilesMap);
+        
         if (players != null && players.length > 0) {
             for (Player player : players) {
                 player.draw(g2d, player.getCurrentRow(), player.getCurrentCol(), hexSize, player.getColor());
@@ -131,28 +143,76 @@ public class HexagonGameBoard extends JPanel  {
     }
     
     public void addTerrain(int addRow, int addCol,Terrain terrainA){
+    	addWinningPiece(addRow, addCol, WP.get(WP.size() - 1));
         Terrain terrainB = terrainA.clone(addRow, addCol,tilesMap);
         terrainB.randomizeTiles();
         terrains.add(terrainB);
         Set<int[]> neighbors=terrainA.findOverlappingNeighbors(terrainB);
-        if (neighbors.size()==5){
+        if (neighbors.size()<=5){
         Blockade blockade = new Blockade();
         for (int[] coordinate : neighbors) {
             int row = coordinate[0];
             int col = coordinate[1];
             blockade.addTile(new Tile(row, col));
-            //System.out.println(row+" "+col);
+            
         }
         blockade.randomizeTiles();
-        blocks.add(blockade);}
-        
-    }
-    public void addWinningPiece(int addRow, int addCol,WinningPiece wpa){
-    	WinningPiece wpb = wpa.clone(addRow, addCol,tilesMap);
-    	WP.clear();
-        WP.add(wpb);
+        blocks.add(blockade);
         }
         
+    }
+    
+    public int getTerrainIndexForTile(Tile tile, Map<String, Tile> tilesMap) {
+        String key = tile.getRow() + "," + tile.getCol();
+        for (String mapKey : tilesMap.keySet()) {
+            if (mapKey.contains(key)) {
+                String[] parts = mapKey.split("_");
+                if (parts.length > 1) {
+                    // Extract terrain index from the second part of the split
+                    return Integer.parseInt(parts[1]);
+                }
+            }
+        }
+        return -1; // Return -1 if tile not found in any terrain
+    }
+
+
+    
+    public void addWinningPiece(int addRow, int addCol,WinningPiece wpa){
+    	WinningPiece wpb = wpa.clone(addRow, addCol,tilesMap);
+        WP.add(wpb);
+    	System.out.println(addRow+" "+addCol);
+        }
+    
+    public void removeBlockade(int currentTerrainIndex) {
+    	blocks.remove(0);
+        int[] change;
+        if (coordinateList.get(currentTerrainIndex)[0] > 0) {
+            change = new int[]{-1, 0}; // Move one unit up
+        } else if (coordinateList.get(currentTerrainIndex)[0] < 0) {
+            change = new int[]{1, 0}; // Move one unit down
+        } else {
+            change = new int[]{0, -1}; // Move one unit left
+        }
+        //System.out.println(change[0]+" "+change[1]);
+        // Iterate over the terrains starting from the terrain after the current one
+        for (int i = currentTerrainIndex + 1; i < terrains.size(); i++) {
+            // Clone the WinningPiece with adjusted coordinates
+            WinningPiece wpb = WP.get(i).clone(change[0], change[1], tilesMap);
+            Terrain terrainNew = terrains.get(i).clone(change[0], change[1], tilesMap);
+
+            // Replace the old Terrain and WinningPiece with the new ones
+            terrains.set(i, terrainNew);
+            WP.set(i, wpb);
+
+        }
+        for(int i = 0 ; i < blocks.size(); i++){
+        	Blockade bb=blocks.get(i).clone(change[0], change[1], tilesMap);
+        	blocks.set(i,bb);
+        }
+        
+    }
+  
     
     
     
@@ -167,12 +227,7 @@ public class HexagonGameBoard extends JPanel  {
                 return false;
             }
         }
-        String key = row + "," + col;
-        JSONObject currentTileInfo = tileInfo.optJSONObject(key); // Get tile info for current row and col
-        if (currentTileInfo == null) {
-        	System.out.println("Going out of border. Choose another move! ");
-            return false; // Tile data not found for this position
-        }
+        
         return true;
     }
     
