@@ -23,6 +23,7 @@ public class Blockade  {
         if (tiles.size() < 5) {
         	if (!tiles.contains(tile)) {
                 tiles.add(tile);
+                
             } else {
                 System.out.println("Tile already exists in the blockade.");
             }
@@ -40,14 +41,55 @@ public class Blockade  {
         this.tiles = tiles;
     }
     
+    
+    public void setColor(Color color) {
+        this.color = color;
+    }
+    public void setPoints(int points) {
+        this.points = points;
+    }
+    public Blockade clone(int addRow, int addCol, Map<String, Tile> tilesMap) {
+    	Blockade clonedBlock = new Blockade();
+        int row;
+        int col;
+        for (Tile tile : tiles) {
+        	if (addCol % 2 == 0) {
+            row = tile.getRow() + addRow; 
+            col = tile.getCol() + addCol; 
+            }
+        	else{
+        		row = tile.getRow() + addRow; 
+                col = tile.getCol() + addCol; 
+                if(col% 2 == 0){
+                	if(addRow% 2 == 0){
+                	row=row+1;}
+                	else{
+                		row=row-1;
+                	}
+                }
+        	}
+            
+            Tile clonedTile = new Tile(row, col);
+            String targetKey = row+","+col;
+            clonedTile = tilesMap.get(targetKey);
+            try {
+                clonedBlock.addTile(clonedTile);
+            } catch(Exception e) {
+            	e.printStackTrace();
+                System.err.println("Tile not found for row " + row + ", col " + col);
+            }
+        }
+        clonedBlock.setColor(this.color);
+        clonedBlock.setPoints(this.points);
+        return clonedBlock;
+    }
     public void randomizeTiles() {
     	Random random = new Random();
-    	for (Tile tile : tiles) {
-    		int index = random.nextInt(COLOR_RANGE.length);
-    		Color temp=COLOR_RANGE[index];
-    		Color transparentColor = new Color(temp.getRed(), temp.getGreen(), temp.getBlue(), 50);
-    		this.color=transparentColor;
-    	}
+    	int index = random.nextInt(COLOR_RANGE.length);
+    	Color temp=COLOR_RANGE[index];
+    	Color transparentColor = new Color(temp.getRed(), temp.getGreen(), temp.getBlue(), 50);
+    	this.color=transparentColor;
+    	
     	int points = random.nextInt(POINTS_MAX - POINTS_MIN + 1) + POINTS_MIN;
     	this.points=points;
     }
@@ -65,8 +107,8 @@ public class Blockade  {
     		int hexSize=size;
     		tile.drawHexagon(g2d, x, y, hexSize, color, null);
     	}
-    	int centerX = totalX / 5;
-        int centerY = totalY / 5;
+    	int centerX = totalX / tiles.size();
+        int centerY = totalY / tiles.size();
         g2d.setColor(Color.BLACK);
         String pointText = points+"P"; // Unicode character for a bullet point
         FontMetrics fm = g2d.getFontMetrics();
