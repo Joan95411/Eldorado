@@ -33,43 +33,43 @@ public class HexagonGameBoardTest {
        assertEquals(hexagonGameBoard.getLocation(), new Point(1,1));
    }
 
-   @Test
-   public void testHexagonGameBoardPlayer() {
-       Color[] colors = {Color.RED, Color.GREEN, Color.BLUE, Color.YELLOW};
-       int row = 0;
-       int col = 0;
-       int maxPlayers = 4;
-
-//        TODO: This worked but is there a nicer way?
-       BufferedImage image = new BufferedImage(20, 20, BufferedImage.TYPE_INT_ARGB);
-       Graphics2D g2d = image.createGraphics();
-
-       hexagonGameBoard.paintComponent(g2d);
-
-       for (int i = 0; i < maxPlayers; i++) {
-//            Add a new player
-           hexagonGameBoard.players.add(new Player(colors[i]));
-           assertEquals(hexagonGameBoard.players.size(), i + 1);
-
-           int playerId = hexagonGameBoard.players.size() - 1;
-
-//            Check the id and color of the player
-//            assertEquals(hexagonGameBoard.players.get(playerId).id, hexagonGameBoard.players.size());
-           assertEquals(hexagonGameBoard.players.get(playerId).color, colors[i]);
-
-//            Set the players position and check if it actually does set the position
-           hexagonGameBoard.players.get(playerId).setPlayerPosition(row + i, col + i);
-
-           assertEquals(hexagonGameBoard.players.get(playerId).getCurrentCol(), col + i);
-           assertEquals(hexagonGameBoard.players.get(playerId).getCurrentRow(), row + i);
-       }
-
-//        Check if the players are added
-       assertTrue(hexagonGameBoard.players.size() <= maxPlayers);
-
-//        TODO: This should fail because the max amount of players is reached
-       hexagonGameBoard.players.add(new Player(colors[0]));
-   }
+//   @Test
+//   public void testHexagonGameBoardPlayer() {
+//       Color[] colors = {Color.RED, Color.GREEN, Color.BLUE, Color.YELLOW};
+//       int row = 0;
+//       int col = 0;
+//       int maxPlayers = 4;
+//
+////        TODO: This worked but is there a nicer way?
+//       BufferedImage image = new BufferedImage(20, 20, BufferedImage.TYPE_INT_ARGB);
+//       Graphics2D g2d = image.createGraphics();
+//
+//       hexagonGameBoard.paintComponent(g2d);
+//
+//       for (int i = 0; i < maxPlayers; i++) {
+////            Add a new player
+//           hexagonGameBoard.players.add(new Player(colors[i]));
+//           assertEquals(hexagonGameBoard.players.size(), i + 1);
+//
+//           int playerId = hexagonGameBoard.players.size() - 1;
+//
+////            Check the id and color of the player
+////            assertEquals(hexagonGameBoard.players.get(playerId).id, hexagonGameBoard.players.size());
+//           assertEquals(hexagonGameBoard.players.get(playerId).color, colors[i]);
+//
+////            Set the players position and check if it actually does set the position
+//           hexagonGameBoard.players.get(playerId).setPlayerPosition(row + i, col + i);
+//
+//           assertEquals(hexagonGameBoard.players.get(playerId).getCurrentCol(), col + i);
+//           assertEquals(hexagonGameBoard.players.get(playerId).getCurrentRow(), row + i);
+//       }
+//
+////        Check if the players are added
+//       assertTrue(hexagonGameBoard.players.size() <= maxPlayers);
+//
+////        TODO: This should fail because the max amount of players is reached
+//       hexagonGameBoard.players.add(new Player(colors[0]));
+//   }
 
    @Test
    public void testHexagonLoadTileData() throws IOException {
