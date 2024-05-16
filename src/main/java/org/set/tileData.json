@@ -40,9 +40,9 @@
   },
 "WinningPiece": {
 
-    "2,8": {"color": "Blue", "points": 1},
-    "1,7": {"color": "Blue", "points": 1},
-    "3,8": {"color": "Blue", "points": 1},
+    "2,8": {"color": "Green", "points": 1},
+    "1,7": {"color": "Green", "points": 1},
+    "3,8": {"color": "Green", "points": 1},
     "1,8": {"color": "Yellow", "points": 0},
     "1,9": {"color": "Yellow", "points": 0},
     "2,9": {"color": "Yellow", "points": 0}
