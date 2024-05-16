@@ -1,22 +1,25 @@
-# You can override the included template(s) by including variable overrides
-# SAST customization: https://docs.gitlab.com/ee/user/application_security/sast/#customizing-the-sast-settings
-# Secret Detection customization: https://docs.gitlab.com/ee/user/application_security/secret_detection/#customizing-settings
-# Dependency Scanning customization: https://docs.gitlab.com/ee/user/application_security/dependency_scanning/#customizing-the-dependency-scanning-settings
-# Container Scanning customization: https://docs.gitlab.com/ee/user/application_security/container_scanning/#customizing-the-container-scanning-settings
-# Note that environment variables can be set in several places
-# See https://docs.gitlab.com/ee/ci/variables/#cicd-variable-precedence
-image: maven:latest
-stages:
-- build
-- test
-- report
+image: maven:3.9.6
+
+stages: # List of stages for jobs and their order of execution
+  - build
+  - test
+  - report
+  - package
+
+#.standard-rules:
+#  rules:
+#    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'  # Run for all changes to a merge request's source branch
+#    - or:
+#        - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH  # Run for pushes to default branch
+#        - if: $CI_COMMIT_TAG  # Run for tagged commits
+
 build-job:
   stage: build
   tags:
   - SET2024
   script:
-  - echo "Maven building started."
-  - mvn -B -DskipTests clean package
+    - echo "Maven building started."
+    - mvn -B -DskipTests clean package
   cache:
     paths:
     - "~/.m2/repository"
@@ -27,20 +30,11 @@ test-implemented-tests:
   dependencies:
   - build-job
   script:
-  - echo "Running all tests."
-  - mvn test -Dtest="*Implemented"
-test-new-tests:
-  stage: test
-  tags:
-  - SET2024
-  dependencies:
-  - build-job
-  script:
-  - echo "Testing"
-  - mvn test -Dtest="*New"
-  allow_failure: true
-  rules:
-  - if: "$CI_COMMIT_MESSAGE =~ /test/"
+    - echo "Running all tests."
+    - "echo TILEDATA_PATH='src/main/java/org/set/tileData.json' >> .env"
+    - cat .env
+    - mvn test
+
 verify-job:
   stage: test
   tags:
@@ -48,10 +42,22 @@ verify-job:
   dependencies:
   - build-job
   script:
-  - echo "Running additional verification tests."
-  - mvn verify
+    - echo "Running additional verification tests."
+    - "echo TILEDATA_PATH='src/main/java/org/set/tileData.json' >> .env"
+    - cat .env
+    - mvn verify
+
+package-prod:
+  stage: package
+  tags:
+    - SET2024
+  script:
+    - echo "Maven package started"
+    - mvn package
+  environment: production
   rules:
-  - if: $CI_COMMIT_BRANCH == "main"
+    - if: $CI_COMMIT_BRANCH == "main"
+
 sigridci:
   stage: report
   image:
@@ -66,6 +72,9 @@ sigridci:
       junit: sigrid-ci-output/sigridci-junit-format-report.xml
     expire_in: 1 week
     when: always
+  rules:
+    - if: $CI_MERGE_REQUEST_ID
+
 sigridpublish:
   stage: report
   image:
@@ -78,7 +87,16 @@ sigridpublish:
     - sigrid-ci-output/*
     expire_in: 1 week
     when: always
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+
 sast:
   stage: test
+
 include:
-- template: Security/SAST.gitlab-ci.yml
+  - template: Security/SAST.gitlab-ci.yml
+
+#variables:
+#   DEPLOY_SERVER: "your-deploy-server.com"
+#   DEPLOY_USER: "username"
+#   DEPLOY_PASSWORD: "${CI_JOB_TOKEN}"

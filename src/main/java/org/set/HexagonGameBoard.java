@@ -1,33 +1,78 @@
 package org.set;
-
+import io.github.cdimascio.dotenv.Dotenv;
+import org.json.JSONException;
+import org.json.JSONObject;
 import java.awt.*;
 import javax.swing.*;
-import java.util.Scanner;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
-public class HexagonGameBoard extends JPanel {
-    private int numRows;
-    private int numCols;
-    private int hexSize;
-    private int playerRow;
-    private int playerCol;
+public class HexagonGameBoard extends JPanel  {
+    public static Dotenv dotenv = Dotenv.configure().load();
 
+    public int numRows;
+    public int numCols;
+    public int hexSize;
+    public Player[] players;
+    public JSONObject tileInfo;
+    public JSONObject WinningPiece;
+    public Map<String, Tile> tilesMap; 
+    public List<Terrain> terrains;
+    public List<Blockade> blocks;
+    public List<WinningPiece> WP;
+    List<int[]> coordinateList;
     public HexagonGameBoard(int numRows, int numCols, int hexSize) {
         this.numRows = numRows;
         this.numCols = numCols;
         this.hexSize = hexSize;
         setPreferredSize(new Dimension((int) (numCols * 1.5 * hexSize), (int) (numRows * Math.sqrt(3) * hexSize)));
-    }
+        tilesMap = new HashMap<>();
+        terrains=new ArrayList<>();
+        blocks=new ArrayList<>();
+        WP=new ArrayList<>();
+        coordinateList= Arrays.asList(
+    		    new int[]{6, 4},
+    		    new int[]{0, 8},
+    		    new int[]{-6, 3}
+    		    //new int[]{0, 8}
+    		);
+    	loadTileData();
+        initBoard();
 
-    public void setPlayerPosition(int row, int col) {
-        this.playerRow = row;
-        this.playerCol = col;
-        repaint(); // Redraw the board with the updated player position
+    	System.out.println(getTerrainIndexForTile(new Tile(4,16),tilesMap));
     }
-    @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        Graphics2D g2d = (Graphics2D) g;
+    
+    private void initBoard() {
+    	int i=0;
+    		for (int[] coordinates : coordinateList) {
+    		    addTerrain(coordinates[0], coordinates[1], terrains.get(i));
+    		    i++;
+    		}
+    		
+    }
+    private void loadTileData() {
+        Terrain terrainA=new Terrain();
+        WinningPiece wpa=new WinningPiece();
 
+        try {
+            String tileDataPath = dotenv.get("TILEDATA_PATH");
+            if (tileDataPath == null) tileDataPath = "/src/main/java/org/set/tileData.json";
+            String tileDataJson = new String(Files.readAllBytes(new File(tileDataPath).toPath()));
+            JSONObject tileData = new JSONObject(tileDataJson);
+            tileInfo = tileData.getJSONObject("Terrain");
+            WinningPiece = tileData.getJSONObject("WinningPiece");
+            
+        } catch (IOException | JSONException e) {
+            // Handle exceptions
+            e.printStackTrace();
+        }
         for (int row = 0; row < numRows; row++) {
             for (int col = 0; col < numCols; col++) {
                 int x = col * (int) (1.5 * hexSize);
@@ -35,84 +80,167 @@ public class HexagonGameBoard extends JPanel {
                 if (col % 2 == 1) {
                     y += (int) (Math.sqrt(3) / 2 * hexSize);
                 }
-                drawHexagon(g2d, x, y, hexSize, Color.GRAY,row,col);
+                String key = row + "," + col;
+                Tile tile = new Tile(row, col);
+                tile.setX(x);
+                tile.setY(y);
+                JSONObject currentTileInfo = tileInfo.optJSONObject(key); 
+                JSONObject currentWinning = WinningPiece.optJSONObject(key); 
+                if (currentTileInfo != null) {
+
+                	terrainA.addTile(tile);
+                }
+                else if(currentWinning!=null){
+                	wpa.addTile(tile);
+                	currentTileInfo=currentWinning;
+                }
+                else{
+                	
+                	currentTileInfo = new JSONObject();
+                    currentTileInfo.put("color", "White");
+                    currentTileInfo.put("points", 0);
+                }
+                String colorName = currentTileInfo.getString("color");
+                Color color = getColorFromString(colorName);
+                int points = currentTileInfo.getInt("points");
+                tile.setColor(color);
+                tile.setPoints(points);
+                tilesMap.put(key, tile);
+                
+                }
+            }
+        terrains.add(terrainA);
+        WP.add(wpa);
+    }
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        Graphics2D g2d = (Graphics2D) g;
+        for (Terrain terrain : terrains) {
+            terrain.draw(g2d, hexSize,tilesMap);
+        }
+        for (Blockade blockade : blocks) {
+        	blockade.draw(g2d, hexSize,tilesMap);
+        }
+        
+        WP.get(WP.size() - 1).draw(g2d, hexSize,tilesMap);
+        
+        if (players != null && players.length > 0) {
+            for (Player player : players) {
+                player.draw(g2d, player.getCurrentRow(), player.getCurrentCol(), hexSize, player.getColor());
             }
         }
-        drawPlayer(g2d, playerRow, playerCol);
+        
+        
     }
-
-
-    private void drawHexagon(Graphics2D g2d, int x, int y, int size, Color color, int row, int col) {
-        int[] xPoints = new int[6];
-        int[] yPoints = new int[6];
-        for (int i = 0; i < 6; i++) {
-            xPoints[i] = (int) (x + size * Math.cos(i * Math.PI / 3));
-            yPoints[i] = (int) (y + size * Math.sin(i * Math.PI / 3));
+    public Color getColorFromString(String colorName) {
+        Map<String, Color> colorMap = new HashMap<>();
+        colorMap.put("gray", Color.GRAY);
+        colorMap.put("red", Color.RED);
+        colorMap.put("yellow", Color.YELLOW);
+        colorMap.put("green", Color.GREEN);
+        colorMap.put("blue", Color.BLUE);
+        colorMap.put("pink", Color.PINK);
+        colorMap.put("black", Color.BLACK);
+        return colorMap.getOrDefault(colorName.toLowerCase(), Color.WHITE);
+    }
+    
+    public void addTerrain(int addRow, int addCol,Terrain terrainA){
+    	addWinningPiece(addRow, addCol, WP.get(WP.size() - 1));
+        Terrain terrainB = terrainA.clone(addRow, addCol,tilesMap);
+        terrainB.randomizeTiles();
+        terrains.add(terrainB);
+        Set<int[]> neighbors=terrainA.findOverlappingNeighbors(terrainB);
+        if (neighbors.size()<=5){
+        Blockade blockade = new Blockade();
+        for (int[] coordinate : neighbors) {
+            int row = coordinate[0];
+            int col = coordinate[1];
+            blockade.addTile(new Tile(row, col));
+            
         }
-        Color transparentColor = new Color(color.getRed(), color.getGreen(), color.getBlue(), 150); // Adjust the alpha value (0-255) as needed
-
-        g2d.setColor(transparentColor);
-        g2d.fillPolygon(xPoints, yPoints, 6);
-        g2d.setColor(Color.BLACK);
-        g2d.drawPolygon(xPoints, yPoints, 6);
-
-        // Draw row and column numbers
-        FontMetrics fm = g2d.getFontMetrics();
-        String rowColStr = row + "," + col;
-        int rowColWidth = fm.stringWidth(rowColStr);
-        int rowColHeight = fm.getHeight();
-        int centerX = x + size-25;
-        int centerY = y + size-45;
-        g2d.drawString(rowColStr, centerX - rowColWidth / 2, centerY + rowColHeight / 2);
-    }
-    private void drawPlayer(Graphics2D g2d, int row, int col) {
-        // Calculate center of hexagon
-        int x = col * (int) (1.5 * hexSize);
-        int y = row * (int) (Math.sqrt(3) * hexSize);
-        if (col % 2 == 1) {
-            y += (int) (Math.sqrt(3) / 2 * hexSize);
+        blockade.randomizeTiles();
+        blocks.add(blockade);
         }
-        int centerX = x + hexSize-90;
-        int centerY = y + hexSize-45;
-
-        // Draw a star representing player's position
-        int[] xPoints = {centerX, centerX + hexSize / 4, centerX + hexSize / 2, centerX + hexSize * 3 / 4, centerX + hexSize, centerX + hexSize * 3 / 4, centerX + hexSize / 2, centerX + hexSize / 4};
-        int[] yPoints = {centerY - hexSize / 4, centerY - hexSize / 4, centerY - hexSize / 2, centerY - hexSize / 4, centerY - hexSize / 4, centerY, centerY + hexSize / 4, centerY - hexSize / 4};
-        g2d.setColor(Color.RED);
-        g2d.fillPolygon(xPoints, yPoints, 8);
+        
     }
-
-    public static void main(String[] args) {
-        JFrame frame = new JFrame("Hexagon Game Board");
-        HexagonGameBoard board = new HexagonGameBoard(10, 10, 50);
-        frame.add(board);
-        frame.pack();
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setVisible(true);
-        board.setPlayerPositionFromUserInput();
-    }
-    public void setPlayerPositionFromUserInput() {
-        Scanner scanner = new Scanner(System.in);
-        while (true) {
-            System.out.println("Enter row and column for player's position (e.g., '2 3'), or type 'stop' to exit:");
-            String input = scanner.nextLine();
-            if (input.equalsIgnoreCase("stop")) {
-                break;
-            }
-            String[] tokens = input.split("\\s+");
-            if (tokens.length != 2) {
-                System.out.println("Invalid input. Please enter row and column separated by space.");
-                continue;
-            }
-            try {
-                int row = Integer.parseInt(tokens[0]);
-                int col = Integer.parseInt(tokens[1]);
-                setPlayerPosition(row, col);
-            } catch (NumberFormatException e) {
-                System.out.println("Invalid input. Please enter valid integers for row and column.");
+    
+    public int getTerrainIndexForTile(Tile tile, Map<String, Tile> tilesMap) {
+        String key = tile.getRow() + "," + tile.getCol();
+        for (String mapKey : tilesMap.keySet()) {
+            if (mapKey.contains(key)) {
+                String[] parts = mapKey.split("_");
+                if (parts.length > 1) {
+                    // Extract terrain index from the second part of the split
+                    return Integer.parseInt(parts[1]);
+                }
             }
         }
-        scanner.close();
+        return -1; // Return -1 if tile not found in any terrain
     }
+
+
+    
+    public void addWinningPiece(int addRow, int addCol,WinningPiece wpa){
+    	WinningPiece wpb = wpa.clone(addRow, addCol,tilesMap);
+        WP.add(wpb);
+    	System.out.println(addRow+" "+addCol);
+        }
+    
+    public void removeBlockade(int currentTerrainIndex) {
+    	blocks.remove(0);
+        int[] change;
+        if (coordinateList.get(currentTerrainIndex)[0] > 0) {
+            change = new int[]{-1, 0}; // Move one unit up
+        } else if (coordinateList.get(currentTerrainIndex)[0] < 0) {
+            change = new int[]{1, 0}; // Move one unit down
+        } else {
+            change = new int[]{0, -1}; // Move one unit left
+        }
+        //System.out.println(change[0]+" "+change[1]);
+        // Iterate over the terrains starting from the terrain after the current one
+        for (int i = currentTerrainIndex + 1; i < terrains.size(); i++) {
+            // Clone the WinningPiece with adjusted coordinates
+            WinningPiece wpb = WP.get(i).clone(change[0], change[1], tilesMap);
+            Terrain terrainNew = terrains.get(i).clone(change[0], change[1], tilesMap);
+
+            // Replace the old Terrain and WinningPiece with the new ones
+            terrains.set(i, terrainNew);
+            WP.set(i, wpb);
+
+        }
+        for(int i = 0 ; i < blocks.size(); i++){
+        	Blockade bb=blocks.get(i).clone(change[0], change[1], tilesMap);
+        	blocks.set(i,bb);
+        }
+        
+    }
+  
+    
+    
+    
+    public boolean isValidPosition(int row, int col) {
+        if (row < 0 || row >= numRows || col < 0 || col >= numCols) {
+        	System.out.println("Going out of border. Choose another move! ");
+            return false;
+        }
+        for (Player player : players) {
+            if (player.isAtPosition(row, col)) {
+                System.out.println("Someone's already here. Choose another move!");
+                return false;
+            }
+        }
+        
+        return true;
+    }
+    
+    
+    
+    
+    
+    
+     
+
+  
 }
 
