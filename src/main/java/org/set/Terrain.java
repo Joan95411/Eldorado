@@ -94,13 +94,16 @@ public class Terrain {
             Tile clonedTile = new Tile(row, col);
             String targetKey = row+","+col;
             clonedTile = tilesMap.get(targetKey);
-            try {
-                clonedTile.setColor(tile.getColor());
-                clonedTile.setPoints(tile.getPoints());
-                clonedTerrain.addTile(clonedTile);
-            } catch(Exception e) {
-            	e.printStackTrace();
-                System.err.println("Tile not found for row " + row + ", col " + col);
+
+            if (clonedTile != null) {
+                try {
+                    clonedTile.setColor(tile.getColor());
+                    clonedTile.setPoints(tile.getPoints());
+                    clonedTerrain.addTile(clonedTile);
+                } catch(Exception e) {
+                    e.printStackTrace();
+                    System.err.println("Tile not found for row " + row + ", col " + col);
+                }
             }
         }
         return clonedTerrain;

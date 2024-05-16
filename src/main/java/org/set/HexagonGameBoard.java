@@ -58,9 +58,9 @@ public class HexagonGameBoard extends JPanel  {
     		
     }
     private void loadTileData() {
-
         Terrain terrainA=new Terrain();
         WinningPiece wpa=new WinningPiece();
+
         try {
             String tileDataPath = dotenv.get("TILEDATA_PATH");
             if (tileDataPath == null) tileDataPath = "/src/main/java/org/set/tileData.json";

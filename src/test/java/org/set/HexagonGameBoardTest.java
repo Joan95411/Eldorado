@@ -9,6 +9,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -73,7 +74,6 @@ public class HexagonGameBoardTest {
 
    @Test
    public void testHexagonLoadTileData() throws IOException {
-       JSONObject tileInfo = null;
        String tileDataPath = dotenv.get("TILEDATA_PATH");
 
        HexagonGameBoard hexagonGameBoard = new HexagonGameBoard(5, 5, 50);
@@ -81,10 +81,15 @@ public class HexagonGameBoardTest {
        if (tileDataPath == null) tileDataPath = "/src/main/java/org/set/tileData.json";
        String tileDataJson = new String(Files.readAllBytes(new File(tileDataPath).toPath()));
        JSONObject tileData = new JSONObject(tileDataJson);
-       tileInfo = tileData.getJSONObject("tiles");
+       JSONObject tileInfo = tileData.getJSONObject("Terrain");
+       JSONObject WinningPiece = tileData.getJSONObject("WinningPiece");
 
        assertNotNull(tileInfo);
        assertNotNull(hexagonGameBoard.tileInfo);
        assertEquals(hexagonGameBoard.tileInfo.toString(), tileInfo.toString());
+
+       assertNotNull(WinningPiece);
+       assertNotNull(hexagonGameBoard.WinningPiece);
+       assertEquals(hexagonGameBoard.WinningPiece.toString(), WinningPiece.toString());
    }
 }
