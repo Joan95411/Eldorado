@@ -18,7 +18,7 @@ import java.util.Map;
 	        	if (!tiles.contains(tile)) {
 	                tiles.add(tile);
 	            } else {
-	                System.out.println("Tile already exists in the blockade.");
+	                System.out.println("Tile already exists in the WinningPiece.");
 	            }
 	        } else {
 	            System.out.println("Blockade already contains 6 tiles.");
@@ -44,7 +44,14 @@ import java.util.Map;
 	            }
 	        	else{
 	        		row = tile.getRow() + addRow; 
-	                col = tile.getCol() + addCol+1; 	
+	                col = tile.getCol() + addCol; 
+	                if(col% 2 == 0){
+	                	if(addRow% 2 == 0){
+	                	row=row+1;}
+	                	else{
+	                		row=row-1;
+	                	}
+	                }
 	        	}
 	            
 	            Tile clonedTile = new Tile(row, col);
