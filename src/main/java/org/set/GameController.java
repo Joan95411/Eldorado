@@ -1,6 +1,5 @@
 package org.set;
 
-import java.awt.Color;
 import java.util.Scanner;
 
 
@@ -40,9 +39,7 @@ public class GameController {
             String color = scanner.next();
 
             // Create a new player instance with the chosen color
-            int playerIndex = i + 1;
-            Color playerColor = board.getColorFromString(color);
-            Player player = new Player(playerIndex, playerColor);
+            Player player = new Player((i+1), board.getColorFromString(color));
             
             // Add the player to the players array
             players[i] = player;
