@@ -16,20 +16,19 @@ stages: # List of stages for jobs and their order of execution
 build-job:
   stage: build
   tags:
-    - SET2024
+  - SET2024
   script:
     - echo "Maven building started."
     - mvn -B -DskipTests clean package
   cache:
     paths:
-      - ~/.m2/repository
-
+    - "~/.m2/repository"
 test-implemented-tests:
   stage: test
   tags:
-    - SET2024
+  - SET2024
   dependencies:
-    - build-job
+  - build-job
   script:
     - echo "Running all tests."
     - "echo TILEDATA_PATH='src/main/java/org/set/tileData.json' >> .env"
@@ -39,9 +38,9 @@ test-implemented-tests:
 verify-job:
   stage: test
   tags:
-    - SET2024
+  - SET2024
   dependencies:
-   - build-job
+  - build-job
   script:
     - echo "Running additional verification tests."
     - "echo TILEDATA_PATH='src/main/java/org/set/tileData.json' >> .env"
@@ -64,13 +63,13 @@ sigridci:
   image:
     name: softwareimprovementgroup/sigridci:latest
   script:
-    - sigridci.py --customer utst --system team04 --source .
+  - sigridci.py --customer utst --system team04 --source .
   allow_failure: true
   artifacts:
     paths:
-      - "sigrid-ci-output/*"
+    - sigrid-ci-output/*
     reports:
-      junit: "sigrid-ci-output/sigridci-junit-format-report.xml"
+      junit: sigrid-ci-output/sigridci-junit-format-report.xml
     expire_in: 1 week
     when: always
   rules:
@@ -81,11 +80,11 @@ sigridpublish:
   image:
     name: softwareimprovementgroup/sigridci
   script:
-    - sigridci.py --customer utst --system team04 --source . --publish
+  - sigridci.py --customer utst --system team04 --source . --publish
   allow_failure: true
   artifacts:
     paths:
-      - "sigrid-ci-output/*"
+    - sigrid-ci-output/*
     expire_in: 1 week
     when: always
   rules:
