@@ -11,12 +11,15 @@ public class Blockade  {
     private List<Tile> tiles;
     private Color color;
     private int points;
+    private static int blockadeCount = 0;
+    public int index;
     private static final Color[] COLOR_RANGE = {Color.GREEN, Color.YELLOW, Color.BLUE};
     private static final int POINTS_MIN = 1;
     private static final int POINTS_MAX = 3;
 
     public Blockade() {
         this.tiles = new ArrayList<>();
+        index = ++blockadeCount;
     }
 
     public void addTile(Tile tile) {
@@ -39,6 +42,9 @@ public class Blockade  {
 
     public void setTiles(List<Tile> tiles) {
         this.tiles = tiles;
+        for (Tile tile : tiles) {
+        	tile.parent="Terrain_"+index;
+        }
     }
     
     
@@ -83,6 +89,31 @@ public class Blockade  {
         clonedBlock.setPoints(this.points);
         return clonedBlock;
     }
+    
+    public void move(int addRow, int addCol, Map<String, Tile> tilesMap) {
+    	int row;
+        int col;
+        for (Tile tile : tiles) {
+        	if (addCol % 2 == 0) {
+            row = tile.getRow() + addRow; 
+            col = tile.getCol() + addCol; 
+            }
+        	else{
+        		row = tile.getRow() + addRow; 
+                col = tile.getCol() + addCol; 
+                if(col% 2 == 0){
+                	if(addRow% 2 == 0){
+                	row=row+1;}
+                	else{
+                		row=row-1;
+                	}
+                }
+        	}
+        tile.setRow(row);
+        tile.setCol(col);
+        }
+    }
+    
     public void randomizeTiles() {
     	Random random = new Random();
     	int index = random.nextInt(COLOR_RANGE.length);

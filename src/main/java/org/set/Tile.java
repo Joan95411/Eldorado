@@ -15,6 +15,7 @@ public class Tile {
     private int col;
     private Color color;
     private int points;
+    public String parent;
     
     
     public Tile(int row, int col) {
@@ -125,6 +126,7 @@ public class Tile {
         return neighbors;
     }
 
+    
 
     
 

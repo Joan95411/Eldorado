@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 	public class WinningPiece  {
 	    private List<Tile> tiles;
-	    
+	    public int index;
 	    
 	    public WinningPiece() {
 	        this.tiles = new ArrayList<>();
@@ -67,6 +67,30 @@ import java.util.Map;
 	            }
 	        }
 	        return clonedWinning;
+	    }
+	    
+	    public void move(int addRow, int addCol, Map<String, Tile> tilesMap) {
+	    	int row;
+	        int col;
+	        for (Tile tile : tiles) {
+	        	if (addCol % 2 == 0) {
+	            row = tile.getRow() + addRow; 
+	            col = tile.getCol() + addCol; 
+	            }
+	        	else{
+	        		row = tile.getRow() + addRow; 
+	                col = tile.getCol() + addCol; 
+	                if(col% 2 == 0){
+	                	if(addRow% 2 == 0){
+	                	row=row+1;}
+	                	else{
+	                		row=row-1;
+	                	}
+	                }
+	        	}
+	        tile.setRow(row);
+	        tile.setCol(col);
+	        }
 	    }
 	    
 	    public void draw(Graphics2D g2d,int size, Map<String, Tile> tilesMap){

@@ -13,6 +13,8 @@ import java.util.Random;
 
 public class Terrain {
     private List<Tile> tiles;
+    private static int terrainCount = 0;
+    public int index;
     private static final Color[] COLOR_RANGE = {Color.GREEN, Color.YELLOW, Color.BLUE};
     private static final int POINTS_MIN = 1;
     private static final int POINTS_MAX = 3;
@@ -20,11 +22,13 @@ public class Terrain {
 
     public Terrain() {
         this.tiles = new ArrayList<>();
+        index = ++terrainCount;
     }
 
     public void addTile(Tile tile) {
         if (tiles.size() < 37) {
             tiles.add(tile);
+               
         } else {
             System.out.println("Terrain already contains 37 tiles.");
         }
@@ -34,9 +38,13 @@ public class Terrain {
     public List<Tile> getTiles() {
         return tiles;
     }
-
+    
+    
     public void setTiles(List<Tile> tiles) {
         this.tiles = tiles;
+        for (Tile tile : tiles) {
+        	tile.parent="Terrain_"+index;
+        }
     }
     public void randomizeTiles() {
         Random random = new Random();
@@ -70,11 +78,38 @@ public class Terrain {
     		int y=temp.getY();
     		int hexSize=size;
     		Color color=tile.getColor();
+    		//System.out.println(tile.getColor());
     		int row=tile.getRow();
     		int col=tile.getCol();
     		int points=tile.getPoints();
     		tile.drawTile(g2d, x, y, hexSize, color, row, col,points);
     	}
+
+    }
+    public void move(int addRow, int addCol, Map<String, Tile> tilesMap) {
+    	int row;
+        int col;
+        for (Tile tile : tiles) {
+        	if (addCol % 2 == 0) {
+            row = tile.getRow() + addRow; 
+            col = tile.getCol() + addCol; 
+            }
+        	else{
+        		row = tile.getRow() + addRow; 
+                col = tile.getCol() + addCol; 
+                if(col% 2 == 0){
+                	if(addRow% 2 == 0){
+                	row=row+1;}
+                	else{
+                		row=row-1;
+                	}
+                }
+        	}
+        
+        tile.setRow(row);
+        tile.setCol(col);
+        
+        }
     }
     
     public Terrain clone(int addRow, int addCol, Map<String, Tile> tilesMap) {
@@ -88,22 +123,27 @@ public class Terrain {
             }
         	else{
         		row = tile.getRow() + addRow; 
-                col = tile.getCol() + addCol+1; 	
+                col = tile.getCol() + addCol; 
+                if(col% 2 == 0){
+                	if(addRow% 2 == 0){
+                	row=row+1;}
+                	else{
+                		row=row-1;
+                	}
+                }
         	}
             
             Tile clonedTile = new Tile(row, col);
             String targetKey = row+","+col;
             clonedTile = tilesMap.get(targetKey);
-
-            if (clonedTile != null) {
-                try {
-                    clonedTile.setColor(tile.getColor());
-                    clonedTile.setPoints(tile.getPoints());
-                    clonedTerrain.addTile(clonedTile);
-                } catch(Exception e) {
-                    e.printStackTrace();
-                    System.err.println("Tile not found for row " + row + ", col " + col);
-                }
+            try {
+                clonedTile.setColor(tile.getColor());
+                //System.out.println(clonedTile.getColor());
+                clonedTile.setPoints(tile.getPoints());
+                clonedTerrain.addTile(clonedTile);
+            } catch(Exception e) {
+            	e.printStackTrace();
+                System.err.println("Tile not found for row " + row + ", col " + col);
             }
         }
         return clonedTerrain;

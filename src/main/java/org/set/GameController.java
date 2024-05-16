@@ -15,6 +15,7 @@ public class GameController {
         GameState="Game in process";
         removeblock(0);
         removeblock(1);
+        removeblock(2);
         removeblock(3);
         addPlayer();
         placePlayersOnBoard();
@@ -40,7 +41,7 @@ public class GameController {
             // Create a new player instance with the chosen color
             Player player;
 
-            player = new Player(board.getColorFromString(color));
+            player = new Player((i+1), board.getColorFromString(color));
             
             // Add the player to the players array
             players[i] = player;

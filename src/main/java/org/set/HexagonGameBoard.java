@@ -1,5 +1,4 @@
 package org.set;
-import io.github.cdimascio.dotenv.Dotenv;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.awt.*;
@@ -15,8 +14,6 @@ import java.util.Map;
 import java.util.Set;
 
 public class HexagonGameBoard extends JPanel  {
-    public static Dotenv dotenv = Dotenv.configure().load();
-
     public int numRows;
     public int numCols;
     public int hexSize;
@@ -40,13 +37,13 @@ public class HexagonGameBoard extends JPanel  {
         coordinateList= Arrays.asList(
     		    new int[]{6, 4},
     		    new int[]{0, 8},
-    		    new int[]{-6, 3}
-    		    //new int[]{0, 8}
+    		    new int[]{-6, 4},
+    		    new int[]{0, 8}
     		);
     	loadTileData();
         initBoard();
 
-    	System.out.println(getTerrainIndexForTile(new Tile(4,16),tilesMap));
+    	
     }
     
     private void initBoard() {
@@ -58,12 +55,11 @@ public class HexagonGameBoard extends JPanel  {
     		
     }
     private void loadTileData() {
+
         Terrain terrainA=new Terrain();
         WinningPiece wpa=new WinningPiece();
-
         try {
-            String tileDataPath = dotenv.get("TILEDATA_PATH");
-            if (tileDataPath == null) tileDataPath = "/src/main/java/org/set/tileData.json";
+            String tileDataPath = "src\\main\\java\\org\\set\\tileData.json";
             String tileDataJson = new String(Files.readAllBytes(new File(tileDataPath).toPath()));
             JSONObject tileData = new JSONObject(tileDataJson);
             tileInfo = tileData.getJSONObject("Terrain");
@@ -200,18 +196,19 @@ public class HexagonGameBoard extends JPanel  {
         //System.out.println(change[0]+" "+change[1]);
         // Iterate over the terrains starting from the terrain after the current one
         for (int i = currentTerrainIndex + 1; i < terrains.size(); i++) {
-            // Clone the WinningPiece with adjusted coordinates
-            WinningPiece wpb = WP.get(i).clone(change[0], change[1], tilesMap);
+            /*WinningPiece wpb = WP.get(i).clone(change[0], change[1], tilesMap);
             Terrain terrainNew = terrains.get(i).clone(change[0], change[1], tilesMap);
-
-            // Replace the old Terrain and WinningPiece with the new ones
             terrains.set(i, terrainNew);
-            WP.set(i, wpb);
+            WP.set(i, wpb);*/
+        	
+        	terrains.get(i).move(change[0], change[1], tilesMap);
+        	
 
-        }
+        }WP.get(WP.size() - 1).move(change[0], change[1], tilesMap);
         for(int i = 0 ; i < blocks.size(); i++){
-        	Blockade bb=blocks.get(i).clone(change[0], change[1], tilesMap);
-        	blocks.set(i,bb);
+        	//Blockade bb=blocks.get(i).clone(change[0], change[1], tilesMap);
+        	//blocks.set(i,bb);
+        	blocks.get(i).move(change[0], change[1], tilesMap);
         }
         
     }
