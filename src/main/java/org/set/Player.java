@@ -5,13 +5,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Player {
+    private static int lastAssignedId = 0;
 	public int id;
     private int currentRow;
     private int currentCol;
     public Color color;
 
-    public Player(int id,Color selectedColor) {
-        this.id=id;
+    public Player(Color selectedColor) {
+        this.id = ++lastAssignedId;
         this.color=selectedColor;
     }
 
@@ -30,7 +31,6 @@ public class Player {
         this.currentRow = row;
         this.currentCol = col;
     }
-    
     
     public boolean isAtPosition(int row, int col) {
         return this.currentRow == row && this.currentCol == col;
@@ -61,6 +61,7 @@ public class Player {
             System.out.println(location);
         }
 	}
+
     public void draw(Graphics2D g2d, int row, int col, int size, Color color) {
         // Calculate center of hexagon
         int x = col * (int) (1.5 * size);
@@ -76,8 +77,5 @@ public class Player {
         int[] yPoints = {centerY - size / 4, centerY - size / 4, centerY - size / 2, centerY - size / 4, centerY - size / 4, centerY, centerY + size / 4, centerY - size / 4};
         g2d.setColor(color);
         g2d.fillPolygon(xPoints, yPoints, 8);
-        
     }
-	
-    
 }
