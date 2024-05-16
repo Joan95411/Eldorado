@@ -40,7 +40,7 @@ public class GameController {
             // Create a new player instance with the chosen color
             Player player;
 
-            player = new Player((i+1), board.getColorFromString(color));
+            player = new Player(board.getColorFromString(color));
             
             // Add the player to the players array
             players[i] = player;
