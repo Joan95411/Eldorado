@@ -1,4 +1,5 @@
 package org.set;
+import io.github.cdimascio.dotenv.Dotenv;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.awt.*;
@@ -14,6 +15,8 @@ import java.util.Map;
 import java.util.Set;
 
 public class HexagonGameBoard extends JPanel  {
+    public static Dotenv dotenv = Dotenv.configure().load();
+
     public int numRows;
     public int numCols;
     public int hexSize;
@@ -59,7 +62,8 @@ public class HexagonGameBoard extends JPanel  {
         Terrain terrainA=new Terrain();
         WinningPiece wpa=new WinningPiece();
         try {
-            String tileDataPath = "D:\\Joan\\orderList\\src\\Hex\\tileData.json";
+            String tileDataPath = dotenv.get("TILEDATA_PATH");
+            if (tileDataPath == null) tileDataPath = "/src/main/java/org/set/tileData.json";
             String tileDataJson = new String(Files.readAllBytes(new File(tileDataPath).toPath()));
             JSONObject tileData = new JSONObject(tileDataJson);
             tileInfo = tileData.getJSONObject("Terrain");

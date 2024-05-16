@@ -41,3 +41,6 @@ build/
 /target
 /out
 .env
+
+/.idea
+/.gitlab-ci-local

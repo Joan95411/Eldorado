@@ -3,10 +3,9 @@ image: maven:3.9.6
 stages: # List of stages for jobs and their order of execution
   - build
   - test
-  - package
-#  - deploy
   - report
-#
+  - package
+
 #.standard-rules:
 #  rules:
 #    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'  # Run for all changes to a merge request's source branch
@@ -21,7 +20,6 @@ build-job:
   script:
     - echo "Maven building started."
     - mvn -B -DskipTests clean package
-    #- mvn compile
   cache:
     paths:
       - ~/.m2/repository
@@ -34,6 +32,8 @@ test-implemented-tests:
     - build-job
   script:
     - echo "Running all tests."
+    - "echo TILEDATA_PATH='src/main/java/org/set/tileData.json' >> .env"
+    - cat .env
     - mvn test
 
 verify-job:
@@ -44,6 +44,8 @@ verify-job:
    - build-job
   script:
     - echo "Running additional verification tests."
+    - "echo TILEDATA_PATH='src/main/java/org/set/tileData.json' >> .env"
+    - cat .env
     - mvn verify
 
 package-prod:
@@ -56,23 +58,6 @@ package-prod:
   environment: production
   rules:
     - if: $CI_COMMIT_BRANCH == "main"
-
-#deploy-prod:
-#  stage: deploy
-#  tags:
-#    - SET2024
-#  dependencies:
-#    - package-prod
-#  script:
-#    - echo "Maven deploy started"
-#    - mvn deploy
-##    - mvn deploy -s $DEPLOY_SERVER -u $DEPLOY_USER -p $DEPLOY_PASSWORD
-#  environment: production
-#  artifacts:
-#    paths:
-#      - target/*.war
-#  rules:
-#    - if: $CI_COMMIT_BRANCH == "main"
 
 sigridci:
   stage: report
@@ -112,8 +97,7 @@ sast:
 include:
   - template: Security/SAST.gitlab-ci.yml
 
-variables:
-  TILEDATA_PATH: "src/main/java/org/set/tileData.json"
+#variables:
 #   DEPLOY_SERVER: "your-deploy-server.com"
 #   DEPLOY_USER: "username"
 #   DEPLOY_PASSWORD: "${CI_JOB_TOKEN}"
