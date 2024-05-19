@@ -1,4 +1,4 @@
-package Hex;
+package org.set;
 
 import java.awt.Color;
 import java.awt.Font;
