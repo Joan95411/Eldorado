@@ -15,15 +15,23 @@ public class Tile {
     private int col;
     private Color color;
     private int points;
-    public String parent;
+    private String parent;
     
     
     public Tile(int row, int col) {
         this.row = row;
         this.col = col;
     }
+    
 
-    // Getters and setters
+    
+    public void setParent(String parent) {
+    	this.parent=parent;
+    }
+    
+    public String getParent() {
+    	return parent;
+    }
     public int getX() {
     	return x;
     }
@@ -84,7 +92,7 @@ public class Tile {
         int rowColHeight = fm.getHeight();
         int centerX = x + size/2;
         int centerY = y + size/10;
-        g2d.drawString(rowColStr, centerX - rowColWidth / 2, centerY + rowColHeight / 2);
+        g2d.drawString(rowColStr, centerX - rowColWidth, centerY + rowColHeight);
         if(points!=0){
         g2d.drawString(Points, (centerX-size/2) - rowColWidth / 2, (centerY-size*9/10) + rowColHeight / 2);}
     }
@@ -105,7 +113,7 @@ public class Tile {
         
     }
     public List<int[]> getNeighbors() {
-        List<int[]> neighbors = new ArrayList<>();
+    	List<int[]> neighbors = new ArrayList<>();
         int[][] directions;
         if (col % 2 == 0) { // Check if current column is even
             directions = new int[][] {

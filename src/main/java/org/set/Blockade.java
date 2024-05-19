@@ -13,7 +13,7 @@ public class Blockade  {
     private int points;
     private static int blockadeCount = 0;
     public int index;
-    private static final Color[] COLOR_RANGE = {Color.GREEN, Color.YELLOW, Color.BLUE};
+    private static final Color[] COLOR_RANGE = {Color.GREEN, Color.YELLOW, Color.CYAN,Color.GRAY};
     private static final int POINTS_MIN = 1;
     private static final int POINTS_MAX = 3;
 
@@ -25,8 +25,9 @@ public class Blockade  {
     public void addTile(Tile tile) {
         if (tiles.size() < 5) {
         	if (!tiles.contains(tile)) {
+                tile.setParent("Blockade_"+index);
                 tiles.add(tile);
-                
+
             } else {
                 System.out.println("Tile already exists in the blockade.");
             }
@@ -43,7 +44,7 @@ public class Blockade  {
     public void setTiles(List<Tile> tiles) {
         this.tiles = tiles;
         for (Tile tile : tiles) {
-        	tile.parent="Terrain_"+index;
+        	tile.setParent("Blockade_"+index);
         }
     }
     

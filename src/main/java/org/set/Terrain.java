@@ -15,10 +15,12 @@ public class Terrain {
     private List<Tile> tiles;
     private static int terrainCount = 0;
     public int index;
-    private static final Color[] COLOR_RANGE = {Color.GREEN, Color.YELLOW, Color.BLUE};
+    private static final Color[] COLOR_RANGE = {Color.GREEN, Color.YELLOW, Color.CYAN};
+    private static final Color[] SPECIAL_COLOR_RANGE= {Color.GRAY,Color.RED,Color.BLACK};
     private static final int POINTS_MIN = 1;
     private static final int POINTS_MAX = 3;
-    private static final double GREEN_PROBABILITY = 0.4; 
+    private static final double GREEN_PROBABILITY = 0.3; 
+    private static final double specialColorProbability = 0.1; 
 
     public Terrain() {
         this.tiles = new ArrayList<>();
@@ -27,6 +29,7 @@ public class Terrain {
 
     public void addTile(Tile tile) {
         if (tiles.size() < 37) {
+            tile.setParent("Terrain_"+index);
             tiles.add(tile);
                
         } else {
@@ -39,14 +42,8 @@ public class Terrain {
         return tiles;
     }
     
-    
-    public void setTiles(List<Tile> tiles) {
-        this.tiles = tiles;
-        for (Tile tile : tiles) {
-        	tile.parent="Terrain_"+index;
-        }
-    }
-    public void randomizeTiles() {
+        
+    public void randomizeTiles(){
         Random random = new Random();
         for (Tile tile : tiles) {
             // Randomly select color
@@ -57,6 +54,7 @@ public class Terrain {
             int points = random.nextInt(POINTS_MAX - POINTS_MIN + 1) + POINTS_MIN;
             tile.setPoints(points);
         }
+        //adjustBlueNeighbors();
     }
 
     private Color getRandomColor(Random random) {
@@ -65,11 +63,25 @@ public class Terrain {
             // Mostly green
             return Color.GREEN;
         } else {
-            // Randomly select from the color range
-            int index = random.nextInt(COLOR_RANGE.length);
-            return COLOR_RANGE[index];
+            double randSpecial = random.nextDouble();
+            
+            if (randSpecial < specialColorProbability) {
+                // Randomly select a special color with lower probability
+                int index = random.nextInt(SPECIAL_COLOR_RANGE.length);
+                return SPECIAL_COLOR_RANGE[index];
+            } else {
+                // Randomly select from the standard color range
+                int index = random.nextInt(COLOR_RANGE.length);
+                return COLOR_RANGE[index];
+            }
         }
     }
+    
+
+   
+
+    
+
     public void draw(Graphics2D g2d,int size, Map<String, Tile> tilesMap){
     	for (Tile tile : tiles) {
     		String targetKey = tile.getRow()+","+tile.getCol();
@@ -138,7 +150,6 @@ public class Terrain {
             clonedTile = tilesMap.get(targetKey);
             try {
                 clonedTile.setColor(tile.getColor());
-                //System.out.println(clonedTile.getColor());
                 clonedTile.setPoints(tile.getPoints());
                 clonedTerrain.addTile(clonedTile);
             } catch(Exception e) {
@@ -185,10 +196,49 @@ public class Terrain {
         return neighbors;
     }
 
-
-
     
 
+    
+    /*public void adjustBlueNeighbors() {
+	List<Tile> blueTileclub = new ArrayList<>();
+
+	// First, find all blue tiles
+	for (Tile tile : tiles) {
+	    if (tile.getColor() != null && tile.getColor().equals(Color.CYAN)) {
+	        blueTileclub.add(tile);
+	    }
+	}
+
+	// Iterate over each blue tile
+	for (Tile blueTile : blueTileclub) {
+	    List<int[]> neighborsRC = blueTile.getNeighbors();
+
+	    // Create a list to store neighbors with the same parent
+	    List<Tile> sameParentNeighbors = new ArrayList<>();
+
+	    // Iterate over neighbors of the blue tile
+	    for (int[] neighbor : neighborsRC) {
+	        Tile neighborTile = TerrainTilesMap.get(neighbor[0] + "," + neighbor[1]);
+	        if (neighborTile != null && neighborTile.getParent() != null && neighborTile.getParent().equals(blueTile.getParent())) {
+	            sameParentNeighbors.add(neighborTile);
+	            System.out.println(neighborTile.getRow()+" "+neighborTile.getCol());
+	        }
+	    }
+
+	    // Create a set to detect duplicates
+	    Set<Tile> seenNeighbors = new HashSet<>();
+
+	    // Iterate over same parent neighbors
+	    for (Tile neighbor : sameParentNeighbors) {
+	        if (!seenNeighbors.add(neighbor)) {
+	        	System.out.println(neighbor.getRow()+" "+neighbor.getCol());
+	            neighbor.setColor(Color.CYAN);
+	        }
+	    }
+	}
+
+    
+}*/
 
 
     

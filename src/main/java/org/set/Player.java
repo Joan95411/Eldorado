@@ -2,17 +2,43 @@ package org.set;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 public class Player {
 	public int id;
     private int currentRow;
     private int currentCol;
     public Color color;
-
+    private List<Card> wholeDeck;
+    private List<Card> currentDeck; 
     public Player(int id,Color selectedColor) {
         this.id=id;
-        this.color=selectedColor;
+        Color originalColor = selectedColor; // Original red color
+        float[] hsbValues = Color.RGBtoHSB(originalColor.getRed(), originalColor.getGreen(), originalColor.getBlue(), null);
+        Color adjustedColor = Color.getHSBColor(hsbValues[0], hsbValues[1], hsbValues[2] * 0.8f); // Darken the color by reducing brightness
+        this.color=adjustedColor;
+        wholeDeck = new ArrayList<>();
+        int blueCount = 1;
+        int greenCount = 3;
+        int yellowCount = 4;
+
+        Random random = new Random();
+        for (int i = 0; i < blueCount; i++) {
+        	wholeDeck.add(new Card(i, Color.BLUE, 0.5, 1));
+        }
+
+        // Add green cards
+        for (int i = 0; i < greenCount; i++) {
+        	wholeDeck.add(new Card(i+1, Color.GREEN, 0.5, 1));
+        }
+
+        // Add yellow cards
+        for (int i = 0; i < yellowCount; i++) {
+        	wholeDeck.add(new Card(i+4, Color.YELLOW, 1, 1));
+        }
+        Collections.shuffle(wholeDeck, random);
     }
 
     public int getCurrentRow() {
@@ -30,8 +56,20 @@ public class Player {
         this.currentRow = row;
         this.currentCol = col;
     }
-    
-    
+    public void setCards(List<Card> cards) {
+        this.wholeDeck=cards;
+    }
+    public void drawCards(int currentTurn){
+    	if (currentTurn % 2 == 0) {
+        	Collections.shuffle(wholeDeck);
+    		 currentDeck= wholeDeck.subList(0, 4);
+        } else {
+        	currentDeck= wholeDeck.subList(4, 8);
+        }
+    }
+    public List<Card> getCards() {
+        return currentDeck;
+    }
     public boolean isAtPosition(int row, int col) {
         return this.currentRow == row && this.currentCol == col;
     }
@@ -68,8 +106,8 @@ public class Player {
         if (col % 2 == 1) {
             y += (int) (Math.sqrt(3) / 2 * size);
         }
-        int centerX = x + size-90;
-        int centerY = y + size-45;
+        int centerX = x -size;
+        int centerY = y +size/5;
 
         // Draw a star representing player's position
         int[] xPoints = {centerX, centerX + size / 4, centerX + size / 2, centerX + size * 3 / 4, centerX + size, centerX + size * 3 / 4, centerX + size / 2, centerX + size / 4};
