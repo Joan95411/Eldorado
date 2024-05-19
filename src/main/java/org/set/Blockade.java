@@ -7,47 +7,20 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-public class Blockade  {
-    private List<Tile> tiles;
+public class Blockade extends boardPiece {
+	private static int blockadeCount = 0;
     private Color color;
     private int points;
-    private static int blockadeCount = 0;
-    public int index;
-    private static final Color[] COLOR_RANGE = {Color.GREEN, Color.YELLOW, Color.CYAN,Color.GRAY};
-    private static final int POINTS_MIN = 1;
-    private static final int POINTS_MAX = 3;
 
     public Blockade() {
-        this.tiles = new ArrayList<>();
-        index = ++blockadeCount;
+        super();
+        int index = ++blockadeCount;
+        this.name="Blockade_"+index;
+        this.pieceCount=5;
     }
 
-    public void addTile(Tile tile) {
-        if (tiles.size() < 5) {
-        	if (!tiles.contains(tile)) {
-                tile.setParent("Blockade_"+index);
-                tiles.add(tile);
-
-            } else {
-                System.out.println("Tile already exists in the blockade.");
-            }
-        } else {
-            System.out.println("Blockade already contains 5 tiles.");
-        }
-    }
-
-    // Getters and setters
-    public List<Tile> getTiles() {
-        return tiles;
-    }
-
-    public void setTiles(List<Tile> tiles) {
-        this.tiles = tiles;
-        for (Tile tile : tiles) {
-        	tile.setParent("Blockade_"+index);
-        }
-    }
     
+
     
     public void setColor(Color color) {
         this.color = color;
@@ -55,6 +28,8 @@ public class Blockade  {
     public void setPoints(int points) {
         this.points = points;
     }
+
+    @Override
     public Blockade clone(int addRow, int addCol, Map<String, Tile> tilesMap) {
     	Blockade clonedBlock = new Blockade();
         int row;
@@ -91,29 +66,7 @@ public class Blockade  {
         return clonedBlock;
     }
     
-    public void move(int addRow, int addCol, Map<String, Tile> tilesMap) {
-    	int row;
-        int col;
-        for (Tile tile : tiles) {
-        	if (addCol % 2 == 0) {
-            row = tile.getRow() + addRow; 
-            col = tile.getCol() + addCol; 
-            }
-        	else{
-        		row = tile.getRow() + addRow; 
-                col = tile.getCol() + addCol; 
-                if(col% 2 == 0){
-                	if(addRow% 2 == 0){
-                	row=row+1;}
-                	else{
-                		row=row-1;
-                	}
-                }
-        	}
-        tile.setRow(row);
-        tile.setCol(col);
-        }
-    }
+    
     
     public void randomizeTiles() {
     	Random random = new Random();
@@ -125,7 +78,8 @@ public class Blockade  {
     	int points = random.nextInt(POINTS_MAX - POINTS_MIN + 1) + POINTS_MIN;
     	this.points=points;
     }
-    
+
+    @Override
     public void draw(Graphics2D g2d,int size, Map<String, Tile> tilesMap){
     	int totalX = 0;
         int totalY = 0;

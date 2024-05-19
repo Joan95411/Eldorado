@@ -2,7 +2,6 @@ package org.set;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -11,38 +10,22 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Random;
 
-public class Terrain {
-    private List<Tile> tiles;
-    private static int terrainCount = 0;
-    public int index;
-    private static final Color[] COLOR_RANGE = {Color.GREEN, Color.YELLOW, Color.CYAN};
+public class Terrain extends boardPiece {
+	private static int terrainCount = 0;
     private static final Color[] SPECIAL_COLOR_RANGE= {Color.GRAY,Color.RED,Color.BLACK};
-    private static final int POINTS_MIN = 1;
-    private static final int POINTS_MAX = 3;
     private static final double GREEN_PROBABILITY = 0.3; 
     private static final double specialColorProbability = 0.1; 
+    
 
     public Terrain() {
-        this.tiles = new ArrayList<>();
-        index = ++terrainCount;
+    	super();
+        int index = ++terrainCount;
+        this.name="Terrain_"+index;
+        this.pieceCount=37;
     }
 
-    public void addTile(Tile tile) {
-        if (tiles.size() < 37) {
-            tile.setParent("Terrain_"+index);
-            tiles.add(tile);
-               
-        } else {
-            System.out.println("Terrain already contains 37 tiles.");
-        }
-    }
 
-    // Getters and setters
-    public List<Tile> getTiles() {
-        return tiles;
-    }
-    
-        
+      
     public void randomizeTiles(){
         Random random = new Random();
         for (Tile tile : tiles) {
@@ -81,7 +64,7 @@ public class Terrain {
    
 
     
-
+    @Override  
     public void draw(Graphics2D g2d,int size, Map<String, Tile> tilesMap){
     	for (Tile tile : tiles) {
     		String targetKey = tile.getRow()+","+tile.getCol();
@@ -90,7 +73,6 @@ public class Terrain {
     		int y=temp.getY();
     		int hexSize=size;
     		Color color=tile.getColor();
-    		//System.out.println(tile.getColor());
     		int row=tile.getRow();
     		int col=tile.getCol();
     		int points=tile.getPoints();
@@ -98,32 +80,8 @@ public class Terrain {
     	}
 
     }
-    public void move(int addRow, int addCol, Map<String, Tile> tilesMap) {
-    	int row;
-        int col;
-        for (Tile tile : tiles) {
-        	if (addCol % 2 == 0) {
-            row = tile.getRow() + addRow; 
-            col = tile.getCol() + addCol; 
-            }
-        	else{
-        		row = tile.getRow() + addRow; 
-                col = tile.getCol() + addCol; 
-                if(col% 2 == 0){
-                	if(addRow% 2 == 0){
-                	row=row+1;}
-                	else{
-                		row=row-1;
-                	}
-                }
-        	}
-        
-        tile.setRow(row);
-        tile.setCol(col);
-        
-        }
-    }
     
+    @Override  
     public Terrain clone(int addRow, int addCol, Map<String, Tile> tilesMap) {
         Terrain clonedTerrain = new Terrain();
         int row;
@@ -199,46 +157,7 @@ public class Terrain {
     
 
     
-    /*public void adjustBlueNeighbors() {
-	List<Tile> blueTileclub = new ArrayList<>();
 
-	// First, find all blue tiles
-	for (Tile tile : tiles) {
-	    if (tile.getColor() != null && tile.getColor().equals(Color.CYAN)) {
-	        blueTileclub.add(tile);
-	    }
-	}
-
-	// Iterate over each blue tile
-	for (Tile blueTile : blueTileclub) {
-	    List<int[]> neighborsRC = blueTile.getNeighbors();
-
-	    // Create a list to store neighbors with the same parent
-	    List<Tile> sameParentNeighbors = new ArrayList<>();
-
-	    // Iterate over neighbors of the blue tile
-	    for (int[] neighbor : neighborsRC) {
-	        Tile neighborTile = TerrainTilesMap.get(neighbor[0] + "," + neighbor[1]);
-	        if (neighborTile != null && neighborTile.getParent() != null && neighborTile.getParent().equals(blueTile.getParent())) {
-	            sameParentNeighbors.add(neighborTile);
-	            System.out.println(neighborTile.getRow()+" "+neighborTile.getCol());
-	        }
-	    }
-
-	    // Create a set to detect duplicates
-	    Set<Tile> seenNeighbors = new HashSet<>();
-
-	    // Iterate over same parent neighbors
-	    for (Tile neighbor : sameParentNeighbors) {
-	        if (!seenNeighbors.add(neighbor)) {
-	        	System.out.println(neighbor.getRow()+" "+neighbor.getCol());
-	            neighbor.setColor(Color.CYAN);
-	        }
-	    }
-	}
-
-    
-}*/
 
 
     

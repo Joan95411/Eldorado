@@ -2,37 +2,20 @@ package org.set;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
-	public class WinningPiece  {
-	    private List<Tile> tiles;
-	    public int index;
+	public class WinningPiece extends boardPiece {
+
+		private static int WinningCount = 0;
 	    
 	    public WinningPiece() {
-	        this.tiles = new ArrayList<>();
+	        super();
+	        int index = ++WinningCount;
+	        this.name="Winning_"+index;
+	        this.pieceCount=6;
 	    }
 
-	    public void addTile(Tile tile) {
-	        if (tiles.size() < 6) {
-	        	if (!tiles.contains(tile)) {
-	                tiles.add(tile);
-	            } else {
-	                System.out.println("Tile already exists in the WinningPiece.");
-	            }
-	        } else {
-	            System.out.println("Blockade already contains 6 tiles.");
-	        }
-	    }
 
-	    // Getters and setters
-	    public List<Tile> getTiles() {
-	        return tiles;
-	    }
-
-	    public void setTiles(List<Tile> tiles) {
-	        this.tiles = tiles;
-	    }
+	    @Override
 	    public WinningPiece clone(int addRow, int addCol, Map<String, Tile> tilesMap) {
 	    	WinningPiece clonedWinning = new WinningPiece();
 	        int row;
@@ -69,30 +52,9 @@ import java.util.Map;
 	        return clonedWinning;
 	    }
 	    
-	    public void move(int addRow, int addCol, Map<String, Tile> tilesMap) {
-	    	int row;
-	        int col;
-	        for (Tile tile : tiles) {
-	        	if (addCol % 2 == 0) {
-	            row = tile.getRow() + addRow; 
-	            col = tile.getCol() + addCol; 
-	            }
-	        	else{
-	        		row = tile.getRow() + addRow; 
-	                col = tile.getCol() + addCol; 
-	                if(col% 2 == 0){
-	                	if(addRow% 2 == 0){
-	                	row=row+1;}
-	                	else{
-	                		row=row-1;
-	                	}
-	                }
-	        	}
-	        tile.setRow(row);
-	        tile.setCol(col);
-	        }
-	    }
 	    
+
+	    @Override
 	    public void draw(Graphics2D g2d,int size, Map<String, Tile> tilesMap){
 	    	
 	    	for (Tile tile : tiles) {
@@ -115,7 +77,8 @@ import java.util.Map;
 	        
 	        
 	    }
-	    
+
+		
 	}
 
 

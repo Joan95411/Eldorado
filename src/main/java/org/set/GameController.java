@@ -1,10 +1,5 @@
 package org.set;
 
-import java.awt.Color;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
 import java.util.Scanner;
 
 
@@ -19,9 +14,9 @@ public class GameController {
         this.board=board;
         GameState="Game in process";
         setSpecialColor();
-        //removeblock(0);
-        //removeblock(1);
-        //removeblock(2);
+        removeblock(0);
+        removeblock(1);
+        removeblock(2);
         addPlayer();
         placePlayersOnBoard();
         PlayerMoves();
@@ -117,7 +112,7 @@ public class GameController {
     
     private void PlayerDrawCards(int turn,int currentPlayerIndex) {
 
-	    //System.out.println("Player " + (currentPlayerIndex+1) + "drawing cards" );
+	    System.out.println("Player " + (currentPlayerIndex+1) + " drawing cards" );
     	Player currentPlayer = players[currentPlayerIndex];
     	currentPlayer.drawCards(turn);
 	    board.PlayerCards=currentPlayer.getCards();
@@ -141,7 +136,11 @@ public class GameController {
             Player currentPlayer = players[currentPlayerIndex];
             System.out.println("Turn " + turnNumber + ": Player " + (currentPlayerIndex+1) + "'s turn.");
     	    PlayerDrawCards(turnNumber,currentPlayerIndex);
-
+    	    
+    	    boolean invalidans=true;
+    	    int row = -1;int col = -1;
+    	    
+    	    while(invalidans){
     	    System.out.println("Enter row and column for player's position (e.g., '2 3'), or type 'stop' to end the game:");
     	    System.out.print("> "); 
     	    String input = scanner.nextLine();
@@ -152,29 +151,29 @@ public class GameController {
     	    String[] tokens = input.split("\\s+");
     	    if (tokens.length != 2) {
     	        System.out.println("Invalid input. Please enter row and column separated by space.");
-    	        currentPlayerIndex--; // Decrement the index to repeat the turn for the same player
                 continue;
     	    }
 
     	    try {
-    	        int row = Integer.parseInt(tokens[0]);
-    	        int col = Integer.parseInt(tokens[1]);
+    	        row = Integer.parseInt(tokens[0]);
+    	        col = Integer.parseInt(tokens[1]);
     	        if (!board.isValidPosition(row, col)) {
     	            System.out.println("Invalid position. Please enter valid coordinates.");
-    	            currentPlayerIndex--; // Decrement the index to repeat the turn for the same player
     	            continue;
     	        }
-    	        
-    	        currentPlayer.setPlayerPosition(row, col);
-    	        board.repaint();
-    	        String targetKey = row+","+col;
-    	        Tile temp = board.tilesMap.get(targetKey);
-    	        System.out.println("You are currently on "+temp.getParent());
-    	    } catch (NumberFormatException e) {
+    	        }
+    	     catch (NumberFormatException e) {
     	        System.out.println("Invalid input. Please enter valid integers for row and column.");
-    	        currentPlayerIndex--; // Decrement the index to repeat the turn for the same player
                 continue; 
     	    }
+    	    invalidans=false;
+    	    }
+    	    
+    	    currentPlayer.setPlayerPosition(row, col);
+	        board.repaint();
+	        String targetKey = row+","+col;
+	        Tile temp = board.tilesMap.get(targetKey);
+	        System.out.println("You are currently on "+temp.getParent());
             }
     	    // Move to the next player
     	    //currentPlayerIndex = (currentPlayerIndex+1) % players.length;
