@@ -5,12 +5,17 @@ public class ActionCard extends Card {
         super(name, cost, singleUse);
     }
 
-    public void doAction(Card card, Player player) {
-        System.out.println("PERFORM THE ACTION OF THE ACTION CARD");
-        System.out.println(player.getColor());
+    public void doAction(Player player) {
+        if (!this.isPlayable()) {
+            System.out.println("This card is not playable");
+            return;
+        }
 
         CardActionHandler handler = new CardActionHandler();
-        handler.getAction(card);
+        handler.getAction(this.name);
+        this.removeCard();
+
+        System.out.println("Player is still empty");
     }
 
     public boolean isPlayable() {

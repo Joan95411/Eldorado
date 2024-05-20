@@ -25,6 +25,6 @@ public abstract class Card {
 			removedCard = true;
 			System.out.println("Card removed!");
 		}
-
 	}
+
 }

@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Random;
 
 public class Player {
+    private static int lastAssignedId = 0;
+
 	public int id;
     private int currentRow;
     private int currentCol;
@@ -14,30 +16,33 @@ public class Player {
     private List<Card> wholeDeck = new ArrayList<>();
     private List<Card> currentDeck;
 
-    public Player(int id,Color selectedColor) {
-        this.id=id;
-        Color originalColor = selectedColor; // Original red color
-        float[] hsbValues = Color.RGBtoHSB(originalColor.getRed(), originalColor.getGreen(), originalColor.getBlue(), null);
-        Color adjustedColor = Color.getHSBColor(hsbValues[0], hsbValues[1], hsbValues[2] * 0.8f); // Darken the color by reducing brightness
-        this.color=adjustedColor;
+    public Player(Color selectedColor) {
+        this.id = ++lastAssignedId;
+        this.color=selectedColor;
+
+        float[] hsbValues = Color.RGBtoHSB(selectedColor.getRed(), selectedColor.getGreen(), selectedColor.getBlue(), null);
+        this.color= Color.getHSBColor(hsbValues[0], hsbValues[1], hsbValues[2] * 0.8f);
         int blueCount = 1;
         int greenCount = 3;
         int yellowCount = 4;
 
         Random random = new Random();
-//        for (int i = 0; i < blueCount; i++) {
-//        	wholeDeck.add(new Card(i, Color.BLUE, 0.5, 1));
-//        }
 
         // Add green cards
-//        for (int i = 0; i < greenCount; i++) {
-//        	wholeDeck.add(new Card(i+1, Color.GREEN, 0.5, 1));
-//        }
+        for (int i = 0; i < blueCount; i++) {
+            wholeDeck.add(new ExpeditionCard("Sailor", 0, false, 1, CardType.BLUE));
+        }
+
+        // Add green cards
+        for (int i = 0; i < greenCount; i++) {
+        	wholeDeck.add(new ExpeditionCard("Explorer", 0, false, 1, CardType.GREEN));
+        }
 
         // Add yellow cards
-//        for (int i = 0; i < yellowCount; i++) {
-//        	wholeDeck.add(new Card(i+4, Color.YELLOW, 1, 1));
-//        }
+        for (int i = 0; i < yellowCount; i++) {
+            wholeDeck.add(new ExpeditionCard("Traveller", 0, false, 1, CardType.YELLOW));
+        }
+
         Collections.shuffle(wholeDeck, random);
     }
 
@@ -121,9 +126,6 @@ public class Player {
         int[] yPoints = {centerY - size / 4, centerY - size / 4, centerY - size / 2, centerY - size / 4, centerY - size / 4, centerY, centerY + size / 4, centerY - size / 4};
         g2d.setColor(color);
         g2d.fillPolygon(xPoints, yPoints, 8);
-        
     }
-	
-    
 }
 

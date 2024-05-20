@@ -1,17 +1,14 @@
 package org.set;
 
 public class CardActionHandler {
-    public void getAction(Card actionCard) {
-        switch (actionCard.name) {
+    public void getAction(String name) {
+        switch (name) {
             case "Transmitter":
                 System.out.println("Transmitter action performed");
 
                 // Logic to take any expedition card without paying for it
                 // Add the selected card to the discard pile
                 // Remove the Transmitter card from the game
-
-                // Remove this card from the game
-                actionCard.removedCard = true;
 
                 return;
 
@@ -36,9 +33,6 @@ public class CardActionHandler {
                 // Logic to draw 3 cards
                 // player.drawCards(3);
 
-                // Remove this card from the game
-                actionCard.removedCard = true;
-
                 return;
 
             case "Travel Log":
@@ -50,7 +44,7 @@ public class CardActionHandler {
                 return;
 
             default:
-                throw new IllegalStateException("Unexpected value: " + actionCard.name);
+                throw new IllegalStateException("Unexpected value: " + name);
         }
     }
 }
