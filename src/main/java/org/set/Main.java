@@ -5,6 +5,7 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
+    	System.out.println("Let the game begin!");
         JFrame frame = new JFrame("Hexagon Game Board");
         HexagonGameBoard board = new HexagonGameBoard(15, 35, 40);
         frame.add(board);
