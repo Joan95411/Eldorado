@@ -4,7 +4,7 @@
 - Bas Abbink [(b.b.l.abbink@student.utwente.nl)](b.b.l.abbink@student.utwente.nl)
 - Simon Balk [(s.balk@student.utwente.nl)](s.balk@student.utwente.nl)
 - Bas van de Weerd [(b.m.vandeweerd@student.utwente.nl)](b.m.vandeweerd@student.utwente.nl)
-- Joan Zhoa [(x.zhao-5@student.utwente.nl)](x.zhao-5@student.utwente.nl)
+- Joan Zhao [(x.zhao-5@student.utwente.nl)](x.zhao-5@student.utwente.nl)
 
 ## Coverage report
 1. Clone the code 
