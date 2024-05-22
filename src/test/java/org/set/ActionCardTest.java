@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ActionCardTest {
     private static ArrayList<ActionCard> cards = new ArrayList<>();
-
+    private static Player player = new Player(Color.BLACK);
     @BeforeAll
     public static void createActionCards() {
         cards.add(new ActionCard("Transmitter", 4, true));
@@ -28,10 +28,10 @@ public class ActionCardTest {
             if(card.singleUse == false) {
                 assertEquals(card.isPlayable(), true);
 
-                card.doAction(new Player(Color.BLACK));
+                card.doAction(player);
                 assertEquals(card.isPlayable(), true);
 
-                card.doAction(new Player(Color.BLACK));
+                card.doAction(player);
                 assertEquals(card.isPlayable(), true);
             }
         }
@@ -45,15 +45,27 @@ public class ActionCardTest {
             if(card.singleUse) {
                 assertEquals(card.isPlayable(), true);
 
-                card.doAction(new Player(Color.BLACK));
+                card.doAction(player);
                 assertEquals(card.isPlayable(), false);
 
                 try {
-                    card.doAction(new Player(Color.BLACK));
+                    card.doAction(player);
                 } catch (Exception e) {
                     assertEquals("This card is not playable", e.getMessage());
                 }
             }
+        }
+    }
+
+    @Test
+    public void doActionForNonExistingActionCard() {
+        String cardName = "Non Existing";
+        ActionCard card = new ActionCard(cardName, 5, false);
+
+        try {
+            card.doAction(player);
+        } catch (Exception e) {
+            assertEquals("Unexpected value: " + cardName, e.getMessage());
         }
     }
 }
