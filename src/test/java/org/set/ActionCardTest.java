@@ -2,14 +2,14 @@ package org.set;
 
 import java.awt.*;
 import java.util.ArrayList;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ActionCardTest {
-    private ArrayList<ActionCard> cards = new ArrayList<>();
-
-    @Test
-    public void createActionCards() {
+    private static ArrayList<ActionCard> cards = new ArrayList<>();
+    private static Player player = new Player(Color.BLACK);
+    @BeforeAll
+    public static void createActionCards() {
         cards.add(new ActionCard("Transmitter", 4, true));
         cards.add(new ActionCard("Cartographer", 4, false));
         cards.add(new ActionCard("Scientist", 4, false));
@@ -21,20 +21,51 @@ public class ActionCardTest {
     }
 
     @Test
-    public void actionCardDoAction() {
-        ActionCard card = new ActionCard("Transmitter", 4, false);
-        assertEquals(card.isPlayable(), true);
+    public void actionCardDoActions() {
+        for (int i = 0; i < cards.size(); i++) {
+            ActionCard card = cards.get(i);
 
-        card.doAction(new Player(Color.BLACK));
-        assertEquals(card.isPlayable(), true);
+            if(card.singleUse == false) {
+                assertEquals(card.isPlayable(), true);
+
+                card.doAction(player);
+                assertEquals(card.isPlayable(), true);
+
+                card.doAction(player);
+                assertEquals(card.isPlayable(), true);
+            }
+        }
     }
 
     @Test
-    public void actionCardSingleUseDoAction() {
-        ActionCard card = new ActionCard("Transmitter", 4, true);
-        assertEquals(card.isPlayable(), true);
+    public void actionCardSingleUseDoActions() {
+        for (int i = 0; i < cards.size(); i++) {
+            ActionCard card = cards.get(i);
 
-        card.doAction(new Player(Color.BLACK));
-        assertEquals(card.isPlayable(), false);
+            if(card.singleUse) {
+                assertEquals(card.isPlayable(), true);
+
+                card.doAction(player);
+                assertEquals(card.isPlayable(), false);
+
+                try {
+                    card.doAction(player);
+                } catch (Exception e) {
+                    assertEquals("This card is not playable", e.getMessage());
+                }
+            }
+        }
+    }
+
+    @Test
+    public void doActionForNonExistingActionCard() {
+        String cardName = "Non Existing";
+        ActionCard card = new ActionCard(cardName, 5, false);
+
+        try {
+            card.doAction(player);
+        } catch (Exception e) {
+            assertEquals("Unexpected value: " + cardName, e.getMessage());
+        }
     }
 }
