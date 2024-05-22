@@ -1,9 +1,14 @@
 package org.set.cards;
 
+import org.set.Player;
+import org.set.cards.action.ActionCardType;
+
 public class CardActionHandler {
-    public void getAction(String name) {
-        switch (name) {
-            case "Transmitter":
+    public void doAction(Card card, Player player) {
+        ActionCardType actionCardType = ActionCardType.valueOf(card.name);
+
+        switch (actionCardType) {
+            case Transmitter:
                 System.out.println("Transmitter action performed");
 
                 // Logic to take any expedition card without paying for it
@@ -12,7 +17,7 @@ public class CardActionHandler {
 
                 return;
 
-            case "Cartographer":
+            case Cartographer:
                 System.out.println("Cartographer action performed");
 
                 // Logic to draw 2 cards from the draw pile and play them this turn
@@ -20,14 +25,14 @@ public class CardActionHandler {
 
                 return;
 
-            case "Scientist":
+            case Scientist:
                 System.out.println("Scientist action performed");
 
                 // Logic for scientist
 
                 return;
 
-            case "Compass":
+            case Compass:
                 System.out.println("Compass action performed");
 
                 // Logic to draw 3 cards
@@ -35,16 +40,16 @@ public class CardActionHandler {
 
                 return;
 
-            case "Travel Log":
+            case Travel_Log:
                 System.out.println("Travel Log action performed");
                 return;
 
-            case "Native":
+            case Native:
                 System.out.println("Native action performed");
                 return;
 
             default:
-                throw new IllegalStateException("Unexpected value: " + name);
+                throw new IllegalStateException("Unexpected value: " + actionCardType);
         }
     }
 }

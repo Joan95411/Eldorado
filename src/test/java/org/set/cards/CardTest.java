@@ -1,6 +1,10 @@
 package org.set.cards;
 
 import org.junit.jupiter.api.Test;
+import org.set.cards.action.ActionCard;
+import org.set.cards.action.ActionCardType;
+import org.set.cards.expedition.ExpeditionCard;
+import org.set.cards.expedition.ExpeditionCardType;
 
 import java.util.Arrays;
 
@@ -11,8 +15,8 @@ public class CardTest {
     public void doubleRemoveSingleUseCard() {
         String expectedError = "This card is already removed and cannot be removed once again.";
 
-        Card actionCard = new ActionCard("Name", 2, true);
-        Card expeditionCard = new ExpeditionCard("Name", CardType.GREEN, 2, true, 2);
+        Card actionCard = new ActionCard(ActionCardType.Native, 2, true);
+        Card expeditionCard = new ExpeditionCard(ExpeditionCardType.Traveller, 2, true, 2);
 
         try {
             actionCard.removeCard();
@@ -33,8 +37,8 @@ public class CardTest {
     public void removeNonSingleUseCard() {
         String expectedError = "This is not a single use card, so this card cannot be removed.";
 
-        Card actionCard = new ActionCard("Name", 2, false);
-        Card expeditionCard = new ExpeditionCard("Name", CardType.GREEN, 2, false, 2);
+        Card actionCard = new ActionCard(ActionCardType.Scientist, 2, false);
+        Card expeditionCard = new ExpeditionCard(ExpeditionCardType.Traveller, 2, false, 2);
 
         try {
             actionCard.removeCard();
