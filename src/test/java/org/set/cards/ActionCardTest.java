@@ -1,9 +1,11 @@
-package org.set;
+package org.set.cards;
 
 import java.awt.*;
 import java.util.ArrayList;
 import org.junit.jupiter.api.*;
-import org.set.cards.ActionCard;
+import org.set.Player;
+import org.set.cards.action.ActionCard;
+import org.set.cards.action.ActionCardType;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -12,12 +14,12 @@ public class ActionCardTest {
     private static Player player = new Player(Color.BLACK);
     @BeforeAll
     public static void createActionCards() {
-        cards.add(new ActionCard("Transmitter", 4, true));
-        cards.add(new ActionCard("Cartographer", 4, false));
-        cards.add(new ActionCard("Scientist", 4, false));
-        cards.add(new ActionCard("Compass", 2, true));
-        cards.add(new ActionCard("Travel Log", 3, true));
-        cards.add(new ActionCard("Native", 5, false));
+        cards.add(new ActionCard(ActionCardType.Transmitter, 4, true));
+        cards.add(new ActionCard(ActionCardType.Cartographer, 4, false));
+        cards.add(new ActionCard(ActionCardType.Scientist, 4, false));
+        cards.add(new ActionCard(ActionCardType.Compass, 2, true));
+        cards.add(new ActionCard(ActionCardType.Travel_Log, 3, true));
+        cards.add(new ActionCard(ActionCardType.Native, 5, false));
 
         assertEquals(cards.size(), 6);
     }
@@ -56,18 +58,6 @@ public class ActionCardTest {
                     assertEquals("This card is not playable", e.getMessage());
                 }
             }
-        }
-    }
-
-    @Test
-    public void doActionForNonExistingActionCard() {
-        String cardName = "Non Existing";
-        ActionCard card = new ActionCard(cardName, 5, false);
-
-        try {
-            card.doAction(player);
-        } catch (Exception e) {
-            assertEquals("Unexpected value: " + cardName, e.getMessage());
         }
     }
 }

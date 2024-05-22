@@ -1,8 +1,8 @@
 package org.set;
 
 import org.set.cards.Card;
-import org.set.cards.CardType;
-import org.set.cards.ExpeditionCard;
+import org.set.cards.expedition.ExpeditionCard;
+import org.set.cards.expedition.ExpeditionCardType;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -34,17 +34,17 @@ public class Player {
 
         // Add green cards
         for (int i = 0; i < blueCount; i++) {
-            wholeDeck.add(new ExpeditionCard("Sailor", CardType.BLUE, 0, false, 1));
+            wholeDeck.add(new ExpeditionCard(ExpeditionCardType.Sailor, 0, false, 1));
         }
 
         // Add green cards
         for (int i = 0; i < greenCount; i++) {
-        	wholeDeck.add(new ExpeditionCard("Explorer", CardType.GREEN,0, false, 1));
+        	wholeDeck.add(new ExpeditionCard(ExpeditionCardType.Explorer,0, false, 1));
         }
 
         // Add yellow cards
         for (int i = 0; i < yellowCount; i++) {
-            wholeDeck.add(new ExpeditionCard("Traveller", CardType.YELLOW, 0, false, 1));
+            wholeDeck.add(new ExpeditionCard(ExpeditionCardType.Traveller, 0, false, 1));
         }
 
         Collections.shuffle(wholeDeck, random);
