@@ -18,13 +18,11 @@ public abstract class Card {
 
 	public void removeCard() {
 		if (!singleUse) {
-			System.out.println("This is not a single use card, so this card cannot be removed.");
+			throw new IllegalArgumentException("This is not a single use card, so this card cannot be removed.");
 		} else if (removedCard) {
-			System.out.println("This card is already removed and cannot be removed once again.");
+			throw new IllegalStateException("This card is already removed and cannot be removed once again.");
 		} else {
 			removedCard = true;
-			System.out.println("Card removed!");
 		}
 	}
-
 }

@@ -27,6 +27,9 @@ public class ActionCardTest {
 
         card.doAction(new Player(Color.BLACK));
         assertEquals(card.isPlayable(), true);
+
+        card.doAction(new Player(Color.BLACK));
+        assertEquals(card.isPlayable(), true);
     }
 
     @Test
@@ -36,5 +39,11 @@ public class ActionCardTest {
 
         card.doAction(new Player(Color.BLACK));
         assertEquals(card.isPlayable(), false);
+
+        try {
+            card.doAction(new Player(Color.BLACK));
+        } catch (Exception e) {
+            assertEquals("This card is not playable", e.getMessage());
+        }
     }
 }
