@@ -1,13 +1,16 @@
 package org.set;
 
-import javax.swing.*;
+import org.set.cards.ActionCard;
+import org.set.cards.Card;
+import org.set.cards.CardType;
+import org.set.cards.ExpeditionCard;
+
 import java.awt.*;
-import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
         Card[] cards = {
-            new ExpeditionCard("Explorer",CardType.GREEN, 0, false, 1),
+            new ExpeditionCard("Explorer", CardType.GREEN, 0, false, 1),
             new ExpeditionCard("Scout", CardType.GREEN,1, false, 2),
             new ExpeditionCard("Trail????", CardType.GREEN,3, false, 3),
             new ExpeditionCard("Pioneer", CardType.GREEN,5, false, 5),

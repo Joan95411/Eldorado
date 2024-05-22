@@ -1,8 +1,4 @@
-package org.set;
-
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics2D;
+package org.set.cards;
 
 public abstract class Card {
 	public String name;

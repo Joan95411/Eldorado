@@ -2,6 +2,10 @@ package org.set;
 
 import java.util.ArrayList;
 import org.junit.jupiter.api.Test;
+import org.set.cards.Card;
+import org.set.cards.CardType;
+import org.set.cards.ExpeditionCard;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ExpeditionCardTest {

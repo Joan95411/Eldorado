@@ -1,4 +1,4 @@
-package org.set;
+package org.set.cards;
 
 public enum CardType {
     GREEN,

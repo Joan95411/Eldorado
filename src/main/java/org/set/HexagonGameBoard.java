@@ -3,6 +3,8 @@ package org.set;
 import io.github.cdimascio.dotenv.Dotenv;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.set.cards.Card;
+
 import java.awt.*;
 import javax.swing.*;
 import java.io.File;

@@ -1,5 +1,9 @@
 package org.set;
 
+import org.set.cards.Card;
+import org.set.cards.CardType;
+import org.set.cards.ExpeditionCard;
+
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -30,7 +34,7 @@ public class Player {
 
         // Add green cards
         for (int i = 0; i < blueCount; i++) {
-            wholeDeck.add(new ExpeditionCard("Sailor",CardType.BLUE, 0, false, 1));
+            wholeDeck.add(new ExpeditionCard("Sailor", CardType.BLUE, 0, false, 1));
         }
 
         // Add green cards

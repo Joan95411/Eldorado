@@ -3,6 +3,8 @@ package org.set;
 import java.awt.*;
 import java.util.ArrayList;
 import org.junit.jupiter.api.*;
+import org.set.cards.ActionCard;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ActionCardTest {

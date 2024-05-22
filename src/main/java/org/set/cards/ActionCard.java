@@ -1,4 +1,6 @@
-package org.set;
+package org.set.cards;
+
+import org.set.Player;
 
 public class ActionCard extends Card {
     public ActionCard(String name, int cost, boolean singleUse) {
