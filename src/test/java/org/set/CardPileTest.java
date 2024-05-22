@@ -31,6 +31,8 @@ public class CardPileTest {
 
     @Test
     public void TestDiscard(){
+        assertNotEquals(cardPile.getDiscardPile(), null);
+        assertNotEquals(cardPile.getDrawPile(), null);
         assertFalse(cardPile.getDiscardPile().contains(blueCard));
         assertFalse(cardPile.getDrawPile().contains(blueCard));
         cardPile.discard(blueCard);
@@ -61,6 +63,9 @@ public class CardPileTest {
         for (int i = 0; i < 3; i++){
             drawnCards.add(cardPile.draw());
         }
-        assertNotEquals(discardPile, drawnCards);
+        assertTrue(drawnCards.contains(greenCard));
+        assertTrue(drawnCards.contains(blueCard));
+        assertTrue(drawnCards.contains(yellowCard));
+        assertNotEquals(discardPile.toArray(), drawnCards.toArray());
     }
 }
