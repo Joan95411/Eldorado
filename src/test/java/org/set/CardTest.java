@@ -12,7 +12,7 @@ public class CardTest {
         String expectedError = "This card is already removed and cannot be removed once again.";
 
         Card actionCard = new ActionCard("Name", 2, true);
-        Card expeditionCard = new ExpeditionCard("Name", 2, true, 2, CardType.GREEN);
+        Card expeditionCard = new ExpeditionCard("Name", CardType.GREEN, 2, true, 2);
 
         try {
             actionCard.removeCard();
@@ -34,7 +34,7 @@ public class CardTest {
         String expectedError = "This is not a single use card, so this card cannot be removed.";
 
         Card actionCard = new ActionCard("Name", 2, false);
-        Card expeditionCard = new ExpeditionCard("Name", 2, false, 2, CardType.GREEN);
+        Card expeditionCard = new ExpeditionCard("Name", CardType.GREEN, 2, false, 2);
 
         try {
             actionCard.removeCard();
@@ -53,7 +53,7 @@ public class CardTest {
 
     @Test
     public void cardTypes() {
-        String[] types = {"GREEN", "YELLOW", "BLUE", "JOKER"};
+        String[] types = {"GREEN", "YELLOW", "BLUE", "PURPLE", "JOKER"};
         for (CardType cardType : CardType.values()) {
             assertTrue(Arrays.asList(types).contains(cardType.toString()));
         }

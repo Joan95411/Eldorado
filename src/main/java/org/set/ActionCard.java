@@ -2,7 +2,7 @@ package org.set;
 
 public class ActionCard extends Card {
     public ActionCard(String name, int cost, boolean singleUse) {
-        super(name, cost, singleUse);
+        super(name, CardType.PURPLE, cost, singleUse);
     }
 
     public void doAction(Player player) {

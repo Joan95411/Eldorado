@@ -30,17 +30,17 @@ public class Player {
 
         // Add green cards
         for (int i = 0; i < blueCount; i++) {
-            wholeDeck.add(new ExpeditionCard("Sailor", 0, false, 1, CardType.BLUE));
+            wholeDeck.add(new ExpeditionCard("Sailor",CardType.BLUE, 0, false, 1));
         }
 
         // Add green cards
         for (int i = 0; i < greenCount; i++) {
-        	wholeDeck.add(new ExpeditionCard("Explorer", 0, false, 1, CardType.GREEN));
+        	wholeDeck.add(new ExpeditionCard("Explorer", CardType.GREEN,0, false, 1));
         }
 
         // Add yellow cards
         for (int i = 0; i < yellowCount; i++) {
-            wholeDeck.add(new ExpeditionCard("Traveller", 0, false, 1, CardType.YELLOW));
+            wholeDeck.add(new ExpeditionCard("Traveller", CardType.YELLOW, 0, false, 1));
         }
 
         Collections.shuffle(wholeDeck, random);

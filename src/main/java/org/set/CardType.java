@@ -4,5 +4,6 @@ public enum CardType {
     GREEN,
     YELLOW,
     BLUE,
+    PURPLE,
     JOKER
 }

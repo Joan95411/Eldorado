@@ -6,12 +6,14 @@ import java.awt.Graphics2D;
 
 public abstract class Card {
 	public String name;
+	public CardType cardType;
 	public int cost;
 	public boolean singleUse;
 	public boolean removedCard = false;
 
-	public Card(String name, int cost, boolean singleUse) {
+	public Card(String name, CardType cardType, int cost, boolean singleUse) {
 		this.name = name;
+		this.cardType = cardType;
 		this.cost = cost;
 		this.singleUse = singleUse;
 	}
