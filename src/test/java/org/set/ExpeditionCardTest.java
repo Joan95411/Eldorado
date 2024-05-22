@@ -32,9 +32,13 @@ public class ExpeditionCardTest {
         assertEquals(card.singleUse, false);
         assertEquals(card.removedCard, false);
 
-        card.removeCard();
-        assertEquals(card.singleUse, false);
-        assertEquals(card.removedCard, false);
+        try {
+            card.removeCard();
+        } catch (Exception e) {
+            assertEquals("This is not a single use card, so this card cannot be removed.", e.getMessage());
+            assertEquals(card.singleUse, false);
+            assertEquals(card.removedCard, false);
+        }
     }
 
     @Test
