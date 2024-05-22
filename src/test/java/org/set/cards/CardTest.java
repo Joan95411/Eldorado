@@ -1,10 +1,6 @@
-package org.set;
+package org.set.cards;
 
 import org.junit.jupiter.api.Test;
-import org.set.cards.ActionCard;
-import org.set.cards.Card;
-import org.set.cards.CardType;
-import org.set.cards.ExpeditionCard;
 
 import java.util.Arrays;
 
