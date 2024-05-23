@@ -75,8 +75,10 @@ sigridci:
       junit: sigrid-ci-output/sigridci-junit-format-report.xml
     expire_in: 1 week
     when: always
-  rules:
-    - if: $CI_MERGE_REQUEST_ID
+  tags:
+  - sigrid_runner
+  # rules:
+    # - if: $CI_MERGE_REQUEST_ID
 
 sigridpublish:
   stage: report
@@ -90,6 +92,8 @@ sigridpublish:
     - sigrid-ci-output/*
     expire_in: 1 week
     when: always
+  tags:
+  - sigrid_runner
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
 
