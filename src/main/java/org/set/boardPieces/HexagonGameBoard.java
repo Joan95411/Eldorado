@@ -1,5 +1,4 @@
 package org.set.boardPieces;
-import org.json.JSONException;
 import org.json.JSONObject;
 import org.set.Player;
 
@@ -8,9 +7,6 @@ import org.set.cards.Card;
 
 import java.awt.*;
 import javax.swing.*;
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -26,9 +22,7 @@ public class HexagonGameBoard extends JPanel  {
     public int hexSize;
     public int cardWidth;
     public int cardHeight;
-    public Player[] players;
-    public JSONObject tileInfo;
-    public JSONObject WinningPiece;
+    public List<Player> players;
     public Map<String, Tile> tilesMap; 
     public Map<String, boardPiece> boardPieces;
     public List<int[]> coordinateList;
@@ -66,17 +60,15 @@ public class HexagonGameBoard extends JPanel  {
     private void loadTileData() {
         Terrain terrainA = new Terrain();
         WinningPiece wpa = new WinningPiece();
-        try {
-        	String tileDataPath = dotenv.get("TILEDATA_PATH");
-            if (tileDataPath == null) tileDataPath = "src/main/java/org/set/tileData.json";
-            System.out.println(tileDataPath);
-            String tileDataJson = new String(Files.readAllBytes(new File(tileDataPath).toPath()));
-            JSONObject tileData = new JSONObject(tileDataJson);
-            tileInfo = tileData.getJSONObject("Terrain");
-            WinningPiece = tileData.getJSONObject("WinningPiece");
-            
-        } catch (IOException | JSONException e) {
-            e.printStackTrace();
+        String tileDataPath = dotenv.get("TILEDATA_PATH");
+        if (tileDataPath == null) tileDataPath = "src/main/java/org/set/boardPieces";
+        String filename="tileData.json";
+        JSONObject tileInfo = Util.readJsonData(tileDataPath, filename, "Terrain");
+        JSONObject winningPieceInfo = Util.readJsonData(tileDataPath, filename, "WinningPiece");
+
+        if (tileInfo == null || winningPieceInfo == null) {
+            System.err.println("Tile data not found or is not in the expected format.");
+            return;
         }
 
         for (int row = 0; row < numRows; row++) {
@@ -92,7 +84,7 @@ public class HexagonGameBoard extends JPanel  {
                 tile.setX(x);
                 tile.setY(y);
                 JSONObject currentTileInfo = tileInfo.optJSONObject(key); 
-                JSONObject currentWinning = WinningPiece.optJSONObject(key);
+                JSONObject currentWinning = winningPieceInfo.optJSONObject(key);
 
                 if (currentTileInfo != null) {
                 	terrainA.addTile(tile);
@@ -119,9 +111,10 @@ public class HexagonGameBoard extends JPanel  {
         boardPieces.put(terrainA.getName(),terrainA);
         boardPieces.put(wpa.getName(),wpa);
     }
+    
 
     @Override
-    protected void paintComponent(Graphics g) {
+	public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
         for (boardPiece piece : boardPieces.values()) {
@@ -129,7 +122,7 @@ public class HexagonGameBoard extends JPanel  {
         }
         
 
-        if (players != null && players.length > 0) {
+        if (players != null && players.size() > 0) {
             for (Player player : players) {
                 player.draw(g2d, player.getCurrentRow(), player.getCurrentCol(), hexSize, player.getColor());
 
@@ -151,11 +144,29 @@ public class HexagonGameBoard extends JPanel  {
         String caption = "Current Player's deck: ";
         int captionWidth = fm.stringWidth(caption);
         g2d.drawString(caption, temp.getX(), temp.getY());
+        int maxCardsPerRow = 4;
+        int cardSpacing = cardWidth / 10;
+        int totalCards = PlayerCards.size();
+        int cardsDrawn = 0;
+        for (int i = 0; i < totalCards; i++) {
+        	int row = i / maxCardsPerRow;  // Calculate the row index
+            int col = i % maxCardsPerRow;  // Calculate the column index
 
-        for (int i = 0; i < PlayerCards.size(); i++) {
-        	PlayerCards.get(i).draw(g2d,temp.getX()+captionWidth+i*(cardWidth+cardWidth/10),10,cardWidth,cardHeight);
+            int x = temp.getX() + captionWidth + col * (cardWidth + cardSpacing);
+            int y = 10 + row * (cardHeight + cardSpacing);
+
+            PlayerCards.get(i).draw(g2d, x, y, cardWidth, cardHeight);
+
+            cardsDrawn++;
+
+            // Break the loop if we've drawn all the cards
+            if (cardsDrawn >= totalCards) {
+                break;
+            }
+        	
         }
     }
+    
     public List<Terrain> getAllTerrains() {
         return boardPieces.keySet().stream()
                 .filter(key -> key.startsWith("Terrain_"))
@@ -246,7 +257,7 @@ public class HexagonGameBoard extends JPanel  {
 	    	return false;
 	    }
 
-	    if (players != null && players.length > 0) {
+	    if (players != null && players.size() > 0) {
         for (Player player : players) {
             if (player.isAtPosition(row, col)) {
                 System.out.println("Someone's already here. Choose another move!");

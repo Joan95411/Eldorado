@@ -1,15 +1,19 @@
 package org.set;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Scanner;
 
 import org.set.boardPieces.HexagonGameBoard;
 import org.set.boardPieces.Tile;
 import org.set.boardPieces.Util;
+import org.set.cards.Card;
 
 
 public class GameController {
     private HexagonGameBoard board;
-    private Player[] players;
+    private List<Player> players;
     private String GameState;
     private Scanner scanner;
     public int turnCounter;
@@ -87,21 +91,20 @@ public class GameController {
         int numPlayers = scanner.nextInt();
 
         // Create an array to store player instances
-        players = new Player[numPlayers];
+        List<Player> playersList = new ArrayList<>();
 
         // Loop through each player
         for (int i = 0; i < numPlayers; i++) {
             // Ask each player to choose a color
-            System.out.println("Player " + (i+1) + ", choose your color:");
+            System.out.println("Player " + (i + 1) + ", choose your color:");
             String color = scanner.next();
 
             // Create a new player instance with the chosen color
             Player player = new Player(Util.getColorFromString(color));
-            
-            // Add the player to the players array
-            players[i] = player;
 
-    }board.players=players;
+            // Add the player to the players list
+            playersList.add(player);
+        }board.players=players;
 
     }
     
@@ -117,9 +120,9 @@ public class GameController {
     private void PlayerDrawCards(int turn,int currentPlayerIndex) {
 
 	    System.out.println("Player " + (currentPlayerIndex+1) + " drawing cards" );
-    	Player currentPlayer = players[currentPlayerIndex];
-    	currentPlayer.drawCards(turn);
-	    board.PlayerCards=currentPlayer.getCards();
+    	Player currentPlayer = players.get(currentPlayerIndex);
+    	LinkedList<Card> drawedCards=currentPlayer.mydeck.draw(8);
+	    board.PlayerCards=drawedCards;
         board.repaint();
     }
 
@@ -136,8 +139,8 @@ public class GameController {
         int turnNumber = 0;
         while (true) {
             displayGameState();
-            for (int currentPlayerIndex = 0; currentPlayerIndex < players.length; currentPlayerIndex++) {
-            Player currentPlayer = players[currentPlayerIndex];
+            for (int currentPlayerIndex = 0; currentPlayerIndex < players.size(); currentPlayerIndex++) {
+            Player currentPlayer = players.get(currentPlayerIndex);
             System.out.println("Turn " + turnNumber + ": Player " + (currentPlayerIndex+1) + "'s turn.");
     	    PlayerDrawCards(turnNumber,currentPlayerIndex);
 
