@@ -1,4 +1,4 @@
-package org.set;
+package org.set.boardPieces;
 
 import java.awt.Color;
 import java.awt.FontMetrics;
@@ -7,40 +7,20 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-public class Blockade  {
-    private List<Tile> tiles;
+public class Blockade extends boardPiece {
+	private static int blockadeCount = 0;
     private Color color;
     private int points;
-    private static final Color[] COLOR_RANGE = {Color.GREEN, Color.YELLOW, Color.BLUE};
-    private static final int POINTS_MIN = 1;
-    private static final int POINTS_MAX = 3;
 
     public Blockade() {
-        this.tiles = new ArrayList<>();
+        super();
+        int index = ++blockadeCount;
+        this.name="Blockade_"+index;
+        this.pieceCount=5;
     }
 
-    public void addTile(Tile tile) {
-        if (tiles.size() < 5) {
-        	if (!tiles.contains(tile)) {
-                tiles.add(tile);
-                
-            } else {
-                System.out.println("Tile already exists in the blockade.");
-            }
-        } else {
-            System.out.println("Blockade already contains 5 tiles.");
-        }
-    }
-
-    // Getters and setters
-    public List<Tile> getTiles() {
-        return tiles;
-    }
-
-    public void setTiles(List<Tile> tiles) {
-        this.tiles = tiles;
-    }
     
+
     
     public void setColor(Color color) {
         this.color = color;
@@ -48,6 +28,8 @@ public class Blockade  {
     public void setPoints(int points) {
         this.points = points;
     }
+
+    @Override
     public Blockade clone(int addRow, int addCol, Map<String, Tile> tilesMap) {
     	Blockade clonedBlock = new Blockade();
         int row;
@@ -83,6 +65,9 @@ public class Blockade  {
         clonedBlock.setPoints(this.points);
         return clonedBlock;
     }
+    
+    
+    
     public void randomizeTiles() {
     	Random random = new Random();
     	int index = random.nextInt(COLOR_RANGE.length);
@@ -93,7 +78,8 @@ public class Blockade  {
     	int points = random.nextInt(POINTS_MAX - POINTS_MIN + 1) + POINTS_MIN;
     	this.points=points;
     }
-    
+
+    @Override
     public void draw(Graphics2D g2d,int size, Map<String, Tile> tilesMap){
     	int totalX = 0;
         int totalY = 0;

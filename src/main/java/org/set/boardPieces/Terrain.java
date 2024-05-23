@@ -1,8 +1,7 @@
-package org.set;
+package org.set.boardPieces;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -11,34 +10,23 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Random;
 
-public class Terrain {
-    private List<Tile> tiles;
-    private static final Color[] COLOR_RANGE = {Color.GREEN, Color.YELLOW, Color.BLUE};
-    private static final int POINTS_MIN = 1;
-    private static final int POINTS_MAX = 3;
-    private static final double GREEN_PROBABILITY = 0.4; 
+public class Terrain extends boardPiece {
+	private static int terrainCount = 0;
+    private static final Color[] SPECIAL_COLOR_RANGE= {Color.GRAY,Color.RED,Color.BLACK};
+    private static final double GREEN_PROBABILITY = 0.3; 
+    private static final double specialColorProbability = 0.1; 
+    
 
     public Terrain() {
-        this.tiles = new ArrayList<>();
+    	super();
+        int index = ++terrainCount;
+        this.name="Terrain_"+index;
+        this.pieceCount=37;
     }
 
-    public void addTile(Tile tile) {
-        if (tiles.size() < 37) {
-            tiles.add(tile);
-        } else {
-            System.out.println("Terrain already contains 37 tiles.");
-        }
-    }
 
-    // Getters and setters
-    public List<Tile> getTiles() {
-        return tiles;
-    }
-
-    public void setTiles(List<Tile> tiles) {
-        this.tiles = tiles;
-    }
-    public void randomizeTiles() {
+      
+    public void randomizeTiles(){
         Random random = new Random();
         for (Tile tile : tiles) {
             // Randomly select color
@@ -49,6 +37,7 @@ public class Terrain {
             int points = random.nextInt(POINTS_MAX - POINTS_MIN + 1) + POINTS_MIN;
             tile.setPoints(points);
         }
+        //adjustBlueNeighbors();
     }
 
     private Color getRandomColor(Random random) {
@@ -57,11 +46,25 @@ public class Terrain {
             // Mostly green
             return Color.GREEN;
         } else {
-            // Randomly select from the color range
-            int index = random.nextInt(COLOR_RANGE.length);
-            return COLOR_RANGE[index];
+            double randSpecial = random.nextDouble();
+            
+            if (randSpecial < specialColorProbability) {
+                // Randomly select a special color with lower probability
+                int index = random.nextInt(SPECIAL_COLOR_RANGE.length);
+                return SPECIAL_COLOR_RANGE[index];
+            } else {
+                // Randomly select from the standard color range
+                int index = random.nextInt(COLOR_RANGE.length);
+                return COLOR_RANGE[index];
+            }
         }
     }
+    
+
+   
+
+    
+    @Override  
     public void draw(Graphics2D g2d,int size, Map<String, Tile> tilesMap){
     	for (Tile tile : tiles) {
     		String targetKey = tile.getRow()+","+tile.getCol();
@@ -75,8 +78,10 @@ public class Terrain {
     		int points=tile.getPoints();
     		tile.drawTile(g2d, x, y, hexSize, color, row, col,points);
     	}
+
     }
     
+    @Override  
     public Terrain clone(int addRow, int addCol, Map<String, Tile> tilesMap) {
         Terrain clonedTerrain = new Terrain();
         int row;
@@ -88,22 +93,27 @@ public class Terrain {
             }
         	else{
         		row = tile.getRow() + addRow; 
-                col = tile.getCol() + addCol+1; 	
+                col = tile.getCol() + addCol; 
+                if(col% 2 == 0){
+                	if(addRow% 2 == 0){
+                	row=row+1;}
+                	else{
+                		row=row-1;
+                	}
+                }
         	}
             
             Tile clonedTile = new Tile(row, col);
-            String targetKey = row+","+col;
+            String targetKey = row + "," + col;
             clonedTile = tilesMap.get(targetKey);
 
-            if (clonedTile != null) {
-                try {
-                    clonedTile.setColor(tile.getColor());
-                    clonedTile.setPoints(tile.getPoints());
-                    clonedTerrain.addTile(clonedTile);
-                } catch(Exception e) {
-                    e.printStackTrace();
-                    System.err.println("Tile not found for row " + row + ", col " + col);
-                }
+            try {
+                clonedTile.setColor(tile.getColor());
+                clonedTile.setPoints(tile.getPoints());
+                clonedTerrain.addTile(clonedTile);
+            } catch(Exception e) {
+            	e.printStackTrace();
+                System.err.println("Tile not found for row " + row + ", col " + col);
             }
         }
         return clonedTerrain;
@@ -145,7 +155,7 @@ public class Terrain {
         return neighbors;
     }
 
-
+    
 
     
 

@@ -1,38 +1,21 @@
-package org.set;
+package org.set.boardPieces;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
-	public class WinningPiece  {
-	    private List<Tile> tiles;
-	    
+	public class WinningPiece extends boardPiece {
+
+		private static int WinningCount = 0;
 	    
 	    public WinningPiece() {
-	        this.tiles = new ArrayList<>();
+	        super();
+	        int index = ++WinningCount;
+	        this.name="Winning_"+index;
+	        this.pieceCount=6;
 	    }
 
-	    public void addTile(Tile tile) {
-	        if (tiles.size() < 6) {
-	        	if (!tiles.contains(tile)) {
-	                tiles.add(tile);
-	            } else {
-	                System.out.println("Tile already exists in the WinningPiece.");
-	            }
-	        } else {
-	            System.out.println("Blockade already contains 6 tiles.");
-	        }
-	    }
 
-	    // Getters and setters
-	    public List<Tile> getTiles() {
-	        return tiles;
-	    }
-
-	    public void setTiles(List<Tile> tiles) {
-	        this.tiles = tiles;
-	    }
+	    @Override
 	    public WinningPiece clone(int addRow, int addCol, Map<String, Tile> tilesMap) {
 	    	WinningPiece clonedWinning = new WinningPiece();
 	        int row;
@@ -69,6 +52,9 @@ import java.util.Map;
 	        return clonedWinning;
 	    }
 	    
+	    
+
+	    @Override
 	    public void draw(Graphics2D g2d,int size, Map<String, Tile> tilesMap){
 	    	
 	    	for (Tile tile : tiles) {
@@ -91,7 +77,8 @@ import java.util.Map;
 	        
 	        
 	    }
-	    
+
+		
 	}
 
 

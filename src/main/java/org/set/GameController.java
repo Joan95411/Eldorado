@@ -2,27 +2,85 @@ package org.set;
 
 import java.util.Scanner;
 
+import org.set.boardPieces.HexagonGameBoard;
+import org.set.boardPieces.Tile;
+import org.set.boardPieces.Util;
+
 
 public class GameController {
     private HexagonGameBoard board;
     private Player[] players;
     private String GameState;
     private Scanner scanner;
-
+    public int turnCounter;
     public GameController(HexagonGameBoard board) {
         scanner = new Scanner(System.in);
         this.board=board;
         GameState="Game in process";
-        removeblock(0);
-        removeblock(1);
-        removeblock(3);
+        //setSpecialColor();
+        //removeblock(0);
+        //removeblock(1);
+        //removeblock(2);
         addPlayer();
         placePlayersOnBoard();
         PlayerMoves();
         
     }
     
-    
+    public void setSpecialColor() {
+        
+        while (true) {
+            System.out.println("Do you want to set any tile specially? (y/n)");
+            String input = scanner.nextLine();
+            
+            if (input.equalsIgnoreCase("n")) {
+                break; // Exit the loop if the user doesn't want to set any more special tiles
+            } else if (!input.equalsIgnoreCase("y")) {
+                System.out.println("Invalid input. Please enter 'y' or 'n'.");
+                continue; // Continue to the next iteration if the input is invalid
+            }
+
+            System.out.println("Tell me the tile of row,column,color,points (e.g., '2,3,red,1') or type 'done' to finish:");
+            String rowcol = scanner.nextLine();
+
+            if (rowcol.equalsIgnoreCase("done")) {
+                break; // Exit the loop if the user types 'done'
+            }
+
+            String[] tokens = rowcol.split(",");
+            if (tokens.length != 4) {
+                System.out.println("Invalid input. Please enter row, column, color, and points separated by comma.");
+                continue; // Continue to the next iteration if the input is invalid
+            }
+
+            try {
+                int row = Integer.parseInt(tokens[0]);
+                int col = Integer.parseInt(tokens[1]);
+                String color = tokens[2];
+                int points = Integer.parseInt(tokens[3]);
+                
+                if (!board.isValidPosition(row, col)) {
+                    System.out.println("Invalid position. Please enter valid coordinates.");
+                    continue; // Continue to the next iteration if the position is invalid
+                }
+                
+                Tile special = board.tilesMap.get(row + "," + col);
+                if (special == null) {
+                    System.out.println("Tile not found at the specified position.");
+                    continue; // Continue to the next iteration if the tile is not found
+                }
+                
+                special.setColor(Util.getColorFromString(color));
+                special.setPoints(points);
+                board.repaint();
+                System.out.println("Special color and points set for tile at position (" + row + "," + col + ").");
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter valid integers for row and column, and a valid color.");
+            }
+        }
+        
+    }
+
 
     public void addPlayer() {
     	System.out.println("How many players are playing?");
@@ -38,42 +96,57 @@ public class GameController {
             String color = scanner.next();
 
             // Create a new player instance with the chosen color
-            Player player;
-
-            player = new Player(board.getColorFromString(color));
+            Player player = new Player(Util.getColorFromString(color));
             
             // Add the player to the players array
             players[i] = player;
-            
+
     }board.players=players;
-        
+
     }
+    
     private void placePlayersOnBoard() {
-    	
+
 		 for (Player player : players) {
-			 
+
        player.setPlayerPosition(1+player.id, 1);
-       
+
 		 }board.repaint();
     }
     
+    private void PlayerDrawCards(int turn,int currentPlayerIndex) {
+
+	    System.out.println("Player " + (currentPlayerIndex+1) + " drawing cards" );
+    	Player currentPlayer = players[currentPlayerIndex];
+    	currentPlayer.drawCards(turn);
+	    board.PlayerCards=currentPlayer.getCards();
+        board.repaint();
+    }
+
+
+
     private void removeblock(int currentTerrainIndex){
     	System.out.println("Remove blockade");
-    	String ans = scanner.next();
+    	scanner.next();
     	board.removeBlockade(currentTerrainIndex);
     	board.repaint();
     }
+    
     public void PlayerMoves() {
-        int currentPlayerIndex = 0;
-        // Main game loop
+        int turnNumber = 0;
         while (true) {
-            // Display the game state (e.g., board, player positions)
             displayGameState();
-
+            for (int currentPlayerIndex = 0; currentPlayerIndex < players.length; currentPlayerIndex++) {
             Player currentPlayer = players[currentPlayerIndex];
-    	    System.out.println("Player " + (currentPlayerIndex+1) + "'s turn.");
-    	    System.out.println("Enter row and column for player's position (e.g., '2 3'), or type 'stop' to end the game:");
+            System.out.println("Turn " + turnNumber + ": Player " + (currentPlayerIndex+1) + "'s turn.");
+    	    PlayerDrawCards(turnNumber,currentPlayerIndex);
 
+    	    boolean invalidans=true;
+    	    int row = -1;int col = -1;
+
+    	    while(invalidans){
+    	    System.out.println("Enter row and column for player's position (e.g., '2 3'), or type 'stop' to end the game:");
+    	    System.out.print("> ");
     	    String input = scanner.nextLine();
     	    if (input.equalsIgnoreCase("stop")) {
     	        break;
@@ -82,26 +155,34 @@ public class GameController {
     	    String[] tokens = input.split("\\s+");
     	    if (tokens.length != 2) {
     	        System.out.println("Invalid input. Please enter row and column separated by space.");
-    	        continue;
+                continue;
     	    }
 
     	    try {
-    	        int row = Integer.parseInt(tokens[0]);
-    	        int col = Integer.parseInt(tokens[1]);
+    	        row = Integer.parseInt(tokens[0]);
+    	        col = Integer.parseInt(tokens[1]);
     	        if (!board.isValidPosition(row, col)) {
     	            System.out.println("Invalid position. Please enter valid coordinates.");
-    	            continue; // Continue to the next iteration of the loop
+    	            continue;
     	        }
-    	        
-    	        currentPlayer.setPlayerPosition(row, col);
-    	        board.repaint();
-    	    } catch (NumberFormatException e) {
+    	        }
+    	     catch (NumberFormatException e) {
     	        System.out.println("Invalid input. Please enter valid integers for row and column.");
+                continue;
+    	    }
+    	    invalidans=false;
     	    }
 
-    	    // Move to the next player
-    	    currentPlayerIndex = (currentPlayerIndex+1) % players.length;
+    	    currentPlayer.setPlayerPosition(row, col);
+	        board.repaint();
+	        String targetKey = row+","+col;
+	        Tile temp = board.tilesMap.get(targetKey);
+	        System.out.println("You are currently on "+temp.getParent());
+            }
 
+    	    // Move to the next player
+    	    //currentPlayerIndex = (currentPlayerIndex+1) % players.length;
+    	    turnNumber++;
             // Check for end conditions or other game logic
             if (isGameOver()) {
                 break;
@@ -130,13 +211,6 @@ public class GameController {
         // Perform any cleanup or display final results
         // Example: Display the winner or final scores
         System.out.println("Game Over!");
-        
     }
-    
-    
-    
-
-
-	
 }
 
