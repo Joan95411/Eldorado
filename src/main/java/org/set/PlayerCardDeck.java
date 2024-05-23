@@ -1,16 +1,15 @@
 package org.set;
 
-import java.util.concurrent.LinkedBlockingDeque;
 import org.set.cards.Card;
 
 import java.util.Collections;
 import java.util.LinkedList;
 
-public class CardPile {
+public class PlayerCardDeck {
     private final LinkedList<Card> drawPile;
     private final LinkedList<Card> discardPile;
 
-    public CardPile() {
+    public PlayerCardDeck() {
         drawPile = new LinkedList<>();
         discardPile = new LinkedList<>();
     }
