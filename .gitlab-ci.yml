@@ -15,48 +15,48 @@ stages: # List of stages for jobs and their order of execution
 
 build-job:
   stage: build
-  tags: 
-    - backup
+  tags:
+  - SET2024
   script:
-    - echo "Maven building started."
-    - mvn -B -DskipTests clean package
+  - echo "Maven building started."
+  - mvn -B -DskipTests clean package
   cache:
     paths:
     - "~/.m2/repository"
 
 test-implemented-tests:
   stage: test
-  tags: 
-    - backup
+  tags:
+  - SET2024
   dependencies:
   - build-job
   script:
-    - echo "Running all tests."
-    - "echo TILEDATA_PATH='src/main/java/org/set/boardPieces/tileData.json' >> .env"
-    - cat .env
-    - mvn test
+  - echo "Running all tests."
+  - "echo TILEDATA_PATH='src/main/java/org/set/boardPieces/tileData.json' >> .env"
+  - cat .env
+  - mvn test
 
 verify-job:
   stage: test
-  tags: 
-    - backup
+  tags:
+  - SET2024
   dependencies:
   - build-job
   script:
-    - echo "Running additional verification tests."
-    - "echo TILEDATA_PATH='src/main/java/org/set/boardPieces/tileData.json' >> .env"
-    - cat .env
-    - mvn verify
+  - echo "Running additional verification tests."
+  - "echo TILEDATA_PATH='src/main/java/org/set/boardPieces/tileData.json' >> .env"
+  - cat .env
+  - mvn verify
 
 package-prod:
   stage: package
-  tags: 
-    - backup
+  tags:
+  - SET2024
   script:
-    - echo "Maven package started"
-    - "echo TILEDATA_PATH='src/main/java/org/set/tileData.json' >> .env"
-    - cat .env
-    - mvn package
+  - echo "Maven package started"
+  - "echo TILEDATA_PATH='src/main/java/org/set/boardPieces/tileData.json' >> .env"
+  - cat .env
+  - mvn package
   environment: production
   rules:
   - if: $CI_COMMIT_BRANCH == "main"
@@ -76,7 +76,7 @@ sigridci:
     expire_in: 1 week
     when: always
   rules:
-    - if: $CI_MERGE_REQUEST_ID
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
 
 sigridpublish:
   stage: report
@@ -95,8 +95,8 @@ sigridpublish:
 
 sast:
   stage: test
-  tags: 
-    - backup
+  tags:
+  - SET2024
 
 include:
   - template: Security/SAST.gitlab-ci.yml
