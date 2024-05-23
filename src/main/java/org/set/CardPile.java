@@ -26,15 +26,21 @@ public class CardPile {
         discardPile.add(card);
     }
 
+    public void discard(LinkedList<Card> discardedCards){
+        //TODO: implement
+    }
+
     //return the top card of the drawPile, if it is empty shuffle discardPile to create new drawPile
-    public Card draw() throws Exception {
+    public Card draw() {
         if (drawPile.isEmpty()) {
-            if (discardPile.isEmpty()) {
-                throw new Exception("No cards to draw in discard pile.");
-            }
             shuffle();
         }
         return drawPile.remove();
+    }
+
+    public LinkedList<Card> draw(int numberOfCards){
+        //TODO: implement
+        return null;
     }
 
     public LinkedList<Card> getDrawPile() {

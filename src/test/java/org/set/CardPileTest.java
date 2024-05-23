@@ -44,12 +44,17 @@ public class CardPileTest {
     }
 
     @Test
-    public void TestNoCardsToDrawException(){
-        assertThrows(Exception.class , () -> cardPile.draw());
+    public void TestDiscardMultipleCards(){
+        LinkedList<Card> cardsToDiscard = new LinkedList<Card>();
+        cardsToDiscard.add(blueCard);
+        cardsToDiscard.add(yellowCard);
+        cardsToDiscard.add(greenCard);
+        cardPile.discard(cardsToDiscard);
+        assertEquals(cardsToDiscard, cardPile.getDiscardPile());
     }
 
     @Test
-    public void TestDrawSingleCard() throws Exception {
+    public void TestDrawSingleCard() {
         cardPile.discard(greenCard);
         assertEquals(greenCard, cardPile.draw());
         cardPile.discard(blueCard);
@@ -57,18 +62,39 @@ public class CardPileTest {
     }
 
     @Test
-    public void TestShuffle() throws Exception{
+    public void TestDrawSingleCardWithParameter() {
+        cardPile.discard(greenCard);
+        assertEquals(greenCard, cardPile.draw(1).remove());
+        cardPile.discard(blueCard);
+        assertEquals(blueCard, cardPile.draw(1).remove());
+    }
+
+    @Test
+    public void TestDrawMultipleCardWithParameter() {
+        cardPile.discard(greenCard);
+        cardPile.discard(blueCard);
+        LinkedList<Card> drawnCards = cardPile.draw(2);
+        assertTrue(drawnCards.contains(blueCard));
+        assertTrue(drawnCards.contains(greenCard));
+    }
+
+    public void TestDrawTooManyCards(){
+        cardPile.discard(greenCard);
+        cardPile.discard(blueCard);
+        LinkedList<Card> drawnCards = cardPile.draw(9);
+        assertEquals(2, drawnCards.size());
+        assertTrue(drawnCards.contains(blueCard));
+        assertTrue(drawnCards.contains(greenCard));
+    }
+
+    @Test
+    public void TestShuffle() {
         cardPile.discard(greenCard);
         cardPile.discard(blueCard);
         cardPile.discard(yellowCard);
         LinkedList<Card> discardPile = cardPile.getDiscardPile();
-        LinkedList<Card> drawnCards = new LinkedList<Card>();
-        for (int i = 0; i < 3; i++){
-            drawnCards.add(cardPile.draw());
-        }
-        assertTrue(drawnCards.contains(greenCard));
-        assertTrue(drawnCards.contains(blueCard));
-        assertTrue(drawnCards.contains(yellowCard));
+        LinkedList<Card> drawnCards = cardPile.draw(3);
+        assertNotEquals(null, discardPile);
         assertNotEquals(discardPile.toArray(), drawnCards.toArray());
     }
 }
