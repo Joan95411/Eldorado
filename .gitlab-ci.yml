@@ -76,7 +76,7 @@ sigridci:
     expire_in: 1 week
     when: always
   tags:
-  - sigrid_runner
+  - backup
   # rules:
     # - if: $CI_MERGE_REQUEST_ID
 
@@ -93,7 +93,7 @@ sigridpublish:
     expire_in: 1 week
     when: always
   tags:
-  - sigrid_runner
+  - backup
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
 
