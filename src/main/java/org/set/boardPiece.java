@@ -1,5 +1,7 @@
 package org.set;
 
+import org.set.boardPieces.Tile;
+
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.*;

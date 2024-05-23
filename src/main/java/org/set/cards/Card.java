@@ -3,7 +3,9 @@ package org.set.cards;
 import org.set.cards.action.ActionCardType;
 import org.set.cards.expedition.ExpeditionCardType;
 
+import java.awt.*;
 import java.util.Arrays;
+import org.set.boardPieces.Util;
 
 public abstract class Card {
 	public String name;
@@ -42,5 +44,20 @@ public abstract class Card {
 		} else {
 			removedCard = true;
 		}
+	}
+
+	public void draw(Graphics2D g2d, int x, int y, int width, int height) {
+		Color color = Util.getColorFromString(cardType.toString());
+		Color transparentColor = new Color(color.getRed(), color.getGreen(), color.getBlue(), 100);
+		g2d.setColor(transparentColor);
+		g2d.fillRect(x, y, width, height);
+		g2d.setColor(Color.BLACK);
+		g2d.drawRect(x, y, width, height);
+		int fontSize = 15; // Adjust as needed
+		Font font = new Font("Arial", Font.BOLD, fontSize);
+		g2d.setFont(font);
+		g2d.drawString("Cost: "+cost, x+5, y+15);
+		//g2d.drawString("Index: "+id, x+5, y+(height-20)/2);
+		//g2d.drawString("Worth: "+worthValue, x+5, y+height-5);
 	}
 }

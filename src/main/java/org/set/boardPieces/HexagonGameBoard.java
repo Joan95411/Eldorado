@@ -1,18 +1,16 @@
 package org.set.boardPieces;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.set.Card;
 import org.set.Player;
 
 import io.github.cdimascio.dotenv.Dotenv;
-
+import org.set.cards.Card;
 
 import java.awt.*;
 import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -71,6 +69,7 @@ public class HexagonGameBoard extends JPanel  {
         try {
         	String tileDataPath = dotenv.get("TILEDATA_PATH");
             if (tileDataPath == null) tileDataPath = "src/main/java/org/set/tileData.json";
+            System.out.println(tileDataPath);
             String tileDataJson = new String(Files.readAllBytes(new File(tileDataPath).toPath()));
             JSONObject tileData = new JSONObject(tileDataJson);
             tileInfo = tileData.getJSONObject("Terrain");
@@ -176,9 +175,7 @@ public class HexagonGameBoard extends JPanel  {
                 .collect(Collectors.toList());
     }
 
-
-
-    public void addTerrain(int addRow, int addCol,Terrain terrainA){
+    public void addTerrain(int addRow, int addCol, Terrain terrainA){
     	List<WinningPiece> WP=getAllWinningPieces();
     	addWinningPiece(addRow, addCol, WP.get(WP.size() - 1));
         Terrain terrainB = terrainA.clone(addRow, addCol,tilesMap);

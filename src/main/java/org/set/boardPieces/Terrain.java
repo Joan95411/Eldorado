@@ -104,8 +104,9 @@ public class Terrain extends boardPiece {
         	}
             
             Tile clonedTile = new Tile(row, col);
-            String targetKey = row+","+col;
+            String targetKey = row + "," + col;
             clonedTile = tilesMap.get(targetKey);
+
             try {
                 clonedTile.setColor(tile.getColor());
                 clonedTile.setPoints(tile.getPoints());
