@@ -22,7 +22,7 @@ public class HexagonGameBoard extends JPanel  {
     public int hexSize;
     public int cardWidth;
     public int cardHeight;
-    public Player[] players;
+    public List<Player> players;
     public Map<String, Tile> tilesMap; 
     public Map<String, boardPiece> boardPieces;
     public List<int[]> coordinateList;
@@ -114,7 +114,7 @@ public class HexagonGameBoard extends JPanel  {
     
 
     @Override
-    protected void paintComponent(Graphics g) {
+	public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
         for (boardPiece piece : boardPieces.values()) {
@@ -122,7 +122,7 @@ public class HexagonGameBoard extends JPanel  {
         }
         
 
-        if (players != null && players.length > 0) {
+        if (players != null && players.size() > 0) {
             for (Player player : players) {
                 player.draw(g2d, player.getCurrentRow(), player.getCurrentCol(), hexSize, player.getColor());
 
@@ -257,7 +257,7 @@ public class HexagonGameBoard extends JPanel  {
 	    	return false;
 	    }
 
-	    if (players != null && players.length > 0) {
+	    if (players != null && players.size() > 0) {
         for (Player player : players) {
             if (player.isAtPosition(row, col)) {
                 System.out.println("Someone's already here. Choose another move!");
