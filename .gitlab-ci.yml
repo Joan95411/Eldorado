@@ -15,7 +15,8 @@ stages: # List of stages for jobs and their order of execution
 
 build-job:
   stage: build
-  tags: ['SET2024', 'backup', 'rpi']
+  tags: 
+    - backup
   script:
     - echo "Maven building started."
     - mvn -B -DskipTests clean package
@@ -25,7 +26,8 @@ build-job:
 
 test-implemented-tests:
   stage: test
-  tags: ['SET2024', 'backup', 'rpi']
+  tags: 
+    - backup
   dependencies:
   - build-job
   script:
@@ -36,7 +38,8 @@ test-implemented-tests:
 
 verify-job:
   stage: test
-  tags: ['SET2024', 'backup', 'rpi']
+  tags: 
+    - backup
   dependencies:
   - build-job
   script:
@@ -47,7 +50,8 @@ verify-job:
 
 package-prod:
   stage: package
-  tags: ['SET2024', 'backup', 'rpi']
+  tags: 
+    - backup
   script:
   - echo "Maven package started"
   - mvn package
