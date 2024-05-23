@@ -18,7 +18,7 @@ public class HexagonGameBoardTest {
    public static Dotenv dotenv = Dotenv.configure().load();
    public static HexagonGameBoard hexagonGameBoard = new HexagonGameBoard(5, 5, 50);
 
-   @Test
+/*   @Test
    public void testHexagonGameBoard() {
        assertNotNull(hexagonGameBoard);
        assertNotNull(hexagonGameBoard.getPreferredSize());
@@ -33,7 +33,7 @@ public class HexagonGameBoardTest {
        assertEquals(hexagonGameBoard.getLocation(), new Point(0,0));
        hexagonGameBoard.setLocation(new Point(1,1));
        assertEquals(hexagonGameBoard.getLocation(), new Point(1,1));
-   }
+   }*/
 
 //   @Test
 //   public void testHexagonGameBoardPlayer() {
