@@ -23,10 +23,13 @@ build-job:
   cache:
     paths:
     - "~/.m2/repository"
+
 test-implemented-tests:
   stage: test
   tags:
   - SET2024
+  - backup
+  - rpi
   dependencies:
   - build-job
   script:
@@ -39,6 +42,8 @@ verify-job:
   stage: test
   tags:
   - SET2024
+  - backup
+  - rpi
   dependencies:
   - build-job
   script:
@@ -50,13 +55,15 @@ verify-job:
 package-prod:
   stage: package
   tags:
-    - SET2024
+  - SET2024
+  - backup
+  - rpi
   script:
-    - echo "Maven package started"
-    - mvn package
+  - echo "Maven package started"
+  - mvn package
   environment: production
   rules:
-    - if: $CI_COMMIT_BRANCH == "main"
+  - if: $CI_COMMIT_BRANCH == "main"
 
 sigridci:
   stage: report
