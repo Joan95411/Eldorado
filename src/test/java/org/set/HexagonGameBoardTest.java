@@ -3,6 +3,7 @@ package org.set;
 import io.github.cdimascio.dotenv.Dotenv;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
+import org.set.boardPieces.HexagonGameBoard;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;

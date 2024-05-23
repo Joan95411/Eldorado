@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 
+import org.set.boardPieces.Util;
+
 public abstract class Card {
 	public String name;
 	public CardType cardType;

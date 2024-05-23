@@ -2,6 +2,8 @@ package org.set;
 
 import javax.swing.*;
 
+import org.set.boardPieces.HexagonGameBoard;
+
 
 
 public class Main {

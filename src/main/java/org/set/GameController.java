@@ -2,6 +2,10 @@ package org.set;
 
 import java.util.Scanner;
 
+import org.set.boardPieces.HexagonGameBoard;
+import org.set.boardPieces.Tile;
+import org.set.boardPieces.Util;
+
 
 public class GameController {
     private HexagonGameBoard board;

@@ -1,4 +1,4 @@
-package org.set;
+package org.set.boardPieces;
 
 import java.awt.Color;
 import java.awt.Graphics2D;

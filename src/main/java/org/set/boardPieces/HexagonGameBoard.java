@@ -1,6 +1,8 @@
-package org.set;
+package org.set.boardPieces;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.set.Card;
+import org.set.Player;
 
 import io.github.cdimascio.dotenv.Dotenv;
 
@@ -112,8 +114,8 @@ public class HexagonGameBoard extends JPanel  {
                 
                 }
             }
-        boardPieces.put(terrainA.name,terrainA);
-        boardPieces.put(wpa.name,wpa);
+        boardPieces.put(terrainA.getName(),terrainA);
+        boardPieces.put(wpa.getName(),wpa);
     }
     @Override
     protected void paintComponent(Graphics g) {
@@ -177,7 +179,7 @@ public class HexagonGameBoard extends JPanel  {
     	addWinningPiece(addRow, addCol, WP.get(WP.size() - 1));
         Terrain terrainB = terrainA.clone(addRow, addCol,tilesMap);
         terrainB.randomizeTiles();
-        boardPieces.put(terrainB.name, terrainB);
+        boardPieces.put(terrainB.getName(), terrainB);
         Set<int[]> neighbors=terrainA.findOverlappingNeighbors(terrainB);
         if (neighbors.size()<=5){
         Blockade blockade = new Blockade();
@@ -189,7 +191,7 @@ public class HexagonGameBoard extends JPanel  {
             
         }
         blockade.randomizeTiles();
-        boardPieces.put(blockade.name, blockade);
+        boardPieces.put(blockade.getName(), blockade);
         }
         
     }
@@ -199,11 +201,11 @@ public class HexagonGameBoard extends JPanel  {
     	for(Tile tile: wpa.getTiles()){
     		tile.setParent(null);
     	}
-    	boardPieces.remove(wpa.name);
+    	boardPieces.remove(wpa.getName());
     	for(Tile tile: wpb.getTiles()){
     		tile.setParent("Winning");
     	}
-        boardPieces.put(wpb.name, wpb);
+        boardPieces.put(wpb.getName(), wpb);
         
         }
     
@@ -218,8 +220,8 @@ public class HexagonGameBoard extends JPanel  {
             change = new int[]{0, -1}; // Move one unit left
         }
         for (boardPiece piece : boardPieces.values()) {
-        	if(piece.name.startsWith("Terrain_")){
-        		String indexString = piece.name.substring("Terrain_".length()); // Extract the substring after "Terrain_"
+        	if(piece.getName().startsWith("Terrain_")){
+        		String indexString = piece.getName().substring("Terrain_".length()); // Extract the substring after "Terrain_"
         	    int index = Integer.parseInt(indexString);
         	    if(index<=currentTerrainIndex+1){
         		continue;}
