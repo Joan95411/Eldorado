@@ -17,7 +17,7 @@ public class CardPileTest {
     Card greenCard;
 
     @BeforeEach
-    void SetUp(){
+    void SetUp() {
         blueCard = new ExpeditionCard(ExpeditionCardType.Sailor, 2, true, 2);
         yellowCard = new ExpeditionCard(ExpeditionCardType.Photographer, 2, true, 2);
         greenCard = new ExpeditionCard(ExpeditionCardType.Explorer, 2, true, 2);
@@ -26,14 +26,14 @@ public class CardPileTest {
     }
 
     @Test
-    public void TestCardPile(){
+    public void TestCardPile() {
         assertNotNull(cardPile);
         assertNotNull(cardPile.getDrawPile());
         assertNotNull(cardPile.getDiscardPile());
     }
 
     @Test
-    public void TestDiscard(){
+    public void TestDiscard() {
         assertNotEquals(cardPile.getDiscardPile(), null);
         assertNotEquals(cardPile.getDrawPile(), null);
         assertFalse(cardPile.getDiscardPile().contains(blueCard));
@@ -44,7 +44,7 @@ public class CardPileTest {
     }
 
     @Test
-    public void TestDiscardMultipleCards(){
+    public void TestDiscardMultipleCards() {
         LinkedList<Card> cardsToDiscard = new LinkedList<>();
         cardsToDiscard.add(blueCard);
         cardsToDiscard.add(yellowCard);
@@ -79,7 +79,7 @@ public class CardPileTest {
     }
 
     @Test
-    public void TestDrawTooManyCards(){
+    public void TestDrawTooManyCards() {
         cardPile.discard(greenCard);
         cardPile.discard(blueCard);
         LinkedList<Card> drawnCards = cardPile.draw(9);
