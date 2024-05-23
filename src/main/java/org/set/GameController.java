@@ -1,10 +1,12 @@
 package org.set;
 
+import java.util.LinkedList;
 import java.util.Scanner;
 
 import org.set.boardPieces.HexagonGameBoard;
 import org.set.boardPieces.Tile;
 import org.set.boardPieces.Util;
+import org.set.cards.Card;
 
 
 public class GameController {
@@ -118,8 +120,8 @@ public class GameController {
 
 	    System.out.println("Player " + (currentPlayerIndex+1) + " drawing cards" );
     	Player currentPlayer = players[currentPlayerIndex];
-    	currentPlayer.drawCards(turn);
-	    board.PlayerCards=currentPlayer.getCards();
+    	LinkedList<Card> drawedCards=currentPlayer.mydeck.draw(8);
+	    board.PlayerCards=drawedCards;
         board.repaint();
     }
 

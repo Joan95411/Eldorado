@@ -11,7 +11,7 @@ import org.set.cards.expedition.ExpeditionCardType;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class CardPileTest {
-    CardPile cardPile;
+	PlayerCardDeck cardPile;
     Card blueCard;
     Card yellowCard;
     Card greenCard;
@@ -22,7 +22,7 @@ public class CardPileTest {
         yellowCard = new ExpeditionCard(ExpeditionCardType.Photographer, 2, true, 2);
         greenCard = new ExpeditionCard(ExpeditionCardType.Explorer, 2, true, 2);
 
-        cardPile = new CardPile();
+        cardPile = new PlayerCardDeck();
     }
 
     @Test
