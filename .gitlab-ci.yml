@@ -93,6 +93,8 @@ sigridpublish:
 
 sast:
   stage: test
+  tags: 
+    - backup
 
 include:
   - template: Security/SAST.gitlab-ci.yml
