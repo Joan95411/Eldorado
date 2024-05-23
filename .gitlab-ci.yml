@@ -17,6 +17,8 @@ build-job:
   stage: build
   tags:
   - SET2024
+  - backup
+  - rpi
   script:
     - echo "Maven building started."
     - mvn -B -DskipTests clean package
