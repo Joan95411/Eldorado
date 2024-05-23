@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import org.junit.jupiter.api.*;
-import org.set.cards.ActionCard;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
