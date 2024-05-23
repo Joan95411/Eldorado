@@ -1,5 +1,7 @@
 package org.set;
 
+import org.set.cards.Card;
+
 import java.util.Collections;
 import java.util.LinkedList;
 

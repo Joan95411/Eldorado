@@ -4,6 +4,9 @@ import java.awt.*;
 import java.util.LinkedList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.set.cards.Card;
+import org.set.cards.expedition.ExpeditionCard;
+import org.set.cards.expedition.ExpeditionCardType;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -15,9 +18,9 @@ public class CardPileTest {
 
     @BeforeEach
     void SetUp(){
-        blueCard = new Card(1, Color.BLUE, 1, 1);
-        yellowCard = new Card(1, Color.YELLOW, 1, 1);
-        greenCard = new Card(1, Color.GREEN, 1, 1);
+        blueCard = new ExpeditionCard(ExpeditionCardType.Sailor, 2, true, 2);
+        yellowCard = new ExpeditionCard(ExpeditionCardType.Photographer, 2, true, 2);
+        greenCard = new ExpeditionCard(ExpeditionCardType.Explorer, 2, true, 2);
 
         cardPile = new CardPile();
     }
