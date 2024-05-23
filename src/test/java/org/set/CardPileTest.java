@@ -45,7 +45,7 @@ public class CardPileTest {
 
     @Test
     public void TestDiscardMultipleCards(){
-        LinkedList<Card> cardsToDiscard = new LinkedList<Card>();
+        LinkedList<Card> cardsToDiscard = new LinkedList<>();
         cardsToDiscard.add(blueCard);
         cardsToDiscard.add(yellowCard);
         cardsToDiscard.add(greenCard);
@@ -78,6 +78,7 @@ public class CardPileTest {
         assertTrue(drawnCards.contains(greenCard));
     }
 
+    @Test
     public void TestDrawTooManyCards(){
         cardPile.discard(greenCard);
         cardPile.discard(blueCard);

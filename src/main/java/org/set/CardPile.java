@@ -1,5 +1,6 @@
 package org.set;
 
+import java.util.concurrent.LinkedBlockingDeque;
 import org.set.cards.Card;
 
 import java.util.Collections;
@@ -27,20 +28,30 @@ public class CardPile {
     }
 
     public void discard(LinkedList<Card> discardedCards){
-        //TODO: implement
+        discardPile.addAll(discardedCards);
     }
 
     //return the top card of the drawPile, if it is empty shuffle discardPile to create new drawPile
     public Card draw() {
         if (drawPile.isEmpty()) {
+            if(discardPile.isEmpty()){
+                return null;
+            }
             shuffle();
         }
         return drawPile.remove();
     }
 
     public LinkedList<Card> draw(int numberOfCards){
-        //TODO: implement
-        return null;
+        LinkedList<Card> drawnCards = new LinkedList<>();
+        Card card;
+        for (int i = 0; i < numberOfCards; i ++){
+            card = draw();
+            if(card != null){
+                drawnCards.add(card);
+            }
+        }
+        return drawnCards;
     }
 
     public LinkedList<Card> getDrawPile() {
