@@ -91,7 +91,7 @@ public class GameController {
         int numPlayers = scanner.nextInt();
 
         // Create an array to store player instances
-        List<Player> playersList = new ArrayList<>();
+        players = new ArrayList<>();
 
         // Loop through each player
         for (int i = 0; i < numPlayers; i++) {
@@ -103,7 +103,7 @@ public class GameController {
             Player player = new Player(Util.getColorFromString(color));
 
             // Add the player to the players list
-            playersList.add(player);
+            players.add(player);
         }board.players=players;
 
     }
@@ -121,7 +121,7 @@ public class GameController {
 
 	    System.out.println("Player " + (currentPlayerIndex+1) + " drawing cards" );
     	Player currentPlayer = players.get(currentPlayerIndex);
-    	LinkedList<Card> drawedCards=currentPlayer.mydeck.draw(8);
+    	LinkedList<Card> drawedCards=currentPlayer.mydeck.draw(5);
 	    board.PlayerCards=drawedCards;
         board.repaint();
     }
@@ -183,8 +183,6 @@ public class GameController {
 	        System.out.println("You are currently on "+temp.getParent());
             }
 
-    	    // Move to the next player
-    	    //currentPlayerIndex = (currentPlayerIndex+1) % players.length;
     	    turnNumber++;
             // Check for end conditions or other game logic
             if (isGameOver()) {

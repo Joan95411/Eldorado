@@ -1,9 +1,12 @@
 package org.set;
 
 import org.set.cards.Card;
+import org.set.cards.expedition.ExpeditionCard;
+import org.set.cards.expedition.ExpeditionCardType;
 
 import java.util.Collections;
 import java.util.LinkedList;
+import java.util.Random;
 
 public class PlayerCardDeck {
     private final LinkedList<Card> drawPile;
@@ -12,6 +15,28 @@ public class PlayerCardDeck {
     public PlayerCardDeck() {
         drawPile = new LinkedList<>();
         discardPile = new LinkedList<>();
+        int blueCount = 1;
+        int greenCount = 3;
+        int yellowCount = 4;
+
+        Random random = new Random();
+
+        // Add green cards
+        for (int i = 0; i < blueCount; i++) {
+        	drawPile.add(new ExpeditionCard(ExpeditionCardType.Sailor, 0, false, 1));
+        }
+
+        // Add green cards
+        for (int i = 0; i < greenCount; i++) {
+        	drawPile.add(new ExpeditionCard(ExpeditionCardType.Explorer,0, false, 1));
+        }
+
+        // Add yellow cards
+        for (int i = 0; i < yellowCount; i++) {
+        	drawPile.add(new ExpeditionCard(ExpeditionCardType.Traveller, 0, false, 1));
+        }
+
+        Collections.shuffle(drawPile, random);
     }
 
     //shuffle the discard pile to create a new pile
