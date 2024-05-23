@@ -1,5 +1,9 @@
 package org.set;
 
+import org.set.cards.Card;
+import org.set.cards.expedition.ExpeditionCard;
+import org.set.cards.expedition.ExpeditionCardType;
+
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -7,37 +11,42 @@ import java.util.List;
 import java.util.Random;
 
 public class Player {
+    private static int lastAssignedId = 0;
+
 	public int id;
     private int currentRow;
     private int currentCol;
     public Color color;
-    private List<Card> wholeDeck;
-    private List<Card> currentDeck; 
-    public Player(int id,Color selectedColor) {
-        this.id=id;
-        Color originalColor = selectedColor; // Original red color
-        float[] hsbValues = Color.RGBtoHSB(originalColor.getRed(), originalColor.getGreen(), originalColor.getBlue(), null);
-        Color adjustedColor = Color.getHSBColor(hsbValues[0], hsbValues[1], hsbValues[2] * 0.8f); // Darken the color by reducing brightness
-        this.color=adjustedColor;
-        wholeDeck = new ArrayList<>();
+    private List<Card> wholeDeck = new ArrayList<>();
+    private List<Card> currentDeck;
+
+    public Player(Color selectedColor) {
+        this.id = ++lastAssignedId;
+        this.color=selectedColor;
+
+        float[] hsbValues = Color.RGBtoHSB(selectedColor.getRed(), selectedColor.getGreen(), selectedColor.getBlue(), null);
+        this.color= Color.getHSBColor(hsbValues[0], hsbValues[1], hsbValues[2] * 0.8f);
         int blueCount = 1;
         int greenCount = 3;
         int yellowCount = 4;
 
         Random random = new Random();
+
+        // Add green cards
         for (int i = 0; i < blueCount; i++) {
-        	wholeDeck.add(new Card(i, Color.BLUE, 0.5, 1));
+            wholeDeck.add(new ExpeditionCard(ExpeditionCardType.Sailor, 0, false, 1));
         }
 
         // Add green cards
         for (int i = 0; i < greenCount; i++) {
-        	wholeDeck.add(new Card(i+1, Color.GREEN, 0.5, 1));
+        	wholeDeck.add(new ExpeditionCard(ExpeditionCardType.Explorer,0, false, 1));
         }
 
         // Add yellow cards
         for (int i = 0; i < yellowCount; i++) {
-        	wholeDeck.add(new Card(i+4, Color.YELLOW, 1, 1));
+            wholeDeck.add(new ExpeditionCard(ExpeditionCardType.Traveller, 0, false, 1));
         }
+
         Collections.shuffle(wholeDeck, random);
     }
 
@@ -52,13 +61,16 @@ public class Player {
     public Color getColor() {
         return color;
     }
+
     public void setPlayerPosition(int row, int col) {
         this.currentRow = row;
         this.currentCol = col;
     }
+
     public void setCards(List<Card> cards) {
         this.wholeDeck=cards;
     }
+
     public void drawCards(int currentTurn){
     	if (currentTurn % 2 == 0) {
         	Collections.shuffle(wholeDeck);
@@ -70,9 +82,11 @@ public class Player {
     public List<Card> getCards() {
         return currentDeck;
     }
+
     public boolean isAtPosition(int row, int col) {
         return this.currentRow == row && this.currentCol == col;
     }
+
     public List<String> getNeighborLocations() {
         List<String> neighbors = new ArrayList<>();
         if (currentCol % 2 == 0) { // Check if current column is even
@@ -92,6 +106,7 @@ public class Player {
         }
         return neighbors;
     }
+
     public void printNeighbors(){
 		List<String> neighborLocations = getNeighborLocations(); // Get neighbor locations
         System.out.println("Neighbor locations:");
@@ -99,6 +114,7 @@ public class Player {
             System.out.println(location);
         }
 	}
+
     public void draw(Graphics2D g2d, int row, int col, int size, Color color) {
         // Calculate center of hexagon
         int x = col * (int) (1.5 * size);
@@ -114,9 +130,6 @@ public class Player {
         int[] yPoints = {centerY - size / 4, centerY - size / 4, centerY - size / 2, centerY - size / 4, centerY - size / 4, centerY, centerY + size / 4, centerY - size / 4};
         g2d.setColor(color);
         g2d.fillPolygon(xPoints, yPoints, 8);
-        
     }
-	
-    
 }
 

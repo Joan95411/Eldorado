@@ -78,7 +78,7 @@ public class HexagonGameBoardTest {
 
        HexagonGameBoard hexagonGameBoard = new HexagonGameBoard(5, 5, 50);
 
-       if (tileDataPath == null) tileDataPath = "/src/main/java/org/set/tileData.json";
+       if (tileDataPath == null) tileDataPath = "src/main/java/org/set/tileData.json";
        String tileDataJson = new String(Files.readAllBytes(new File(tileDataPath).toPath()));
        JSONObject tileData = new JSONObject(tileDataJson);
        JSONObject tileInfo = tileData.getJSONObject("Terrain");

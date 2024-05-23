@@ -1,5 +1,10 @@
 package org.set;
 
+import java.awt.Color;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
 import java.util.Scanner;
 
 
@@ -14,9 +19,9 @@ public class GameController {
         this.board=board;
         GameState="Game in process";
         setSpecialColor();
-        removeblock(0);
-        removeblock(1);
-        removeblock(2);
+        //removeblock(0);
+        //removeblock(1);
+        //removeblock(2);
         addPlayer();
         placePlayersOnBoard();
         PlayerMoves();
@@ -92,35 +97,31 @@ public class GameController {
             String color = scanner.next();
 
             // Create a new player instance with the chosen color
-            Player player = new Player((i+1), board.getColorFromString(color));
+            Player player = new Player(board.getColorFromString(color));
             
             // Add the player to the players array
             players[i] = player;
-            
-    }board.players=players;
-        
+        }
+
+        board.players=players;
     }
     
     private void placePlayersOnBoard() {
-    	
 		 for (Player player : players) {
-			 
-       player.setPlayerPosition(1+player.id, 1);
-       
-		 }board.repaint();
+           player.setPlayerPosition(1+player.id, 1);
+		 }
+
+         board.repaint();
     }
     
-    private void PlayerDrawCards(int turn,int currentPlayerIndex) {
-
-	    System.out.println("Player " + (currentPlayerIndex+1) + " drawing cards" );
+    private void PlayerDrawCards(int turn, int currentPlayerIndex) {
+	    System.out.println("Player " + (currentPlayerIndex + 1) + "drawing cards in turn " + turn);
     	Player currentPlayer = players[currentPlayerIndex];
     	currentPlayer.drawCards(turn);
 	    board.PlayerCards=currentPlayer.getCards();
         board.repaint();
     }
 
-
-    
     private void removeblock(int currentTerrainIndex){
     	System.out.println("Remove blockade");
     	scanner.next();
@@ -134,47 +135,56 @@ public class GameController {
             displayGameState();
             for (int currentPlayerIndex = 0; currentPlayerIndex < players.length; currentPlayerIndex++) {
             Player currentPlayer = players[currentPlayerIndex];
-            System.out.println("Turn " + turnNumber + ": Player " + (currentPlayerIndex+1) + "'s turn.");
-    	    PlayerDrawCards(turnNumber,currentPlayerIndex);
-    	    
-    	    boolean invalidans=true;
-    	    int row = -1;int col = -1;
-    	    
+            System.out.println("Turn " + turnNumber + ": Player " + (currentPlayerIndex + 1) + "'s turn.");
+    	    PlayerDrawCards(turnNumber, currentPlayerIndex);
+
+    	    boolean invalidans = true;
+    	    int row = -1;
+            int col = -1;
+
     	    while(invalidans){
     	    System.out.println("Enter row and column for player's position (e.g., '2 3'), or type 'stop' to end the game:");
-    	    System.out.print("> "); 
+    	    System.out.print("> ");
     	    String input = scanner.nextLine();
     	    if (input.equalsIgnoreCase("stop")) {
     	        break;
     	    }
 
-    	    String[] tokens = input.split("\\s+");
-    	    if (tokens.length != 2) {
-    	        System.out.println("Invalid input. Please enter row and column separated by space.");
-                continue;
-    	    }
+                String[] tokens = input.split("\\s+");
+                if (tokens.length != 2) {
+                    System.out.println("Invalid input. Please enter row and column separated by space.");
+                    // currentPlayerIndex--; // Decrement the index to repeat the turn for the same player
+                    continue;
+                }
 
     	    try {
     	        row = Integer.parseInt(tokens[0]);
     	        col = Integer.parseInt(tokens[1]);
     	        if (!board.isValidPosition(row, col)) {
     	            System.out.println("Invalid position. Please enter valid coordinates.");
+                    // currentPlayerIndex--; // Decrement the index to repeat the turn for the same player
     	            continue;
     	        }
-    	        }
-    	     catch (NumberFormatException e) {
+                currentPlayer.setPlayerPosition(row, col);
+                board.repaint();
+                String targetKey = row+","+col;
+                Tile temp = board.tilesMap.get(targetKey);
+                System.out.println("You are currently on "+temp.getParent());
+    	        } catch (NumberFormatException e) {
     	        System.out.println("Invalid input. Please enter valid integers for row and column.");
-                continue; 
+                currentPlayerIndex--; // Decrement the index to repeat the turn for the same player
+                continue;
     	    }
     	    invalidans=false;
     	    }
-    	    
+
     	    currentPlayer.setPlayerPosition(row, col);
 	        board.repaint();
 	        String targetKey = row+","+col;
 	        Tile temp = board.tilesMap.get(targetKey);
 	        System.out.println("You are currently on "+temp.getParent());
             }
+
     	    // Move to the next player
     	    //currentPlayerIndex = (currentPlayerIndex+1) % players.length;
     	    turnNumber++;
@@ -206,13 +216,6 @@ public class GameController {
         // Perform any cleanup or display final results
         // Example: Display the winner or final scores
         System.out.println("Game Over!");
-        
     }
-    
-    
-    
-
-
-	
 }
 

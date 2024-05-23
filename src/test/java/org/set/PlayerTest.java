@@ -13,17 +13,17 @@ public class PlayerTest {
 
     @Test
     public void testPlayer() {
-        players.add(new Player(0,Color.RED));
+        players.add(new Player(Color.RED));
 
         //        TODO: this should not be possible because the color has already been used
-        players.add(new Player(1,Color.RED));
+        players.add(new Player(Color.RED));
     }
 
     @Test
     public void testPlayerColor() {
         Color color = Color.BLACK;
 
-        players.add(new Player(0,color));
+        players.add(new Player(color));
 
         assertEquals(players.get(0).getColor(), color);
     }
@@ -33,7 +33,7 @@ public class PlayerTest {
         int row = 1;
         int col = 2;
 
-        players.add(new Player(0,Color.BLUE));
+        players.add(new Player(Color.BLUE));
 
         players.get(0).setPlayerPosition(row,col);
 
@@ -45,7 +45,7 @@ public class PlayerTest {
 
     @Test
     public void testPlayerNeighbor() {
-        players.add(new Player(0,Color.YELLOW));
+        players.add(new Player(Color.YELLOW));
 
         assertEquals(players.get(0).getNeighborLocations().toString(),"[-1,0, 1,0, 0,-1, -1,-1, 0,1, -1,1]");
     }
