@@ -16,10 +16,10 @@ stages: # List of stages for jobs and their order of execution
 build-job:
   stage: build
   tags:
-    - backup
+  - backup
   script:
-    - echo "Maven building started."
-    - mvn -B -DskipTests clean package
+  - echo "Maven building started."
+  - mvn -B -DskipTests clean package
   cache:
     paths:
     - "~/.m2/repository"
@@ -27,36 +27,36 @@ build-job:
 test-implemented-tests:
   stage: test
   tags:
-    - backup
+  - backup
   dependencies:
   - build-job
   script:
-    - echo "Running all tests."
-    - "echo TILEDATA_PATH='src/main/java/org/set/boardPiece/tileData.json' >> .env"
-    - cat .env
-    - mvn test
+  - echo "Running all tests."
+  - "echo TILEDATA_PATH='src/main/java/org/set/boardPieces/tileData.json' >> .env"
+  - cat .env
+  - mvn test
 
 verify-job:
   stage: test
   tags:
-    - backup
+  - backup
   dependencies:
   - build-job
   script:
-    - echo "Running additional verification tests."
-    - "echo TILEDATA_PATH='src/main/java/org/set/boardPiece/tileData.json' >> .env"
-    - cat .env
-    - mvn verify
+  - echo "Running additional verification tests."
+  - "echo TILEDATA_PATH='src/main/java/org/set/boardPieces/tileData.json' >> .env"
+  - cat .env
+  - mvn verify
 
 package-prod:
   stage: package
   tags:
-    - backup
+  - backup
   script:
-    - echo "Maven package started"
-    - "echo TILEDATA_PATH='src/main/java/org/set/boardPiece/tileData.json' >> .env"
-    - cat .env
-    - mvn package
+  - echo "Maven package started"
+  - "echo TILEDATA_PATH='src/main/java/org/set/boardPieces/tileData.json' >> .env"
+  - cat .env
+  - mvn package
   environment: production
   rules:
   - if: $CI_COMMIT_BRANCH == "main"
@@ -96,7 +96,7 @@ sigridpublish:
 sast:
   stage: test
   tags:
-    - backup
+  - backup
 
 include:
   - template: Security/SAST.gitlab-ci.yml
