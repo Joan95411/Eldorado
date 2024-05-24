@@ -74,8 +74,7 @@ public class Blockade extends boardPiece {
     		int y=temp.getY();
     		totalX += x;
             totalY += y;
-    		int hexSize=size;
-    		tile.drawHexagon(g2d, x, y, hexSize, color, null);
+    		tile.drawHexagon(g2d, x, y, size, color, null);
     	}
     	int centerX = totalX / tiles.size();
         int centerY = totalY / tiles.size();

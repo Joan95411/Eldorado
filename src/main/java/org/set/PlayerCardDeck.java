@@ -1,20 +1,20 @@
 package org.set;
-
 import org.set.cards.Card;
 import org.set.cards.expedition.ExpeditionCard;
 import org.set.cards.expedition.ExpeditionCardType;
 
+import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedList;
+import java.util.List;
 import java.util.Random;
 
 public class PlayerCardDeck {
-    private final LinkedList<Card> drawPile;
-    private final LinkedList<Card> discardPile;
+    private final List<Card> drawPile;
+    private final List<Card> discardPile;
 
     public PlayerCardDeck() {
-        drawPile = new LinkedList<>();
-        discardPile = new LinkedList<>();
+        drawPile = new ArrayList<>();
+        discardPile = new ArrayList<>();
         int blueCount = 1;
         int greenCount = 3;
         int yellowCount = 4;
@@ -51,7 +51,7 @@ public class PlayerCardDeck {
         discardPile.add(card);
     }
 
-    public void discard(LinkedList<Card> discardedCards){
+    public void discard(List<Card> discardedCards){
         discardPile.addAll(discardedCards);
     }
 
@@ -63,11 +63,11 @@ public class PlayerCardDeck {
             }
             shuffle();
         }
-        return drawPile.remove();
+        return drawPile.remove(drawPile.size() - 1);
     }
 
-    public LinkedList<Card> draw(int numberOfCards){
-        LinkedList<Card> drawnCards = new LinkedList<>();
+    public ArrayList<Card> draw(int numberOfCards){
+        ArrayList<Card> drawnCards = new ArrayList<>();
         Card card;
         for (int i = 0; i < numberOfCards; i ++){
             card = draw();
@@ -78,12 +78,11 @@ public class PlayerCardDeck {
         return drawnCards;
     }
 
-    public LinkedList<Card> getDrawPile() {
-        return drawPile;
+    public ArrayList<Card> getDrawPile() {
+        return new ArrayList<>(drawPile);
     }
 
-    public LinkedList<Card> getDiscardPile() {
-        return discardPile;
+    public ArrayList<Card> getDiscardPile() {
+        return new ArrayList<>(discardPile);
     }
-
 }

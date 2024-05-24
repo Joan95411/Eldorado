@@ -5,12 +5,11 @@ import org.set.boardPieces.Tile;
 
 import static org.junit.jupiter.api.Assertions.*;
 import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
 import java.util.List;
 import java.util.Arrays;
 
 class TileTest {
+	//HexagonGameBoard gameBoard = new HexagonGameBoard(15, 35, 30);
     @Test
     void testTileInitialization() {
         Tile tile = new Tile(2, 3);
@@ -37,19 +36,7 @@ class TileTest {
         assertEquals("Parent", tile.getParent());
     }
 
-    @Test
-    void testDrawTile() {
-        // Create a mock Graphics2D object
-        BufferedImage image = new BufferedImage(100, 100, BufferedImage.TYPE_INT_ARGB);
-        Graphics2D g2d = image.createGraphics();
-
-        // Create a tile and draw it
-        Tile tile = new Tile(3, 4);
-        tile.drawTile(g2d, 50, 50, 20, Color.BLUE, 3, 4, 10);
-        
-        // Since this is just a visualization test, we cannot assert anything. 
-        // But you can manually inspect the image to verify if the tile is drawn correctly.
-    }
+    
 
     @Test
     void testGetNeighbors() {

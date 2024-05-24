@@ -22,9 +22,9 @@ public class GameController {
         this.board=board;
         GameState="Game in process";
         //setSpecialColor();
-        //removeblock(0);
-        //removeblock(1);
-        //removeblock(2);
+        removeblock(0);
+        removeblock(1);
+        removeblock(2);
         addPlayer();
         placePlayersOnBoard();
         PlayerMoves();
@@ -123,7 +123,7 @@ public class GameController {
 
 	    System.out.println("Player " + (currentPlayerIndex+1) + " drawing cards" );
     	Player currentPlayer = players.get(currentPlayerIndex);
-    	LinkedList<Card> drawedCards=currentPlayer.mydeck.draw(5);
+    	List<Card> drawedCards=currentPlayer.mydeck.draw(5);
 	    board.PlayerCards=drawedCards;
         board.repaint();
     }
@@ -131,8 +131,7 @@ public class GameController {
 
 
     private void removeblock(int currentTerrainIndex){
-    	System.out.println("Remove blockade");
-    	//scanner.next();
+    	boolean wantsToContinue = inputHelper.getYesNoInput("Do you want to remove block?");
     	board.removeBlockade(currentTerrainIndex);
     	board.repaint();
     }
@@ -175,7 +174,7 @@ public class GameController {
     	    currentPlayer.setPlayerPosition(row, col);
 	        board.repaint();
 	        String targetKey = row+","+col;
-	        Tile temp = board.tilesMap.get(targetKey);
+	        Tile temp = board.ParentMap.get(targetKey);
 	        System.out.println("You are currently on "+temp.getParent());
             }
 

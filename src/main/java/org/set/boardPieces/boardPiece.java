@@ -63,7 +63,7 @@ public abstract class boardPiece {
 
     public abstract boardPiece clone(int addRow, int addCol, Map<String, Tile> tilesMap);
 
-    public void move(int addRow, int addCol, Map<String, Tile> tilesMap) {
+    public void move(int addRow, int addCol) {
         for (Tile tile : tiles) {
         	int[] result = calculateRowAndCol(tile, addRow, addCol);
         	int newRow = result[0];
