@@ -20,8 +20,6 @@ public class Blockade extends boardPiece {
     }
 
     
-
-    
     public void setColor(Color color) {
         this.color = color;
     }
@@ -32,33 +30,19 @@ public class Blockade extends boardPiece {
     @Override
     public Blockade clone(int addRow, int addCol, Map<String, Tile> tilesMap) {
     	Blockade clonedBlock = new Blockade();
-        int row;
-        int col;
         for (Tile tile : tiles) {
-        	if (addCol % 2 == 0) {
-            row = tile.getRow() + addRow; 
-            col = tile.getCol() + addCol; 
-            }
-        	else{
-        		row = tile.getRow() + addRow; 
-                col = tile.getCol() + addCol; 
-                if(col% 2 == 0){
-                	if(addRow% 2 == 0){
-                	row=row+1;}
-                	else{
-                		row=row-1;
-                	}
-                }
-        	}
+        	int[] result = calculateRowAndCol(tile, addRow, addCol);
+        	int newRow = result[0];
+        	int newCol = result[1];
             
-            Tile clonedTile = new Tile(row, col);
-            String targetKey = row+","+col;
-            clonedTile = tilesMap.get(targetKey);
+        	String targetKey = newRow + "," + newCol;
+            Tile clonedTile = tilesMap.get(targetKey);
+            
             try {
                 clonedBlock.addTile(clonedTile);
             } catch(Exception e) {
             	e.printStackTrace();
-                System.err.println("Tile not found for row " + row + ", col " + col);
+                System.err.println("Tile not found for row " + newRow + ", col " + newCol);
             }
         }
         clonedBlock.setColor(this.color);
