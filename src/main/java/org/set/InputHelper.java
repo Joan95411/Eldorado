@@ -2,14 +2,14 @@ package org.set;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+import org.set.boardPieces.HexagonGameBoard;
+import org.set.boardPieces.Tile;
+
 public class InputHelper {
-    private final Scanner scanner;
+    private static final Scanner scanner = new Scanner(System.in);
 
-    public InputHelper() {
-        scanner = new Scanner(System.in);
-    }
 
-    public String[] getInput(String question, int expectedLength) {
+    public static String[] getInput(String question, int expectedLength) {
         while (true) {
             System.out.println(question);
             System.out.print("> ");
@@ -31,7 +31,7 @@ public class InputHelper {
             return tokens;
         }
     }
-    public int getIntInput(String prompt) {
+    public static int getIntInput(String prompt) {
         int userInput;
         do {
             System.out.println(prompt);
@@ -46,8 +46,31 @@ public class InputHelper {
             }
         } while (true);
     }
+    
+    public static int[] getPositionInput(HexagonGameBoard board) {
+        while (true) {
+        	String[] tokens =getInput("Enter row and column for player's position (e.g., '2,3'), or type 'stop' to end the game:", 2);
+        	try {
+        		int row = Integer.parseInt(tokens[0].trim());
+                int col = Integer.parseInt(tokens[1].trim());
+    	        if (!board.isValidPosition(row, col)) {
+    	            System.out.println("Invalid position. Please enter valid coordinates.");
+    	            continue;
+    	        }
+    	        String targetKey = row+","+col;
+    	        Tile temp = board.ParentMap.get(targetKey);
+    	        System.out.println("You are currently on "+temp.getParent());
+    	        return new int[] { row, col };
+    	        }
+        	catch (NumberFormatException e) {
+    	        System.out.println("Invalid input. Please enter valid integers for row and column.");
+                continue;
+    	    }
+        	           
+        }
+    }
 
-    public boolean getYesNoInput(String question) {
+    public static boolean getYesNoInput(String question) {
         while (true) {
             System.out.println(question);
             System.out.print("> ");
@@ -63,7 +86,7 @@ public class InputHelper {
         }
     }
 
-    public void closeScanner() {
+    public static void closeScanner() {
         scanner.close();
     }
 }

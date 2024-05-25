@@ -96,8 +96,8 @@ public class PlayerCardDeckTest {
         playerCardDeck.discard(greenCard);
         playerCardDeck.discard(blueCard);
         playerCardDeck.discard(yellowCard);
-        ArrayList<Card> discardPile = playerCardDeck.getDiscardPile();
-        ArrayList<Card> drawnCards = playerCardDeck.draw(3);
+        List<Card> discardPile = playerCardDeck.getDiscardPile();
+        List<Card> drawnCards = playerCardDeck.draw(3);
         assertNotEquals(null, discardPile);
         assertNotEquals(discardPile.toArray(), drawnCards.toArray());
     }

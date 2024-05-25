@@ -48,17 +48,16 @@ public class HexagonGameBoard extends JPanel  {
     
     public void initBoard() {
     	int maxIndex = 0;
-
-    	for (String key : boardPieces.keySet()) {
-    	    if (key.startsWith("Terrain_")) {
-    	        // Extract the index from the key
-    	        int index = Integer.parseInt(key.substring("Terrain_".length()));
+    	List<Terrain> terrains = getAllTerrains();
+    	for (Terrain terrain : terrains) {
+    		 String name = terrain.getName();
+    	        int index = Integer.parseInt(name.substring("Terrain_".length()));
 
     	        // Check if this index is greater than the current maxIndex
     	        if (index > maxIndex) {
     	            maxIndex = index;
     	        }
-    	    }
+    	    
     	}
     	for (int[] coordinates : coordinateList) {
             	Terrain modelter=(Terrain) boardPieces.get("Terrain_"+maxIndex);
@@ -187,12 +186,12 @@ public class HexagonGameBoard extends JPanel  {
 
         }
     
-    public void removeBlockade(int currentTerrainIndex) {
-    	boardPieces.remove("Blockade_"+(currentTerrainIndex+1));
+    public void removeBlockade(int currentTerrainIndex) {//need to be sure terrain_index and block_index are in sequence
+    	boardPieces.remove("Blockade_"+(currentTerrainIndex));
         int[] change;
-        if (coordinateList.get(currentTerrainIndex)[0] > 0) {
+        if (coordinateList.get(currentTerrainIndex-1)[0] > 0) {
             change = new int[]{-1, 0}; // Move one unit up
-        } else if (coordinateList.get(currentTerrainIndex)[0] < 0) {
+        } else if (coordinateList.get(currentTerrainIndex-1)[0] < 0) {
             change = new int[]{1, 0}; // Move one unit down
         } else {
             change = new int[]{0, -1}; // Move one unit left
@@ -201,7 +200,7 @@ public class HexagonGameBoard extends JPanel  {
         	if(piece.getName().startsWith("Terrain_")){
         		String indexString = piece.getName().substring("Terrain_".length()); // Extract the substring after "Terrain_"
         	    int index = Integer.parseInt(indexString);
-        	    if(index<=currentTerrainIndex+1){
+        	    if(index<=currentTerrainIndex){
         		continue;}
         	}
             piece.move(change[0], change[1]);
@@ -211,16 +210,15 @@ public class HexagonGameBoard extends JPanel  {
     }
 
     public boolean isValidPosition(int row, int col) {
-        if (row < 0 || row >= numRows || col < 0 || col >= numCols) {
-        	System.out.println("Going out of border. Choose another move! ");
-            return false;
-        }
-
+//        if (row < 0 || row >= numRows || col < 0 || col >= numCols) {
+//        	System.out.println("Going out of border. Choose another move! ");
+//            return false;
+//        }
+        
         String targetKey = row+","+col;
         Tile temp = ParentMap.get(targetKey);
-        System.out.println(temp.getPoints());
-	    if(temp.getParent()==null){
-	    	System.out.println("This tile doesn't belong in any board piece.");
+	    if(temp==null||temp.getParent()==null||temp.getParent().startsWith("Blockade_")){
+	    	System.out.println("This tile doesn't belong in any board piece or is a block.");
 	    	return false;
 	    }
 

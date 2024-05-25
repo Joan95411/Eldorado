@@ -11,10 +11,12 @@ import java.util.Random;
 public class PlayerCardDeck {
     private final List<Card> drawPile;
     private final List<Card> discardPile;
-
+    private final List<Card> currentDeck;
+    
     public PlayerCardDeck() {
         drawPile = new ArrayList<>();
         discardPile = new ArrayList<>();
+		currentDeck = new ArrayList<>();
         int blueCount = 1;
         int greenCount = 3;
         int yellowCount = 4;
@@ -78,11 +80,14 @@ public class PlayerCardDeck {
         return drawnCards;
     }
 
-    public ArrayList<Card> getDrawPile() {
-        return new ArrayList<>(drawPile);
+    public List<Card> getDrawPile() {
+        return drawPile;
     }
 
-    public ArrayList<Card> getDiscardPile() {
-        return new ArrayList<>(discardPile);
+    public List<Card> getDiscardPile() {
+        return discardPile;
+    }
+    public List<Card> getCurrentDeck() {
+        return currentDeck;
     }
 }

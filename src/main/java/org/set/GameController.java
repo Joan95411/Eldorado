@@ -1,13 +1,8 @@
 package org.set;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Scanner;
 
 import org.set.boardPieces.HexagonGameBoard;
-import org.set.boardPieces.Tile;
-import org.set.boardPieces.Util;
 import org.set.cards.Card;
 
 
@@ -16,107 +11,20 @@ public class GameController {
     private List<Player> players;
     private String GameState;
     public int turnCounter;
-    private InputHelper inputHelper;
     public GameController(HexagonGameBoard board) {
-        inputHelper=new InputHelper();
         this.board=board;
-        GameState="Game in process";
-        //setSpecialColor();
-        removeblock(0);
-        removeblock(1);
-        removeblock(2);
-        addPlayer();
-        placePlayersOnBoard();
-        PlayerMoves();
+        GameState="Game Starts";
+        //Before_game.setSpecialColor(board);
+        players=Before_game.addPlayer(board);
+        //During_game.removeblock(board);
+        Before_game.placePlayersOnBoard(board);
+        GameSession();
         
     }
     
-    
-    
-    public void setSpecialColor() {
-        while (true) {
-        	boolean wantsToContinue = inputHelper.getYesNoInput("Do you want to set any tile specially? (yes/no)");
-
-            if (!wantsToContinue) {
-                break; // Exit the loop if the user wants to stop
-            }
-
-            String[] response = inputHelper.getInput("Tell me the tile of row,column,color,points (e.g., '2,3,red,1') or type 'done' to finish:", 4);
-            
-            if (response == null) {
-                break; 
-            }
-
-            int row, col, points;
-            String color;
-            
-            try {
-                row = Integer.parseInt(response[0]);
-                col = Integer.parseInt(response[1]);
-                color = response[2];
-                points = Integer.parseInt(response[3]);
-            } catch (NumberFormatException e) {
-                System.out.println("Invalid input. Please enter valid integers for row and column, and a valid color.");
-                continue; // Continue to the next iteration if the input is invalid
-            }
-
-            if (!board.isValidPosition(row, col)) {
-                System.out.println("Invalid position. Please enter valid coordinates.");
-                continue; // Continue to the next iteration if the position is invalid
-            }
-
-            Tile special = board.tilesMap.get(row + "," + col);
-            if (special == null) {
-                System.out.println("Tile not found at the specified position.");
-                continue; // Continue to the next iteration if the tile is not found
-            }
-
-            special.setColor(Util.getColorFromString(color));
-            special.setPoints(points);
-            board.repaint();
-            System.out.println("Special color and points set for tile at position (" + row + "," + col + ").");
-        }
-
-        }
-        
-    
-
-
-    public void addPlayer() {
-    	InputHelper inputHelper = new InputHelper();
-
-    	int numPlayers;
-    	do {
-    	    numPlayers = inputHelper.getIntInput("How many players are playing?");
-    	    if (numPlayers < 1 || numPlayers > 4) {
-    	        System.out.println("Please enter a number between 1 and 4.");
-    	    }
-    	} while (numPlayers < 1 || numPlayers > 4);
-
-        // Create an array to store player instances
-        players = new ArrayList<>();
-
-        // Loop through each player
-        for (int i = 0; i < numPlayers; i++) {
-        	String color = inputHelper.getInput("Player " + (i + 1) + ", choose your color:", 1)[0];
-            
-
-            // Create a new player instance with the chosen color
-            Player player = new Player(Util.getColorFromString(color));
-
-            // Add the player to the players list
-            players.add(player);
-        }board.players=players;
-
-    }
-    
-    private void placePlayersOnBoard() {
-
-		 for (Player player : players) {
-
-       player.setPlayerPosition(1+player.id, 1);
-
-		 }board.repaint();
+    private String displayGameState() {
+        // Display the current state of the game, including the board and player positions
+        return GameState;
     }
     
     private void PlayerDrawCards(int turn,int currentPlayerIndex) {
@@ -124,58 +32,50 @@ public class GameController {
 	    System.out.println("Player " + (currentPlayerIndex+1) + " drawing cards" );
     	Player currentPlayer = players.get(currentPlayerIndex);
     	List<Card> drawedCards=currentPlayer.mydeck.draw(5);
-	    board.PlayerCards=drawedCards;
+	    board.PlayerCards=drawedCards;//need to change, should be player's current deck, which needs to be added in cardDeck
         board.repaint();
     }
-
-
-
-    private void removeblock(int currentTerrainIndex){
-    	boolean wantsToContinue = inputHelper.getYesNoInput("Do you want to remove block?");
-    	board.removeBlockade(currentTerrainIndex);
-    	board.repaint();
-    }
     
-    public void PlayerMoves() {
+    public void PlayerMove(Player player) {
+    	//Phase 1
+    	//play cards that you want to use for moving
+    	
+//    	int cardIndex;
+//    	do {
+//    	    cardIndex = InputHelper.getIntInput("Choose 1 card for Movement, input index (e.g. 0)");
+//    	    if (player.mydeck.getCurrentDeck().contains()) {
+//    	        System.out.println("Please enter a number between 1 and 4.");
+//    	    }
+//    	} while (numPlayers < 1 || numPlayers > 4);
+    }
+    public void PlayerBuy(Player player) {
+    	//Phase 1
+    	//Use the rest of your cards to buy up to 1 new card per turn.
+    }
+    public void PlayerDiscard(Player player) {
+    	//Phase 2
+    	//Discard Played Cards, keep card in your hand for your next turn
+    	//decide for each card individually.
+    }
+    public void PlayerDrawCard(Player player) {
+    	//Phase 3
+    	//draw cards from your draw pile until you have 4 cards in your hand.
+    	//If your draw pile doesn't contain enough cards to draw for your next turn, draw as many as possible. 
+    	//Then, shuffle your discard pile to form your new draw pile, then draw the rest of the cards you need.
+    }
+    public void GameSession() {
         int turnNumber = 0;
         while (true) {
-            displayGameState();
             for (int currentPlayerIndex = 0; currentPlayerIndex < players.size(); currentPlayerIndex++) {
             Player currentPlayer = players.get(currentPlayerIndex);
             System.out.println("Turn " + turnNumber + ": Player " + (currentPlayerIndex+1) + "'s turn.");
     	    PlayerDrawCards(turnNumber,currentPlayerIndex);
-
-    	    boolean invalidans=true;
-    	    int row = -1;int col = -1;
-
-    	    while(invalidans){
-    	    String[] tokens = inputHelper.getInput("Enter row and column for player's position (e.g., '2,3'), or type 'stop' to end the game:", 2);
-
-            if (tokens == null) {
-                // Player chose to stop the game
-                break;
-            }
-
-    	    try {
-    	        row = Integer.parseInt(tokens[0]);
-    	        col = Integer.parseInt(tokens[1]);
-    	        if (!board.isValidPosition(row, col)) {
-    	            System.out.println("Invalid position. Please enter valid coordinates.");
-    	            continue;
-    	        }
-    	        }
-    	     catch (NumberFormatException e) {
-    	        System.out.println("Invalid input. Please enter valid integers for row and column.");
-                continue;
-    	    }
-    	    invalidans=false;
-    	    }
-
-    	    currentPlayer.setPlayerPosition(row, col);
+    	    
+    	    int[] position = InputHelper.getPositionInput(board);
+    	    
+    	    currentPlayer.setPlayerPosition(position[0], position[1]);
 	        board.repaint();
-	        String targetKey = row+","+col;
-	        Tile temp = board.ParentMap.get(targetKey);
-	        System.out.println("You are currently on "+temp.getParent());
+	        
             }
 
     	    turnNumber++;
@@ -190,22 +90,20 @@ public class GameController {
     }
 
     
-
-    private String displayGameState() {
-        // Display the current state of the game, including the board and player positions
-        return GameState;
+    
+    public void FinalRound() {
+    	//1 player reaches WinningPiece, triggers final round
+    	//Each player left in that round will now play their final turn
+    	GameState="Final Round";
     }
 
     private boolean isGameOver() {
-        // Check if the game is over based on any end conditions
-        // Example: Check if a player has reached a certain position on the board
-        // This logic can be customized based on the game rules
-        return false; // Placeholder for now
+        // when the final round completes, the game is over
+        return false; 
     }
 
     private void endGame() {
-        // Perform any cleanup or display final results
-        // Example: Display the winner or final scores
+    	InputHelper.closeScanner();
         System.out.println("Game Over!");
     }
 }
