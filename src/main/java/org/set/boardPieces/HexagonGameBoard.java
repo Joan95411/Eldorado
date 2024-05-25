@@ -86,14 +86,11 @@ public class HexagonGameBoard extends JPanel  {
         		
         	}
             piece.draw(g2d, hexSize, tilesMap);
-
-        	
         }
-        
 
         if (players != null && players.size() > 0) {
             for (Player player : players) {
-                player.draw(g2d, player.getCurrentRow(), player.getCurrentCol(), hexSize, player.getColor());
+                player.draw(g2d,  hexSize);
 
             } }
         if(PlayerCards!=null){
@@ -104,8 +101,9 @@ public class HexagonGameBoard extends JPanel  {
 
     public void drawPlayerDeck(Graphics2D g2d) {
     	Tile temp=tilesMap.get("1,6");
+    	
         g2d.setColor(Color.BLACK);
-        int fontSize = 16;
+        int fontSize = 12;
         Font font = new Font("Arial", Font.BOLD, fontSize);
         g2d.setFont(font);
 
@@ -125,10 +123,9 @@ public class HexagonGameBoard extends JPanel  {
             int y = 10 + row * (cardHeight + cardSpacing);
 
             PlayerCards.get(i).draw(g2d, x, y, cardWidth, cardHeight);
-
+            g2d.drawString("Index: "+i, x+5, y+cardHeight/2);
             cardsDrawn++;
 
-            // Break the loop if we've drawn all the cards
             if (cardsDrawn >= totalCards) {
                 break;
             }
@@ -210,10 +207,6 @@ public class HexagonGameBoard extends JPanel  {
     }
 
     public boolean isValidPosition(int row, int col) {
-//        if (row < 0 || row >= numRows || col < 0 || col >= numCols) {
-//        	System.out.println("Going out of border. Choose another move! ");
-//            return false;
-//        }
         
         String targetKey = row+","+col;
         Tile temp = ParentMap.get(targetKey);

@@ -69,6 +69,7 @@ public class Terrain extends boardPiece {
     	for (Tile tile : tiles) {
     		String targetKey = tile.getRow()+","+tile.getCol();
             Tile temp = tilesMap.get(targetKey);
+    		
     		int x=temp.getX();
     		int y=temp.getY();
     		int hexSize=size;

@@ -97,7 +97,7 @@ public class HexagonGameBoardTest {
            assertEquals(hexagonGameBoard.players.size(), i + 1);
 
            int playerId = hexagonGameBoard.players.size() - 1;
-
+           assertEquals(hexagonGameBoard.players.get(playerId).color, colors[i]);
 
 //            Set the players position and check if it actually does set the position
            hexagonGameBoard.players.get(playerId).setPlayerPosition(row + i, col + i);
@@ -111,7 +111,12 @@ public class HexagonGameBoardTest {
 
 //        TODO: This should fail because the max amount of players is reached
        hexagonGameBoard.players.add(new Player(colors[0]));
+       
+       assertFalse(hexagonGameBoard.isValidPosition(0, 0));
+       
    }
+
+
 
    
 }

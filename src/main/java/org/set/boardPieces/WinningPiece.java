@@ -3,6 +3,7 @@ package org.set.boardPieces;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.Map;
+import java.util.Random;
 	public class WinningPiece extends boardPiece {
 
 		private static int WinningCount = 0;
@@ -13,7 +14,24 @@ import java.util.Map;
 	        this.name="Winning_"+index;
 	        this.pieceCount=6;
 	    }
-
+	    
+	    public void randomizeTiles(){
+	    	Random random = new Random();
+	    	double rand = random.nextDouble();
+	    	Color color;
+	        if (rand < 0.5) {
+	            color = Color.GREEN;
+	        } else {
+	            color = Color.BLUE;
+	        }
+	    	for (Tile tile : tiles) {
+	    		if(tile.getPoints()>0){
+	    			tile.setColor(color);
+	    			int points = random.nextInt(POINTS_MAX - POINTS_MIN + 1) + POINTS_MIN;
+	                tile.setPoints(points);
+	    		}
+	    	}
+	    }
 
 	    @Override
 	    public WinningPiece clone(int addRow, int addCol, Map<String, Tile> tilesMap) {

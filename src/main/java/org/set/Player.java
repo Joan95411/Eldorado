@@ -13,9 +13,6 @@ public class Player {
     public Player(Color selectedColor) {
         this.id = ++lastAssignedId;
         this.color=selectedColor;
-
-        float[] hsbValues = Color.RGBtoHSB(selectedColor.getRed(), selectedColor.getGreen(), selectedColor.getBlue(), null);
-        this.color= Color.getHSBColor(hsbValues[0], hsbValues[1], hsbValues[2] * 0.8f);
         mydeck=new PlayerCardDeck();
     }
 
@@ -43,11 +40,14 @@ public class Player {
 
     
 
-    public void draw(Graphics2D g2d, int row, int col, int size, Color color) {
-        // Calculate center of hexagon
-        int x = col * (int) (1.5 * size);
-        int y = row * (int) (Math.sqrt(3) * size);
-        if (col % 2 == 1) {
+    public void draw(Graphics2D g2d, int size) {
+    	
+    	float[] hsbValues = Color.RGBtoHSB(color.getRed(), color.getGreen(), color.getBlue(), null);
+        Color colorDraw= Color.getHSBColor(hsbValues[0], hsbValues[1], hsbValues[2] * 0.8f);
+        
+        int x = currentCol * (int) (1.5 * size);
+        int y = currentRow * (int) (Math.sqrt(3) * size);
+        if (currentCol % 2 == 1) {
             y += (int) (Math.sqrt(3) / 2 * size);
         }
         int centerX = x -size;
@@ -56,7 +56,7 @@ public class Player {
         // Draw a star representing player's position
         int[] xPoints = {centerX, centerX + size / 4, centerX + size / 2, centerX + size * 3 / 4, centerX + size, centerX + size * 3 / 4, centerX + size / 2, centerX + size / 4};
         int[] yPoints = {centerY - size / 4, centerY - size / 4, centerY - size / 2, centerY - size / 4, centerY - size / 4, centerY, centerY + size / 4, centerY - size / 4};
-        g2d.setColor(color);
+        g2d.setColor(colorDraw);
         g2d.fillPolygon(xPoints, yPoints, 8);
     }
 }

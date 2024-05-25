@@ -8,7 +8,7 @@ public abstract class boardPiece {
 	protected String name;
     protected List<Tile> tiles;
     protected int pieceCount;
-    protected static final Color[] COLOR_RANGE = {Color.GREEN, Color.YELLOW, Color.CYAN};
+    protected static final Color[] COLOR_RANGE = {Color.GREEN, Color.CYAN, Color.YELLOW};
     protected static final int POINTS_MIN = 1;
     protected static final int POINTS_MAX = 3;
 

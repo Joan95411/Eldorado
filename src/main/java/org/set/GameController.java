@@ -1,9 +1,13 @@
 package org.set;
 
+import java.awt.Color;
 import java.util.List;
 
 import org.set.boardPieces.HexagonGameBoard;
+import org.set.boardPieces.Tile;
+import org.set.boardPieces.Util;
 import org.set.cards.Card;
+import org.set.cards.expedition.ExpeditionCard;
 
 
 public class GameController {
@@ -40,13 +44,31 @@ public class GameController {
     	//Phase 1
     	//play cards that you want to use for moving
     	
-//    	int cardIndex;
-//    	do {
-//    	    cardIndex = InputHelper.getIntInput("Choose 1 card for Movement, input index (e.g. 0)");
-//    	    if (player.mydeck.getCurrentDeck().contains()) {
-//    	        System.out.println("Please enter a number between 1 and 4.");
-//    	    }
-//    	} while (numPlayers < 1 || numPlayers > 4);
+    	List<Card> currentDeck=player.mydeck.getCurrentDeck();
+    	boolean conditionNotMet=true;
+    	while(conditionNotMet) {
+    	int cardIndex = InputHelper.getIntInput("Choose 1 card for Movement, input index (e.g. 0)");
+	    if (cardIndex>=currentDeck.size()) {
+	        System.out.println("Please enter a number between 0 to "+(player.mydeck.getCurrentDeck().size()-1));
+	        continue;
+	    }
+    	Card selectedCard=currentDeck.get(cardIndex);//only expedition card can move?
+    	if (!(selectedCard instanceof ExpeditionCard)) {
+            System.out.println("Please select an Expedition card.");
+            continue;
+        }
+    	ExpeditionCard expeditionCard = (ExpeditionCard) selectedCard;
+    	System.out.println("Where do you want to move with this card?");
+    	String targetKey = player.getCurrentRow() + "," + player.getCurrentCol();
+        Tile PlayerStandingTile = board.ParentMap.get(targetKey);
+    	Tile MovingTo = InputHelper.getPlayerMoveInput(board,PlayerStandingTile);
+    	Color cardcolor=Util.getColorFromString(selectedCard.cardType.toString());
+    	if(cardcolor.equals(MovingTo.getColor())) {
+    		if(expeditionCard.getPower()>=MovingTo.getPoints()) {
+    			player.setPlayerPosition(MovingTo.getRow(), MovingTo.getCol());
+    		}
+    	}
+    	}
     }
     public void PlayerBuy(Player player) {
     	//Phase 1
