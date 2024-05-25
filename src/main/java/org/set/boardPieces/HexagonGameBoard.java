@@ -1,8 +1,6 @@
 package org.set.boardPieces;
-import org.json.JSONObject;
 import org.set.Player;
 
-import io.github.cdimascio.dotenv.Dotenv;
 import org.set.cards.Card;
 
 import java.awt.*;
@@ -15,7 +13,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public class HexagonGameBoard extends JPanel  {
-    public static Dotenv dotenv = Dotenv.configure().load();
 
     public int numRows;
     public int numCols;
@@ -24,6 +21,7 @@ public class HexagonGameBoard extends JPanel  {
     public int cardHeight;
     public List<Player> players;
     public Map<String, Tile> tilesMap; 
+    public Map<String, Tile> ParentMap; 
     public Map<String, boardPiece> boardPieces;
     public List<int[]> coordinateList;
     public List<Card> PlayerCards;
@@ -36,6 +34,7 @@ public class HexagonGameBoard extends JPanel  {
         this.cardHeight=cardWidth/2*3;
         setPreferredSize(new Dimension((int) (numCols * 1.5 * hexSize), (int) (numRows * Math.sqrt(3) * hexSize)));
         tilesMap = new HashMap<>();
+        ParentMap = new HashMap<>();
         boardPieces = new HashMap<>();
         coordinateList= Arrays.asList(
     		    new int[]{6, 4},
@@ -47,70 +46,35 @@ public class HexagonGameBoard extends JPanel  {
         initBoard();
     }
     
-    private void initBoard() {
-    	int i=1;
-    		for (int[] coordinates : coordinateList) {
-            	Terrain modelter=(Terrain) boardPieces.get("Terrain_"+i);
+    public void initBoard() {
+    	int maxIndex = 0;
 
+    	for (String key : boardPieces.keySet()) {
+    	    if (key.startsWith("Terrain_")) {
+    	        // Extract the index from the key
+    	        int index = Integer.parseInt(key.substring("Terrain_".length()));
+
+    	        // Check if this index is greater than the current maxIndex
+    	        if (index > maxIndex) {
+    	            maxIndex = index;
+    	        }
+    	    }
+    	}
+    	for (int[] coordinates : coordinateList) {
+            	Terrain modelter=(Terrain) boardPieces.get("Terrain_"+maxIndex);
+            	
     		    addTerrain(coordinates[0], coordinates[1], modelter);
-    		    i++;
+    		    maxIndex++;
     		}
 
     }
-    private void loadTileData() {
-        Terrain terrainA = new Terrain();
-        WinningPiece wpa = new WinningPiece();
-        String tileDataPath = dotenv.get("TILEDATA_PATH");
-        if (tileDataPath == null) tileDataPath = "src/main/java/org/set/boardPieces";
-        String filename="tileData.json";
-        JSONObject tileInfo = Util.readJsonData(tileDataPath, filename, "Terrain");
-        JSONObject winningPieceInfo = Util.readJsonData(tileDataPath, filename, "WinningPiece");
-
-        if (tileInfo == null || winningPieceInfo == null) {
-            System.err.println("Tile data not found or is not in the expected format.");
-            return;
-        }
-
-        for (int row = 0; row < numRows; row++) {
-            for (int col = 0; col < numCols; col++) {
-                int x = col * (int) (1.5 * hexSize);
-                int y = row * (int) (Math.sqrt(3) * hexSize);
-
-                if (col % 2 == 1) {
-                    y += (int) (Math.sqrt(3) / 2 * hexSize);
-                }
-                String key = row + "," + col;
-                Tile tile = new Tile(row, col);
-                tile.setX(x);
-                tile.setY(y);
-                JSONObject currentTileInfo = tileInfo.optJSONObject(key); 
-                JSONObject currentWinning = winningPieceInfo.optJSONObject(key);
-
-                if (currentTileInfo != null) {
-                	terrainA.addTile(tile);
-                }
-                else if(currentWinning!=null){
-                	wpa.addTile(tile);
-                	currentTileInfo=currentWinning;
-                }
-                else{
-                	currentTileInfo = new JSONObject();
-                    currentTileInfo.put("color", "White");
-                    currentTileInfo.put("points", 0);
-                }
-
-                String colorName = currentTileInfo.getString("color");
-                Color color = Util.getColorFromString(colorName);
-                int points = currentTileInfo.getInt("points");
-                tile.setColor(color);
-                tile.setPoints(points);
-                tilesMap.put(key, tile);
-
-                }
-            }
-        boardPieces.put(terrainA.getName(),terrainA);
-        boardPieces.put(wpa.getName(),wpa);
+    public void loadTileData() {
+    	tileDataDic tdd=new tileDataDic(numRows,numCols,hexSize);
+    	boardPieces.put(tdd.terrainA.getName(),tdd.terrainA);
+        boardPieces.put(tdd.wpa.getName(),tdd.wpa);
+        this.tilesMap=tdd.tilesMap;
     }
+    
     
 
     @Override
@@ -118,7 +82,13 @@ public class HexagonGameBoard extends JPanel  {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
         for (boardPiece piece : boardPieces.values()) {
+        	for(Tile tile:piece.getTiles()) {
+        		ParentMap.put(tile.getRow()+","+tile.getCol(),tile);
+        		
+        	}
             piece.draw(g2d, hexSize, tilesMap);
+
+        	
         }
         
 
@@ -193,14 +163,13 @@ public class HexagonGameBoard extends JPanel  {
         terrainB.randomizeTiles();
         boardPieces.put(terrainB.getName(), terrainB);
         Set<int[]> neighbors=terrainA.findOverlappingNeighbors(terrainB);
-        if (neighbors.size()<=5){
+        if (neighbors.size() >= 3 && neighbors.size() <= 5){
         Blockade blockade = new Blockade();
         for (int[] coordinate : neighbors) {
             int row = coordinate[0];
             int col = coordinate[1];
-            Tile temp=new Tile(row, col);
+            Tile temp = tilesMap.get(row+","+col);
             blockade.addTile(temp);
-
         }
         blockade.randomizeTiles();
         boardPieces.put(blockade.getName(), blockade);
@@ -214,9 +183,6 @@ public class HexagonGameBoard extends JPanel  {
     		tile.setParent(null);
     	}
     	boardPieces.remove(wpa.getName());
-    	for(Tile tile: wpb.getTiles()){
-    		tile.setParent("Winning");
-    	}
         boardPieces.put(wpb.getName(), wpb);
 
         }
@@ -238,7 +204,7 @@ public class HexagonGameBoard extends JPanel  {
         	    if(index<=currentTerrainIndex+1){
         		continue;}
         	}
-            piece.move(change[0], change[1], tilesMap);
+            piece.move(change[0], change[1]);
         }
 
 
@@ -251,7 +217,8 @@ public class HexagonGameBoard extends JPanel  {
         }
 
         String targetKey = row+","+col;
-        Tile temp = tilesMap.get(targetKey);
+        Tile temp = ParentMap.get(targetKey);
+        System.out.println(temp.getPoints());
 	    if(temp.getParent()==null){
 	    	System.out.println("This tile doesn't belong in any board piece.");
 	    	return false;

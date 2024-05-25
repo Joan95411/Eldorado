@@ -38,32 +38,38 @@ public abstract class boardPiece {
         
     }
 
-    
+    protected int[] calculateRowAndCol(Tile tile, int addRow, int addCol) {
+        int[] result = new int[2];
+        
+        if (addCol % 2 == 0) {
+            result[0] = tile.getRow() + addRow; 
+            result[1] = tile.getCol() + addCol; 
+        } else {
+            result[0] = tile.getRow() + addRow; 
+            result[1] = tile.getCol() + addCol; 
+            if (result[1] % 2 == 0) {
+                if (addRow % 2 == 0) {
+                    result[0]++;
+                } else {
+                    result[0]--;
+                }
+            }
+        }
+        
+        return result;
+    }
 
     public abstract void draw(Graphics2D g2d, int size, Map<String, Tile> tilesMap);
 
     public abstract boardPiece clone(int addRow, int addCol, Map<String, Tile> tilesMap);
 
-    public void move(int addRow, int addCol, Map<String, Tile> tilesMap) {
-        int row;
-        int col;
+    public void move(int addRow, int addCol) {
         for (Tile tile : tiles) {
-            if (addCol % 2 == 0) {
-                row = tile.getRow() + addRow;
-                col = tile.getCol() + addCol;
-            } else {
-                row = tile.getRow() + addRow;
-                col = tile.getCol() + addCol;
-                if (col % 2 == 0) {
-                    if (addRow % 2 == 0) {
-                        row = row + 1;
-                    } else {
-                        row = row - 1;
-                    }
-                }
-            }
-            tile.setRow(row);
-            tile.setCol(col);
+        	int[] result = calculateRowAndCol(tile, addRow, addCol);
+        	int newRow = result[0];
+        	int newCol = result[1];
+            tile.setRow(newRow);
+            tile.setCol(newCol);
         }
     }
 
