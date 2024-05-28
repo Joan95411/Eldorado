@@ -7,7 +7,7 @@ import java.util.Random;
 
 public class Terrain extends BoardPiece {
 	private static int terrainCount = 0;
-    private static final Color[] SPECIAL_COLOR_RANGE= {Color.GRAY,Color.RED,Color.BLACK};
+    private static final Color[] SPECIAL_COLOR_RANGE= {Color.GRAY, Color.RED, Color.BLACK};
     private static final double GREEN_PROBABILITY = 0.3; 
     private static final double specialColorProbability = 0.1; 
 
@@ -58,13 +58,13 @@ public class Terrain extends BoardPiece {
     		String targetKey = tile.getRow()+","+tile.getCol();
             Tile temp = tilesMap.get(targetKey);
     		
-    		int x=temp.getX();
-    		int y=temp.getY();
-    		int hexSize=size;
-    		Color color=tile.getColor();
-    		int row=tile.getRow();
-    		int col=tile.getCol();
-    		int points=tile.getPoints();
+    		int x = temp.getX();
+    		int y = temp.getY();
+    		int hexSize = size;
+    		Color color = tile.getColor();
+    		int row = tile.getRow();
+    		int col = tile.getCol();
+    		int points = tile.getPoints();
     		tile.drawTile(g2d, x, y, hexSize, color, row, col,points);
     	}
     }
