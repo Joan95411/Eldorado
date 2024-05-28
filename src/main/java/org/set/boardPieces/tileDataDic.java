@@ -14,12 +14,22 @@ public class tileDataDic {
 	public WinningPiece wpa;
 	public Map<String, Tile> tilesMap; 
 	public tileDataDic(int numRows, int numCols, int hexSize) {
-		dotenv = Dotenv.configure().load();
+
         terrainA = new Terrain();
         wpa = new WinningPiece();
         tilesMap = new HashMap<>();
-        String tileDataPath = dotenv.get("TILEDATA_PATH");
-        if (tileDataPath == null) tileDataPath = "src/main/java/org/set/boardPieces";
+
+        String tileDataPath;
+
+        try {
+            dotenv = Dotenv.configure().load();
+            tileDataPath = dotenv.get("TILEDATA_PATH");
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            System.out.println(e.getCause());
+            tileDataPath = "src/main/java/org/set/boardPieces";
+        }
+
         String filename="tileData.json";
         JSONObject tileInfo = Util.readJsonData(tileDataPath, filename, "Terrain");
         JSONObject winningPieceInfo = Util.readJsonData(tileDataPath, filename, "WinningPiece");
