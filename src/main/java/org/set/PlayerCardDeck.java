@@ -11,12 +11,12 @@ import java.util.Random;
 public class PlayerCardDeck {
     private final List<Card> drawPile;
     private final List<Card> discardPile;
-    private final List<Card> currentDeck;
+    private final List<Card> cardsInHand;
     
     public PlayerCardDeck() {
         drawPile = new ArrayList<>();
         discardPile = new ArrayList<>();
-		currentDeck = new ArrayList<>();
+		cardsInHand = new ArrayList<>();
         int blueCount = 1;
         int greenCount = 3;
         int yellowCount = 4;
@@ -87,7 +87,7 @@ public class PlayerCardDeck {
     public List<Card> getDiscardPile() {
         return discardPile;
     }
-    public List<Card> getCurrentDeck() {
-        return currentDeck;
+    public List<Card> getCardsInHand() {
+        return cardsInHand;
     }
 }

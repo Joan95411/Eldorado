@@ -44,12 +44,12 @@ public class GameController {
     	//Phase 1
     	//play cards that you want to use for moving
     	
-    	List<Card> currentDeck=player.mydeck.getCurrentDeck();
+    	List<Card> currentDeck=player.mydeck.getCardsInHand();
     	boolean conditionNotMet=true;
     	while(conditionNotMet) {
     	int cardIndex = InputHelper.getIntInput("Choose 1 card for Movement, input index (e.g. 0)");
 	    if (cardIndex>=currentDeck.size()) {
-	        System.out.println("Please enter a number between 0 to "+(player.mydeck.getCurrentDeck().size()-1));
+	        System.out.println("Please enter a number between 0 to "+(player.mydeck.getCardsInHand().size()-1));
 	        continue;
 	    }
     	Card selectedCard=currentDeck.get(cardIndex);//only expedition card can move?
