@@ -31,6 +31,9 @@ public class tileDataDic {
         }
 
         String filename="tileData.json";
+        
+        System.out.println(tileDataPath + filename);
+        
         JSONObject tileInfo = Util.readJsonData(tileDataPath, filename, "Terrain");
         JSONObject winningPieceInfo = Util.readJsonData(tileDataPath, filename, "WinningPiece");
 
