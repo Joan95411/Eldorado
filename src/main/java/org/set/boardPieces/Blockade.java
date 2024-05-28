@@ -5,7 +5,6 @@ import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.util.Map;
 import java.util.Random;
-
 public class Blockade extends BoardPiece {
 	private static int blockadeCount = 0;
     private Color color;

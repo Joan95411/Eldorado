@@ -15,9 +15,8 @@ public class ExpeditionCard extends Card {
     @Override
     public void draw(Graphics2D g2d, int x, int y, int width, int height) {
     	super.draw(g2d, x, y, width, height);
-    	g2d.drawString("Power: " + power, x + 5, y + height - 5);
+    	g2d.drawString("Power: "+power, x+5, y+height-5);
     }
-
     public int getPower() {
         return power;
     }

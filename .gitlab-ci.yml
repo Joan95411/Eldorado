@@ -1,10 +1,17 @@
 image: maven:3.9.6
 
-stages:
+stages: # List of stages for jobs and their order of execution
   - build
   - test
   - report
   - package
+
+#.standard-rules:
+#  rules:
+#    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'  # Run for all changes to a merge request's source branch
+#    - or:
+#        - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH  # Run for pushes to default branch
+#        - if: $CI_COMMIT_TAG  # Run for tagged commits
 
 build-job:
   stage: build
@@ -64,8 +71,8 @@ sigridci:
     when: always
   tags:
   - SET2024
-  rules:
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+  # rules:
+    # - if: $CI_MERGE_REQUEST_ID
 
 sigridpublish:
   stage: report
@@ -91,3 +98,8 @@ sast:
 
 include:
   - template: Security/SAST.gitlab-ci.yml
+
+#variables:
+#   DEPLOY_SERVER: "your-deploy-server.com"
+#   DEPLOY_USER: "username"
+#   DEPLOY_PASSWORD: "${CI_JOB_TOKEN}"

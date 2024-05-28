@@ -11,7 +11,11 @@ import java.util.Map;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+
+
 public class Util {
+	
+	
 	public static Color getColorFromString(String colorName) {
         Map<String, Color> colorMap = new HashMap<>();
         colorMap.put("gray", Color.GRAY);
@@ -19,11 +23,11 @@ public class Util {
         colorMap.put("red", Color.RED);
         colorMap.put("yellow", Color.YELLOW);
         colorMap.put("green", Color.GREEN);
-        colorMap.put("blue", Color.BLUE);
+        colorMap.put("blue", Color.CYAN);
         colorMap.put("pink", Color.PINK);
         colorMap.put("black", Color.BLACK);
         colorMap.put("cyan", Color.CYAN);
-        colorMap.put("purple", new Color(102, 0 ,153));
+        colorMap.put("purple", Color.BLUE);
         return colorMap.getOrDefault(colorName.toLowerCase(), Color.WHITE);
     }
 	
@@ -52,4 +56,7 @@ public class Util {
 	    }
 	    return null; // Return null if an exception occurs or the file is not found
 	}
+	
+	 
+
 }
