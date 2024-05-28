@@ -15,6 +15,7 @@ public class GameController {
     private List<Player> players;
     private String GameState;
     public int turnCounter;
+    private InputHelper inputHelper;
     public GameController(HexagonGameBoard board) {
         this.board=board;
         GameState="Game Starts";

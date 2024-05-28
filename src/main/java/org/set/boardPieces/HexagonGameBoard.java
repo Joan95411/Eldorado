@@ -1,4 +1,6 @@
 package org.set.boardPieces;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.set.Player;
 
 import org.set.cards.Card;
@@ -64,13 +66,13 @@ public class HexagonGameBoard extends JPanel  {
             addTerrain(coordinates[0], coordinates[1], modelter);
             maxIndex++;
         }
-
     }
+
     public void loadTileData() {
-    	TileDataDic tdd = new TileDataDic(numRows,numCols,hexSize);
-    	boardPieces.put(tdd.terrainA.getName(),tdd.terrainA);
-        boardPieces.put(tdd.wpa.getName(),tdd.wpa);
-        this.tilesMap=tdd.tilesMap;
+    	tileDataDic tdd = new tileDataDic(numRows, numCols, hexSize);
+    	boardPieces.put(tdd.terrainA.getName(), tdd.terrainA);
+        boardPieces.put(tdd.wpa.getName(), tdd.wpa);
+        this.tilesMap = tdd.tilesMap;
     }
 
     @Override
@@ -82,6 +84,8 @@ public class HexagonGameBoard extends JPanel  {
         		ParentMap.put(tile.getRow()+","+tile.getCol(),tile);
         	}
             piece.draw(g2d, hexSize, tilesMap);
+
+        	
         }
 
         if (players != null && players.size() > 0) {
@@ -123,6 +127,7 @@ public class HexagonGameBoard extends JPanel  {
             g2d.drawString("Index: "+i, x+5, y+cardHeight/2);
             cardsDrawn++;
 
+            // Break the loop if we've drawn all the cards
             if (cardsDrawn >= totalCards) {
                 break;
             }

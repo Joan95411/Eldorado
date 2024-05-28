@@ -41,6 +41,7 @@ public class Blockade extends BoardPiece {
             } catch(Exception e) {
             	e.printStackTrace();
                 System.err.println("Tile not found for row " + newRow + ", col " + newCol);
+                System.err.println("Tile not found for row " + newRow + ", col " + newCol);
             }
         }
         clonedBlock.setColor(this.color);

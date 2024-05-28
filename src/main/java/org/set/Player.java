@@ -47,7 +47,6 @@ public class Player {
     }
 
     public void draw(Graphics2D g2d, int size) {
-    	
     	float[] hsbValues = Color.RGBtoHSB(color.getRed(), color.getGreen(), color.getBlue(), null);
         Color colorDraw= Color.getHSBColor(hsbValues[0], hsbValues[1], hsbValues[2] * 0.8f);
         

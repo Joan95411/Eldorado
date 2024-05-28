@@ -9,7 +9,6 @@ import org.set.boardPieces.Tile;
 public class InputHelper {
     private static final Scanner scanner = new Scanner(System.in);
 
-
     public static String[] getInput(String question, int expectedLength) {
         while (true) {
             System.out.println(question);

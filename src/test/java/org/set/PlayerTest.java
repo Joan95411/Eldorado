@@ -28,7 +28,7 @@ public class PlayerTest {
     @Test
     public void testCreatingPlayersWithSameColor() {
         try {
-            Player player = new Player(Color.MAGENTA);
+            new Player(Color.MAGENTA);
         } catch (IllegalArgumentException e) {
             assertEquals(e.getMessage(), "The color " + Color.MAGENTA.toString() + " is already used", "A player's color is unique");
         }
