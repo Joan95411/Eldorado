@@ -4,8 +4,6 @@ import javax.swing.*;
 
 import org.set.boardPieces.HexagonGameBoard;
 
-
-
 public class Main {
 	public static void main(String[] args) {
         JFrame frame = new JFrame("Hexagon Game Board");
@@ -15,8 +13,5 @@ public class Main {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
         GameController GameControl=new GameController(board);
-
-
-
     }
 }

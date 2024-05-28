@@ -6,13 +6,6 @@ stages: # List of stages for jobs and their order of execution
   - report
   - package
 
-#.standard-rules:
-#  rules:
-#    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'  # Run for all changes to a merge request's source branch
-#    - or:
-#        - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH  # Run for pushes to default branch
-#        - if: $CI_COMMIT_TAG  # Run for tagged commits
-
 build-job:
   stage: build
   tags:
@@ -32,8 +25,6 @@ test-implemented-tests:
   - build-job
   script:
   - echo "Running all tests."
-  - "echo TILEDATA_PATH='src/main/java/org/set/boardPieces/tileData.json' >> .env"
-  - cat .env
   - mvn test
 
 verify-job:
@@ -44,8 +35,6 @@ verify-job:
   - build-job
   script:
   - echo "Running additional verification tests."
-  - "echo TILEDATA_PATH='src/main/java/org/set/boardPieces/tileData.json' >> .env"
-  - cat .env
   - mvn verify
 
 package-prod:
@@ -54,8 +43,6 @@ package-prod:
   - SET2024
   script:
   - echo "Maven package started"
-  - "echo TILEDATA_PATH='src/main/java/org/set/boardPieces/tileData.json' >> .env"
-  - cat .env
   - mvn package
   environment: production
   rules:
@@ -75,8 +62,8 @@ sigridci:
       junit: sigrid-ci-output/sigridci-junit-format-report.xml
     expire_in: 1 week
     when: always
-  rules:
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+  tags:
+  - SET2024
 
 sigridpublish:
   stage: report
@@ -90,6 +77,8 @@ sigridpublish:
     - sigrid-ci-output/*
     expire_in: 1 week
     when: always
+  tags:
+  - SET2024
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
 
@@ -100,8 +89,3 @@ sast:
 
 include:
   - template: Security/SAST.gitlab-ci.yml
-
-#variables:
-#   DEPLOY_SERVER: "your-deploy-server.com"
-#   DEPLOY_USER: "username"
-#   DEPLOY_PASSWORD: "${CI_JOB_TOKEN}"

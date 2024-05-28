@@ -20,9 +20,7 @@ public class Tile {
         this.row = row;
         this.col = col;
     }
-    
 
-    
     public void setParent(String parent) {
     	this.parent=parent;
     }
@@ -77,6 +75,7 @@ public class Tile {
     public void setPoints(int points) {
         this.points = points;
     }
+
     public void drawTile(Graphics2D g2d, int x, int y, int size, Color color, int row, int col,int points) {
         
         Color transparentColor = new Color(color.getRed(), color.getGreen(), color.getBlue(), 150); // Adjust the alpha value (0-255) as needed
@@ -91,12 +90,16 @@ public class Tile {
         int centerX = x + size/2;
         int centerY = y + size/10;
         g2d.drawString(rowColStr, centerX - rowColWidth, centerY + rowColHeight);
-        if(points!=0){
-        g2d.drawString(Points, (centerX-size/2) - rowColWidth / 2, (centerY-size*9/10) + rowColHeight / 2);}
+
+        if (points!=0) {
+            g2d.drawString(Points, (centerX-size/2) - rowColWidth / 2, (centerY-size*9/10) + rowColHeight / 2);
+        }
     }
+
     public void drawHexagon(Graphics2D g2d, int x, int y,int size,  Color color, Color border) {
         int[] xPoints = new int[6];
         int[] yPoints = new int[6];
+
         for (int i = 0; i < 6; i++) {
             xPoints[i] = (int) (x + size * Math.cos(i * Math.PI / 3));
             yPoints[i] = (int) (y + size * Math.sin(i * Math.PI / 3));
@@ -107,12 +110,12 @@ public class Tile {
         if(border!=null){
         g2d.setColor(border);}
         g2d.drawPolygon(xPoints, yPoints, 6);
-        
-        
     }
+
     public List<int[]> getNeighbors() {
     	List<int[]> neighbors = new ArrayList<>();
         int[][] directions;
+
         if (col % 2 == 0) { // Check if current column is even
             directions = new int[][] {
                 {-1, 0}, {1, 0}, {0, -1}, {-1, -1}, {0, 1}, {-1, 1}
@@ -131,13 +134,4 @@ public class Tile {
 
         return neighbors;
     }
-
-    
-
-    
-
-    
-
-    
-
 }
