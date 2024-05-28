@@ -2,11 +2,10 @@ package org.set.marketplace;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.ArrayUtils;
 
-import org.elasticsearch.common.util.ArrayUtils;
+import org.set.cards.*;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -20,52 +19,42 @@ public class MarketPlace {
     private HashMap<String, Integer> cardValues = this.LoadCardValues();
     private HashMap<String, Integer> marketBoardOptions = this.LoadCardTypes();
 
-    public void MarketPlaceTest(){
-        // for (String i : cardValues.keySet()) {
-        //     System.out.println(i);
-        //     System.out.println(cardValues.get(i));
-        // }
-        //this.TakeCard("SCOUT", 0);
-        this.BuyCard("JACK-OF-ALL-TRADERS", 2);
-        this.BuyCard("JACK-OF-ALL-TRADERS", 2);
-        this.BuyCard("JACK-OF-ALL-TRADERS", 2);
-        this.BuyCard("JACK-OF-ALL-TRADERS", 2);
-        this.BuyCard("JACK-OF-ALL-TRADERS", 2);
-        this.BuyCard("JACK-OF-ALL-TRADERS", 2);
-        this.BuyCard("PIONEER", 5);
-        this.BuyCard("PIONEER", 5);
-        this.BuyCard("PIONEER", 5);
-        this.BuyCard("PIONEER", 5);
-        this.BuyCard("PIONEER", 5);
-        // TakeCard("SCOUT", 2);
-        // TakeCard("COMPASS", 2);
-        // TakeCard("COMPASS", 2);
-    }
-
-
-    public void BuyCard(String cardType, Integer goldAmount){
+    public Card BuyCard(String cardType, Integer goldAmount){
         if(this.currentMarketBoard.containsKey(cardType)){
-            System.err.println("contains "+cardType);
-            this.TakeCard(cardType, goldAmount);
+            if(this.TakeCard(cardType, goldAmount)){
+                return CreateCard(cardType);
+            }
         }else if(this.currentMarketBoard.size()<6){
-            this.AddCardToMarketBoard(cardType, goldAmount);
+            if(this.AddCardToMarketBoard(cardType, goldAmount)){
+                return CreateCard(cardType);
+            }
         }else{
-            System.out.println("Unable to buy this card");
+            return null;
         }
+        return null;
     }
 
-    private void AddCardToMarketBoard(String cardType, Integer goldAmount){
+    private Card CreateCard(String cardType){
+
+        return null;
+    }
+
+    private boolean AddCardToMarketBoard(String cardType, Integer goldAmount){
+        boolean succes = false;
         if(this.marketBoardOptions.containsKey(cardType)){
             System.err.println("added "+cardType);
             this.marketBoardOptions.remove(cardType);
             this.currentMarketBoard.put(cardType, 3);
-            this.TakeCard(cardType, goldAmount);
+            succes = this.TakeCard(cardType, goldAmount);
+            return succes;
         }else{
-            System.out.println("This card is not available anymore");
+            //System.out.println("This card is not available anymore");
+            return succes;
         }
     }
     
-    private void TakeCard(String cardType, Integer goldAmount){
+    private boolean TakeCard(String cardType, Integer goldAmount){
+        boolean succes = false;
         if(this.currentMarketBoard.containsKey(cardType)){
             if(CheckSufficientGold(cardType,goldAmount)){
                 Integer numberOfCards = this.currentMarketBoard.get(cardType);
@@ -74,8 +63,11 @@ public class MarketPlace {
                 }else{
                     this.currentMarketBoard.remove(cardType);
                 }
+                succes = true;
+                return succes;
             }
         }
+        return succes;
     }
 
     
