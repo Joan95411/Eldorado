@@ -20,11 +20,10 @@ public class GameController {
         this.board=board;
         GameState="Game Starts";
         //Before_game.setSpecialColor(board);
-        players=Before_game.addPlayer(board);
+        players = Before_game.addPlayer(board);
         //During_game.removeblock(board);
         Before_game.placePlayersOnBoard(board);
         GameSession();
-        
     }
     
     private String displayGameState() {
@@ -33,7 +32,6 @@ public class GameController {
     }
     
     private void PlayerDrawCards(int turn,int currentPlayerIndex) {
-
 	    System.out.println("Player " + (currentPlayerIndex+1) + " drawing cards" );
     	Player currentPlayer = players.get(currentPlayerIndex);
     	currentPlayer.myDeck.draw(5);
@@ -90,15 +88,14 @@ public class GameController {
         int turnNumber = 0;
         while (true) {
             for (int currentPlayerIndex = 0; currentPlayerIndex < players.size(); currentPlayerIndex++) {
-            Player currentPlayer = players.get(currentPlayerIndex);
-            System.out.println("Turn " + turnNumber + ": Player " + (currentPlayerIndex+1) + "'s turn.");
-    	    PlayerDrawCards(turnNumber,currentPlayerIndex);
-    	    
-    	    int[] position = InputHelper.getPositionInput(board);
-    	    
-    	    currentPlayer.setPlayerPosition(position[0], position[1]);
-	        board.repaint();
-	        
+                Player currentPlayer = players.get(currentPlayerIndex);
+                System.out.println("Turn " + turnNumber + ": Player " + (currentPlayerIndex+1) + "'s turn.");
+                PlayerDrawCards(turnNumber,currentPlayerIndex);
+
+                int[] position = InputHelper.getPositionInput(board);
+
+                currentPlayer.setPlayerPosition(position[0], position[1]);
+                board.repaint();
             }
 
     	    turnNumber++;

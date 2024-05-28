@@ -1,8 +1,11 @@
 package org.set;
 
 import org.junit.jupiter.api.Test;
+import org.set.cards.expedition.ExpeditionCard;
+import org.set.cards.expedition.ExpeditionCardType;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -73,5 +76,17 @@ public class PlayerTest {
         assertEquals(player.getCurrentRow(), row, "The current row of the player should be equal to " + row);
         assertEquals(player.getCurrentCol(), col, "The current col of the player should be equal to " + col);
         assertTrue(player.isAtPosition(row, col), "The player should be in row " + row + " and col " + col);
+    }
+
+    /**
+     * Test for drawing player.
+     */
+    @Test
+    public void drawingPlayer() {
+        BufferedImage image = new BufferedImage(100, 100, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2d = image.createGraphics();
+
+        Player player = new Player(new Color(0,1,2));
+        player.draw(g2d, 1);
     }
 }
