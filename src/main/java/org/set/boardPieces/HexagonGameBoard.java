@@ -1,6 +1,4 @@
 package org.set.boardPieces;
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.set.Player;
 
 import org.set.cards.Card;
@@ -21,8 +19,8 @@ public class HexagonGameBoard extends JPanel  {
     public int cardWidth;
     public int cardHeight;
     public List<Player> players;
-    public Map<String, Tile> tilesMap; 
-    public Map<String, Tile> ParentMap; 
+    public Map<String, Tile> tilesMap;
+    public Map<String, Tile> ParentMap;
     public Map<String, BoardPiece> boardPieces;
     public List<int[]> coordinateList;
     public List<Card> PlayerCards;
@@ -38,19 +36,19 @@ public class HexagonGameBoard extends JPanel  {
         ParentMap = new HashMap<>();
         boardPieces = new HashMap<>();
         coordinateList= Arrays.asList(
-    		    new int[]{6, 4},
-    		    new int[]{0, 8},
-    		    new int[]{-6, 4}
-    		    //new int[]{0, 8}
-    		);
-    	loadTileData();
+                new int[]{6, 4},
+                new int[]{0, 8},
+                new int[]{-6, 4}
+                //new int[]{0, 8}
+        );
+        loadTileData();
         initBoard();
     }
-    
+
     public void initBoard() {
-    	int maxIndex = 0;
-    	List<Terrain> terrains = getAllTerrains();
-    	for (Terrain terrain : terrains) {
+        int maxIndex = 0;
+        List<Terrain> terrains = getAllTerrains();
+        for (Terrain terrain : terrains) {
             String name = terrain.getName();
             int index = Integer.parseInt(name.substring("Terrain_".length()));
 
@@ -58,34 +56,32 @@ public class HexagonGameBoard extends JPanel  {
             if (index > maxIndex) {
                 maxIndex = index;
             }
-    	    
-    	}
 
-    	for (int[] coordinates : coordinateList) {
+        }
+
+        for (int[] coordinates : coordinateList) {
             Terrain modelter = (Terrain) boardPieces.get("Terrain_" + maxIndex);
             addTerrain(coordinates[0], coordinates[1], modelter);
             maxIndex++;
         }
-    }
 
+    }
     public void loadTileData() {
-    	tileDataDic tdd = new tileDataDic(numRows, numCols, hexSize);
-    	boardPieces.put(tdd.terrainA.getName(), tdd.terrainA);
-        boardPieces.put(tdd.wpa.getName(), tdd.wpa);
-        this.tilesMap = tdd.tilesMap;
+        TileDataDic tdd = new TileDataDic(numRows,numCols,hexSize);
+        boardPieces.put(tdd.terrainA.getName(),tdd.terrainA);
+        boardPieces.put(tdd.wpa.getName(),tdd.wpa);
+        this.tilesMap=tdd.tilesMap;
     }
 
     @Override
-	public void paintComponent(Graphics g) {
+    public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
         for (BoardPiece piece : boardPieces.values()) {
-        	for(Tile tile:piece.getTiles()) {
-        		ParentMap.put(tile.getRow()+","+tile.getCol(),tile);
-        	}
+            for(Tile tile:piece.getTiles()) {
+                ParentMap.put(tile.getRow()+","+tile.getCol(),tile);
+            }
             piece.draw(g2d, hexSize, tilesMap);
-
-        	
         }
 
         if (players != null && players.size() > 0) {
@@ -95,20 +91,20 @@ public class HexagonGameBoard extends JPanel  {
         }
 
         if (PlayerCards != null) {
-        	drawPlayerDeck(g2d);
+            drawPlayerDeck(g2d);
         }
 
     }
 
     public void drawPlayerDeck(Graphics2D g2d) {
-    	Tile temp = tilesMap.get("1,6");
-    	
+        Tile temp = tilesMap.get("1,6");
+
         g2d.setColor(Color.BLACK);
         int fontSize = 12;
         Font font = new Font("Arial", Font.BOLD, fontSize);
         g2d.setFont(font);
 
-    	FontMetrics fm = g2d.getFontMetrics();
+        FontMetrics fm = g2d.getFontMetrics();
         String caption = "Current Player's deck: ";
         int captionWidth = fm.stringWidth(caption);
         g2d.drawString(caption, temp.getX(), temp.getY());
@@ -117,7 +113,7 @@ public class HexagonGameBoard extends JPanel  {
         int totalCards = PlayerCards.size();
         int cardsDrawn = 0;
         for (int i = 0; i < totalCards; i++) {
-        	int row = i / maxCardsPerRow;  // Calculate the row index
+            int row = i / maxCardsPerRow;  // Calculate the row index
             int col = i % maxCardsPerRow;  // Calculate the column index
 
             int x = temp.getX() + captionWidth + col * (cardWidth + cardSpacing);
@@ -127,13 +123,12 @@ public class HexagonGameBoard extends JPanel  {
             g2d.drawString("Index: "+i, x+5, y+cardHeight/2);
             cardsDrawn++;
 
-            // Break the loop if we've drawn all the cards
             if (cardsDrawn >= totalCards) {
                 break;
             }
         }
     }
-    
+
     public List<Terrain> getAllTerrains() {
         return boardPieces.keySet().stream()
                 .filter(key -> key.startsWith("Terrain_"))
@@ -156,8 +151,8 @@ public class HexagonGameBoard extends JPanel  {
     }
 
     public void addTerrain(int addRow, int addCol, Terrain terrainA){
-    	List<WinningPiece> WP = getAllWinningPieces();
-    	addWinningPiece(addRow, addCol, WP.get(WP.size() - 1));
+        List<WinningPiece> WP = getAllWinningPieces();
+        addWinningPiece(addRow, addCol, WP.get(WP.size() - 1));
         Terrain terrainB = terrainA.clone(addRow, addCol,tilesMap);
         terrainB.randomizeTiles();
         boardPieces.put(terrainB.getName(), terrainB);
@@ -176,20 +171,20 @@ public class HexagonGameBoard extends JPanel  {
             boardPieces.put(blockade.getName(), blockade);
         }
     }
-    
+
     public void addWinningPiece(int addRow, int addCol,WinningPiece wpa){
-    	WinningPiece wpb = wpa.clone(addRow, addCol,tilesMap);
+        WinningPiece wpb = wpa.clone(addRow, addCol,tilesMap);
 
         for (Tile tile: wpa.getTiles()) {
-    		tile.setParent(null);
-    	}
+            tile.setParent(null);
+        }
 
-    	boardPieces.remove(wpa.getName());
+        boardPieces.remove(wpa.getName());
         boardPieces.put(wpb.getName(), wpb);
     }
-    
+
     public void removeBlockade(int currentTerrainIndex) {//need to be sure terrain_index and block_index are in sequence
-    	boardPieces.remove("Blockade_"+(currentTerrainIndex));
+        boardPieces.remove("Blockade_"+(currentTerrainIndex));
         int[] change;
 
         if (coordinateList.get(currentTerrainIndex-1)[0] > 0) {
@@ -201,12 +196,12 @@ public class HexagonGameBoard extends JPanel  {
         }
 
         for (BoardPiece piece : boardPieces.values()) {
-        	if(piece.getName().startsWith("Terrain_")){
-        		String indexString = piece.getName().substring("Terrain_".length()); // Extract the substring after "Terrain_"
-        	    int index = Integer.parseInt(indexString);
-        	    if(index<=currentTerrainIndex){
-        		continue;}
-        	}
+            if(piece.getName().startsWith("Terrain_")){
+                String indexString = piece.getName().substring("Terrain_".length()); // Extract the substring after "Terrain_"
+                int index = Integer.parseInt(indexString);
+                if(index<=currentTerrainIndex){
+                    continue;}
+            }
             piece.move(change[0], change[1]);
         }
     }
@@ -214,19 +209,19 @@ public class HexagonGameBoard extends JPanel  {
     public boolean isValidPosition(int row, int col) {
         String targetKey = row+","+col;
         Tile temp = ParentMap.get(targetKey);
-	    if (temp==null||temp.getParent()==null||temp.getParent().startsWith("Blockade_")) {
-	    	System.out.println("This tile doesn't belong in any board piece or is a block.");
-	    	return false;
-	    }
+        if (temp==null||temp.getParent()==null||temp.getParent().startsWith("Blockade_")) {
+            System.out.println("This tile doesn't belong in any board piece or is a block.");
+            return false;
+        }
 
-	    if (players != null && players.size() > 0) {
+        if (players != null && players.size() > 0) {
             for (Player player : players) {
                 if (player.isAtPosition(row, col)) {
                     System.out.println("Someone's already here. Choose another move!");
                     return false;
                 }
             }
-	    }
+        }
         return true;
     }
 }

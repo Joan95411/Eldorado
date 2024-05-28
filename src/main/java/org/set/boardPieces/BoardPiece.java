@@ -5,7 +5,7 @@ import java.awt.Graphics2D;
 import java.util.*;
 
 public abstract class BoardPiece {
-	protected String name;
+    protected String name;
     protected List<Tile> tiles;
     protected int pieceCount;
     protected static final Color[] COLOR_RANGE = {Color.GREEN, Color.CYAN, Color.YELLOW};
@@ -16,7 +16,7 @@ public abstract class BoardPiece {
         this.tiles = new ArrayList<>();
     }
     public String getName() {
-    	return name;
+        return name;
     }
 
     public void addTile(Tile tile) {
@@ -26,7 +26,7 @@ public abstract class BoardPiece {
         } else {
             System.out.println("Overflow of tiles");
         }
-    } 
+    }
 
     public List<Tile> getTiles() {
         return tiles;
@@ -38,13 +38,13 @@ public abstract class BoardPiece {
 
     protected int[] calculateRowAndCol(Tile tile, int addRow, int addCol) {
         int[] result = new int[2];
-        
+
         if (addCol % 2 == 0) {
-            result[0] = tile.getRow() + addRow; 
-            result[1] = tile.getCol() + addCol; 
+            result[0] = tile.getRow() + addRow;
+            result[1] = tile.getCol() + addCol;
         } else {
-            result[0] = tile.getRow() + addRow; 
-            result[1] = tile.getCol() + addCol; 
+            result[0] = tile.getRow() + addRow;
+            result[1] = tile.getCol() + addCol;
             if (result[1] % 2 == 0) {
                 if (addRow % 2 == 0) {
                     result[0]++;
@@ -53,7 +53,7 @@ public abstract class BoardPiece {
                 }
             }
         }
-        
+
         return result;
     }
 
@@ -63,14 +63,14 @@ public abstract class BoardPiece {
 
     public void move(int addRow, int addCol) {
         for (Tile tile : tiles) {
-        	int[] result = calculateRowAndCol(tile, addRow, addCol);
-        	int newRow = result[0];
-        	int newCol = result[1];
+            int[] result = calculateRowAndCol(tile, addRow, addCol);
+            int newRow = result[0];
+            int newCol = result[1];
             tile.setRow(newRow);
             tile.setCol(newCol);
         }
     }
-    
+
     public Set<int[]> findOverlappingNeighbors(BoardPiece bpB) {
         Set<int[]> overlappingNeighbors = new LinkedHashSet<>();
         Set<int[]> neighborsA = new LinkedHashSet<>(getAllNeighbors());
@@ -79,7 +79,7 @@ public abstract class BoardPiece {
         for (int[] neighborA : neighborsA) {
             for (int[] neighborB : neighborsB) {
                 if (Arrays.equals(neighborA, neighborB) ) {
-                	if (!overlappingNeighbors.contains(neighborA)) {
+                    if (!overlappingNeighbors.contains(neighborA)) {
                         overlappingNeighbors.add(neighborA);
                     }
                     break; // No need to continue searching for this neighbor in terrainB
