@@ -2,8 +2,11 @@ package org.set.marketplace;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.ArrayUtils;
 
+import org.elasticsearch.common.util.ArrayUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -15,7 +18,7 @@ public class MarketPlace {
 
     private HashMap<String, Integer> currentMarketBoard = this.LoadMarketBoard();
     private HashMap<String, Integer> cardValues = this.LoadCardValues();
-    private String[] marketBoardOptions = LoadCardTypes();
+    private HashMap<String, Integer> marketBoardOptions = this.LoadCardTypes();
 
     public void MarketPlaceTest(){
         // for (String i : cardValues.keySet()) {
@@ -23,36 +26,63 @@ public class MarketPlace {
         //     System.out.println(cardValues.get(i));
         // }
         //this.TakeCard("SCOUT", 0);
+        this.BuyCard("JACK-OF-ALL-TRADERS", 2);
+        this.BuyCard("JACK-OF-ALL-TRADERS", 2);
+        this.BuyCard("JACK-OF-ALL-TRADERS", 2);
+        this.BuyCard("JACK-OF-ALL-TRADERS", 2);
+        this.BuyCard("JACK-OF-ALL-TRADERS", 2);
+        this.BuyCard("JACK-OF-ALL-TRADERS", 2);
+        this.BuyCard("PIONEER", 5);
+        this.BuyCard("PIONEER", 5);
+        this.BuyCard("PIONEER", 5);
+        this.BuyCard("PIONEER", 5);
+        this.BuyCard("PIONEER", 5);
+        // TakeCard("SCOUT", 2);
+        // TakeCard("COMPASS", 2);
+        // TakeCard("COMPASS", 2);
     }
 
 
     public void BuyCard(String cardType, Integer goldAmount){
+        if(this.currentMarketBoard.containsKey(cardType)){
+            System.err.println("contains "+cardType);
+            this.TakeCard(cardType, goldAmount);
+        }else if(this.currentMarketBoard.size()<6){
+            this.AddCardToMarketBoard(cardType, goldAmount);
+        }else{
+            System.out.println("Unable to buy this card");
+        }
+    }
 
+    private void AddCardToMarketBoard(String cardType, Integer goldAmount){
+        if(this.marketBoardOptions.containsKey(cardType)){
+            System.err.println("added "+cardType);
+            this.marketBoardOptions.remove(cardType);
+            this.currentMarketBoard.put(cardType, 3);
+            this.TakeCard(cardType, goldAmount);
+        }else{
+            System.out.println("This card is not available anymore");
+        }
     }
     
     private void TakeCard(String cardType, Integer goldAmount){
         if(this.currentMarketBoard.containsKey(cardType)){
             if(CheckSufficientGold(cardType,goldAmount)){
                 Integer numberOfCards = this.currentMarketBoard.get(cardType);
-                if((numberOfCards-1) < 0){
-                    this.currentMarketBoard.put(cardType,numberOfCards-1);
+                if((numberOfCards-1) > 0){
+                    this.currentMarketBoard.put(cardType,(numberOfCards-1));
                 }else{
                     this.currentMarketBoard.remove(cardType);
                 }
-                System.out.println(this.currentMarketBoard.get(cardType));
             }
         }
-    }
-
-    private void RemoveCardFromMarket(){
-
     }
 
     
     private boolean CheckSufficientGold(String cardType, Integer goldAmount){
         if(this.cardValues.containsKey(cardType)){
             Integer value = this.cardValues.get(cardType);
-            if(value >= goldAmount){
+            if(goldAmount >= value){
                 return true;
             }else{
                 return false;
@@ -83,28 +113,16 @@ public class MarketPlace {
         return currentMarketBoard;
     }
 
-    // private void LoadMarketBoardValues() {
-    //     for (String currentKey : this.cardData.keySet()) {
-    //         JSONObject currentCardInfo = this.cardData.getJSONObject(currentKey);
-    //         Integer cost = currentCardInfo.getInt("cost");
-    //         this.cardValues.put(currentKey,cost);
-    //     }
-    //     System.out.println(this.cardValues);
-    //     System.out.println(this.cardValues.get("Transmitter"));
-    // }
-
-    private String[] LoadCardTypes(){
-        String[] cardTypes = new String[(this.cardData.keySet().size()-6)];
-        Integer currentArraySpot = 0;
+    private HashMap<String, Integer> LoadCardTypes(){
+        marketBoardOptions = new HashMap<String, Integer>();
         for (String currentKey : this.cardData.keySet()) {
             JSONObject currentCardInfo = this.cardData.getJSONObject(currentKey);
             Integer marketStart = currentCardInfo.getInt("marketStart");
             if(marketStart == 0){
-                cardTypes[currentArraySpot] = currentKey;
-                currentArraySpot++;
+                marketBoardOptions.put(currentKey, 1);
             }
         }
-        return cardTypes;
+        return marketBoardOptions;
     }
 
     private JSONObject GetJsonData(){
