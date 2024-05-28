@@ -32,8 +32,6 @@ test-implemented-tests:
   - build-job
   script:
   - echo "Running all tests."
-  - "echo TILEDATA_PATH='src/main/java/org/set/boardPieces/tileData.json' >> .env"
-  - cat .env
   - mvn test
 
 verify-job:
@@ -44,8 +42,6 @@ verify-job:
   - build-job
   script:
   - echo "Running additional verification tests."
-  - "echo TILEDATA_PATH='src/main/java/org/set/boardPieces/tileData.json' >> .env"
-  - cat .env
   - mvn verify
 
 package-prod:
@@ -54,8 +50,6 @@ package-prod:
   - SET2024
   script:
   - echo "Maven package started"
-  - "echo TILEDATA_PATH='src/main/java/org/set/boardPieces/tileData.json' >> .env"
-  - cat .env
   - mvn package
   environment: production
   rules:
