@@ -1,0 +1,24 @@
+{
+    "MarketCards":{
+        "SCOUT":                {"cost": 1, "cardType": "GREEN",  "singleUse": 0 ,"marketStart": 1},
+        "TRAILBLAZER":          {"cost": 3, "cardType": "GREEN",  "singleUse": 0 ,"marketStart": 1},
+        "JACK-OF-ALL-TRADERS":  {"cost": 2, "cardType": "JOKER",  "singleUse": 0 ,"marketStart": 1},
+        "PHOTOGRAPHER":         {"cost": 2, "cardType": "YELLOW", "singleUse": 0 ,"marketStart": 1},
+        "TREASURE_CHEST":       {"cost": 3, "cardType": "YELLOW", "singleUse": 1 ,"marketStart": 1},
+        "TRANSMITTER":          {"cost": 4, "cardType": "PURPLE", "singleUse": 1 ,"marketStart": 1},
+
+        "PIONEER":              {"cost": 5, "cardType": "GREEN",  "singleUse": 0 ,"marketStart": 0},
+        "GIANT_MACHETE":        {"cost": 3, "cardType": "GREEN",  "singleUse": 1 ,"marketStart": 0},
+        "ADVENTURER":           {"cost": 4, "cardType": "JOKER",  "singleUse": 0 ,"marketStart": 0},
+        "PROP_PLANE":           {"cost": 4, "cardType": "JOKER",  "singleUse": 1 ,"marketStart": 0},
+        "JOURNALIST":           {"cost": 3, "cardType": "YELLOW", "singleUse": 0 ,"marketStart": 0},
+        "MILLIONAIRE":          {"cost": 4, "cardType": "YELLOW", "singleUse": 0 ,"marketStart": 0},
+
+        "CAPTAIN":              {"cost": 2, "cardType": "BLUE",   "singleUse": 0 ,"marketStart": 0},
+        "CARTOGRAPHER":         {"cost": 4, "cardType": "PURPLE", "singleUse": 0 ,"marketStart": 0},
+        "COMPASS":              {"cost": 2, "cardType": "PURPLE", "singleUse": 1 ,"marketStart": 0},
+        "SCIENTIST":            {"cost": 4, "cardType": "PURPLE", "singleUse": 0 ,"marketStart": 0},
+        "TRAVEL_LOG":           {"cost": 3, "cardType": "PURPLE", "singleUse": 1 ,"marketStart": 0},
+        "NATIVE":               {"cost": 5, "cardType": "PURPLE", "singleUse": 0 ,"marketStart": 0}   
+    }
+}
