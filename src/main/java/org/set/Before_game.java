@@ -35,21 +35,22 @@ public class Before_game {
                 System.out.println("Invalid input. Please enter valid integers for row and column, and a valid color.");
                 continue; // Continue to the next iteration if the input is invalid
             }
+
             Tile special = board.tilesMap.get(row + "," + col);
+
             if (!board.isValidPosition(row, col)) {
                 System.out.println("Invalid position. Please enter valid coordinates.");
                 continue; // Continue to the next iteration if the position is invalid
             }
-
             special.setColor(Util.getColorFromString(color));
             special.setPoints(points);
             board.repaint();
+
             System.out.println("Special color and points set for tile at position (" + row + "," + col + ").");
         }
+    }
 
-        }
 	public static List<Player> addPlayer(HexagonGameBoard board) {
-
     	int numPlayers;
     	do {
     	    numPlayers = InputHelper.getIntInput("How many players are playing?");
@@ -64,24 +65,23 @@ public class Before_game {
         // Loop through each player
         for (int i = 0; i < numPlayers; i++) {
         	String color = InputHelper.getInput("Player " + (i + 1) + ", choose your color:", 1)[0];
-            
 
             // Create a new player instance with the chosen color
             Player player = new Player(Util.getColorFromString(color));
 
             // Add the player to the players list
             players.add(player);
-        }board.players=players;
+        }
+
+        board.players=players;
         return players;
-        
     }
     
 	public static void placePlayersOnBoard(HexagonGameBoard board) {
+        for (Player player : board.players) {
+            player.setPlayerPosition(player.id + 1, 1);
+        }
 
-		 for (Player player : board.players) {
-
-       player.setPlayerPosition(1+player.id, 1);
-
-		 }board.repaint();
+        board.repaint();
     }
 }

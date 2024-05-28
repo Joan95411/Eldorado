@@ -12,120 +12,139 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Test class for the {@link HexagonGameBoard} class.
+ */
 public class HexagonGameBoardTest {
-   public static HexagonGameBoard hexagonGameBoard;
-   
+    private static HexagonGameBoard hexagonGameBoard;
+    private int numRows = 15;
+    private int numCols = 35;
+    private int hexSize = 30;
+
+    /**
+     * Creating a new instance of HexagonGameBoard for every test.
+     */
    @BeforeEach
    void setUp() {
-	   hexagonGameBoard = new HexagonGameBoard(15, 35, 30);
+	   hexagonGameBoard = new HexagonGameBoard(numRows, numCols, hexSize);
+       assertNotNull(hexagonGameBoard, "hexagonGameBoard should not be null");
    }
+
+    /**
+     * Test that a new HexagonGameBoard can be created and has the expected dimensions.
+     */
    @Test
    public void testHexagonGameBoard() {
-       assertNotNull(hexagonGameBoard);
-       assertNotNull(hexagonGameBoard.getPreferredSize());
+       assertNotNull(hexagonGameBoard.getPreferredSize(), "getPreferredSize() should not return null");
 
-       assertEquals(hexagonGameBoard.numRows, 15);
-       assertEquals(hexagonGameBoard.numCols, 35);
-       assertEquals(hexagonGameBoard.hexSize, 30);
+       assertEquals(hexagonGameBoard.numRows, numRows, "numRows should be " + numRows);
+       assertEquals(hexagonGameBoard.numCols, numCols, "numCols should be " + numCols);
+       assertEquals(hexagonGameBoard.hexSize, hexSize, "hexSize should be " + hexSize);
    }
-   @Test
-   public void testBoardPieces() {
-	   Map<String, BoardPiece> bp=hexagonGameBoard.boardPieces;
-	   assertNotNull(bp);
-	   int countTerrain = hexagonGameBoard.getAllTerrains().size();
-	    
-	    assertEquals(4, countTerrain, "Actual count: " + countTerrain);
-	    int countWinning = hexagonGameBoard.getAllWinningPieces().size();
-	    
-	    assertEquals(1, countWinning, "WinningPiece Actual count: " + countWinning);
-	    
-	}
-   
+
+   /**
+    * Tests the loadData() from the hexagonGameBoard.
+    * It checks the amount of boardPieces, terrains and winning pieces that are created.
+    */
    @Test
    public void testLoadTileData() {
-	   Map<String, BoardPiece> bp=hexagonGameBoard.boardPieces;
-	   bp.clear();
-	   assertEquals(0,hexagonGameBoard.boardPieces.size(),"current board: " + hexagonGameBoard.boardPieces.size());
-	   hexagonGameBoard.loadTileData();
-	   assertNotNull(hexagonGameBoard.boardPieces);
-	   assertEquals(2,hexagonGameBoard.boardPieces.size(),"current board: " + hexagonGameBoard.boardPieces.size());
-	   int countTerrain = hexagonGameBoard.getAllTerrains().size();
-	    assertEquals(1, countTerrain, "Actual count: " + countTerrain);
-	    int countWinning = hexagonGameBoard.getAllWinningPieces().size();
-	    assertEquals(1, countWinning, "Actual count: " + countWinning);
-	    hexagonGameBoard.initBoard();
-	    int countTerrain1 = hexagonGameBoard.getAllTerrains().size();
-	    
-	    assertEquals(4, countTerrain1, "Actual count: " + countTerrain1);
-	    
-	}
+        Map<String, BoardPiece> bp = hexagonGameBoard.boardPieces;
+        bp.clear();
+        assertEquals(0, hexagonGameBoard.boardPieces.size(),"current board: " + hexagonGameBoard.boardPieces.size());
+
+        hexagonGameBoard.loadTileData();
+        assertNotNull(hexagonGameBoard.boardPieces);
+        assertEquals(2, hexagonGameBoard.boardPieces.size(),"current board: " + hexagonGameBoard.boardPieces.size());
+
+        int countTerrain = hexagonGameBoard.getAllTerrains().size();
+        assertEquals(1, countTerrain, "Actual count: " + countTerrain);
+
+        int countWinning = hexagonGameBoard.getAllWinningPieces().size();
+        assertEquals(1, countWinning, "Actual count: " + countWinning);
+
+        hexagonGameBoard.initBoard();
+        int countTerrain1 = hexagonGameBoard.getAllTerrains().size();
+        assertEquals(4, countTerrain1, "Actual count: " + countTerrain1);
+   }
+
+   /**
+    * Tests the addTerrain() from the hexagonGameBoard.
+    * It checks the amount of blockades that are created when adding a new terrain.
+    */
    @Test
    public void testAddTerrain() {
 	   Map<String, BoardPiece> bp=hexagonGameBoard.boardPieces;
 	   bp.clear();
 	   hexagonGameBoard.loadTileData();
-	   Terrain ta=hexagonGameBoard.getAllTerrains().get(0);
-	   
-	   System.out.println("Kiekeboe");
-	   System.out.println(hexagonGameBoard.getAllTerrains().size());
-//	   assertEquals(1, hexagonGameBoard.getAllTerrains().size(), "Actual count: " + hexagonGameBoard.getAllTerrains().size());
+	   Terrain ta = hexagonGameBoard.getAllTerrains().get(0);
+	   assertEquals(1, hexagonGameBoard.getAllTerrains().size(), "Actual count: " + hexagonGameBoard.getAllTerrains().size());
 	   
 	   hexagonGameBoard.addTerrain(0, 8, ta); //blockade auto added
-	   int countBlockade=hexagonGameBoard.getAllBlockades().size();
-	   
-	   System.out.println(countBlockade);
-	   
+	   int countBlockade = hexagonGameBoard.getAllBlockades().size();
 	   assertEquals(1, countBlockade, "Actual count: " + countBlockade);
-	   hexagonGameBoard.addTerrain(5, 5, ta); //blockade shouldn't be added
-	   countBlockade=hexagonGameBoard.getAllBlockades().size();
 
-	   System.out.println(countBlockade);
+	   hexagonGameBoard.addTerrain(5, 5, ta); //blockade shouldn't be added
+	   countBlockade = hexagonGameBoard.getAllBlockades().size();
 	   assertEquals(1, countBlockade, "Actual count: " + countBlockade);
-	}
-   
-   @Test
-   public void testHexagonGameBoardLocation() {
-       assertEquals(hexagonGameBoard.getLocation(), new Point(0,0));
-       hexagonGameBoard.setLocation(new Point(1,1));
-       assertEquals(hexagonGameBoard.getLocation(), new Point(1,1));
    }
+
+   /**
+    * Tests the getLocation() method of HexagonGameBoard works as expected.
+    */
+   @Test
+   public void testHexagonGameBoardDefaultLocation() {
+       Point defaultLocation = new Point(0,0);
+
+       assertEquals(hexagonGameBoard.getLocation(), defaultLocation, "Default getLocation() should return " + defaultLocation);
+   }
+
+    /**
+     * Test that the setLocation() method of HexagonGameBoard works as expected.
+     */
+    @Test
+    public void testHexagonGameBoardSetLocation() {
+        Point newPoint = new Point(1,1);
+
+        hexagonGameBoard.setLocation(newPoint);
+        assertEquals(hexagonGameBoard.getLocation(), newPoint, "The newly setLocation(newPoint) should have set the location to " + newPoint);
+    }
    
 
    @Test
    public void testHexagonGameBoardPlayer() {
-       Color[] colors = {Color.RED, Color.GREEN, Color.BLUE, Color.YELLOW};
        int row = 0;
        int col = 0;
        int maxPlayers = 4;
-       hexagonGameBoard.players=new ArrayList<>();
+
+       hexagonGameBoard.players = new ArrayList<>();
        hexagonGameBoard.repaint();
-       
-       for (int i = 0; i < maxPlayers; i++) {
-    	   
-           hexagonGameBoard.players.add(new Player(colors[i]));
-           assertEquals(hexagonGameBoard.players.size(), i + 1);
+
+       int counter = 0;
+
+       for (Player player : PlayerTest.players) {
+           hexagonGameBoard.players.add(player);
+
+           assertEquals(hexagonGameBoard.players.size(), counter + 1);
 
            int playerId = hexagonGameBoard.players.size() - 1;
-           assertEquals(hexagonGameBoard.players.get(playerId).color, colors[i]);
+           assertEquals(hexagonGameBoard.players.get(playerId).color, player.getColor());
 
-//            Set the players position and check if it actually does set the position
-           hexagonGameBoard.players.get(playerId).setPlayerPosition(row + i, col + i);
+           // Set the players position and check if it actually does set the position
+           hexagonGameBoard.players.get(playerId).setPlayerPosition(row + counter, col + counter);
 
-           assertEquals(hexagonGameBoard.players.get(playerId).getCurrentCol(), col + i);
-           assertEquals(hexagonGameBoard.players.get(playerId).getCurrentRow(), row + i);
+           assertEquals(hexagonGameBoard.players.get(playerId).getCurrentCol(), col + counter);
+           assertEquals(hexagonGameBoard.players.get(playerId).getCurrentRow(), row + counter);
+
+           counter++;
        }
 
-//        Check if the players are added
+       // Check if the players are added
        assertTrue(hexagonGameBoard.players.size() <= maxPlayers);
 
-//        TODO: This should fail because the max amount of players is reached
-       hexagonGameBoard.players.add(new Player(colors[0]));
-       
+       // TODO: This should fail because the max amount of players is reached
+       // hexagonGameBoard.players.add(PlayerTest.players.get(maxPlayers));
+
        assertFalse(hexagonGameBoard.isValidPosition(0, 0));
-       
    }
-
-
-
-   
 }
+

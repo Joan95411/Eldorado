@@ -17,10 +17,10 @@ public class Blockade extends BoardPiece {
         this.pieceCount=5;
     }
 
-    
     public void setColor(Color color) {
         this.color = color;
     }
+
     public void setPoints(int points) {
         this.points = points;
     }
@@ -47,9 +47,7 @@ public class Blockade extends BoardPiece {
         clonedBlock.setPoints(this.points);
         return clonedBlock;
     }
-    
-    
-    
+
     public void randomizeTiles() {
     	Random random = new Random();
     	int index = random.nextInt(COLOR_RANGE.length);
@@ -83,6 +81,4 @@ public class Blockade extends BoardPiece {
         int textHeight = fm.getHeight();
         g2d.drawString(pointText, centerX - textWidth / 2, centerY + textHeight / 2);
     }
-    
 }
-

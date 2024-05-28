@@ -10,7 +10,6 @@ public class Terrain extends BoardPiece {
     private static final Color[] SPECIAL_COLOR_RANGE= {Color.GRAY,Color.RED,Color.BLACK};
     private static final double GREEN_PROBABILITY = 0.3; 
     private static final double specialColorProbability = 0.1; 
-    
 
     public Terrain() {
     	super();
@@ -19,8 +18,6 @@ public class Terrain extends BoardPiece {
         this.pieceCount=37;
     }
 
-
-      
     public void randomizeTiles(){
         Random random = new Random();
         for (Tile tile : tiles) {
@@ -55,11 +52,7 @@ public class Terrain extends BoardPiece {
         }
     }
     
-
-   
-
-    
-    @Override  
+    @Override
     public void draw(Graphics2D g2d,int size, Map<String, Tile> tilesMap){
     	for (Tile tile : tiles) {
     		String targetKey = tile.getRow()+","+tile.getCol();
@@ -74,7 +67,6 @@ public class Terrain extends BoardPiece {
     		int points=tile.getPoints();
     		tile.drawTile(g2d, x, y, hexSize, color, row, col,points);
     	}
-
     }
     
     @Override  

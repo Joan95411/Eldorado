@@ -1,19 +1,28 @@
 package org.set;
 
 import java.awt.*;
+import java.util.ArrayList;
 
 public class Player {
     private static int lastAssignedId = 0;
+    private static ArrayList<Color> usedColors = new ArrayList<>();
 
 	public int id;
     private int currentRow;
     private int currentCol;
     public Color color;
-    public PlayerCardDeck mydeck;
+    public PlayerCardDeck myDeck;
+
     public Player(Color selectedColor) {
         this.id = ++lastAssignedId;
-        this.color=selectedColor;
-        mydeck=new PlayerCardDeck();
+        this.color = selectedColor;
+        myDeck = new PlayerCardDeck();
+
+        if (selectedColor == null || usedColors.contains(selectedColor)) {
+            throw new IllegalArgumentException("The color " + selectedColor + " is already used");
+        } else {
+            usedColors.add(selectedColor);
+        }
     }
 
     public int getCurrentRow() {

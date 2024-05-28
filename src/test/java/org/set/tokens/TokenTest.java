@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TokenTest {
     private static ArrayList<Token> tokens = new ArrayList<>();
-    private static Player player = new Player(Color.BLACK);
+    private static Player player = new Player(Color.WHITE);
 
     @BeforeAll
     public static void createTokens() {

@@ -23,7 +23,6 @@ public abstract class BoardPiece {
         if (tiles.size() < pieceCount) {
             tile.setParent(this.name);
             tiles.add(tile);
-               
         } else {
             System.out.println("Overflow of tiles");
         }
@@ -35,7 +34,6 @@ public abstract class BoardPiece {
 
     public void setTiles(List<Tile> tiles) {
         this.tiles = tiles;
-        
     }
 
     protected int[] calculateRowAndCol(Tile tile, int addRow, int addCol) {
@@ -108,7 +106,4 @@ public abstract class BoardPiece {
         }
         return neighbors;
     }
-
-    
 }
-

@@ -11,10 +11,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.set.boardPieces.Terrain;
 import org.set.boardPieces.WinningPiece;
-import org.set.boardPieces.tileDataDic;
+import org.set.boardPieces.TileDataDic;
 
 public class tileDataDicTest extends JPanel {
-    private tileDataDic tdd;
+    private TileDataDic tdd;
     private JFrame frame;
     private Graphics2D g2d;
 
@@ -24,7 +24,7 @@ public class tileDataDicTest extends JPanel {
 
     @BeforeEach
     void setUp() {
-        tdd = new tileDataDic(numRows, numCols, hexSize);
+        tdd = new TileDataDic(numRows, numCols, hexSize);
         setPreferredSize(new Dimension((int) (numCols * 1.5 * hexSize), (int) (numRows * Math.sqrt(3) * hexSize)));
 
         // Create a JFrame and add the panel to it
@@ -49,22 +49,22 @@ public class tileDataDicTest extends JPanel {
         System.out.println("Press any key to continue to the next test. Press f if failed");
         Scanner scanner = new Scanner(System.in);
         String input = scanner.nextLine();
+        
         if (input.equalsIgnoreCase("f")) {
             fail("Test failed by user input.");
         }
-     // Dispose the frame after the test is finished
+
+        // Dispose the frame after the test is finished
         frame.dispose();
     }
 
     @Test
     public void testTerrainDraw() {
-    	
         Terrain ta = tdd.terrainA;
         ta.draw(g2d, hexSize, tdd.tilesMap);
-      // Wait for the user to press Enter
+        
+        // Wait for the user to press Enter
         waitForUserInput();
-        
-        
     }
     
     @Test
@@ -72,6 +72,8 @@ public class tileDataDicTest extends JPanel {
         // Draw the terrain
     	WinningPiece wp = tdd.wpa;
         wp.draw(g2d, hexSize, tdd.tilesMap);
+
+        // Wait for the user to press Enter
         waitForUserInput();
     }
 }
