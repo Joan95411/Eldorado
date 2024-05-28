@@ -58,26 +58,19 @@ public class PlayerCardDeck {
     }
 
     //return the top card of the drawPile, if it is empty shuffle discardPile to create new drawPile
-    public Card draw() {
+    public void draw() {
         if (drawPile.isEmpty()) {
-            if(discardPile.isEmpty()){
-                return null;
-            }
             shuffle();
         }
-        return drawPile.remove(drawPile.size() - 1);
+        if (!drawPile.isEmpty()){
+            cardsInHand.add(drawPile.remove(drawPile.size() - 1));
+        }
     }
 
-    public ArrayList<Card> draw(int numberOfCards){
-        ArrayList<Card> drawnCards = new ArrayList<>();
-        Card card;
+    public void draw(int numberOfCards){
         for (int i = 0; i < numberOfCards; i ++){
-            card = draw();
-            if(card != null){
-                drawnCards.add(card);
-            }
+            draw();
         }
-        return drawnCards;
     }
 
     public List<Card> getDrawPile() {

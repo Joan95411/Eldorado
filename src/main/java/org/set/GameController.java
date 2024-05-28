@@ -35,8 +35,8 @@ public class GameController {
 
 	    System.out.println("Player " + (currentPlayerIndex+1) + " drawing cards" );
     	Player currentPlayer = players.get(currentPlayerIndex);
-    	List<Card> drawedCards=currentPlayer.mydeck.draw(5);
-	    board.PlayerCards=drawedCards;//need to change, should be player's current deck, which needs to be added in cardDeck
+    	currentPlayer.mydeck.draw(5);
+	    board.PlayerCards=currentPlayer.mydeck.getCardsInHand();//need to change, should be player's current deck, which needs to be added in cardDeck
         board.repaint();
     }
     
