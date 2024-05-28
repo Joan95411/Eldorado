@@ -16,7 +16,7 @@ stages: # List of stages for jobs and their order of execution
 build-job:
   stage: build
   tags:
-  - backup
+  - SET2024
   script:
   - echo "Maven building started."
   - mvn -B -DskipTests clean package
@@ -27,7 +27,7 @@ build-job:
 test-implemented-tests:
   stage: test
   tags:
-  - backup
+  - SET2024
   dependencies:
   - build-job
   script:
@@ -39,7 +39,7 @@ test-implemented-tests:
 verify-job:
   stage: test
   tags:
-  - backup
+  - SET2024
   dependencies:
   - build-job
   script:
@@ -51,7 +51,7 @@ verify-job:
 package-prod:
   stage: package
   tags:
-  - backup
+  - SET2024
   script:
   - echo "Maven package started"
   - "echo TILEDATA_PATH='src/main/java/org/set/boardPieces/tileData.json' >> .env"
@@ -76,7 +76,7 @@ sigridci:
     expire_in: 1 week
     when: always
   tags:
-  - backup
+  - SET2024
   # rules:
     # - if: $CI_MERGE_REQUEST_ID
 
@@ -93,14 +93,14 @@ sigridpublish:
     expire_in: 1 week
     when: always
   tags:
-  - backup
+  - SET2024
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
 
 sast:
   stage: test
   tags:
-  - backup
+  - SET2024
 
 include:
   - template: Security/SAST.gitlab-ci.yml
