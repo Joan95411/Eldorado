@@ -22,7 +22,7 @@ import java.util.Random;
 	        if (rand < 0.5) {
 	            color = Color.GREEN;
 	        } else {
-	            color = Color.BLUE;
+	            color = Color.CYAN;
 	        }
 	    	for (Tile tile : tiles) {
 	    		if(tile.getPoints()>0){

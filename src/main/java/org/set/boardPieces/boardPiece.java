@@ -72,6 +72,42 @@ public abstract class boardPiece {
             tile.setCol(newCol);
         }
     }
+    
+    public Set<int[]> findOverlappingNeighbors(boardPiece bpB) {
+        Set<int[]> overlappingNeighbors = new LinkedHashSet<>();
+        Set<int[]> neighborsA = new LinkedHashSet<>(getAllNeighbors());
+        Set<int[]> neighborsB = new LinkedHashSet<>(bpB.getAllNeighbors());
+        // Find overlapping neighbors by comparing coordinates
+        for (int[] neighborA : neighborsA) {
+            for (int[] neighborB : neighborsB) {
+                if (Arrays.equals(neighborA, neighborB) ) {
+                	if (!overlappingNeighbors.contains(neighborA)) {
+                        overlappingNeighbors.add(neighborA);
+                    }
+                    break; // No need to continue searching for this neighbor in terrainB
+                }
+            }
+        }
+
+        return overlappingNeighbors;
+    }
+
+
+    public Set<int[]> getAllNeighbors() {
+        Set<String> neighborStrings = new HashSet<>();
+        Set<int[]> neighbors = new LinkedHashSet<>();
+        for (Tile tile : tiles) {
+            List<int[]> neighbor = tile.getNeighbors();
+            for (int[] oneNeighbor : neighbor) {
+                String neighborString = Arrays.toString(oneNeighbor);
+                if (!neighborStrings.contains(neighborString)) {
+                    neighborStrings.add(neighborString);
+                    neighbors.add(oneNeighbor);
+                }
+            }
+        }
+        return neighbors;
+    }
 
     
 }
