@@ -11,8 +11,7 @@ import javax.swing.JFrame;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.set.boardPieces.HexagonGameBoard;
-import org.set.boardPieces.Terrain;
-import org.set.boardPieces.boardPiece;
+import org.set.boardPieces.BoardPiece;
 
 public class HexgonGameBoardDrawTest {
 	private HexagonGameBoard board;
@@ -56,7 +55,7 @@ public class HexgonGameBoardDrawTest {
     @Test
     public void testLoadModelData() {
     	System.out.println("This should load the original json file and draw the pieces on board.");
-    	Map<String, boardPiece> bp=board.boardPieces;
+    	Map<String, BoardPiece> bp=board.boardPieces;
  	   bp.clear();
  	   board.loadTileData();
  	   
@@ -69,7 +68,7 @@ public class HexgonGameBoardDrawTest {
     	System.out.println("This should add 2 terrains cloned after the json file terrain.");
     	System.out.println("The first cloned terrain should have a blockade after.");
     	System.out.println("This second cloned terrain shouldn't have a blockade after.");
-    	Map<String, boardPiece> bp=board.boardPieces;
+    	Map<String, BoardPiece> bp=board.boardPieces;
   	   bp.clear();
   	   board.loadTileData();
     	

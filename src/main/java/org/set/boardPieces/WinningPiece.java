@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.Map;
 import java.util.Random;
-	public class WinningPiece extends boardPiece {
+	public class WinningPiece extends BoardPiece {
 
 		private static int WinningCount = 0;
 	    

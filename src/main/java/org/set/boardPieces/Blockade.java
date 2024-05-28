@@ -3,11 +3,9 @@ package org.set.boardPieces;
 import java.awt.Color;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.Random;
-public class Blockade extends boardPiece {
+public class Blockade extends BoardPiece {
 	private static int blockadeCount = 0;
     private Color color;
     private int points;

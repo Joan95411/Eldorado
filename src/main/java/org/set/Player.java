@@ -33,12 +33,9 @@ public class Player {
         this.currentCol = col;
     }
 
-
     public boolean isAtPosition(int row, int col) {
         return this.currentRow == row && this.currentCol == col;
     }
-
-    
 
     public void draw(Graphics2D g2d, int size) {
     	

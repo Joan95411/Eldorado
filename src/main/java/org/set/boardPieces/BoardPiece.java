@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.*;
 
-public abstract class boardPiece {
+public abstract class BoardPiece {
 	protected String name;
     protected List<Tile> tiles;
     protected int pieceCount;
@@ -12,7 +12,7 @@ public abstract class boardPiece {
     protected static final int POINTS_MIN = 1;
     protected static final int POINTS_MAX = 3;
 
-    public boardPiece() {
+    public BoardPiece() {
         this.tiles = new ArrayList<>();
     }
     public String getName() {
@@ -61,7 +61,7 @@ public abstract class boardPiece {
 
     public abstract void draw(Graphics2D g2d, int size, Map<String, Tile> tilesMap);
 
-    public abstract boardPiece clone(int addRow, int addCol, Map<String, Tile> tilesMap);
+    public abstract BoardPiece clone(int addRow, int addCol, Map<String, Tile> tilesMap);
 
     public void move(int addRow, int addCol) {
         for (Tile tile : tiles) {
@@ -73,7 +73,7 @@ public abstract class boardPiece {
         }
     }
     
-    public Set<int[]> findOverlappingNeighbors(boardPiece bpB) {
+    public Set<int[]> findOverlappingNeighbors(BoardPiece bpB) {
         Set<int[]> overlappingNeighbors = new LinkedHashSet<>();
         Set<int[]> neighborsA = new LinkedHashSet<>(getAllNeighbors());
         Set<int[]> neighborsB = new LinkedHashSet<>(bpB.getAllNeighbors());

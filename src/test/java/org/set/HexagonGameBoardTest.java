@@ -4,8 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.set.boardPieces.HexagonGameBoard;
 import org.set.boardPieces.Terrain;
-import org.set.boardPieces.Util;
-import org.set.boardPieces.boardPiece;
+import org.set.boardPieces.BoardPiece;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -31,7 +30,7 @@ public class HexagonGameBoardTest {
    }
    @Test
    public void testBoardPieces() {
-	   Map<String, boardPiece> bp=hexagonGameBoard.boardPieces;
+	   Map<String, BoardPiece> bp=hexagonGameBoard.boardPieces;
 	   assertNotNull(bp);
 	   int countTerrain = hexagonGameBoard.getAllTerrains().size();
 	    
@@ -44,7 +43,7 @@ public class HexagonGameBoardTest {
    
    @Test
    public void testLoadTileData() {
-	   Map<String, boardPiece> bp=hexagonGameBoard.boardPieces;
+	   Map<String, BoardPiece> bp=hexagonGameBoard.boardPieces;
 	   bp.clear();
 	   assertEquals(0,hexagonGameBoard.boardPieces.size(),"current board: " + hexagonGameBoard.boardPieces.size());
 	   hexagonGameBoard.loadTileData();
@@ -62,7 +61,7 @@ public class HexagonGameBoardTest {
 	}
    @Test
    public void testAddTerrain() {
-	   Map<String, boardPiece> bp=hexagonGameBoard.boardPieces;
+	   Map<String, BoardPiece> bp=hexagonGameBoard.boardPieces;
 	   bp.clear();
 	   hexagonGameBoard.loadTileData();
 	   Terrain ta=hexagonGameBoard.getAllTerrains().get(0);

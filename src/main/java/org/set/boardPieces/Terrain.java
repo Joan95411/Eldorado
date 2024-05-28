@@ -2,15 +2,10 @@ package org.set.boardPieces;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.Random;
 
-public class Terrain extends boardPiece {
+public class Terrain extends BoardPiece {
 	private static int terrainCount = 0;
     private static final Color[] SPECIAL_COLOR_RANGE= {Color.GRAY,Color.RED,Color.BLACK};
     private static final double GREEN_PROBABILITY = 0.3; 

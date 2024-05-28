@@ -22,7 +22,7 @@ public class HexagonGameBoard extends JPanel  {
     public List<Player> players;
     public Map<String, Tile> tilesMap; 
     public Map<String, Tile> ParentMap; 
-    public Map<String, boardPiece> boardPieces;
+    public Map<String, BoardPiece> boardPieces;
     public List<int[]> coordinateList;
     public List<Card> PlayerCards;
 
@@ -80,7 +80,7 @@ public class HexagonGameBoard extends JPanel  {
 	public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
-        for (boardPiece piece : boardPieces.values()) {
+        for (BoardPiece piece : boardPieces.values()) {
         	for(Tile tile:piece.getTiles()) {
         		ParentMap.put(tile.getRow()+","+tile.getCol(),tile);
         		
@@ -193,7 +193,7 @@ public class HexagonGameBoard extends JPanel  {
         } else {
             change = new int[]{0, -1}; // Move one unit left
         }
-        for (boardPiece piece : boardPieces.values()) {
+        for (BoardPiece piece : boardPieces.values()) {
         	if(piece.getName().startsWith("Terrain_")){
         		String indexString = piece.getName().substring("Terrain_".length()); // Extract the substring after "Terrain_"
         	    int index = Integer.parseInt(indexString);
