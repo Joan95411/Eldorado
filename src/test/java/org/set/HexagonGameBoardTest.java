@@ -75,12 +75,12 @@ public class HexagonGameBoardTest {
 	   
 	   System.out.println(countBlockade);
 	   
-//	   assertEquals(1, countBlockade, "Actual count: " + countBlockade);
+	   assertEquals(1, countBlockade, "Actual count: " + countBlockade);
 	   hexagonGameBoard.addTerrain(5, 5, ta); //blockade shouldn't be added
 	   countBlockade=hexagonGameBoard.getAllBlockades().size();
 
 	   System.out.println(countBlockade);
-//	   assertEquals(1, countBlockade, "Actual count: " + countBlockade);
+	   assertEquals(1, countBlockade, "Actual count: " + countBlockade);
 	}
    
    @Test
