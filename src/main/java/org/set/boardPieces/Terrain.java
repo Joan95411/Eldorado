@@ -2,20 +2,14 @@ package org.set.boardPieces;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.Random;
 
-public class Terrain extends boardPiece {
+public class Terrain extends BoardPiece {
 	private static int terrainCount = 0;
     private static final Color[] SPECIAL_COLOR_RANGE= {Color.GRAY,Color.RED,Color.BLACK};
     private static final double GREEN_PROBABILITY = 0.3; 
     private static final double specialColorProbability = 0.1; 
-    
 
     public Terrain() {
     	super();
@@ -24,8 +18,6 @@ public class Terrain extends boardPiece {
         this.pieceCount=37;
     }
 
-
-      
     public void randomizeTiles(){
         Random random = new Random();
         for (Tile tile : tiles) {
@@ -60,15 +52,12 @@ public class Terrain extends boardPiece {
         }
     }
     
-
-   
-
-    
-    @Override  
+    @Override
     public void draw(Graphics2D g2d,int size, Map<String, Tile> tilesMap){
     	for (Tile tile : tiles) {
     		String targetKey = tile.getRow()+","+tile.getCol();
             Tile temp = tilesMap.get(targetKey);
+    		
     		int x=temp.getX();
     		int y=temp.getY();
     		int hexSize=size;
@@ -78,7 +67,6 @@ public class Terrain extends boardPiece {
     		int points=tile.getPoints();
     		tile.drawTile(g2d, x, y, hexSize, color, row, col,points);
     	}
-
     }
     
     @Override  
@@ -104,41 +92,6 @@ public class Terrain extends boardPiece {
         return clonedTerrain;
     }
     
-    public Set<int[]> findOverlappingNeighbors(Terrain terrainB) {
-        Set<int[]> overlappingNeighbors = new LinkedHashSet<>();
-        Set<int[]> neighborsA = new LinkedHashSet<>(getAllNeighbors());
-        Set<int[]> neighborsB = new LinkedHashSet<>(terrainB.getAllNeighbors());
-        // Find overlapping neighbors by comparing coordinates
-        for (int[] neighborA : neighborsA) {
-            for (int[] neighborB : neighborsB) {
-                if (Arrays.equals(neighborA, neighborB) ) {
-                	if (!overlappingNeighbors.contains(neighborA)) {
-                        overlappingNeighbors.add(neighborA);
-                    }
-                    break; // No need to continue searching for this neighbor in terrainB
-                }
-            }
-        }
-
-        return overlappingNeighbors;
-    }
-
-
-    public Set<int[]> getAllNeighbors() {
-        Set<String> neighborStrings = new HashSet<>();
-        Set<int[]> neighbors = new LinkedHashSet<>();
-        for (Tile tile : tiles) {
-            List<int[]> neighbor = tile.getNeighbors();
-            for (int[] oneNeighbor : neighbor) {
-                String neighborString = Arrays.toString(oneNeighbor);
-                if (!neighborStrings.contains(neighborString)) {
-                    neighborStrings.add(neighborString);
-                    neighbors.add(oneNeighbor);
-                }
-            }
-        }
-        return neighbors;
-    }
 
     
 

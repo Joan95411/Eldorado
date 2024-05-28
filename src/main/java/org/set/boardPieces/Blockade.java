@@ -3,11 +3,9 @@ package org.set.boardPieces;
 import java.awt.Color;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.Random;
-public class Blockade extends boardPiece {
+public class Blockade extends BoardPiece {
 	private static int blockadeCount = 0;
     private Color color;
     private int points;
@@ -19,10 +17,10 @@ public class Blockade extends boardPiece {
         this.pieceCount=5;
     }
 
-    
     public void setColor(Color color) {
         this.color = color;
     }
+
     public void setPoints(int points) {
         this.points = points;
     }
@@ -43,15 +41,14 @@ public class Blockade extends boardPiece {
             } catch(Exception e) {
             	e.printStackTrace();
                 System.err.println("Tile not found for row " + newRow + ", col " + newCol);
+                System.err.println("Tile not found for row " + newRow + ", col " + newCol);
             }
         }
         clonedBlock.setColor(this.color);
         clonedBlock.setPoints(this.points);
         return clonedBlock;
     }
-    
-    
-    
+
     public void randomizeTiles() {
     	Random random = new Random();
     	int index = random.nextInt(COLOR_RANGE.length);
@@ -85,6 +82,4 @@ public class Blockade extends boardPiece {
         int textHeight = fm.getHeight();
         g2d.drawString(pointText, centerX - textWidth / 2, centerY + textHeight / 2);
     }
-    
 }
-

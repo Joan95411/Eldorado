@@ -1,6 +1,7 @@
 package org.set;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -59,24 +60,29 @@ public class PlayerCardDeckTest {
     @Test
     public void TestDrawSingleCard() {
         playerCardDeck.discard(greenCard);
-        assertEquals(greenCard, playerCardDeck.draw());
+        playerCardDeck.draw();
+        assertEquals(greenCard, playerCardDeck.getCardsInHand().get(0));
         playerCardDeck.discard(blueCard);
-        assertEquals(blueCard, playerCardDeck.draw());
+        playerCardDeck.draw();
+        assertEquals(blueCard, playerCardDeck.getCardsInHand().get(1));
     }
 
     @Test
     public void TestDrawSingleCardWithParameter() {
         playerCardDeck.discard(greenCard);
-        assertEquals(greenCard, playerCardDeck.draw(1).remove(0));
+        playerCardDeck.draw(1);
+        assertEquals(greenCard, playerCardDeck.getCardsInHand().get(0));
         playerCardDeck.discard(blueCard);
-        assertEquals(blueCard, playerCardDeck.draw(1).remove(0));
+        playerCardDeck.draw(1);
+        assertEquals(blueCard, playerCardDeck.getCardsInHand().get(1));
     }
 
     @Test
     public void TestDrawMultipleCardWithParameter() {
         playerCardDeck.discard(greenCard);
         playerCardDeck.discard(blueCard);
-        ArrayList<Card> drawnCards = playerCardDeck.draw(2);
+        playerCardDeck.draw(2);
+        List<Card> drawnCards = playerCardDeck.getCardsInHand();
         assertTrue(drawnCards.contains(blueCard));
         assertTrue(drawnCards.contains(greenCard));
     }
@@ -85,7 +91,8 @@ public class PlayerCardDeckTest {
     public void TestDrawTooManyCards() {
         playerCardDeck.discard(greenCard);
         playerCardDeck.discard(blueCard);
-        ArrayList<Card> drawnCards = playerCardDeck.draw(9);
+        playerCardDeck.draw(9);
+        List<Card> drawnCards = playerCardDeck.getCardsInHand();
         assertEquals(2, drawnCards.size());
         assertTrue(drawnCards.contains(blueCard));
         assertTrue(drawnCards.contains(greenCard));
@@ -96,8 +103,9 @@ public class PlayerCardDeckTest {
         playerCardDeck.discard(greenCard);
         playerCardDeck.discard(blueCard);
         playerCardDeck.discard(yellowCard);
-        ArrayList<Card> discardPile = playerCardDeck.getDiscardPile();
-        ArrayList<Card> drawnCards = playerCardDeck.draw(3);
+        List<Card> discardPile = playerCardDeck.getDiscardPile();
+        playerCardDeck.draw(3);
+        List<Card> drawnCards = playerCardDeck.getCardsInHand();
         assertNotEquals(null, discardPile);
         assertNotEquals(discardPile.toArray(), drawnCards.toArray());
     }

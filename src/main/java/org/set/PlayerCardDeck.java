@@ -11,10 +11,12 @@ import java.util.Random;
 public class PlayerCardDeck {
     private final List<Card> drawPile;
     private final List<Card> discardPile;
-
+    private final List<Card> cardsInHand;
+    
     public PlayerCardDeck() {
         drawPile = new ArrayList<>();
         discardPile = new ArrayList<>();
+		cardsInHand = new ArrayList<>();
         int blueCount = 1;
         int greenCount = 3;
         int yellowCount = 4;
@@ -56,33 +58,29 @@ public class PlayerCardDeck {
     }
 
     //return the top card of the drawPile, if it is empty shuffle discardPile to create new drawPile
-    public Card draw() {
+    public void draw() {
         if (drawPile.isEmpty()) {
-            if(discardPile.isEmpty()){
-                return null;
-            }
             shuffle();
         }
-        return drawPile.remove(drawPile.size() - 1);
-    }
-
-    public ArrayList<Card> draw(int numberOfCards){
-        ArrayList<Card> drawnCards = new ArrayList<>();
-        Card card;
-        for (int i = 0; i < numberOfCards; i ++){
-            card = draw();
-            if(card != null){
-                drawnCards.add(card);
-            }
+        if (!drawPile.isEmpty()){
+            cardsInHand.add(drawPile.remove(drawPile.size() - 1));
         }
-        return drawnCards;
     }
 
-    public ArrayList<Card> getDrawPile() {
-        return new ArrayList<>(drawPile);
+    public void draw(int numberOfCards){
+        for (int i = 0; i < numberOfCards; i ++){
+            draw();
+        }
     }
 
-    public ArrayList<Card> getDiscardPile() {
-        return new ArrayList<>(discardPile);
+    public List<Card> getDrawPile() {
+        return drawPile;
+    }
+
+    public List<Card> getDiscardPile() {
+        return discardPile;
+    }
+    public List<Card> getCardsInHand() {
+        return cardsInHand;
     }
 }
