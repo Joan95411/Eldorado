@@ -77,6 +77,7 @@ public class HexagonGameBoard extends JPanel  {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
+
         for (BoardPiece piece : boardPieces.values()) {
             for(Tile tile:piece.getTiles()) {
                 ParentMap.put(tile.getRow()+","+tile.getCol(),tile);
@@ -112,6 +113,7 @@ public class HexagonGameBoard extends JPanel  {
         int cardSpacing = cardWidth / 10;
         int totalCards = PlayerCards.size();
         int cardsDrawn = 0;
+
         for (int i = 0; i < totalCards; i++) {
             int row = i / maxCardsPerRow;  // Calculate the row index
             int col = i % maxCardsPerRow;  // Calculate the column index

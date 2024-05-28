@@ -5,7 +5,7 @@ import java.awt.Graphics2D;
 import org.set.cards.Card;
 
 public class ExpeditionCard extends Card {
-    public int power;
+    private int power;
 
     public ExpeditionCard (ExpeditionCardType name, int cost, boolean singleUse, int power) {
         super(name.toString(), cost, singleUse);
@@ -17,6 +17,7 @@ public class ExpeditionCard extends Card {
     	super.draw(g2d, x, y, width, height);
     	g2d.drawString("Power: "+power, x+5, y+height-5);
     }
+
     public int getPower() {
         return power;
     }
