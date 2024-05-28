@@ -5,9 +5,10 @@ import org.junit.jupiter.api.Test;
 import org.set.boardPieces.HexagonGameBoard;
 import org.set.boardPieces.Terrain;
 import org.set.boardPieces.BoardPiece;
-
+import org.set.boardPieces.Blockade;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -87,6 +88,20 @@ public class HexagonGameBoardTest {
 	   countBlockade = hexagonGameBoard.getAllBlockades().size();
 	   assertEquals(1, countBlockade, "Actual count: " + countBlockade);
    }
+   /**
+    * Tests the removeBlockade() from the hexagonGameBoard.
+    * It checks the blockade gets correctly removed and in its order.
+    */
+   
+   @Test
+   public void testRemoveBlock() {
+	   int countBlockade1=hexagonGameBoard.getAllBlockades().size();
+
+	   hexagonGameBoard.removeBlockade(1);
+	   int countBlockade2=hexagonGameBoard.getAllBlockades().size();
+	   assertEquals(1,countBlockade1-countBlockade2, "Actual count: " + (countBlockade1-countBlockade2));
+	   //remove 1 blockade, should have 1 less;
+   }
 
    /**
     * Tests the getLocation() method of HexagonGameBoard works as expected.
@@ -112,16 +127,14 @@ public class HexagonGameBoardTest {
 
    @Test
    public void testHexagonGameBoardPlayer() {
-       int row = 0;
-       int col = 0;
        int maxPlayers = 4;
 
        hexagonGameBoard.players = new ArrayList<>();
-       hexagonGameBoard.repaint();
-
+       Color[] COLOR_RANGE = {Color.GREEN, Color.CYAN, Color.YELLOW,Color.MAGENTA};
        int counter = 0;
 
-       for (Player player : PlayerTest.players) {
+       for (int i = 0; i < maxPlayers; i++) {
+    	   Player player=new Player(COLOR_RANGE[i]);
            hexagonGameBoard.players.add(player);
 
            assertEquals(hexagonGameBoard.players.size(), counter + 1);
@@ -129,22 +142,26 @@ public class HexagonGameBoardTest {
            int playerId = hexagonGameBoard.players.size() - 1;
            assertEquals(hexagonGameBoard.players.get(playerId).color, player.getColor());
 
-           // Set the players position and check if it actually does set the position
-           hexagonGameBoard.players.get(playerId).setPlayerPosition(row + counter, col + counter);
-
-           assertEquals(hexagonGameBoard.players.get(playerId).getCurrentCol(), col + counter);
-           assertEquals(hexagonGameBoard.players.get(playerId).getCurrentRow(), row + counter);
-
            counter++;
        }
 
        // Check if the players are added
-       assertTrue(hexagonGameBoard.players.size() <= maxPlayers);
+       assertTrue(hexagonGameBoard.players.size() == maxPlayers);
 
        // TODO: This should fail because the max amount of players is reached
        // hexagonGameBoard.players.add(PlayerTest.players.get(maxPlayers));
 
-       assertFalse(hexagonGameBoard.isValidPosition(0, 0));
+       assertFalse(hexagonGameBoard.isValidPosition(0, 0));//check if player can go outside the boards
+       System.out.println(hexagonGameBoard.players.size());
+       Player pl1=hexagonGameBoard.players.get(0);
+       pl1.setPlayerPosition(2, 3);
+       assertEquals(pl1.getCurrentRow(),2);
+       assertEquals(pl1.getCurrentCol(),3);//check player1 is set at place
+       Player pl2=hexagonGameBoard.players.get(1);
+       pl2.setPlayerPosition(2, 3);
+
+       //player1 is already at 2,3 so it's not a valid position for others to come here
+       assertFalse(hexagonGameBoard.isValidPosition(2, 3));
    }
 }
 

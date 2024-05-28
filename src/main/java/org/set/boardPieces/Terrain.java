@@ -17,6 +17,10 @@ public class Terrain extends BoardPiece {
         this.name="Terrain_"+index;
         this.pieceCount=37;
     }
+    
+    public static void resetWinningCount() {
+    	terrainCount = 0;
+    }
 
     public void randomizeTiles(){
         Random random = new Random();
