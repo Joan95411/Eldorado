@@ -5,16 +5,23 @@ import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.util.Map;
 import java.util.Random;
+
 public class Blockade extends BoardPiece {
-	private static int blockadeCount = 0;
+    private static int blockadeCount = 0;
     private Color color;
     private int points;
+    private int[] neighbors;
 
     public Blockade() {
         super();
         int index = ++blockadeCount;
-        this.name="Blockade_"+index;
-        this.pieceCount=5;
+        this.name = "Blockade_" + index;
+        this.pieceCount = 5;
+        this.neighbors = new int[2];
+    }
+
+    public static void resetCount() {
+        blockadeCount = 0;
     }
 
     public void setColor(Color color) {
@@ -25,21 +32,30 @@ public class Blockade extends BoardPiece {
         this.points = points;
     }
 
+    public void setTerrainNeighbors(int neighbor1, int neighbor2) {
+        this.neighbors[0] = neighbor1;
+        this.neighbors[1] = neighbor2;
+    }
+
+    public int[] getTerrainNeighbors() {
+        return neighbors;
+    }
+
     @Override
     public Blockade clone(int addRow, int addCol, Map<String, Tile> tilesMap) {
-    	Blockade clonedBlock = new Blockade();
+        Blockade clonedBlock = new Blockade();
         for (Tile tile : tiles) {
-        	int[] result = calculateRowAndCol(tile, addRow, addCol);
-        	int newRow = result[0];
-        	int newCol = result[1];
-            
-        	String targetKey = newRow + "," + newCol;
+            int[] result = calculateRowAndCol(tile, addRow, addCol);
+            int newRow = result[0];
+            int newCol = result[1];
+
+            String targetKey = newRow + "," + newCol;
             Tile clonedTile = tilesMap.get(targetKey);
-            
+
             try {
                 clonedBlock.addTile(clonedTile);
-            } catch(Exception e) {
-            	e.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
                 System.err.println("Tile not found for row " + newRow + ", col " + newCol);
                 System.err.println("Tile not found for row " + newRow + ", col " + newCol);
             }
@@ -50,33 +66,33 @@ public class Blockade extends BoardPiece {
     }
 
     public void randomizeTiles() {
-    	Random random = new Random();
-    	int index = random.nextInt(COLOR_RANGE.length);
-    	Color temp=COLOR_RANGE[index];
-    	Color transparentColor = new Color(temp.getRed(), temp.getGreen(), temp.getBlue(), 50);
-    	this.color=transparentColor;
-    	
-    	int points = random.nextInt(POINTS_MAX - POINTS_MIN + 1) + POINTS_MIN;
-    	this.points=points;
+        Random random = new Random();
+        int index = random.nextInt(COLOR_RANGE.length);
+        Color temp = COLOR_RANGE[index];
+        Color transparentColor = new Color(temp.getRed(), temp.getGreen(), temp.getBlue(), 50);
+        this.color = transparentColor;
+
+        int points = random.nextInt(POINTS_MAX - POINTS_MIN + 1) + POINTS_MIN;
+        this.points = points;
     }
 
     @Override
-    public void draw(Graphics2D g2d,int size, Map<String, Tile> tilesMap){
-    	int totalX = 0;
+    public void draw(Graphics2D g2d, int size, Map<String, Tile> tilesMap) {
+        int totalX = 0;
         int totalY = 0;
-    	for (Tile tile : tiles) {
-    		String targetKey = tile.getRow()+","+tile.getCol();
+        for (Tile tile : tiles) {
+            String targetKey = tile.getRow() + "," + tile.getCol();
             Tile temp = tilesMap.get(targetKey);
-    		int x=temp.getX();
-    		int y=temp.getY();
-    		totalX += x;
+            int x = temp.getX();
+            int y = temp.getY();
+            totalX += x;
             totalY += y;
-    		tile.drawHexagon(g2d, x, y, size, color, null);
-    	}
-    	int centerX = totalX / tiles.size();
+            tile.drawHexagon(g2d, x, y, size, color, null);
+        }
+        int centerX = totalX / tiles.size();
         int centerY = totalY / tiles.size();
         g2d.setColor(Color.BLACK);
-        String pointText = points+"P"; // Unicode character for a bullet point
+        String pointText = points + "P"; // Unicode character for a bullet point
         FontMetrics fm = g2d.getFontMetrics();
         int textWidth = fm.stringWidth(pointText);
         int textHeight = fm.getHeight();

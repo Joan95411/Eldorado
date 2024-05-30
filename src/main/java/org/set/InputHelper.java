@@ -1,4 +1,5 @@
 package org.set;
+
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
@@ -21,7 +22,7 @@ public class InputHelper {
             }
 
             String[] tokens = input.split(",");
-            
+
             // Check if the input length matches the expected length
             if (tokens.length != expectedLength) {
                 System.out.println("Invalid input. Please enter " + expectedLength + " values separated by commas.");
@@ -31,6 +32,7 @@ public class InputHelper {
             return tokens;
         }
     }
+
     public static int getIntInput(String prompt) {
         int userInput;
         do {
@@ -46,56 +48,57 @@ public class InputHelper {
             }
         } while (true);
     }
-    
+
     public static int[] getPositionInput(HexagonGameBoard board) {
         while (true) {
-        	String[] tokens =getInput("Enter row and column for player's position (e.g., '2,3'), or type 'stop' to end the game:", 2);
-        	try {
-        		int row = Integer.parseInt(tokens[0].trim());
+            String[] tokens = getInput("Enter row and column for player's position (e.g., '2,3'), or type 'stop' to end the game:", 2);
+            try {
+                int row = Integer.parseInt(tokens[0].trim());
                 int col = Integer.parseInt(tokens[1].trim());
-    	        if (!board.isValidPosition(row, col)) {
-    	            System.out.println("Invalid position. Please enter valid coordinates.");
-    	            continue;
-    	        }
-    	        String targetKey = row+","+col;
-    	        Tile temp = board.ParentMap.get(targetKey);
-    	        System.out.println("You are currently on "+temp.getParent());
-    	        return new int[] { row, col };
-    	        }
-        	catch (NumberFormatException e) {
-    	        System.out.println("Invalid input. Please enter valid integers for row and column.");
+                if (!board.isValidPosition(row, col)) {
+                    System.out.println("Invalid position. Please enter valid coordinates.");
+                    continue;
+                }
+                String targetKey = row + "," + col;
+                Tile temp = board.ParentMap.get(targetKey);
+                System.out.println("You are currently on " + temp.getParent());
+                return new int[] { row, col };
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter valid integers for row and column.");
                 continue;
-    	    }
-        	           
+            }
+
         }
     }
-    
-    public static Tile getPlayerMoveInput(HexagonGameBoard board,Tile tile) {
-    	List<int[]> neighbors=tile.getNeighbors();
+
+    public static Tile getPlayerMoveInput(HexagonGameBoard board, Tile tile) {
+        List<int[]> neighbors = tile.getNeighbors();
         while (true) {
-        	String[] tokens =getInput("Enter row and column for player's position (e.g., '2,3'), or type 'stop' to end the game:", 2);
-        	try {
-        		int row = Integer.parseInt(tokens[0].trim());
+            String[] tokens = getInput("Enter row and column for player's position (e.g., '2,3'), or type 'stop' to end the game:", 2);
+            try {
+                int row = Integer.parseInt(tokens[0].trim());
                 int col = Integer.parseInt(tokens[1].trim());
-    	        if (!board.isValidPosition(row, col)) {
-    	            System.out.println("Invalid position. Please enter valid coordinates.");
-    	            continue;
-    	        }
-    	        if(!neighbors.contains(new int[]{row, col})) {
-    	        	System.out.println("You can only move one step at a time???");
-    	            continue;
-    	        }
-    	        String targetKey = row+","+col;
-    	        Tile temp = board.ParentMap.get(targetKey);
-    	        
-    	        System.out.println("You are currently on "+temp.getParent());
-    	        return temp;
-    	        }
-        	catch (NumberFormatException e) {
-    	        System.out.println("Invalid input. Please enter valid integers for row and column.");
+                
+                if (!board.isValidPosition(row, col)) {
+                    System.out.println("Invalid position. Please enter valid coordinates.");
+                    continue;
+                }
+
+                if (!neighbors.contains(new int[] { row, col })) {
+                    System.out.println("You can only move one step at a time???");
+                    continue;
+                }
+                
+                String targetKey = row + "," + col;
+                Tile temp = board.ParentMap.get(targetKey);
+
+                System.out.println("You are currently on " + temp.getParent());
+                return temp;
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter valid integers for row and column.");
                 continue;
-    	    }
-        	           
+            }
+
         }
     }
 

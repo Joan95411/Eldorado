@@ -22,18 +22,25 @@ public abstract class Card {
 	}
 
 	private CardType getCardType() {
-		String[] greenCardTypes = {ExpeditionCardType.Explorer.toString(), ExpeditionCardType.Scout.toString(), ExpeditionCardType.Trail.toString(), ExpeditionCardType.Pioneer.toString(), ExpeditionCardType.Giant_Machete.toString()};
-		String[] blueCardTypes = {ExpeditionCardType.Sailor.toString(), ExpeditionCardType.Captain.toString()};
-		String[] yellowCardTypes = {ExpeditionCardType.Traveller.toString(), ExpeditionCardType.Photographer.toString(), ExpeditionCardType.Journalist.toString(), ExpeditionCardType.Treasure_Chest.toString(), ExpeditionCardType.Millionaire.toString()};
-		String[] jokerCardTypes = {ExpeditionCardType.Jack.toString(), ExpeditionCardType.Adventure.toString(), ExpeditionCardType.Prop_Plane.toString()};
-		String[] purpleCardTypes = {ActionCardType.Transmitter.toString(), ActionCardType.Cartographer.toString(), ActionCardType.Scientist.toString(), ActionCardType.Compass.toString(), ActionCardType.Travel_Log.toString(), ActionCardType.Native.toString()};
+		String[] greenCardTypes = { ExpeditionCardType.Explorer.toString(), ExpeditionCardType.Scout.toString(), ExpeditionCardType.Trail.toString(), ExpeditionCardType.Pioneer.toString(), ExpeditionCardType.Giant_Machete.toString() };
+		String[] blueCardTypes = { ExpeditionCardType.Sailor.toString(), ExpeditionCardType.Captain.toString() };
+		String[] yellowCardTypes = { ExpeditionCardType.Traveller.toString(), ExpeditionCardType.Photographer.toString(), ExpeditionCardType.Journalist.toString(), ExpeditionCardType.Treasure_Chest.toString(), ExpeditionCardType.Millionaire.toString() };
+		String[] jokerCardTypes = { ExpeditionCardType.Jack.toString(), ExpeditionCardType.Adventure.toString(), ExpeditionCardType.Prop_Plane.toString() };
+		String[] purpleCardTypes = { ActionCardType.Transmitter.toString(), ActionCardType.Cartographer.toString(), ActionCardType.Scientist.toString(), ActionCardType.Compass.toString(), ActionCardType.Travel_Log.toString(), ActionCardType.Native.toString() };
 
-		if (Arrays.asList(greenCardTypes).contains(this.name)) return CardType.GREEN;
-		else if (Arrays.asList(blueCardTypes).contains(this.name)) return CardType.BLUE;
-		else if (Arrays.asList(yellowCardTypes).contains(this.name)) return CardType.YELLOW;
-		else if (Arrays.asList(jokerCardTypes).contains(this.name)) return CardType.JOKER;
-		else if (Arrays.asList(purpleCardTypes).contains(this.name)) return CardType.PURPLE;
-		else throw new IllegalStateException("The explorer card type is illegal.");
+		if (Arrays.asList(greenCardTypes).contains(this.name)) {
+			return CardType.GREEN;
+		} else if (Arrays.asList(blueCardTypes).contains(this.name)) {
+			return CardType.BLUE;
+		} else if (Arrays.asList(yellowCardTypes).contains(this.name)) {
+			return CardType.YELLOW;
+		} else if (Arrays.asList(jokerCardTypes).contains(this.name)) {
+			return CardType.JOKER;
+		} else if (Arrays.asList(purpleCardTypes).contains(this.name)) {
+			return CardType.PURPLE;
+		} else {
+			throw new IllegalStateException("The explorer card type is illegal.");
+		}
 	}
 
 	public void removeCard() {
@@ -53,13 +60,9 @@ public abstract class Card {
 		g2d.fillRect(x, y, width, height);
 		g2d.setColor(Color.BLACK);
 		g2d.drawRect(x, y, width, height);
-		g2d.drawString("Cost: "+cost, x+5, y+15);
-		//g2d.drawString("Index: "+id, x+5, y+(height-20)/2);
-		//g2d.drawString("Worth: "+worthValue, x+5, y+height-5);
+		g2d.drawString("Cost: " + cost, x + 5, y + 15);
+		// g2d.drawString("Index: "+id, x+5, y+(height-20)/2);
+		// g2d.drawString("Worth: "+worthValue, x+5, y+height-5);
 	}
 
-	
-
-    
-    
 }

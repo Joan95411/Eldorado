@@ -7,15 +7,15 @@ import org.set.cards.Card;
 public class ExpeditionCard extends Card {
     private int power;
 
-    public ExpeditionCard (ExpeditionCardType name, int cost, boolean singleUse, int power) {
+    public ExpeditionCard(ExpeditionCardType name, int cost, boolean singleUse, int power) {
         super(name.toString(), cost, singleUse);
         this.power = power;
     }
-    
+
     @Override
     public void draw(Graphics2D g2d, int x, int y, int width, int height) {
-    	super.draw(g2d, x, y, width, height);
-    	g2d.drawString("Power: "+power, x+5, y+height-5);
+        super.draw(g2d, x, y, width, height);
+        g2d.drawString("Power: " + power, x + 5, y + height - 5);
     }
 
     public int getPower() {

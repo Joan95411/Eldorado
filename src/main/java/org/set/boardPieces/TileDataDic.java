@@ -1,13 +1,14 @@
 package org.set.boardPieces;
 
+import org.json.JSONObject;
+
 import java.awt.Color;
 import java.util.HashMap;
 import java.util.Map;
 
-import io.github.cdimascio.dotenv.DotenvException;
-import org.json.JSONObject;
-
 import io.github.cdimascio.dotenv.Dotenv;
+import io.github.cdimascio.dotenv.DotenvException;
+
 
 public class TileDataDic {
     public static Dotenv dotenv;
@@ -38,10 +39,10 @@ public class TileDataDic {
             return;
         }
 
-        fillTilesMap(numRows, numCols, hexSize,tileInfo,winningPieceInfo);
+        fillTilesMap(numRows, numCols, hexSize, tileInfo, winningPieceInfo);
     }
 
-    public void fillTilesMap(int numRows, int numCols, int hexSize,JSONObject tileInfo, JSONObject winningPieceInfo) {
+    public void fillTilesMap(int numRows, int numCols, int hexSize, JSONObject tileInfo, JSONObject winningPieceInfo) {
         for (int row = 0; row < numRows; row++) {
             for (int col = 0; col < numCols; col++) {
                 int x = col * (int) (1.5 * hexSize);
@@ -60,7 +61,7 @@ public class TileDataDic {
 
                 if (currentTileInfo != null) {
                     terrainA.addTile(tile);
-                } else if (currentWinning!=null) {
+                } else if (currentWinning != null) {
                     wpa.addTile(tile);
                     currentTileInfo = currentWinning;
                 } else {
