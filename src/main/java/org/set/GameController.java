@@ -76,14 +76,18 @@ public class GameController {
     	//Use the rest of your cards to buy up to 1 new card per turn.
     }
     public void PlayerDiscard(Player player) {
-    	//Phase 2
-    	//Discard Played Cards, keep card in your hand for your next turn
-    	//decide for each card individually.
+        //Phase 2
+        //Discard Played Cards, keep card in your hand for your next turn
+        //decide for each card individually.
+        for(Card card : player.myDeck.getCardsInHand()){//for al cards left in your hand
+            //decide if you want to keep the card or discard
+            //TODO: implement user interface for this
+        }
     }
     public void PlayerDrawCard(Player player) {
     	//Phase 3
-    	//draw cards from your draw pile until you have 4 cards in your hand.
-    	//If your draw pile doesn't contain enough cards to draw for your next turn, draw as many as possible. 
+        player.myDeck.draw(4 - player.myDeck.getCardsInHand().size());//draw cards from your draw pile until you have 4 cards in your hand.
+        //If your draw pile doesn't contain enough cards to draw for your next turn, draw as many as possible.
     	//Then, shuffle your discard pile to form your new draw pile, then draw the rest of the cards you need.
     }
     public void GameSession() {
