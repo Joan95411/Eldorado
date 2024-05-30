@@ -1,24 +1,24 @@
 {
     "MarketCards":{
-        "Scout":                {"cost": 1, "cardType": "GREEN",  "singleUse": 0 ,"marketStart": 1},
-        "Trail":                {"cost": 3, "cardType": "GREEN",  "singleUse": 0 ,"marketStart": 1},
-        "Jack":                 {"cost": 2, "cardType": "JOKER",  "singleUse": 0 ,"marketStart": 1},
-        "Photographer":         {"cost": 2, "cardType": "YELLOW", "singleUse": 0 ,"marketStart": 1},
-        "Treasure_Chest":       {"cost": 3, "cardType": "YELLOW", "singleUse": 1 ,"marketStart": 1},
-        "Transmitter":          {"cost": 4, "cardType": "PURPLE", "singleUse": 1 ,"marketStart": 1},
+        "Scout":                {"cost": 1, "cardType": "GREEN",  "singleUse": 0 ,"marketStart": 1, "cardPower":0},
+        "Trail":                {"cost": 3, "cardType": "GREEN",  "singleUse": 0 ,"marketStart": 1, "cardPower":0},
+        "Jack":                 {"cost": 2, "cardType": "JOKER",  "singleUse": 0 ,"marketStart": 1, "cardPower":0},
+        "Photographer":         {"cost": 2, "cardType": "YELLOW", "singleUse": 0 ,"marketStart": 1, "cardPower":0},
+        "Treasure_Chest":       {"cost": 3, "cardType": "YELLOW", "singleUse": 1 ,"marketStart": 1, "cardPower":0},
+        "Transmitter":          {"cost": 4, "cardType": "PURPLE", "singleUse": 1 ,"marketStart": 1, "cardPower":0},
 
-        "Pioneer":              {"cost": 5, "cardType": "GREEN",  "singleUse": 0 ,"marketStart": 0},
-        "Giant_Machete":        {"cost": 3, "cardType": "GREEN",  "singleUse": 1 ,"marketStart": 0},
-        "Adventure":            {"cost": 4, "cardType": "JOKER",  "singleUse": 0 ,"marketStart": 0},
-        "Prop_Plane":           {"cost": 4, "cardType": "JOKER",  "singleUse": 1 ,"marketStart": 0},
-        "Journalist":           {"cost": 3, "cardType": "YELLOW", "singleUse": 0 ,"marketStart": 0},
-        "Millionaire":          {"cost": 4, "cardType": "YELLOW", "singleUse": 0 ,"marketStart": 0},
+        "Pioneer":              {"cost": 5, "cardType": "GREEN",  "singleUse": 0 ,"marketStart": 0, "cardPower":0},
+        "Giant_Machete":        {"cost": 3, "cardType": "GREEN",  "singleUse": 1 ,"marketStart": 0, "cardPower":0},
+        "Adventure":            {"cost": 4, "cardType": "JOKER",  "singleUse": 0 ,"marketStart": 0, "cardPower":0},
+        "Prop_Plane":           {"cost": 4, "cardType": "JOKER",  "singleUse": 1 ,"marketStart": 0, "cardPower":0},
+        "Journalist":           {"cost": 3, "cardType": "YELLOW", "singleUse": 0 ,"marketStart": 0, "cardPower":0},
+        "Millionaire":          {"cost": 4, "cardType": "YELLOW", "singleUse": 0 ,"marketStart": 0, "cardPower":0},
 
-        "Captain":              {"cost": 2, "cardType": "BLUE",   "singleUse": 0 ,"marketStart": 0},
-        "Cartographer":         {"cost": 4, "cardType": "PURPLE", "singleUse": 0 ,"marketStart": 0},
-        "Compass":              {"cost": 2, "cardType": "PURPLE", "singleUse": 1 ,"marketStart": 0},
-        "Scientist":            {"cost": 4, "cardType": "PURPLE", "singleUse": 0 ,"marketStart": 0},
-        "Travel_Log":           {"cost": 3, "cardType": "PURPLE", "singleUse": 1 ,"marketStart": 0},
-        "Native":               {"cost": 5, "cardType": "PURPLE", "singleUse": 0 ,"marketStart": 0}   
+        "Captain":              {"cost": 2, "cardType": "BLUE",   "singleUse": 0 ,"marketStart": 0, "cardPower":0},
+        "Cartographer":         {"cost": 4, "cardType": "PURPLE", "singleUse": 0 ,"marketStart": 0, "cardPower":0},
+        "Compass":              {"cost": 2, "cardType": "PURPLE", "singleUse": 1 ,"marketStart": 0, "cardPower":0},
+        "Scientist":            {"cost": 4, "cardType": "PURPLE", "singleUse": 0 ,"marketStart": 0, "cardPower":0},
+        "Travel_Log":           {"cost": 3, "cardType": "PURPLE", "singleUse": 1 ,"marketStart": 0, "cardPower":0},
+        "Native":               {"cost": 5, "cardType": "PURPLE", "singleUse": 0 ,"marketStart": 0, "cardPower":0}   
     }
 }
