@@ -46,8 +46,8 @@ public class GameController {
     	//play cards that you want to use for moving
     	
     	List<Card> currentDeck=player.myDeck.getCardsInHand();
-    	boolean conditionNotMet=true;
-    	while(conditionNotMet) {
+    	boolean movementNotQualified=true;
+    	while(movementNotQualified) {
     	int cardIndex = InputHelper.getIntInput("Choose 1 card for Movement, input index (e.g. 0)");
 	    if (cardIndex>=currentDeck.size()) {
 	        System.out.println("Please enter a number between 0 to "+(player.myDeck.getCardsInHand().size()-1));
@@ -67,6 +67,8 @@ public class GameController {
     	if(cardcolor.equals(MovingTo.getColor())) {
     		if(expeditionCard.getPower()>=MovingTo.getPoints()) {
     			player.setPlayerPosition(MovingTo.getRow(), MovingTo.getCol());
+                movementNotQualified=false;
+    			//implement the leftover power
     		}
     	}
     	}
