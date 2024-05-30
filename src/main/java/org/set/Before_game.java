@@ -8,24 +8,24 @@ import org.set.boardPieces.Tile;
 import org.set.boardPieces.Util;
 
 public class Before_game {
-	
-	public static void setSpecialColor(HexagonGameBoard board) {
+
+    public static void setSpecialColor(HexagonGameBoard board) {
         while (true) {
-        	boolean wantsToContinue = InputHelper.getYesNoInput("Do you want to set any tile specially? (yes/no)");
+            boolean wantsToContinue = InputHelper.getYesNoInput("Do you want to set any tile specially? (yes/no)");
 
             if (!wantsToContinue) {
                 break; // Exit the loop if the user wants to stop
             }
 
             String[] response = InputHelper.getInput("Tell me the tile of row,column,color,points (e.g., '2,3,red,1') or type 'done' to finish:", 4);
-            
+
             if (response == null) {
-                break; 
+                break;
             }
 
             int row, col, points;
             String color;
-            
+
             try {
                 row = Integer.parseInt(response[0]);
                 col = Integer.parseInt(response[1]);
@@ -42,6 +42,7 @@ public class Before_game {
                 System.out.println("Invalid position. Please enter valid coordinates.");
                 continue; // Continue to the next iteration if the position is invalid
             }
+            
             special.setColor(Util.getColorFromString(color));
             special.setPoints(points);
             board.repaint();
@@ -50,21 +51,21 @@ public class Before_game {
         }
     }
 
-	public static List<Player> addPlayer(HexagonGameBoard board) {
-    	int numPlayers;
-    	do {
-    	    numPlayers = InputHelper.getIntInput("How many players are playing?");
-    	    if (numPlayers < 1 || numPlayers > 4) {
-    	        System.out.println("Please enter a number between 1 and 4.");
-    	    }
-    	} while (numPlayers < 1 || numPlayers > 4);
+    public static List<Player> addPlayer(HexagonGameBoard board) {
+        int numPlayers;
+        do {
+            numPlayers = InputHelper.getIntInput("How many players are playing?");
+            if (numPlayers < 1 || numPlayers > 4) {
+                System.out.println("Please enter a number between 1 and 4.");
+            }
+        } while (numPlayers < 1 || numPlayers > 4);
 
         // Create an array to store player instances
         List<Player> players = new ArrayList<>();
 
         // Loop through each player
         for (int i = 0; i < numPlayers; i++) {
-        	String color = InputHelper.getInput("Player " + (i + 1) + ", choose your color:", 1)[0];
+            String color = InputHelper.getInput("Player " + (i + 1) + ", choose your color:", 1)[0];
 
             // Create a new player instance with the chosen color
             Player player = new Player(Util.getColorFromString(color));
@@ -73,11 +74,11 @@ public class Before_game {
             players.add(player);
         }
 
-        board.players=players;
+        board.players = players;
         return players;
     }
-    
-	public static void placePlayersOnBoard(HexagonGameBoard board) {
+
+    public static void placePlayersOnBoard(HexagonGameBoard board) {
         for (Player player : board.players) {
             player.setPlayerPosition(player.id + 1, 1);
         }

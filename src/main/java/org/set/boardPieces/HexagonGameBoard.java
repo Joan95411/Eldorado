@@ -1,4 +1,5 @@
 package org.set.boardPieces;
+
 import org.set.Player;
 
 import org.set.cards.Card;
@@ -12,7 +13,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class HexagonGameBoard extends JPanel  {
+public class HexagonGameBoard extends JPanel {
     public int numRows;
     public int numCols;
     public int hexSize;
@@ -38,11 +39,11 @@ public class HexagonGameBoard extends JPanel  {
         Terrain.resetWinningCount();
         Blockade.resetCount();
         WinningPiece.resetCount();
-        coordinateList= Arrays.asList(
-                new int[]{6, 4},
-                new int[]{0, 8},
-                new int[]{-6, 4}
-                //new int[]{0, 8}
+        coordinateList = Arrays.asList(
+                new int[] { 6, 4 },
+                new int[] { 0, 8 },
+                new int[] { -6, 4 }
+        // new int[]{0, 8}
         );
         loadTileData();
         initBoard();
@@ -51,6 +52,7 @@ public class HexagonGameBoard extends JPanel  {
     public void initBoard() {
         int maxIndex = 0;
         List<Terrain> terrains = getAllTerrains();
+        
         for (Terrain terrain : terrains) {
             String name = terrain.getName();
             int index = Integer.parseInt(name.substring("Terrain_".length()));
@@ -69,11 +71,12 @@ public class HexagonGameBoard extends JPanel  {
         }
 
     }
+
     public void loadTileData() {
-        TileDataDic tdd = new TileDataDic(numRows,numCols,hexSize);
-        boardPieces.put(tdd.terrainA.getName(),tdd.terrainA);
-        boardPieces.put(tdd.wpa.getName(),tdd.wpa);
-        this.tilesMap=tdd.tilesMap;
+        TileDataDic tdd = new TileDataDic(numRows, numCols, hexSize);
+        boardPieces.put(tdd.terrainA.getName(), tdd.terrainA);
+        boardPieces.put(tdd.wpa.getName(), tdd.wpa);
+        this.tilesMap = tdd.tilesMap;
     }
 
     @Override
@@ -82,15 +85,15 @@ public class HexagonGameBoard extends JPanel  {
         Graphics2D g2d = (Graphics2D) g;
 
         for (BoardPiece piece : boardPieces.values()) {
-            for(Tile tile:piece.getTiles()) {
-                ParentMap.put(tile.getRow()+","+tile.getCol(),tile);
+            for (Tile tile : piece.getTiles()) {
+                ParentMap.put(tile.getRow() + "," + tile.getCol(), tile);
             }
             piece.draw(g2d, hexSize, tilesMap);
         }
 
         if (players != null && players.size() > 0) {
             for (Player player : players) {
-                player.draw(g2d,  hexSize);
+                player.draw(g2d, hexSize);
             }
         }
 
@@ -118,14 +121,14 @@ public class HexagonGameBoard extends JPanel  {
         int cardsDrawn = 0;
 
         for (int i = 0; i < totalCards; i++) {
-            int row = i / maxCardsPerRow;  // Calculate the row index
-            int col = i % maxCardsPerRow;  // Calculate the column index
+            int row = i / maxCardsPerRow; // Calculate the row index
+            int col = i % maxCardsPerRow; // Calculate the column index
 
             int x = temp.getX() + captionWidth + col * (cardWidth + cardSpacing);
             int y = 10 + row * (cardHeight + cardSpacing);
 
             PlayerCards.get(i).draw(g2d, x, y, cardWidth, cardHeight);
-            g2d.drawString("Index: "+i, x+5, y+cardHeight/2);
+            g2d.drawString("Index: " + i, x + 5, y + cardHeight / 2);
             cardsDrawn++;
 
             if (cardsDrawn >= totalCards) {
@@ -155,10 +158,10 @@ public class HexagonGameBoard extends JPanel  {
                 .collect(Collectors.toList());
     }
 
-    public void addTerrain(int addRow, int addCol, Terrain terrainA){
+    public void addTerrain(int addRow, int addCol, Terrain terrainA) {
         List<WinningPiece> WP = getAllWinningPieces();
         addWinningPiece(addRow, addCol, WP.get(WP.size() - 1));
-        Terrain terrainB = terrainA.clone(addRow, addCol,tilesMap);
+        Terrain terrainB = terrainA.clone(addRow, addCol, tilesMap);
         terrainB.randomizeTiles();
         boardPieces.put(terrainB.getName(), terrainB);
         Set<int[]> neighbors = terrainA.findOverlappingNeighbors(terrainB);
@@ -168,22 +171,22 @@ public class HexagonGameBoard extends JPanel  {
             for (int[] coordinate : neighbors) {
                 int row = coordinate[0];
                 int col = coordinate[1];
-                Tile temp = tilesMap.get(row+","+col);
+                Tile temp = tilesMap.get(row + "," + col);
                 blockade.addTile(temp);
             }
 
             blockade.randomizeTiles();
-            int indexA=Integer.parseInt(terrainA.getName().substring("Terrain_".length()));
-            int indexB=Integer.parseInt(terrainB.getName().substring("Terrain_".length()));
+            int indexA = Integer.parseInt(terrainA.getName().substring("Terrain_".length()));
+            int indexB = Integer.parseInt(terrainB.getName().substring("Terrain_".length()));
             blockade.setTerrainNeighbors(indexA, indexB);
             boardPieces.put(blockade.getName(), blockade);
         }
     }
 
-    public void addWinningPiece(int addRow, int addCol,WinningPiece wpa){
-        WinningPiece wpb = wpa.clone(addRow, addCol,tilesMap);
+    public void addWinningPiece(int addRow, int addCol, WinningPiece wpa) {
+        WinningPiece wpb = wpa.clone(addRow, addCol, tilesMap);
 
-        for (Tile tile: wpa.getTiles()) {
+        for (Tile tile : wpa.getTiles()) {
             tile.setParent(null);
         }
 
@@ -192,34 +195,36 @@ public class HexagonGameBoard extends JPanel  {
     }
 
     public void removeBlockade(int blockRemoveIndex) {
-    	Blockade blockRemove=(Blockade) boardPieces.get("Blockade_"+(blockRemoveIndex));
-    	int indexTerrain=blockRemove.getTerrainNeighbors()[0];
-        boardPieces.remove("Blockade_"+(blockRemoveIndex));
+        Blockade blockRemove = (Blockade) boardPieces.get("Blockade_" + (blockRemoveIndex));
+        int indexTerrain = blockRemove.getTerrainNeighbors()[0];
+        boardPieces.remove("Blockade_" + (blockRemoveIndex));
         int[] change;
 
-        if (coordinateList.get(indexTerrain-1)[0] > 0) {
-            change = new int[]{-1, 0}; // Move one unit up
-        } else if (coordinateList.get(indexTerrain-1)[0] < 0) {
-            change = new int[]{1, 0}; // Move one unit down
+        if (coordinateList.get(indexTerrain - 1)[0] > 0) {
+            change = new int[] { -1, 0 }; // Move one unit up
+        } else if (coordinateList.get(indexTerrain - 1)[0] < 0) {
+            change = new int[] { 1, 0 }; // Move one unit down
         } else {
-            change = new int[]{0, -1}; // Move one unit left
+            change = new int[] { 0, -1 }; // Move one unit left
         }
 
         for (BoardPiece piece : boardPieces.values()) {
-            if(piece.getName().startsWith("Terrain_")){
-                String indexString = piece.getName().substring("Terrain_".length()); // Extract the substring after "Terrain_"
+            if (piece.getName().startsWith("Terrain_")) {
+                String indexString = piece.getName().substring("Terrain_".length()); // Extract the substring after
+                                                                                     // "Terrain_"
                 int index = Integer.parseInt(indexString);
-                if(index<=indexTerrain){
-                    continue;}
+                if (index <= indexTerrain) {
+                    continue;
+                }
             }
             piece.move(change[0], change[1]);
         }
     }
 
     public boolean isValidPosition(int row, int col) {
-        String targetKey = row+","+col;
+        String targetKey = row + "," + col;
         Tile temp = ParentMap.get(targetKey);
-        if (temp==null||temp.getParent()==null||temp.getParent().startsWith("Blockade_")) {
+        if (temp == null || temp.getParent() == null || temp.getParent().startsWith("Blockade_")) {
             System.out.println("This tile doesn't belong in any board piece or is a block.");
             return false;
         }

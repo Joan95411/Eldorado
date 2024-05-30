@@ -8,13 +8,14 @@ public abstract class BoardPiece {
     protected String name;
     protected List<Tile> tiles;
     protected int pieceCount;
-    protected static final Color[] COLOR_RANGE = {Color.GREEN, Color.CYAN, Color.YELLOW};
+    protected static final Color[] COLOR_RANGE = { Color.GREEN, Color.CYAN, Color.YELLOW };
     protected static final int POINTS_MIN = 1;
     protected static final int POINTS_MAX = 3;
 
     public BoardPiece() {
         this.tiles = new ArrayList<>();
     }
+
     public String getName() {
         return name;
     }
@@ -78,7 +79,7 @@ public abstract class BoardPiece {
         // Find overlapping neighbors by comparing coordinates
         for (int[] neighborA : neighborsA) {
             for (int[] neighborB : neighborsB) {
-                if (Arrays.equals(neighborA, neighborB) ) {
+                if (Arrays.equals(neighborA, neighborB)) {
                     if (!overlappingNeighbors.contains(neighborA)) {
                         overlappingNeighbors.add(neighborA);
                     }
@@ -89,7 +90,6 @@ public abstract class BoardPiece {
 
         return overlappingNeighbors;
     }
-
 
     public Set<int[]> getAllNeighbors() {
         Set<String> neighborStrings = new HashSet<>();
