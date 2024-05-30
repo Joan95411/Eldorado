@@ -14,7 +14,9 @@ import java.util.Random;
 	        this.name="Winning_"+index;
 	        this.pieceCount=6;
 	    }
-	    
+	    public static void resetCount() {
+	        WinningCount = 0;
+	    }
 	    public void randomizeTiles(){
 	    	Random random = new Random();
 	    	double rand = random.nextDouble();

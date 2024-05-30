@@ -35,6 +35,9 @@ public class HexagonGameBoard extends JPanel  {
         tilesMap = new HashMap<>();
         ParentMap = new HashMap<>();
         boardPieces = new HashMap<>();
+        Terrain.resetWinningCount();
+        Blockade.resetCount();
+        WinningPiece.resetCount();
         coordinateList= Arrays.asList(
                 new int[]{6, 4},
                 new int[]{0, 8},
@@ -77,6 +80,7 @@ public class HexagonGameBoard extends JPanel  {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
+
         for (BoardPiece piece : boardPieces.values()) {
             for(Tile tile:piece.getTiles()) {
                 ParentMap.put(tile.getRow()+","+tile.getCol(),tile);
@@ -112,6 +116,7 @@ public class HexagonGameBoard extends JPanel  {
         int cardSpacing = cardWidth / 10;
         int totalCards = PlayerCards.size();
         int cardsDrawn = 0;
+
         for (int i = 0; i < totalCards; i++) {
             int row = i / maxCardsPerRow;  // Calculate the row index
             int col = i % maxCardsPerRow;  // Calculate the column index
@@ -168,6 +173,9 @@ public class HexagonGameBoard extends JPanel  {
             }
 
             blockade.randomizeTiles();
+            int indexA=Integer.parseInt(terrainA.getName().substring("Terrain_".length()));
+            int indexB=Integer.parseInt(terrainB.getName().substring("Terrain_".length()));
+            blockade.setTerrainNeighbors(indexA, indexB);
             boardPieces.put(blockade.getName(), blockade);
         }
     }
@@ -183,13 +191,15 @@ public class HexagonGameBoard extends JPanel  {
         boardPieces.put(wpb.getName(), wpb);
     }
 
-    public void removeBlockade(int currentTerrainIndex) {//need to be sure terrain_index and block_index are in sequence
-        boardPieces.remove("Blockade_"+(currentTerrainIndex));
+    public void removeBlockade(int blockRemoveIndex) {
+    	Blockade blockRemove=(Blockade) boardPieces.get("Blockade_"+(blockRemoveIndex));
+    	int indexTerrain=blockRemove.getTerrainNeighbors()[0];
+        boardPieces.remove("Blockade_"+(blockRemoveIndex));
         int[] change;
 
-        if (coordinateList.get(currentTerrainIndex-1)[0] > 0) {
+        if (coordinateList.get(indexTerrain-1)[0] > 0) {
             change = new int[]{-1, 0}; // Move one unit up
-        } else if (coordinateList.get(currentTerrainIndex-1)[0] < 0) {
+        } else if (coordinateList.get(indexTerrain-1)[0] < 0) {
             change = new int[]{1, 0}; // Move one unit down
         } else {
             change = new int[]{0, -1}; // Move one unit left
@@ -199,7 +209,7 @@ public class HexagonGameBoard extends JPanel  {
             if(piece.getName().startsWith("Terrain_")){
                 String indexString = piece.getName().substring("Terrain_".length()); // Extract the substring after "Terrain_"
                 int index = Integer.parseInt(indexString);
-                if(index<=currentTerrainIndex){
+                if(index<=indexTerrain){
                     continue;}
             }
             piece.move(change[0], change[1]);

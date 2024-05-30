@@ -28,6 +28,8 @@ public class Util {
         colorMap.put("black", Color.BLACK);
         colorMap.put("cyan", Color.CYAN);
         colorMap.put("purple", Color.BLUE);
+        colorMap.put("MAGENTA", Color.MAGENTA);
+        colorMap.put("ORANGE", Color.ORANGE);
         return colorMap.getOrDefault(colorName.toLowerCase(), Color.WHITE);
     }
 	

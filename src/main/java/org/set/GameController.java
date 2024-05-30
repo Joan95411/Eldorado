@@ -20,11 +20,10 @@ public class GameController {
         this.board=board;
         GameState="Game Starts";
         //Before_game.setSpecialColor(board);
-        players=Before_game.addPlayer(board);
+        players = Before_game.addPlayer(board);
         //During_game.removeblock(board);
         Before_game.placePlayersOnBoard(board);
         GameSession();
-        
     }
     
     private String displayGameState() {
@@ -33,7 +32,6 @@ public class GameController {
     }
     
     private void PlayerDrawCards(int turn,int currentPlayerIndex) {
-
 	    System.out.println("Player " + (currentPlayerIndex+1) + " drawing cards" );
     	Player currentPlayer = players.get(currentPlayerIndex);
     	currentPlayer.myDeck.draw(5);
@@ -46,8 +44,8 @@ public class GameController {
     	//play cards that you want to use for moving
     	
     	List<Card> currentDeck=player.myDeck.getCardsInHand();
-    	boolean conditionNotMet=true;
-    	while(conditionNotMet) {
+    	boolean movementNotQualified=true;
+    	while(movementNotQualified) {
     	int cardIndex = InputHelper.getIntInput("Choose 1 card for Movement, input index (e.g. 0)");
 	    if (cardIndex>=currentDeck.size()) {
 	        System.out.println("Please enter a number between 0 to "+(player.myDeck.getCardsInHand().size()-1));
@@ -67,6 +65,8 @@ public class GameController {
     	if(cardcolor.equals(MovingTo.getColor())) {
     		if(expeditionCard.getPower()>=MovingTo.getPoints()) {
     			player.setPlayerPosition(MovingTo.getRow(), MovingTo.getCol());
+                movementNotQualified=false;
+    			//implement the leftover power
     		}
     	}
     	}
@@ -76,29 +76,32 @@ public class GameController {
     	//Use the rest of your cards to buy up to 1 new card per turn.
     }
     public void PlayerDiscard(Player player) {
-    	//Phase 2
-    	//Discard Played Cards, keep card in your hand for your next turn
-    	//decide for each card individually.
+        //Phase 2
+        //Discard Played Cards, keep card in your hand for your next turn
+        //decide for each card individually.
+        for(Card card : player.myDeck.getCardsInHand()){//for al cards left in your hand
+            //decide if you want to keep the card or discard
+            //TODO: implement user interface for this
+        }
     }
     public void PlayerDrawCard(Player player) {
     	//Phase 3
-    	//draw cards from your draw pile until you have 4 cards in your hand.
-    	//If your draw pile doesn't contain enough cards to draw for your next turn, draw as many as possible. 
+        player.myDeck.draw(4 - player.myDeck.getCardsInHand().size());//draw cards from your draw pile until you have 4 cards in your hand.
+        //If your draw pile doesn't contain enough cards to draw for your next turn, draw as many as possible.
     	//Then, shuffle your discard pile to form your new draw pile, then draw the rest of the cards you need.
     }
     public void GameSession() {
         int turnNumber = 0;
         while (true) {
             for (int currentPlayerIndex = 0; currentPlayerIndex < players.size(); currentPlayerIndex++) {
-            Player currentPlayer = players.get(currentPlayerIndex);
-            System.out.println("Turn " + turnNumber + ": Player " + (currentPlayerIndex+1) + "'s turn.");
-    	    PlayerDrawCards(turnNumber,currentPlayerIndex);
-    	    
-    	    int[] position = InputHelper.getPositionInput(board);
-    	    
-    	    currentPlayer.setPlayerPosition(position[0], position[1]);
-	        board.repaint();
-	        
+                Player currentPlayer = players.get(currentPlayerIndex);
+                System.out.println("Turn " + turnNumber + ": Player " + (currentPlayerIndex+1) + "'s turn.");
+                PlayerDrawCards(turnNumber,currentPlayerIndex);
+
+                int[] position = InputHelper.getPositionInput(board);
+
+                currentPlayer.setPlayerPosition(position[0], position[1]);
+                board.repaint();
             }
 
     	    turnNumber++;
