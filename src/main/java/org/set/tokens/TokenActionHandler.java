@@ -31,7 +31,8 @@ public class TokenActionHandler {
             case Draw:
                 System.out.println("Draw token played");
                 // These tokens allow you to draw an additional card from your draw pile.
-                // Just like the Cartographer, this 4x token allows you to play that card in the same turn you drew it.
+                // Just like the Cartographer, this 4x token allows you to play that card in the
+                // same turn you drew it.
 
                 return;
 
@@ -44,20 +45,23 @@ public class TokenActionHandler {
             case Replace:
                 System.out.println("Replace token played");
                 // These tokens allow you to replace the cards in your hand.
-                // When you play the token, play up to 4 cards 3x from your hand above your expedition board, then draw that many cards from your draw pile.
+                // When you play the token, play up to 4 cards 3x from your hand above your
+                // expedition board, then draw that many cards from your draw pile.
 
                 return;
 
             case ImmediatePlay:
                 System.out.println("ImmediatePlay token played");
                 // Play this token immediately after using an item card.
-                // Instead of removing that item from the game, put it on your discard pile during phase 2 or your turn.
+                // Instead of removing that item from the game, put it on your discard pile
+                // during phase 2 or your turn.
 
                 return;
 
             case PassThrough:
                 System.out.println("PassThrough token played");
-                // After playing this token, you are allowed to move onto or past an occupied space for the rest of your turn.
+                // After playing this token, you are allowed to move onto or past an occupied
+                // space for the rest of your turn.
                 // Mountains are still off-limits.
 
                 return;
@@ -77,7 +81,8 @@ public class TokenActionHandler {
 
                 return;
 
-            default: throw new IllegalStateException("Unexpected value: " + caveTokenType);
+            default:
+                throw new IllegalStateException("Unexpected value: " + caveTokenType);
         }
     }
 }
