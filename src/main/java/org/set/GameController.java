@@ -1,187 +1,103 @@
 package org.set;
 
-import java.util.Scanner;
+import java.awt.Color;
+import java.util.List;
 
 import org.set.boardPieces.HexagonGameBoard;
 import org.set.boardPieces.Tile;
 import org.set.boardPieces.Util;
+import org.set.cards.Card;
+import org.set.cards.expedition.ExpeditionCard;
 
 
 public class GameController {
     private HexagonGameBoard board;
-    private Player[] players;
+    private List<Player> players;
     private String GameState;
-    private Scanner scanner;
     public int turnCounter;
+    private InputHelper inputHelper;
     public GameController(HexagonGameBoard board) {
-        scanner = new Scanner(System.in);
         this.board=board;
-        GameState="Game in process";
-        //setSpecialColor();
-        //removeblock(0);
-        //removeblock(1);
-        //removeblock(2);
-        addPlayer();
-        placePlayersOnBoard();
-        PlayerMoves();
-        
+        GameState="Game Starts";
+        //Before_game.setSpecialColor(board);
+        players = Before_game.addPlayer(board);
+        //During_game.removeblock(board);
+        Before_game.placePlayersOnBoard(board);
+        GameSession();
     }
     
-    public void setSpecialColor() {
-        
-        while (true) {
-            System.out.println("Do you want to set any tile specially? (y/n)");
-            String input = scanner.nextLine();
-            
-            if (input.equalsIgnoreCase("n")) {
-                break; // Exit the loop if the user doesn't want to set any more special tiles
-            } else if (!input.equalsIgnoreCase("y")) {
-                System.out.println("Invalid input. Please enter 'y' or 'n'.");
-                continue; // Continue to the next iteration if the input is invalid
-            }
-
-            System.out.println("Tell me the tile of row,column,color,points (e.g., '2,3,red,1') or type 'done' to finish:");
-            String rowcol = scanner.nextLine();
-
-            if (rowcol.equalsIgnoreCase("done")) {
-                break; // Exit the loop if the user types 'done'
-            }
-
-            String[] tokens = rowcol.split(",");
-            if (tokens.length != 4) {
-                System.out.println("Invalid input. Please enter row, column, color, and points separated by comma.");
-                continue; // Continue to the next iteration if the input is invalid
-            }
-
-            try {
-                int row = Integer.parseInt(tokens[0]);
-                int col = Integer.parseInt(tokens[1]);
-                String color = tokens[2];
-                int points = Integer.parseInt(tokens[3]);
-                
-                if (!board.isValidPosition(row, col)) {
-                    System.out.println("Invalid position. Please enter valid coordinates.");
-                    continue; // Continue to the next iteration if the position is invalid
-                }
-                
-                Tile special = board.tilesMap.get(row + "," + col);
-                if (special == null) {
-                    System.out.println("Tile not found at the specified position.");
-                    continue; // Continue to the next iteration if the tile is not found
-                }
-                
-                special.setColor(Util.getColorFromString(color));
-                special.setPoints(points);
-                board.repaint();
-                System.out.println("Special color and points set for tile at position (" + row + "," + col + ").");
-            } catch (NumberFormatException e) {
-                System.out.println("Invalid input. Please enter valid integers for row and column, and a valid color.");
-            }
-        }
-        
-    }
-
-
-    public void addPlayer() {
-    	System.out.println("How many players are playing?");
-        int numPlayers = scanner.nextInt();
-
-        // Create an array to store player instances
-        players = new Player[numPlayers];
-
-        // Loop through each player
-        for (int i = 0; i < numPlayers; i++) {
-            // Ask each player to choose a color
-            System.out.println("Player " + (i+1) + ", choose your color:");
-            String color = scanner.next();
-
-            // Create a new player instance with the chosen color
-            Player player = new Player(Util.getColorFromString(color));
-            
-            // Add the player to the players array
-            players[i] = player;
-
-    }board.players=players;
-
-    }
-    
-    private void placePlayersOnBoard() {
-
-		 for (Player player : players) {
-
-       player.setPlayerPosition(1+player.id, 1);
-
-		 }board.repaint();
+    private String displayGameState() {
+        // Display the current state of the game, including the board and player positions
+        return GameState;
     }
     
     private void PlayerDrawCards(int turn,int currentPlayerIndex) {
-
 	    System.out.println("Player " + (currentPlayerIndex+1) + " drawing cards" );
-    	Player currentPlayer = players[currentPlayerIndex];
-    	currentPlayer.drawCards(turn);
-	    board.PlayerCards=currentPlayer.getCards();
+    	Player currentPlayer = players.get(currentPlayerIndex);
+    	currentPlayer.myDeck.draw(5);
+	    board.PlayerCards=currentPlayer.myDeck.getCardsInHand();
         board.repaint();
     }
-
-
-
-    private void removeblock(int currentTerrainIndex){
-    	System.out.println("Remove blockade");
-    	scanner.next();
-    	board.removeBlockade(currentTerrainIndex);
-    	board.repaint();
-    }
     
-    public void PlayerMoves() {
+    public void PlayerMove(Player player) {
+    	//Phase 1
+    	//play cards that you want to use for moving
+    	
+    	List<Card> currentDeck=player.myDeck.getCardsInHand();
+    	boolean conditionNotMet=true;
+    	while(conditionNotMet) {
+    	int cardIndex = InputHelper.getIntInput("Choose 1 card for Movement, input index (e.g. 0)");
+	    if (cardIndex>=currentDeck.size()) {
+	        System.out.println("Please enter a number between 0 to "+(player.myDeck.getCardsInHand().size()-1));
+	        continue;
+	    }
+    	Card selectedCard=currentDeck.get(cardIndex);//only expedition card can move?
+    	if (!(selectedCard instanceof ExpeditionCard)) {
+            System.out.println("Please select an Expedition card.");
+            continue;
+        }
+    	ExpeditionCard expeditionCard = (ExpeditionCard) selectedCard;
+    	System.out.println("Where do you want to move with this card?");
+    	String targetKey = player.getCurrentRow() + "," + player.getCurrentCol();
+        Tile PlayerStandingTile = board.ParentMap.get(targetKey);
+    	Tile MovingTo = InputHelper.getPlayerMoveInput(board,PlayerStandingTile);
+    	Color cardcolor=Util.getColorFromString(selectedCard.cardType.toString());
+    	if(cardcolor.equals(MovingTo.getColor())) {
+    		if(expeditionCard.getPower()>=MovingTo.getPoints()) {
+    			player.setPlayerPosition(MovingTo.getRow(), MovingTo.getCol());
+    		}
+    	}
+    	}
+    }
+    public void PlayerBuy(Player player) {
+    	//Phase 1
+    	//Use the rest of your cards to buy up to 1 new card per turn.
+    }
+    public void PlayerDiscard(Player player) {
+    	//Phase 2
+    	//Discard Played Cards, keep card in your hand for your next turn
+    	//decide for each card individually.
+    }
+    public void PlayerDrawCard(Player player) {
+    	//Phase 3
+    	//draw cards from your draw pile until you have 4 cards in your hand.
+    	//If your draw pile doesn't contain enough cards to draw for your next turn, draw as many as possible. 
+    	//Then, shuffle your discard pile to form your new draw pile, then draw the rest of the cards you need.
+    }
+    public void GameSession() {
         int turnNumber = 0;
         while (true) {
-            displayGameState();
-            for (int currentPlayerIndex = 0; currentPlayerIndex < players.length; currentPlayerIndex++) {
-            Player currentPlayer = players[currentPlayerIndex];
-            System.out.println("Turn " + turnNumber + ": Player " + (currentPlayerIndex+1) + "'s turn.");
-    	    PlayerDrawCards(turnNumber,currentPlayerIndex);
+            for (int currentPlayerIndex = 0; currentPlayerIndex < players.size(); currentPlayerIndex++) {
+                Player currentPlayer = players.get(currentPlayerIndex);
+                System.out.println("Turn " + turnNumber + ": Player " + (currentPlayerIndex+1) + "'s turn.");
+                PlayerDrawCards(turnNumber,currentPlayerIndex);
 
-    	    boolean invalidans=true;
-    	    int row = -1;int col = -1;
+                int[] position = InputHelper.getPositionInput(board);
 
-    	    while(invalidans){
-    	    System.out.println("Enter row and column for player's position (e.g., '2 3'), or type 'stop' to end the game:");
-    	    System.out.print("> ");
-    	    String input = scanner.nextLine();
-    	    if (input.equalsIgnoreCase("stop")) {
-    	        break;
-    	    }
-
-    	    String[] tokens = input.split("\\s+");
-    	    if (tokens.length != 2) {
-    	        System.out.println("Invalid input. Please enter row and column separated by space.");
-                continue;
-    	    }
-
-    	    try {
-    	        row = Integer.parseInt(tokens[0]);
-    	        col = Integer.parseInt(tokens[1]);
-    	        if (!board.isValidPosition(row, col)) {
-    	            System.out.println("Invalid position. Please enter valid coordinates.");
-    	            continue;
-    	        }
-    	        }
-    	     catch (NumberFormatException e) {
-    	        System.out.println("Invalid input. Please enter valid integers for row and column.");
-                continue;
-    	    }
-    	    invalidans=false;
-    	    }
-
-    	    currentPlayer.setPlayerPosition(row, col);
-	        board.repaint();
-	        String targetKey = row+","+col;
-	        Tile temp = board.tilesMap.get(targetKey);
-	        System.out.println("You are currently on "+temp.getParent());
+                currentPlayer.setPlayerPosition(position[0], position[1]);
+                board.repaint();
             }
 
-    	    // Move to the next player
-    	    //currentPlayerIndex = (currentPlayerIndex+1) % players.length;
     	    turnNumber++;
             // Check for end conditions or other game logic
             if (isGameOver()) {
@@ -194,22 +110,20 @@ public class GameController {
     }
 
     
-
-    private String displayGameState() {
-        // Display the current state of the game, including the board and player positions
-        return GameState;
+    
+    public void FinalRound() {
+    	//1 player reaches WinningPiece, triggers final round
+    	//Each player left in that round will now play their final turn
+    	GameState="Final Round";
     }
 
     private boolean isGameOver() {
-        // Check if the game is over based on any end conditions
-        // Example: Check if a player has reached a certain position on the board
-        // This logic can be customized based on the game rules
-        return false; // Placeholder for now
+        // when the final round completes, the game is over
+        return false; 
     }
 
     private void endGame() {
-        // Perform any cleanup or display final results
-        // Example: Display the winner or final scores
+    	InputHelper.closeScanner();
         System.out.println("Game Over!");
     }
 }

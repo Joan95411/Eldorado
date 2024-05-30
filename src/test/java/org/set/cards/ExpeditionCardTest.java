@@ -1,13 +1,24 @@
 package org.set.cards;
 
+import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import org.junit.jupiter.api.Test;
+import org.set.boardPieces.HexagonGameBoard;
 import org.set.cards.expedition.ExpeditionCard;
 import org.set.cards.expedition.ExpeditionCardType;
 
+import javax.swing.*;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+/**
+ * Test class for the {@link ExpeditionCard} class.
+ */
 public class ExpeditionCardTest {
+    /**
+     * Test for creating all the expedition cards.
+     */
     @Test
     public void createExpeditionCards() {
         ArrayList<Card> cards = new ArrayList<>();
@@ -28,6 +39,10 @@ public class ExpeditionCardTest {
         assertEquals(cards.size(), maxCost * maxPower * 2 * ExpeditionCardType.values().length);
     }
 
+    /**
+     * Test for removing expedition cards.
+     * Also testing if it is not possible to remove a not single use card
+     */
     @Test
     public void removeExpeditionCards() {
         ExpeditionCard card = new ExpeditionCard(ExpeditionCardType.Sailor, 1,false, 1);
@@ -43,6 +58,9 @@ public class ExpeditionCardTest {
         }
     }
 
+    /**
+     * Test for removing single use expedition cards.
+     */
     @Test
     public void removeSingleUseExpeditionCards() {
         ExpeditionCard card = new ExpeditionCard(ExpeditionCardType.Sailor, 1,true, 1);
@@ -52,5 +70,28 @@ public class ExpeditionCardTest {
          card.removeCard();
          assertEquals(card.singleUse, true);
          assertEquals(card.removedCard, true);
+    }
+
+    /**
+     * Test for drawing expedition cards.
+     */
+    @Test
+    public void setExpeditionCardPower() {
+        ExpeditionCard card = new ExpeditionCard(ExpeditionCardType.Sailor, 1,true, 1);
+        card.setPower(0);
+
+        assertEquals(card.getPower(), 0);
+    }
+
+    /**
+     * Test for drawing expedition cards.
+     */
+    @Test
+    public void drawingExpeditionCard() {
+        BufferedImage image = new BufferedImage(100, 100, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2d = image.createGraphics();
+
+        ExpeditionCard card = new ExpeditionCard(ExpeditionCardType.Sailor, 1,true, 1);
+        card.draw(g2d, 0, 0 ,1,2);
     }
 }

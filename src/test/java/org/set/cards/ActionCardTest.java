@@ -12,6 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class ActionCardTest {
     private static ArrayList<ActionCard> cards = new ArrayList<>();
     private static Player player = new Player(Color.BLACK);
+
     @BeforeAll
     public static void createActionCards() {
         cards.add(new ActionCard(ActionCardType.Transmitter, 4, true));

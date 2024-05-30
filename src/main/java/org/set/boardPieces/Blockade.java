@@ -3,11 +3,9 @@ package org.set.boardPieces;
 import java.awt.Color;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.Random;
-public class Blockade extends boardPiece {
+public class Blockade extends BoardPiece {
 	private static int blockadeCount = 0;
     private Color color;
     private int points;
@@ -19,12 +17,10 @@ public class Blockade extends boardPiece {
         this.pieceCount=5;
     }
 
-    
-
-    
     public void setColor(Color color) {
         this.color = color;
     }
+
     public void setPoints(int points) {
         this.points = points;
     }
@@ -32,42 +28,27 @@ public class Blockade extends boardPiece {
     @Override
     public Blockade clone(int addRow, int addCol, Map<String, Tile> tilesMap) {
     	Blockade clonedBlock = new Blockade();
-        int row;
-        int col;
         for (Tile tile : tiles) {
-        	if (addCol % 2 == 0) {
-            row = tile.getRow() + addRow; 
-            col = tile.getCol() + addCol; 
-            }
-        	else{
-        		row = tile.getRow() + addRow; 
-                col = tile.getCol() + addCol; 
-                if(col% 2 == 0){
-                	if(addRow% 2 == 0){
-                	row=row+1;}
-                	else{
-                		row=row-1;
-                	}
-                }
-        	}
+        	int[] result = calculateRowAndCol(tile, addRow, addCol);
+        	int newRow = result[0];
+        	int newCol = result[1];
             
-            Tile clonedTile = new Tile(row, col);
-            String targetKey = row+","+col;
-            clonedTile = tilesMap.get(targetKey);
+        	String targetKey = newRow + "," + newCol;
+            Tile clonedTile = tilesMap.get(targetKey);
+            
             try {
                 clonedBlock.addTile(clonedTile);
             } catch(Exception e) {
             	e.printStackTrace();
-                System.err.println("Tile not found for row " + row + ", col " + col);
+                System.err.println("Tile not found for row " + newRow + ", col " + newCol);
+                System.err.println("Tile not found for row " + newRow + ", col " + newCol);
             }
         }
         clonedBlock.setColor(this.color);
         clonedBlock.setPoints(this.points);
         return clonedBlock;
     }
-    
-    
-    
+
     public void randomizeTiles() {
     	Random random = new Random();
     	int index = random.nextInt(COLOR_RANGE.length);
@@ -90,8 +71,7 @@ public class Blockade extends boardPiece {
     		int y=temp.getY();
     		totalX += x;
             totalY += y;
-    		int hexSize=size;
-    		tile.drawHexagon(g2d, x, y, hexSize, color, null);
+    		tile.drawHexagon(g2d, x, y, size, color, null);
     	}
     	int centerX = totalX / tiles.size();
         int centerY = totalY / tiles.size();
@@ -102,6 +82,4 @@ public class Blockade extends boardPiece {
         int textHeight = fm.getHeight();
         g2d.drawString(pointText, centerX - textWidth / 2, centerY + textHeight / 2);
     }
-    
 }
-
