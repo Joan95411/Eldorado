@@ -9,14 +9,18 @@ public class Blockade extends BoardPiece {
 	private static int blockadeCount = 0;
     private Color color;
     private int points;
+    private int[] neighbors;
 
     public Blockade() {
         super();
         int index = ++blockadeCount;
         this.name="Blockade_"+index;
         this.pieceCount=5;
+        this.neighbors = new int[2]; 
     }
-
+    public static void resetCount() {
+    	blockadeCount = 0;
+    }
     public void setColor(Color color) {
         this.color = color;
     }
@@ -24,7 +28,13 @@ public class Blockade extends BoardPiece {
     public void setPoints(int points) {
         this.points = points;
     }
-
+    public void setTerrainNeighbors(int neighbor1, int neighbor2) {
+        this.neighbors[0] = neighbor1;
+        this.neighbors[1] = neighbor2;
+    }
+    public int[] getTerrainNeighbors() {
+        return neighbors;
+    }
     @Override
     public Blockade clone(int addRow, int addCol, Map<String, Tile> tilesMap) {
     	Blockade clonedBlock = new Blockade();

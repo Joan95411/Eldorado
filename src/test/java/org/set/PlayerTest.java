@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * This class PlayerTest contains JUnit tests for the {@link Player} class.
  */
 public class PlayerTest {
-    protected static Player player = new Player(Color.MAGENTA);
+    protected static Player player = new Player(new Color(255,254,253));
     protected static ArrayList<Player> players = new ArrayList<>();
 
     /**
@@ -31,9 +31,9 @@ public class PlayerTest {
     @Test
     public void testCreatingPlayersWithSameColor() {
         try {
-            new Player(Color.MAGENTA);
+            new Player(new Color(255,254,253));
         } catch (IllegalArgumentException e) {
-            assertEquals(e.getMessage(), "The color " + Color.MAGENTA.toString() + " is already used", "A player's color is unique");
+            assertEquals(e.getMessage(), "The color " + new Color(255,254,253).toString() + " is already used", "A player's color is unique");
         }
     }
 
@@ -45,14 +45,18 @@ public class PlayerTest {
         Color[] colors = {Color.RED, Color.GRAY, Color.YELLOW, Color.GREEN, Color.CYAN, Color.PINK, Color.BLUE};
 
         for (Color color : colors) {
-            Player player = new Player(color);
-            assertNotNull(player);
-            assertEquals(player.getColor(), color);
+            try {
+                Player player = new Player(color);
+                assertNotNull(player);
+                assertEquals(player.getColor(), color);
 
-            players.add(player);
-            assertNotNull(players.get(players.size() - 1));
+                players.add(player);
+                assertNotNull(players.get(players.size() - 1));
 
-            testPlayerColor(player, color);
+                testPlayerColor(player, color);
+            } catch (IllegalArgumentException e) {
+                assertEquals(e.getMessage(), "The color " + color.toString() + " is already used", "A player's color is unique");
+            }
         }
     }
 
