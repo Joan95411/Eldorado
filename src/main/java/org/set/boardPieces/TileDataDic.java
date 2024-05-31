@@ -3,6 +3,7 @@ package org.set.boardPieces;
 import org.json.JSONObject;
 
 import java.awt.Color;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,8 +15,8 @@ public class TileDataDic {
     public static Dotenv dotenv;
     public Terrain terrainA;
     public WinningPiece wpa;
-    public Map<String, Tile> tilesMap;
-
+    public static Map<String, Tile> tilesMap;
+    
     public TileDataDic(int numRows, int numCols, int hexSize) {
         terrainA = new Terrain();
         wpa = new WinningPiece();
@@ -30,7 +31,7 @@ public class TileDataDic {
             tileDataPath = "src/main/java/org/set/boardPieces";
         }
 
-        String filename = "tileData.json";
+        String filename = "tileData2.json";
         JSONObject tileInfo = Util.readJsonData(tileDataPath, filename, "Terrain");
         JSONObject winningPieceInfo = Util.readJsonData(tileDataPath, filename, "WinningPiece");
 
@@ -40,8 +41,9 @@ public class TileDataDic {
         }
 
         fillTilesMap(numRows, numCols, hexSize, tileInfo, winningPieceInfo);
+        tilesMap = Collections.unmodifiableMap(tilesMap);
     }
-
+       
     public void fillTilesMap(int numRows, int numCols, int hexSize, JSONObject tileInfo, JSONObject winningPieceInfo) {
         for (int row = 0; row < numRows; row++) {
             for (int col = 0; col < numCols; col++) {
@@ -64,19 +66,29 @@ public class TileDataDic {
                 } else if (currentWinning != null) {
                     wpa.addTile(tile);
                     currentTileInfo = currentWinning;
+                    currentTileInfo.put("qr", "-100,-100");
                 } else {
                     currentTileInfo = new JSONObject();
                     currentTileInfo.put("color", "White");
                     currentTileInfo.put("points", 0);
+                    currentTileInfo.put("qr", "-100,-100");
                 }
 
                 String colorName = currentTileInfo.getString("color");
                 Color color = Util.getColorFromString(colorName);
                 int points = currentTileInfo.getInt("points");
+                
+                String qrString=currentTileInfo.getString("qr");
+                String[] parts = qrString.split(",");
+                tile.setQ(Integer.parseInt(parts[0]));
+                tile.setR(Integer.parseInt(parts[1]));;
+                
                 tile.setColor(color);
                 tile.setPoints(points);
                 tilesMap.put(key, tile);
             }
         }
+        
     }
+    
 }

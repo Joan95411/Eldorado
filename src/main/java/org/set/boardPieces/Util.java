@@ -28,7 +28,10 @@ public class Util {
 		colorMap.put("ORANGE", Color.ORANGE);
 		return colorMap.getOrDefault(colorName.toLowerCase(), Color.WHITE);
 	}
-
+	public static JSONObject readJsonData(String basePath, String fileName) {
+        return readJsonData(basePath, fileName, null);
+    }
+	
 	public static JSONObject readJsonData(String basePath, String fileName, String type) {
 		try {
 			// Construct the full path
@@ -42,9 +45,12 @@ public class Util {
 				// Parse the JSON data
 				JSONObject jsonData = new JSONObject(tileDataJson);
 
-				// Lookup the JSON object based on the provided type
-				JSONObject result = jsonData.optJSONObject(type);
-				return result;
+				if (type != null && !type.isEmpty()) {
+                    return jsonData.optJSONObject(type);
+                } else {
+                    // Return the whole JSON object if type is not provided
+                    return jsonData;
+                }
 			} else {
 				// Handle if the file does not exist or is not a regular file
 				System.err.println("Tile data file not found or is not a regular file.");

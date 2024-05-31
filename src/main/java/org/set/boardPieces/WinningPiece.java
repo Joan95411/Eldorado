@@ -41,7 +41,7 @@ public class WinningPiece extends BoardPiece {
 	}
 
 	@Override
-	public WinningPiece clone(int addRow, int addCol, Map<String, Tile> tilesMap) {
+	public WinningPiece clone(int addRow, int addCol) {
 		WinningPiece clonedWinning = new WinningPiece();
 		for (Tile tile : tiles) {
 			int[] result = calculateRowAndCol(tile, addRow, addCol);
@@ -49,7 +49,7 @@ public class WinningPiece extends BoardPiece {
 			int newCol = result[1];
 
 			String targetKey = newRow + "," + newCol;
-			Tile clonedTile = tilesMap.get(targetKey);
+			Tile clonedTile = TileDataDic.tilesMap.get(targetKey);
 
 			try {
 				clonedTile.setColor(tile.getColor());
@@ -64,10 +64,10 @@ public class WinningPiece extends BoardPiece {
 	}
 
 	@Override
-	public void draw(Graphics2D g2d, int size, Map<String, Tile> tilesMap) {
+	public void draw(Graphics2D g2d, int size) {
 		for (Tile tile : tiles) {
 			String targetKey = tile.getRow() + "," + tile.getCol();
-			Tile temp = tilesMap.get(targetKey);
+			Tile temp = TileDataDic.tilesMap.get(targetKey);
 			int x = temp.getX();
 			int y = temp.getY();
 			int hexSize = size;
@@ -84,5 +84,6 @@ public class WinningPiece extends BoardPiece {
 		}
 
 	}
+
 
 }

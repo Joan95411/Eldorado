@@ -10,6 +10,7 @@ import java.util.Scanner;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.set.boardPieces.Terrain;
+import org.set.boardPieces.Tile;
 import org.set.boardPieces.WinningPiece;
 import org.set.boardPieces.TileDataDic;
 
@@ -61,9 +62,8 @@ public class tileDataDicTest extends JPanel {
     @Test
     public void testTerrainDraw() {
         Terrain ta = tdd.terrainA;
-        ta.draw(g2d, hexSize, tdd.tilesMap);
         
-        // Wait for the user to press Enter
+        ta.draw(g2d, hexSize);
         waitForUserInput();
     }
     
@@ -71,9 +71,19 @@ public class tileDataDicTest extends JPanel {
     public void testWPDraw() {
         // Draw the terrain
     	WinningPiece wp = tdd.wpa;
-        wp.draw(g2d, hexSize, tdd.tilesMap);
+        
+        wp.draw(g2d, hexSize);
+        waitForUserInput();
+    }
+    @Test
+    public void testTileRotate() {
+        // Draw the terrain
+    	WinningPiece wp = tdd.wpa;
+//        for(Tile tile:wp.getTiles()) {
+//        	tile.rotate60Clockwise();
+//        }
 
-        // Wait for the user to press Enter
+        wp.draw(g2d, hexSize);
         waitForUserInput();
     }
 }

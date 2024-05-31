@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.set.boardPieces.HexagonGameBoard;
 import org.set.boardPieces.Tile;
+import org.set.boardPieces.TileDataDic;
 import org.set.boardPieces.Util;
 
 public class Before_game {
@@ -36,7 +37,7 @@ public class Before_game {
                 continue; // Continue to the next iteration if the input is invalid
             }
 
-            Tile special = board.tilesMap.get(row + "," + col);
+            Tile special = TileDataDic.tilesMap.get(row + "," + col);
 
             if (!board.isValidPosition(row, col)) {
                 System.out.println("Invalid position. Please enter valid coordinates.");

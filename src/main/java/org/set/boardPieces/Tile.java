@@ -14,7 +14,8 @@ public class Tile {
     private Color color;
     private int points;
     private String parent;
-
+    private int q;
+    private int r;
     public Tile(int row, int col) {
         this.row = row;
         this.col = col;
@@ -43,7 +44,25 @@ public class Tile {
     public void setY(int y) {
         this.y = y;
     }
+    
+    
+    public int getQ() {
+        return q;
+    }
 
+    public void setQ(int q) {
+        this.q = q;
+    }
+
+    public int getR() {
+        return r;
+    }
+
+    public void setR(int r) {
+        this.r = r;
+    }
+    
+    
     public int getRow() {
         return row;
     }
@@ -75,6 +94,48 @@ public class Tile {
     public void setPoints(int points) {
         this.points = points;
     }
+    
+    public int[] rotate60antiClockwise(int originX, int originY) {
+        int[] newCoordinate = new int[2]; // Array to hold the new coordinates
+        final double COS_60 = 0.5;
+        final double SIN_60 = Math.sqrt(3) / 2;
+        
+        // Translate the point to the origin
+        int translatedX = x - originX;
+        int translatedY = y - originY;
+        
+        // Perform rotation
+        int rotatedX = (int) Math.round(translatedX * COS_60 + translatedY * SIN_60);
+        int rotatedY = (int) Math.round(-translatedX * SIN_60 + translatedY * COS_60);
+        
+        // Translate the point back to its original position
+        newCoordinate[0] = rotatedX + originX; // Set the x-coordinate
+        newCoordinate[1] = rotatedY + originY; // Set the y-coordinate
+        
+        return newCoordinate; // Return the new coordinates
+    }
+    
+    public int[] rotate60Clockwise(int originX, int originY) {
+        int[] newCoordinate = new int[2]; // Array to hold the new coordinates
+        final double COS_60 = 0.5;
+        final double SIN_60 = Math.sqrt(3) / 2;
+        
+        // Translate the point to the origin
+        int translatedX = x - originX;
+        int translatedY = y - originY;
+        
+        // Perform rotation
+        int rotatedX = (int) Math.round(translatedX * COS_60 - translatedY * SIN_60);
+        int rotatedY = (int) Math.round(translatedX * SIN_60 + translatedY * COS_60);
+        
+        // Translate the point back to its original position
+        newCoordinate[0] = rotatedX + originX; // Set the x-coordinate
+        newCoordinate[1] = rotatedY + originY; // Set the y-coordinate
+        
+        return newCoordinate; // Return the new coordinates
+    }
+
+    
 
     public void drawTile(Graphics2D g2d, int x, int y, int size, Color color, int row, int col, int points) {
         // Adjust the alpha value (0-255) as needed

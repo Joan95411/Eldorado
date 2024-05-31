@@ -42,7 +42,7 @@ public class Blockade extends BoardPiece {
     }
 
     @Override
-    public Blockade clone(int addRow, int addCol, Map<String, Tile> tilesMap) {
+    public Blockade clone(int addRow, int addCol) {
         Blockade clonedBlock = new Blockade();
         for (Tile tile : tiles) {
             int[] result = calculateRowAndCol(tile, addRow, addCol);
@@ -50,7 +50,7 @@ public class Blockade extends BoardPiece {
             int newCol = result[1];
 
             String targetKey = newRow + "," + newCol;
-            Tile clonedTile = tilesMap.get(targetKey);
+            Tile clonedTile = TileDataDic.tilesMap.get(targetKey);
 
             try {
                 clonedBlock.addTile(clonedTile);
@@ -77,12 +77,12 @@ public class Blockade extends BoardPiece {
     }
 
     @Override
-    public void draw(Graphics2D g2d, int size, Map<String, Tile> tilesMap) {
+    public void draw(Graphics2D g2d, int size) {
         int totalX = 0;
         int totalY = 0;
         for (Tile tile : tiles) {
             String targetKey = tile.getRow() + "," + tile.getCol();
-            Tile temp = tilesMap.get(targetKey);
+            Tile temp = TileDataDic.tilesMap.get(targetKey);
             int x = temp.getX();
             int y = temp.getY();
             totalX += x;

@@ -20,7 +20,6 @@ public class HexagonGameBoard extends JPanel {
     public int cardWidth;
     public int cardHeight;
     public List<Player> players;
-    public Map<String, Tile> tilesMap;
     public Map<String, Tile> ParentMap;
     public Map<String, BoardPiece> boardPieces;
     public List<int[]> coordinateList;
@@ -33,7 +32,7 @@ public class HexagonGameBoard extends JPanel {
         this.cardWidth = hexSize * 2;
         this.cardHeight = cardWidth / 2 * 3;
         setPreferredSize(new Dimension((int) (numCols * 1.5 * hexSize), (int) (numRows * Math.sqrt(3) * hexSize)));
-        tilesMap = new HashMap<>();
+
         ParentMap = new HashMap<>();
         boardPieces = new HashMap<>();
         Terrain.resetWinningCount();
@@ -45,6 +44,13 @@ public class HexagonGameBoard extends JPanel {
                 new int[] { -6, 4 }
         // new int[]{0, 8}
         );
+//        coordinateList = Arrays.asList(
+//        		new int[]{ 0, 7 },
+//        		new int[]{ 0, 7 },
+//        		new int[]{ 5, 4 },
+//        		new int[]{ 5, -4 },
+//        		new int[]{ 0, -7 }
+//    );
         loadTileData();
         initBoard();
     }
@@ -69,14 +75,14 @@ public class HexagonGameBoard extends JPanel {
             addTerrain(coordinates[0], coordinates[1], modelter);
             maxIndex++;
         }
-
+        
+        
     }
 
     public void loadTileData() {
         TileDataDic tdd = new TileDataDic(numRows, numCols, hexSize);
         boardPieces.put(tdd.terrainA.getName(), tdd.terrainA);
         boardPieces.put(tdd.wpa.getName(), tdd.wpa);
-        this.tilesMap = tdd.tilesMap;
     }
 
     @Override
@@ -88,7 +94,7 @@ public class HexagonGameBoard extends JPanel {
             for (Tile tile : piece.getTiles()) {
                 ParentMap.put(tile.getRow() + "," + tile.getCol(), tile);
             }
-            piece.draw(g2d, hexSize, tilesMap);
+            piece.draw(g2d, hexSize);
         }
 
         if (players != null && players.size() > 0) {
@@ -104,7 +110,7 @@ public class HexagonGameBoard extends JPanel {
     }
 
     public void drawPlayerDeck(Graphics2D g2d) {
-        Tile temp = tilesMap.get("1,6");
+        Tile temp = TileDataDic.tilesMap.get("1,6");
 
         g2d.setColor(Color.BLACK);
         int fontSize = 12;
@@ -161,7 +167,7 @@ public class HexagonGameBoard extends JPanel {
     public void addTerrain(int addRow, int addCol, Terrain terrainA) {
         List<WinningPiece> WP = getAllWinningPieces();
         addWinningPiece(addRow, addCol, WP.get(WP.size() - 1));
-        Terrain terrainB = terrainA.clone(addRow, addCol, tilesMap);
+        Terrain terrainB = terrainA.clone(addRow, addCol);
         terrainB.randomizeTiles();
         boardPieces.put(terrainB.getName(), terrainB);
         Set<int[]> neighbors = terrainA.findOverlappingNeighbors(terrainB);
@@ -171,7 +177,7 @@ public class HexagonGameBoard extends JPanel {
             for (int[] coordinate : neighbors) {
                 int row = coordinate[0];
                 int col = coordinate[1];
-                Tile temp = tilesMap.get(row + "," + col);
+                Tile temp = TileDataDic.tilesMap.get(row + "," + col);
                 blockade.addTile(temp);
             }
 
@@ -184,7 +190,7 @@ public class HexagonGameBoard extends JPanel {
     }
 
     public void addWinningPiece(int addRow, int addCol, WinningPiece wpa) {
-        WinningPiece wpb = wpa.clone(addRow, addCol, tilesMap);
+        WinningPiece wpb = wpa.clone(addRow, addCol);
 
         for (Tile tile : wpa.getTiles()) {
             tile.setParent(null);

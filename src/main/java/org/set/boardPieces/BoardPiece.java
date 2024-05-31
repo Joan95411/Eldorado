@@ -58,9 +58,9 @@ public abstract class BoardPiece {
         return result;
     }
 
-    public abstract void draw(Graphics2D g2d, int size, Map<String, Tile> tilesMap);
+    public abstract void draw(Graphics2D g2d, int size);
 
-    public abstract BoardPiece clone(int addRow, int addCol, Map<String, Tile> tilesMap);
+    public abstract BoardPiece clone(int addRow, int addCol);
 
     public void move(int addRow, int addCol) {
         for (Tile tile : tiles) {
