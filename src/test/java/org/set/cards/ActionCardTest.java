@@ -1,6 +1,7 @@
 package org.set.cards;
 
 import java.awt.*;
+import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
 import org.junit.jupiter.api.*;
 import org.set.Player;
@@ -10,55 +11,88 @@ import org.set.cards.action.ActionCardType;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ActionCardTest {
+    private static int lastAssignedColorId = 0;
     private static ArrayList<ActionCard> cards = new ArrayList<>();
     private static Player player = new Player(Color.BLACK);
 
     @BeforeAll
     public static void createActionCards() {
-        cards.add(new ActionCard(ActionCardType.Transmitter, 4, true));
-        cards.add(new ActionCard(ActionCardType.Cartographer, 4, false));
-        cards.add(new ActionCard(ActionCardType.Scientist, 4, false));
-        cards.add(new ActionCard(ActionCardType.Compass, 2, true));
-        cards.add(new ActionCard(ActionCardType.Travel_Log, 3, true));
-        cards.add(new ActionCard(ActionCardType.Native, 5, false));
+        for (ActionCardType actionCardType: ActionCardType.values()) {
+            cards.add(new ActionCard(actionCardType));
+        }
 
-        assertEquals(cards.size(), 6);
+        assertEquals(cards.size(), ActionCardType.values().length);
     }
 
     @Test
-    public void actionCardDoActions() {
-        for (int i = 0; i < cards.size(); i++) {
-            ActionCard card = cards.get(i);
+    public void testTransmitterActionCard() {
+        Player player = new Player(new Color(123,123, ++lastAssignedColorId));
+        ActionCard transmitter = new ActionCard(ActionCardType.Transmitter);
 
-            if(card.singleUse == false) {
-                assertEquals(card.isPlayable(), true);
+        assertEquals(player.myDeck.getCardsInHand().size(), 0);
+        assertEquals(player.myDeck.getDiscardPile().size(), 0);
 
-                card.doAction(player);
-                assertEquals(card.isPlayable(), true);
+        String input = "Explorer\n"; // Prepare the input data
+        ByteArrayInputStream inputStream = new ByteArrayInputStream(input.getBytes()); // Create a ByteArrayInputStream with the input data
+        System.setIn(inputStream); // Set System.in to use the ByteArrayInputStream
 
-                card.doAction(player);
-                assertEquals(card.isPlayable(), true);
-            }
-        }
+        transmitter.doAction(player);
+
+        assertEquals(player.myDeck.getCardsInHand().size(), 1);
+        assertEquals(player.myDeck.getDiscardPile().size(), 0);
     }
 
     @Test
-    public void actionCardSingleUseDoActions() {
-        for (int i = 0; i < cards.size(); i++) {
-            ActionCard card = cards.get(i);
+    public void testCartographerActionCard() {
+        Player player = new Player(new Color(123,123,++lastAssignedColorId));
+        ActionCard cartographer = new ActionCard(ActionCardType.Cartographer);
 
-            if(card.singleUse) {
-                assertEquals(card.isPlayable(), true);
+        assertEquals(player.myDeck.getCardsInHand().size(), 0);
+        assertEquals(player.myDeck.getMustBePlayedCardsInHand().size(), 0);
+        assertEquals(player.myDeck.getDiscardPile().size(), 0);
 
-                card.doAction(player);
-                assertEquals(card.isPlayable(), false);
+        cartographer.doAction(player);
 
-                try {
-                    card.doAction(player);
-                } catch (Exception e) {
-                    assertEquals("This card is not playable", e.getMessage());
-                }
-            }
-        }
+        assertEquals(player.myDeck.getCardsInHand().size(), 0);
+        assertEquals(player.myDeck.getMustBePlayedCardsInHand().size(), 2);
+        assertEquals(player.myDeck.getDiscardPile().size(), 1);
+    }
+
+    @Test
+    public void testScientistActionCard() {
+        Player player = new Player(new Color(123,123,++lastAssignedColorId));
+        ActionCard scientist = new ActionCard(ActionCardType.Scientist);
+
+        System.out.println("TODO: create scientist action card test");
+    }
+
+    @Test
+    public void testCompassActionCard() {
+        Player player = new Player(new Color(123,123,++lastAssignedColorId));
+        ActionCard compass = new ActionCard(ActionCardType.Compass);
+
+        assertEquals(player.myDeck.getCardsInHand().size(), 0);
+        assertEquals(player.myDeck.getDiscardPile().size(), 0);
+
+        compass.doAction(player);
+
+        assertEquals(player.myDeck.getCardsInHand().size(), 3);
+        assertEquals(player.myDeck.getDiscardPile().size(), 0);
+    }
+
+    @Test
+    public void testTavelLogActionCard() {
+        Player player = new Player(new Color(123,123,++lastAssignedColorId));
+        ActionCard travelLog = new ActionCard(ActionCardType.Travel_Log);
+
+        System.out.println("TODO: create travel log action card test");
+    }
+
+    @Test
+    public void testNativeActionCard() {
+        Player player = new Player(new Color(123,123,++lastAssignedColorId));
+        ActionCard nativeCard = new ActionCard(ActionCardType.Native);
+
+        System.out.println("TODO: create native action card test");
     }
 }

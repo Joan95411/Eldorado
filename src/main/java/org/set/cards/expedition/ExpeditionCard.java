@@ -7,9 +7,9 @@ import org.set.cards.Card;
 public class ExpeditionCard extends Card {
     private int power;
 
-    public ExpeditionCard(ExpeditionCardType name, int cost, boolean singleUse, int power) {
-        super(name.toString(), cost, singleUse);
-        this.power = power;
+    public ExpeditionCard(ExpeditionCardType card) {
+        super(card.toString(), card.getCost(), card.isSingleUse());
+        this.power = card.getPower();
     }
 
     @Override
