@@ -5,8 +5,8 @@ import org.set.cards.Card;
 import org.set.cards.CardActionHandler;
 
 public class ActionCard extends Card {
-    public ActionCard(ActionCardType name, int cost, boolean singleUse) {
-        super(name.toString(), cost, singleUse);
+    public ActionCard(ActionCardType card) {
+        super(card.toString(), card.getCost(), card.isSingleUse());
     }
 
     public void doAction(Player player) {
@@ -19,6 +19,8 @@ public class ActionCard extends Card {
 
         if (this.singleUse) {
             this.removeCard();
+        } else {
+            player.myDeck.discard(this);
         }
     }
 

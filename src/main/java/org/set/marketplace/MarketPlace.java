@@ -22,10 +22,10 @@ public class MarketPlace {
 
     private HashMap<String, Integer> marketBoardOptions = new HashMap<String, Integer>();
     private HashMap<String, Integer> currentMarketBoard = new HashMap<String, Integer>();
-    private HashMap<String, Integer> cardValues         = new HashMap<String, Integer>();
-    private HashMap<String, String>  cardType           = new HashMap<String, String>();
-    private HashMap<String, Boolean> singleUse          = new HashMap<String, Boolean>();
-    private HashMap<String, Integer> cardPower          = new HashMap<String, Integer>();
+    private HashMap<String, Integer> cardValues = new HashMap<String, Integer>();
+    private HashMap<String, String>  cardType = new HashMap<String, String>();
+    private HashMap<String, Boolean> singleUse = new HashMap<String, Boolean>();
+    private HashMap<String, Integer> cardPower = new HashMap<String, Integer>();
     
     public MarketPlace() {
         cardData = GetJsonData();
@@ -45,9 +45,9 @@ public class MarketPlace {
     private Card CreateCard(String cardName){
         Card boughtCard = null;
         if (this.cardType.get(cardName) == "PURPLE") {
-            boughtCard = new ActionCard(ActionCardType.valueOf(cardName), this.cardValues.get(cardName), this.singleUse.get(cardName));
+            boughtCard = new ActionCard(ActionCardType.valueOf(cardName));
         } else {
-            boughtCard = new ExpeditionCard(ExpeditionCardType.valueOf(cardName), this.cardValues.get(cardName), this.singleUse.get(cardName), this.cardPower.get(cardName));
+            boughtCard = new ExpeditionCard(ExpeditionCardType.valueOf(cardName));
         }
 
         return boughtCard;
@@ -55,7 +55,6 @@ public class MarketPlace {
 
     private boolean AddCardToMarketBoard(String cardName, Integer goldAmount){
         boolean succes = false;
-
         if (this.marketBoardOptions.containsKey(cardName)) {
             System.err.println("added "+cardName);
 
@@ -71,7 +70,7 @@ public class MarketPlace {
     
     private boolean TakeCard(String cardName, Integer goldAmount) {
         boolean succes = false;
-
+        
         if (this.currentMarketBoard.containsKey(cardName)) {
             if (CheckSufficientGold(cardName,goldAmount)) {
                 Integer numberOfCards = this.currentMarketBoard.get(cardName);
@@ -89,7 +88,6 @@ public class MarketPlace {
         return succes;
     }
 
-    
     private boolean CheckSufficientGold(String cardName, Integer goldAmount) {
         if (this.cardValues.containsKey(cardName)) {
             Integer value = this.cardValues.get(cardName);
@@ -121,7 +119,7 @@ public class MarketPlace {
             this.cardType.put(currentKey, cardInfo);
 
             Integer singleUseInfo = currentCardInfo.getInt("singleUse");
-
+            
             if (singleUseInfo == 1) {
                 this.singleUse.put(currentKey, true);
             } else {
@@ -159,5 +157,4 @@ public class MarketPlace {
             return null;
         }
     }
-    
 }
