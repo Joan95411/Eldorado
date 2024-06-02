@@ -34,8 +34,8 @@ public class TileDataDic {
 
         String filename = "tileData.json";
 
-        if (!new File(filename).exists()) {
-            throw new FileNotFoundException(filename);
+        if (!new File(tileDataPath, filename).exists()) {
+            throw new FileNotFoundException(tileDataPath + filename);
         }
 
         JSONObject tileInfo = Util.readJsonData(tileDataPath, filename, "Terrain");

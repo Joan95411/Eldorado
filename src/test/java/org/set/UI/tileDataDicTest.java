@@ -28,25 +28,26 @@ public class tileDataDicTest extends JPanel {
         try {
             tdd = new TileDataDic(numRows, numCols, hexSize);
             setPreferredSize(new Dimension((int) (numCols * 1.5 * hexSize), (int) (numRows * Math.sqrt(3) * hexSize)));
+
+            // Create a JFrame and add the panel to it
+            frame = new JFrame("GameBoardTest");
+            frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Close the frame only
+            frame.getContentPane().add(this);
+            frame.pack();
+            frame.setLocationRelativeTo(null); // Center the frame
+            frame.setVisible(true);
+
+            // Get the Graphics2D object
+            g2d = (Graphics2D) getGraphics();
+            if (g2d == null) {
+                System.err.println("Graphics context is null. Skipping the test.");
+                frame.dispose(); // Close the frame if unable to get the graphics context
+            }
+            repaint();
         } catch (FileNotFoundException e) {
+            System.out.println("ERROR");
             e.printStackTrace();
         }
-
-        // Create a JFrame and add the panel to it
-        frame = new JFrame("GameBoardTest");
-        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Close the frame only
-        frame.getContentPane().add(this);
-        frame.pack();
-        frame.setLocationRelativeTo(null); // Center the frame
-        frame.setVisible(true);
-
-        // Get the Graphics2D object
-        g2d = (Graphics2D) getGraphics();
-        if (g2d == null) {
-            System.err.println("Graphics context is null. Skipping the test.");
-            frame.dispose(); // Close the frame if unable to get the graphics context
-        }
-        repaint();
     }
 
     private void waitForUserInput() {

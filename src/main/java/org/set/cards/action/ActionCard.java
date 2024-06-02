@@ -20,8 +20,6 @@ public class ActionCard extends Card {
         if (this.singleUse) {
             this.removeCard();
         }
-
-        System.out.println("Player is still empty");
     }
 
     public boolean isPlayable() {
