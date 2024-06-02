@@ -3,10 +3,9 @@ package org.set.cards;
 import java.awt.*;
 import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 import org.junit.jupiter.api.*;
-import org.set.Player;
+import org.set.player.Player;
 import org.set.cards.action.ActionCard;
 import org.set.cards.action.ActionCardType;
 

@@ -1,6 +1,6 @@
 package org.set.boardPieces;
 
-import org.set.Player;
+import org.set.player.Player;
 
 import org.set.cards.Card;
 

@@ -1,8 +1,7 @@
 package org.set;
 
 import org.junit.jupiter.api.Test;
-import org.set.cards.expedition.ExpeditionCard;
-import org.set.cards.expedition.ExpeditionCardType;
+import org.set.player.Player;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;

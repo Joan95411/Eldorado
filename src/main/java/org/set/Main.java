@@ -3,7 +3,7 @@ package org.set;
 import javax.swing.*;
 
 import org.set.boardPieces.HexagonGameBoard;
-import org.set.marketplace.*;
+import org.set.game.GameController;
 
 public class Main {
     public static void main(String[] args) {

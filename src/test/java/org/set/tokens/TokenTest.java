@@ -1,6 +1,6 @@
 package org.set.tokens;
 
-import org.set.Player;
+import org.set.player.Player;
 
 import java.awt.*;
 import java.util.ArrayList;
