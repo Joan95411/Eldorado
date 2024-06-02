@@ -1,6 +1,6 @@
 package org.set.cards.action;
 
-import org.set.Player;
+import org.set.player.Player;
 import org.set.cards.Card;
 import org.set.cards.CardActionHandler;
 

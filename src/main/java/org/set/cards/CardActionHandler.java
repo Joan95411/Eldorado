@@ -1,11 +1,9 @@
 package org.set.cards;
 
-import org.set.Player;
-import org.set.cards.action.ActionCard;
+import org.set.player.Player;
 import org.set.cards.action.ActionCardType;
 import org.set.cards.expedition.ExpeditionCardType;
 
-import java.util.Objects;
 import java.util.Scanner;
 
 public class CardActionHandler {

@@ -1,4 +1,4 @@
-package org.set;
+package org.set.player;
 
 import org.set.cards.Card;
 import org.set.cards.expedition.ExpeditionCard;

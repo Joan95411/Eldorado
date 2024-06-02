@@ -3,8 +3,8 @@ package org.set.UI;
 import java.awt.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.set.GameController;
-import org.set.Player;
+import org.set.game.GameController;
+import org.set.player.Player;
 import org.set.boardPieces.HexagonGameBoard;
 
 public class GameControllerTest {

@@ -1,4 +1,4 @@
-package org.set;
+package org.set.player;
 
 import java.awt.*;
 import java.util.ArrayList;

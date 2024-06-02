@@ -1,4 +1,4 @@
-package org.set;
+package org.set.game;
 
 import java.util.List;
 

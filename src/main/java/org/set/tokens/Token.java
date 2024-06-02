@@ -1,6 +1,6 @@
 package org.set.tokens;
 
-import org.set.Player;
+import org.set.player.Player;
 import org.set.cards.CardType;
 
 public class Token {
