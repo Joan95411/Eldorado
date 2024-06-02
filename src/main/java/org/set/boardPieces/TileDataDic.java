@@ -3,6 +3,8 @@ package org.set.boardPieces;
 import org.json.JSONObject;
 
 import java.awt.Color;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,7 +18,7 @@ public class TileDataDic {
     public WinningPiece wpa;
     public Map<String, Tile> tilesMap;
 
-    public TileDataDic(int numRows, int numCols, int hexSize) {
+    public TileDataDic(int numRows, int numCols, int hexSize) throws FileNotFoundException {
         terrainA = new Terrain();
         wpa = new WinningPiece();
         tilesMap = new HashMap<>();
@@ -31,6 +33,11 @@ public class TileDataDic {
         }
 
         String filename = "tileData.json";
+
+        if (!new File(filename).exists()) {
+            throw new FileNotFoundException(filename);
+        }
+
         JSONObject tileInfo = Util.readJsonData(tileDataPath, filename, "Terrain");
         JSONObject winningPieceInfo = Util.readJsonData(tileDataPath, filename, "WinningPiece");
 

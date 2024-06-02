@@ -5,6 +5,7 @@ import javax.swing.*;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.awt.*;
+import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -24,8 +25,12 @@ public class tileDataDicTest extends JPanel {
 
     @BeforeEach
     void setUp() {
-        tdd = new TileDataDic(numRows, numCols, hexSize);
-        setPreferredSize(new Dimension((int) (numCols * 1.5 * hexSize), (int) (numRows * Math.sqrt(3) * hexSize)));
+        try {
+            tdd = new TileDataDic(numRows, numCols, hexSize);
+            setPreferredSize(new Dimension((int) (numCols * 1.5 * hexSize), (int) (numRows * Math.sqrt(3) * hexSize)));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
 
         // Create a JFrame and add the panel to it
         frame = new JFrame("GameBoardTest");

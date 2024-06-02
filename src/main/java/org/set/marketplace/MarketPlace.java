@@ -1,5 +1,6 @@
 package org.set.marketplace;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.HashMap;
@@ -138,7 +139,11 @@ public class MarketPlace {
             } catch (DotenvException e) {
                 cardDataPath = "src/main/java/org/set/marketplace/marketcardData.json";
             }
-            System.out.println(cardDataPath);
+
+            if (!new File(cardDataPath).exists()) {
+                throw new FileNotFoundException(cardDataPath);
+            }
+
             String cardDataJson = new String(Files.readAllBytes(new File(cardDataPath).toPath()));
             JSONObject cardData = new JSONObject(cardDataJson);
             cardData = cardData.getJSONObject("MarketCards");
