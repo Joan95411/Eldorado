@@ -44,7 +44,7 @@ public class MarketPlace {
 
     private Card CreateCard(String cardName){
         Card boughtCard = null;
-        if (this.cardType.get(cardName) == "PURPLE") {
+        if (this.cardType.get(cardName).equals("PURPLE")) {
             boughtCard = new ActionCard(ActionCardType.valueOf(cardName));
         } else {
             boughtCard = new ExpeditionCard(ExpeditionCardType.valueOf(cardName));

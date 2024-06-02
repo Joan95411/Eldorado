@@ -45,28 +45,29 @@ public class GameController {
 
         List<Card> currentDeck = player.myDeck.getCardsInHand();
         boolean movementNotQualified = true;
+
         while (movementNotQualified) {
             int cardIndex = InputHelper.getIntInput("Choose 1 card for Movement, input index (e.g. 0)");
-            
+
             if (cardIndex >= currentDeck.size()) {
                 System.out.println("Please enter a number between 0 to " + (player.myDeck.getCardsInHand().size() - 1));
                 continue;
             }
-            
+
             Card selectedCard = currentDeck.get(cardIndex);// only expedition card can move?
-            
+
             if (!(selectedCard instanceof ExpeditionCard)) {
                 System.out.println("Please select an Expedition card.");
                 continue;
             }
-            
+
             ExpeditionCard expeditionCard = (ExpeditionCard) selectedCard;
             System.out.println("Where do you want to move with this card?");
             String targetKey = player.getCurrentRow() + "," + player.getCurrentCol();
             Tile PlayerStandingTile = board.ParentMap.get(targetKey);
             Tile MovingTo = InputHelper.getPlayerMoveInput(board, PlayerStandingTile);
             Color cardcolor = Util.getColorFromString(selectedCard.cardType.toString());
-            
+
             if (cardcolor.equals(MovingTo.getColor())) {
                 if (expeditionCard.getPower() >= MovingTo.getPoints()) {
                     player.setPlayerPosition(MovingTo.getRow(), MovingTo.getCol());
@@ -104,6 +105,7 @@ public class GameController {
 
     public void GameSession() {
         int turnNumber = 0;
+
         while (true) {
             for (int currentPlayerIndex = 0; currentPlayerIndex < players.size(); currentPlayerIndex++) {
                 Player currentPlayer = players.get(currentPlayerIndex);
