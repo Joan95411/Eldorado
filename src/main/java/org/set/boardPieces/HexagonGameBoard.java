@@ -6,6 +6,7 @@ import org.set.cards.Card;
 
 import java.awt.*;
 import javax.swing.*;
+import java.io.FileNotFoundException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -73,10 +74,14 @@ public class HexagonGameBoard extends JPanel {
     }
 
     public void loadTileData() {
-        TileDataDic tdd = new TileDataDic(numRows, numCols, hexSize);
-        boardPieces.put(tdd.terrainA.getName(), tdd.terrainA);
-        boardPieces.put(tdd.wpa.getName(), tdd.wpa);
-        this.tilesMap = tdd.tilesMap;
+        try {
+            TileDataDic tdd = new TileDataDic(numRows, numCols, hexSize);
+            boardPieces.put(tdd.terrainA.getName(), tdd.terrainA);
+            boardPieces.put(tdd.wpa.getName(), tdd.wpa);
+            this.tilesMap = tdd.tilesMap;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

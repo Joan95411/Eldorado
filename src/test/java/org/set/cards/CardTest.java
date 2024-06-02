@@ -15,8 +15,8 @@ public class CardTest {
     public void doubleRemoveSingleUseCard() {
         String expectedError = "This card is already removed and cannot be removed once again.";
 
-        Card actionCard = new ActionCard(ActionCardType.Native, 2, true);
-        Card expeditionCard = new ExpeditionCard(ExpeditionCardType.Traveller, 2, true, 2);
+        Card actionCard = new ActionCard(ActionCardType.Compass);
+        Card expeditionCard = new ExpeditionCard(ExpeditionCardType.Giant_Machete);
 
         try {
             actionCard.removeCard();
@@ -37,8 +37,8 @@ public class CardTest {
     public void removeNonSingleUseCard() {
         String expectedError = "This is not a single use card, so this card cannot be removed.";
 
-        Card actionCard = new ActionCard(ActionCardType.Scientist, 2, false);
-        Card expeditionCard = new ExpeditionCard(ExpeditionCardType.Traveller, 2, false, 2);
+        Card actionCard = new ActionCard(ActionCardType.Scientist);
+        Card expeditionCard = new ExpeditionCard(ExpeditionCardType.Traveller);
 
         try {
             actionCard.removeCard();

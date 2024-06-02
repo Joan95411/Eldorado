@@ -3,8 +3,12 @@ package org.set.cards;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.set.boardPieces.HexagonGameBoard;
+import org.set.cards.action.ActionCard;
+import org.set.cards.action.ActionCardType;
 import org.set.cards.expedition.ExpeditionCard;
 import org.set.cards.expedition.ExpeditionCardType;
 
@@ -16,27 +20,18 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * Test class for the {@link ExpeditionCard} class.
  */
 public class ExpeditionCardTest {
+    private static ArrayList<Card> cards = new ArrayList<>();
+
     /**
      * Test for creating all the expedition cards.
      */
-    @Test
-    public void createExpeditionCards() {
-        ArrayList<Card> cards = new ArrayList<>();
-
-        int maxCost = 5;
-        int maxPower = 5;
-
-        for (ExpeditionCardType explorerCardType: ExpeditionCardType.values()) {
-            for (int i = 0; i < maxCost; i++) {
-                for (int j = 0; j < maxPower; j++) {
-                    for (int k = 0; k < 2; k++) {
-                        cards.add(new ExpeditionCard(explorerCardType, i,k == 0, j));
-                    }
-                }
-            }
+    @BeforeAll
+    public static void createActionCards() {
+        for (ExpeditionCardType expeditionCardType: ExpeditionCardType.values()) {
+            cards.add(new ExpeditionCard(expeditionCardType));
         }
 
-        assertEquals(cards.size(), maxCost * maxPower * 2 * ExpeditionCardType.values().length);
+        assertEquals(cards.size(), ExpeditionCardType.values().length);
     }
 
     /**
@@ -45,7 +40,7 @@ public class ExpeditionCardTest {
      */
     @Test
     public void removeExpeditionCards() {
-        ExpeditionCard card = new ExpeditionCard(ExpeditionCardType.Sailor, 1,false, 1);
+        ExpeditionCard card = new ExpeditionCard(ExpeditionCardType.Sailor);
         assertEquals(card.singleUse, false);
         assertEquals(card.removedCard, false);
 
@@ -63,7 +58,7 @@ public class ExpeditionCardTest {
      */
     @Test
     public void removeSingleUseExpeditionCards() {
-        ExpeditionCard card = new ExpeditionCard(ExpeditionCardType.Sailor, 1,true, 1);
+        ExpeditionCard card = new ExpeditionCard(ExpeditionCardType.Giant_Machete);
         assertEquals(card.singleUse, true);
         assertEquals(card.removedCard, false);
 
@@ -77,7 +72,7 @@ public class ExpeditionCardTest {
      */
     @Test
     public void setExpeditionCardPower() {
-        ExpeditionCard card = new ExpeditionCard(ExpeditionCardType.Sailor, 1,true, 1);
+        ExpeditionCard card = new ExpeditionCard(ExpeditionCardType.Sailor);
         card.setPower(0);
 
         assertEquals(card.getPower(), 0);
@@ -91,7 +86,7 @@ public class ExpeditionCardTest {
         BufferedImage image = new BufferedImage(100, 100, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2d = image.createGraphics();
 
-        ExpeditionCard card = new ExpeditionCard(ExpeditionCardType.Sailor, 1,true, 1);
+        ExpeditionCard card = new ExpeditionCard(ExpeditionCardType.Sailor);
         card.draw(g2d, 0, 0 ,1,2);
     }
 }
