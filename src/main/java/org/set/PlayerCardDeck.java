@@ -4,10 +4,7 @@ import org.set.cards.Card;
 import org.set.cards.expedition.ExpeditionCard;
 import org.set.cards.expedition.ExpeditionCardType;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class PlayerCardDeck {
     private final List<Card> drawPile;
@@ -52,6 +49,11 @@ public class PlayerCardDeck {
     }
 
     // Add a card to the discard pile
+    public void removeCard(Card card) {
+        cardsInHand.remove(card);
+    }
+
+    // Add a card to the discard pile
     public void discard(Card card) {
         discardPile.add(card);
     }
@@ -72,6 +74,34 @@ public class PlayerCardDeck {
                 mustBePlayedCardsInHand.add(drawPile.remove(drawPile.size() - 1));
             } else {
                 cardsInHand.add(drawPile.remove(drawPile.size() - 1));
+            }
+        }
+    }
+
+    public void drawAndRemoveCards(Player player, Scanner scanner, int drawAmount, int minRemoveAmount , int maxRemoveAmount) {
+        System.out.println("Scientist action performed");
+        player.myDeck.draw(drawAmount);
+
+        for (int i = 0; i < maxRemoveAmount; i++) {
+            System.out.println("Do you want to remove a card from your hand? (y/n):");
+            String userInput = scanner.nextLine();
+
+            if (userInput.equals("y")) {
+                System.out.println("You have the following cards in your hand:");
+
+                for (int j = 0; j < player.myDeck.getCardsInHand().size(); j++) {
+                    System.out.println(j + " - " + player.myDeck.getCardsInHand().get(j).name);
+                }
+
+                System.out.println("What card do you want to remove?");
+                int cardIndex = scanner.nextInt();
+
+                // TODO: Do we need to remove the card from the game, or do you need to place it on the discard pile?
+                if (cardIndex >= 0 && cardIndex <= player.myDeck.getCardsInHand().size()) {
+                    player.myDeck.removeCard(player.myDeck.getCardsInHand().get(cardIndex));
+                }
+            } else if (i < minRemoveAmount) {
+                System.out.println("Je moet nog wat kaarten weggooien");
             }
         }
     }

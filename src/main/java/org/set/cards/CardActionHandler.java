@@ -1,19 +1,22 @@
 package org.set.cards;
 
 import org.set.Player;
+import org.set.cards.action.ActionCard;
 import org.set.cards.action.ActionCardType;
 import org.set.cards.expedition.ExpeditionCardType;
 
+import java.util.Objects;
 import java.util.Scanner;
 
 public class CardActionHandler {
+    private Scanner scanner = new Scanner(System.in);
+
     public void doAction(Card card, Player player) {
         ActionCardType actionCardType = ActionCardType.valueOf(card.name);
 
         switch (actionCardType) {
             case Transmitter:
                 // Take any expedition card without paying for it
-                Scanner scanner = new Scanner(System.in);
                 ExpeditionCardType selectedCardType = null;
 
                 while (selectedCardType == null) {
@@ -33,6 +36,7 @@ public class CardActionHandler {
                 }
 
                 player.myDeck.drawExpeditionCard(selectedCardType);
+                scanner.close();
 
                 return;
 
@@ -43,9 +47,8 @@ public class CardActionHandler {
                 return;
 
             case Scientist:
-                System.out.println("Scientist action performed");
-
                 // Logic for scientist
+                player.myDeck.drawAndRemoveCards(player, scanner, 1, 0,1);
 
                 return;
 
@@ -56,6 +59,9 @@ public class CardActionHandler {
                 return;
 
             case Travel_Log:
+                // Logic for travel log
+                player.myDeck.drawAndRemoveCards(player, scanner, 2, 0,2);
+
                 System.out.println("Travel Log action performed");
                 return;
 
