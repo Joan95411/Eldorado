@@ -32,10 +32,16 @@ public class GameController {
         return GameState;
     }
 
-    private void PlayerDrawCards(int turn, int currentPlayerIndex) {
+    private void PlayerDrawCards(int turn, int currentPlayerIndex, Player player) {
+        // Phase 3
+        // draw cards from your draw pile until you have 4 cards in your hand.
+        // If your draw pile doesn't contain enough cards to draw for your next turn,
+        // draw as many as possible.
+        // Then, shuffle your discard pile to form your new draw pile, then draw the
+        // rest of the cards you need.
         System.out.println("Player " + (currentPlayerIndex + 1) + " drawing cards");
         Player currentPlayer = players.get(currentPlayerIndex);
-        currentPlayer.myDeck.draw(5);
+        player.myDeck.draw(4 - player.myDeck.getCardsInHand().size());
         board.PlayerCards = currentPlayer.myDeck.getCardsInHand();
         board.repaint();
     }
@@ -94,16 +100,6 @@ public class GameController {
         }
     }
 
-    public void PlayerDrawCard(Player player) {
-        // Phase 3
-        // draw cards from your draw pile until you have 4 cards in your hand.
-        player.myDeck.draw(4 - player.myDeck.getCardsInHand().size());
-        // If your draw pile doesn't contain enough cards to draw for your next turn,
-        // draw as many as possible.
-        // Then, shuffle your discard pile to form your new draw pile, then draw the
-        // rest of the cards you need.
-    }
-
     public void GameSession() {
         int turnNumber = 0;
 
@@ -111,7 +107,7 @@ public class GameController {
             for (int currentPlayerIndex = 0; currentPlayerIndex < players.size(); currentPlayerIndex++) {
                 Player currentPlayer = players.get(currentPlayerIndex);
                 System.out.println("Turn " + turnNumber + ": Player " + (currentPlayerIndex + 1) + "'s turn.");
-                PlayerDrawCards(turnNumber, currentPlayerIndex);
+                PlayerDrawCards(turnNumber, currentPlayerIndex, currentPlayer);
 
                 int[] position = InputHelper.getPositionInput(board);
 
