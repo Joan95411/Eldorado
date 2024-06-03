@@ -2,14 +2,15 @@ package org.set.boardPieces;
 
 import java.awt.Color;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.FileNotFoundException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.io.FilenameUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -55,5 +56,16 @@ public class Util {
 			e.printStackTrace();
 		}
 		return null; // Return null if an exception occurs or the file is not found
+	}
+
+	public static JSONObject getFile(String filePath, String fileName, String specific) throws FileNotFoundException {
+		String sanitizedFileName = FilenameUtils.getName(fileName);
+		File file = new File(filePath, sanitizedFileName);
+
+		if (!file.exists()) {
+			throw new FileNotFoundException();
+		}
+
+		return Util.readJsonData(filePath, fileName, specific);
 	}
 }

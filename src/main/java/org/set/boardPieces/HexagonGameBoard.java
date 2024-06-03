@@ -201,6 +201,10 @@ public class HexagonGameBoard extends JPanel {
 
     public void removeBlockade(int blockRemoveIndex) {
         Blockade blockRemove = (Blockade) boardPieces.get("Blockade_" + (blockRemoveIndex));
+        if (blockRemove == null) {
+            throw new IllegalArgumentException("Blockade with index " + blockRemoveIndex + " does not exist");
+        }
+
         int indexTerrain = blockRemove.getTerrainNeighbors()[0];
         boardPieces.remove("Blockade_" + (blockRemoveIndex));
         int[] change;
@@ -215,8 +219,8 @@ public class HexagonGameBoard extends JPanel {
 
         for (BoardPiece piece : boardPieces.values()) {
             if (piece.getName().startsWith("Terrain_")) {
-                String indexString = piece.getName().substring("Terrain_".length()); // Extract the substring after
-                                                                                     // "Terrain_"
+                // Extract the substring after "Terrain_"
+                String indexString = piece.getName().substring("Terrain_".length());
                 int index = Integer.parseInt(indexString);
                 if (index <= indexTerrain) {
                     continue;

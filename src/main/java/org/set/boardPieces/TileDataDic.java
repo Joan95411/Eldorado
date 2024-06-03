@@ -23,28 +23,8 @@ public class TileDataDic {
         wpa = new WinningPiece();
         tilesMap = new HashMap<>();
 
-        String tileDataPath;
-
-        try {
-            dotenv = Dotenv.configure().load();
-            tileDataPath = dotenv.get("TILEDATA_PATH");
-        } catch (DotenvException e) {
-            tileDataPath = "src/main/java/org/set/boardPieces";
-        }
-
-        String filename = "tileData.json";
-
-        if (!new File(tileDataPath, filename).exists()) {
-            throw new FileNotFoundException(tileDataPath + filename);
-        }
-
-        JSONObject tileInfo = Util.readJsonData(tileDataPath, filename, "Terrain");
-        JSONObject winningPieceInfo = Util.readJsonData(tileDataPath, filename, "WinningPiece");
-
-        if (tileInfo == null || winningPieceInfo == null) {
-            System.err.println("Tile data not found or is not in the expected format.");
-            return;
-        }
+        JSONObject tileInfo = Util.getFile("src/main/java/org/set/boardPieces", "tileData.json", "Terrain");
+        JSONObject winningPieceInfo = Util.getFile("src/main/java/org/set/boardPieces", "tileData.json", "WinningPiece");
 
         fillTilesMap(numRows, numCols, hexSize, tileInfo, winningPieceInfo);
     }
