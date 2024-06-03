@@ -29,7 +29,12 @@ public class MarketPlace {
     private HashMap<String, Integer> cardPower = new HashMap<String, Integer>();
     
     public MarketPlace() {
-        cardData = GetJsonData();
+        try {
+            cardData = Util.getFile("src/main/java/org/set/marketplace", "marketcardData.json", "MarketCards");
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+
         LoadDataIntoVariables();
     }
 
@@ -129,18 +134,6 @@ public class MarketPlace {
             
             Integer cardPowerInfo = currentCardInfo.getInt("cardPower");
             this.cardPower.put(currentKey, cardPowerInfo);
-        }
-    }
-
-    private JSONObject GetJsonData() {
-        try {
-            JSONObject cardData = Util.getFile("src/main/java/org/set/marketplace", "marketcardData.json", "");
-            cardData = cardData.getJSONObject("MarketCards");
-
-            return cardData;
-        } catch (IOException | JSONException e) {
-            e.printStackTrace();
-            return null;
         }
     }
 }
