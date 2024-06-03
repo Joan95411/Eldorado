@@ -114,6 +114,10 @@ public class PlayerCardDeck {
         draw(numberOfCards, false);
     }
 
+    public void discardFromHand(int index){
+        discardPile.add(cardsInHand.remove(index));
+    }
+
     public void draw(int numberOfCards, boolean cardsMustBePlayedThisTurn) {
         for (int i = 0; i < numberOfCards; i++) {
             drawCards(cardsMustBePlayedThisTurn);

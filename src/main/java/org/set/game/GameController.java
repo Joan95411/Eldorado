@@ -94,9 +94,16 @@ public class GameController {
         // Phase 2
         // Discard Played Cards, keep card in your hand for your next turn
         // decide for each card individually.
-        for (Card card : player.myDeck.getCardsInHand()) {// for al cards left in your hand
-            // decide if you want to keep the card or discard
-            // TODO: implement user interface for this
+        if(!InputHelper.getYesNoInput("Do you want to discard any cards?")){
+            return;
+        }
+        int handSize = player.myDeck.getCardsInHand().size() - 1;
+        for (int i = handSize; i >= 0; i--) {// for al cards left in your hand
+            if(InputHelper.getYesNoInput("Do you want to discard card: " + i + "?")){
+                player.myDeck.discardFromHand(i);
+                board.PlayerCards = player.myDeck.getCardsInHand();
+                board.repaint();
+            }
         }
     }
 
@@ -113,6 +120,7 @@ public class GameController {
 
                 currentPlayer.setPlayerPosition(position[0], position[1]);
                 board.repaint();
+                PlayerDiscard(currentPlayer);
             }
 
             turnNumber++;
