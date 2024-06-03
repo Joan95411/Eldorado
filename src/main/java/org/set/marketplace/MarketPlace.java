@@ -6,6 +6,7 @@ import java.nio.file.Files;
 import java.util.HashMap;
 
 import io.github.cdimascio.dotenv.DotenvException;
+import org.set.boardPieces.Util;
 import org.set.cards.*;
 import org.set.cards.action.ActionCard;
 import org.set.cards.action.ActionCardType;
@@ -133,22 +134,7 @@ public class MarketPlace {
 
     private JSONObject GetJsonData() {
         try {
-            String cardDataPath;
-            try {
-                dotenv = Dotenv.configure().load();
-                cardDataPath = dotenv.get("CARDDATA_PATH");
-            } catch (DotenvException e) {
-                cardDataPath = "src/main/java/org/set/marketplace/";
-            }
-
-            String filename = "marketcardData.json";
-
-            if (!new File(cardDataPath, filename).exists()) {
-                throw new FileNotFoundException(cardDataPath + filename);
-            }
-
-            String cardDataJson = new String(Files.readAllBytes(new File(cardDataPath, filename).toPath()));
-            JSONObject cardData = new JSONObject(cardDataJson);
+            JSONObject cardData = Util.getFile("src/main/java/org/set/marketplace", "marketcardData.json", "");
             cardData = cardData.getJSONObject("MarketCards");
 
             return cardData;
