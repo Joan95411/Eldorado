@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import org.json.JSONObject;
+
 
 public class Terrain extends BoardPiece {
     private static int terrainCount = 0;
@@ -60,7 +62,25 @@ public class Terrain extends BoardPiece {
         }
     }
     
-    public void rotate() {
+    public void reFillTile(String section) {
+    	List<JSONObject> parsedData= Util.readSectionData(section);
+    	for (JSONObject jsonObject : parsedData) {
+            // Extract q and r values
+            int q = jsonObject.getInt("q");
+            int r = jsonObject.getInt("r");
+            String tileType = jsonObject.getString("tileType");
+            int power = jsonObject.getInt("power");
+            for (Tile tile:tiles) {
+            	if(tile.getQ()==q && tile.getR()==r) {
+            		tile.setColor(Util.getColorFromString(tileType));
+            		tile.setPoints(power);
+            	}
+            }
+    	}
+    	
+    }
+    
+    public void rotate(int degree) {
     	findAxisTile();
         List<int[]> originalCoordinates = new ArrayList<>();
         for (Tile tile : tiles) {
@@ -69,22 +89,19 @@ public class Terrain extends BoardPiece {
 
         // Rotate each tile and find the closest original coordinate
         for (Tile tile : tiles) {
-        	int[] newCoordinate=tile.rotate60antiClockwise(axisTile.getX(),axisTile.getY());
+        	if(degree==0) {
+        		break;
+        	}
+        	else {
+        	int[] newCoordinate=tile.rotate(axisTile.getX(), axisTile.getY(), degree);
             int[] closestCoordinate = findClosestCoordinate(originalCoordinates, newCoordinate[0], newCoordinate[1]);
             if (closestCoordinate != null) {
                 // Update tile's position to the closest original coordinate
                 tile.setRow(closestCoordinate[2]);
                 tile.setCol(closestCoordinate[3]);
-            }
+            }}
         }
-    }
-    
-    private void findAxisTile() {
-    	for(Tile tile:tiles) {
-    		if(tile.getQ()==0 && tile.getR()==0) {
-    			this.axisTile=tile;
-    		}
-    	}
+        
     }
     private int[] findClosestCoordinate(List<int[]> coordinates, int x, int y) {
         double minDistance = Double.MAX_VALUE;
@@ -98,15 +115,22 @@ public class Terrain extends BoardPiece {
         }
         return closestCoordinate;
     }
+    private void findAxisTile() {
+    	for(Tile tile:tiles) {
+    		if(tile.getQ()==0 && tile.getR()==0) {
+    			this.axisTile=tile;
+    		}
+    	}
+    }
+    
     @Override
-    public void draw(Graphics2D g2d, int size) {
+    public void draw(Graphics2D g2d, int hexSize) {
         for (Tile tile : tiles) {
             String targetKey = tile.getRow() + "," + tile.getCol();
             Tile temp = TileDataDic.tilesMap.get(targetKey);
 
             int x = temp.getX();
             int y = temp.getY();
-            int hexSize = size;
             Color color = tile.getColor();
             int row = tile.getRow();
             int col = tile.getCol();
@@ -115,29 +139,38 @@ public class Terrain extends BoardPiece {
         }
     }
 
+  
+
+
     @Override
-    public Terrain clone(int addRow, int addCol) {
-        Terrain clonedTerrain = new Terrain();
-        for (Tile tile : tiles) {
-            int[] result = calculateRowAndCol(tile, addRow, addCol);
-            int newRow = result[0];
-            int newCol = result[1];
-
-            String targetKey = newRow + "," + newCol;
-            Tile clonedTile = TileDataDic.tilesMap.get(targetKey);
-
-            try {
-                clonedTile.setColor(tile.getColor());
-                clonedTile.setPoints(tile.getPoints());
-                clonedTile.setQ(tile.getQ());
-                clonedTile.setR(tile.getR());
-                clonedTerrain.addTile(clonedTile);
-            } catch (Exception e) {
-                e.printStackTrace();
-                System.err.println("Tile not found for row " + newRow + ", col " + newCol);
-            }
+    public Terrain clone(double addRow, double addCol,int hexSize) {
+    	Terrain clonedTerrain = new Terrain();
+        int addX = (int)(addCol * 1.5 * hexSize);
+        int addY = (int)(addRow *  Math.sqrt(3) * hexSize);
+        if (addCol % 2 == 1) {
+        	addY += (int) (Math.sqrt(3) / 2 * hexSize);
         }
-        return clonedTerrain;
+        
+        for (Tile tile : tiles) {
+      	int newX = tile.getX()+addX;
+      	int newY = tile.getY()+addY;
+      	int[] closestCoordinate = TileDataDic.findClosestCoordinate(newX, newY);
+      	
+        Tile clonedTile = tile.clone();
+          if (closestCoordinate != null) {
+              
+      	clonedTile.setRow(closestCoordinate[0]);
+      	clonedTile.setCol(closestCoordinate[1]);
+      	clonedTile.setX(closestCoordinate[2]);
+      	clonedTile.setY(closestCoordinate[3]);
+      	clonedTile.setColor(tile.getColor());
+          clonedTile.setPoints(tile.getPoints());
+          clonedTile.setQ(tile.getQ());
+          clonedTile.setR(tile.getR());
+          clonedTerrain.addTile(clonedTile);
+          }
+      }
+      return clonedTerrain;
     }
 
 }

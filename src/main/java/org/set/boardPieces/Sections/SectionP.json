@@ -1,0 +1,18 @@
+[
+  {"q": -2, "r": -1, "tileType": "Paddle", "power": 3},
+  {"q": -1, "r": -1, "tileType": "Paddle", "power": 2},
+  {"q": 0, "r": -1, "tileType": "Paddle", "power": 1},
+  {"q": 1, "r": -1, "tileType": "Paddle", "power": 2},
+  {"q": 2, "r": -1, "tileType": "Paddle", "power": 3},
+  {"q": -2, "r": 0, "tileType": "Discard", "power": 1},
+  {"q": -1, "r": 0, "tileType": "Paddle", "power": 1},
+  {"q": 0, "r": 0, "tileType": "Paddle", "power": 1},
+  {"q": 1, "r": 0, "tileType": "Paddle", "power": 1},
+  {"q": 2, "r": 0, "tileType": "Paddle", "power": 1},
+  {"q": 3, "r": 0, "tileType": "Machete", "power": 1},
+  {"q": -2, "r": 1, "tileType": "Paddle", "power": 1},
+  {"q": -1, "r": 1, "tileType": "Machete", "power": 2},
+  {"q": 0, "r": 1, "tileType": "Paddle", "power": 3},
+  {"q": 1, "r": 1, "tileType": "Discard", "power": 2},
+  {"q": 2, "r": 1, "tileType": "Paddle", "power": 1}
+]

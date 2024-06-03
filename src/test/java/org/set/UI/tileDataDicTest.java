@@ -79,6 +79,7 @@ public class tileDataDicTest extends JPanel {
     public void testTileRotate() {
         // Draw the terrain
     	WinningPiece wp = tdd.wpa;
+    	wp.rotate(4, 180, 200);
 //        for(Tile tile:wp.getTiles()) {
 //        	tile.rotate60Clockwise();
 //        }

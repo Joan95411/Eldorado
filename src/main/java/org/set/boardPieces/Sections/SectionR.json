@@ -1,0 +1,18 @@
+[
+  {"q": -2, "r": -1, "tileType": "Machete", "power": 1},
+  {"q": -1, "r": -1, "tileType": "Machete", "power": 1},
+  {"q": 0, "r": -1, "tileType": "Mountain", "power": 0},
+  {"q": 1, "r": -1, "tileType": "Coin", "power": 1},
+  {"q": 2, "r": -1, "tileType": "Coin", "power": 1},
+  {"q": -2, "r": 0, "tileType": "Machete", "power": 1},
+  {"q": -1, "r": 0, "tileType": "Machete", "power": 3},
+  {"q": 0, "r": 0, "tileType": "Mountain", "power": 0},
+  {"q": 1, "r": 0, "tileType": "Coin", "power": 1},
+  {"q": 2, "r": 0, "tileType": "Basecamp", "power": 1},
+  {"q": 3, "r": 0, "tileType": "Coin", "power": 1},
+  {"q": -2, "r": 1, "tileType": "Machete", "power": 1},
+  {"q": -1, "r": 1, "tileType": "Machete", "power": 1},
+  {"q": 0, "r": 1, "tileType": "Mountain", "power": 0},
+  {"q": 1, "r": 1, "tileType": "Coin", "power": 1},
+  {"q": 2, "r": 1, "tileType": "Coin", "power": 1}
+]

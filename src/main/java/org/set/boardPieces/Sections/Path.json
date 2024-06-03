@@ -1,0 +1,92 @@
+{
+
+    "Serpentine": [
+      {
+        "sectionType": "A",
+        "rotation": 1,
+        "addRow": 2,
+        "addCol": 0
+      },
+      {
+        "sectionType": "C",
+        "rotation": -2,
+        "addRow": 5,
+        "addCol": 4
+      },
+      {
+        "sectionType": "E",
+        "rotation": 1,
+        "addRow": -1,
+        "addCol": 7
+      },
+      {
+        "sectionType": "G",
+        "rotation": -3,
+        "addRow": -5.5,
+        "addCol": -3
+      },
+      {
+        "sectionType": "J",
+        "rotation": -3,
+        "addRow": -1,
+        "addCol": 7
+      },
+      {
+        "sectionType": "M",
+        "rotation": -1,
+        "addRow": 5,
+        "addCol": 4
+      },
+      {
+        "sectionType": "ElDoradoTwo",
+        "rotation": 2,
+        "addRow": 0,
+        "addCol": 0
+      }
+    ],
+
+    "WitchCauldron": [
+      {
+        "sectionType": "A",
+        "rotation": 0,
+        "addRow": 0,
+        "addCol": 0
+      },
+      {
+        "sectionType": "L",
+        "rotation": -1,
+        "addRow": -1,
+        "addCol": 7
+      },
+      {
+        "sectionType": "G",
+        "rotation": -2,
+        "addRow": 0,
+        "addCol": 7
+      },
+      {
+        "sectionType": "D",
+        "rotation": -2,
+        "addRow": 5,
+        "addCol": 4
+      },
+      {
+        "sectionType": "M",
+        "rotation": 0,
+        "addRow": 5,
+        "addCol": -4
+      },
+      {
+        "sectionType": "I",
+        "rotation": -1,
+        "addRow": 0.5,
+        "addCol": -7
+      },
+      {
+        "sectionType": "ElDoradoTwo",
+        "rotation":-2,
+        "addRow": 0,
+        "addCol": 0
+      }]
+      }
+

@@ -95,45 +95,43 @@ public class Tile {
         this.points = points;
     }
     
-    public int[] rotate60antiClockwise(int originX, int originY) {
-        int[] newCoordinate = new int[2]; // Array to hold the new coordinates
-        final double COS_60 = 0.5;
-        final double SIN_60 = Math.sqrt(3) / 2;
-        
-        // Translate the point to the origin
-        int translatedX = x - originX;
-        int translatedY = y - originY;
-        
-        // Perform rotation
-        int rotatedX = (int) Math.round(translatedX * COS_60 + translatedY * SIN_60);
-        int rotatedY = (int) Math.round(-translatedX * SIN_60 + translatedY * COS_60);
-        
-        // Translate the point back to its original position
-        newCoordinate[0] = rotatedX + originX; // Set the x-coordinate
-        newCoordinate[1] = rotatedY + originY; // Set the y-coordinate
-        
-        return newCoordinate; // Return the new coordinates
+    protected Tile clone() {
+        return new Tile(this.row,this.col);
     }
     
-    public int[] rotate60Clockwise(int originX, int originY) {
+    public int[] rotate(int originX, int originY, int degree) {
         int[] newCoordinate = new int[2]; // Array to hold the new coordinates
         final double COS_60 = 0.5;
         final double SIN_60 = Math.sqrt(3) / 2;
         
-        // Translate the point to the origin
         int translatedX = x - originX;
         int translatedY = y - originY;
         
-        // Perform rotation
-        int rotatedX = (int) Math.round(translatedX * COS_60 - translatedY * SIN_60);
-        int rotatedY = (int) Math.round(translatedX * SIN_60 + translatedY * COS_60);
+        int rotatedX = translatedX;
+        int rotatedY = translatedY;
         
-        // Translate the point back to its original position
-        newCoordinate[0] = rotatedX + originX; // Set the x-coordinate
-        newCoordinate[1] = rotatedY + originY; // Set the y-coordinate
+        int rotations = Math.abs(degree);
+        boolean clockwise = degree > 0;
+
+        for (int i = 0; i < rotations; i++) {
+            if (clockwise) {
+                int tempX = (int) Math.round(rotatedX * COS_60 - rotatedY * SIN_60);
+                rotatedY = (int) Math.round(rotatedX * SIN_60 + rotatedY * COS_60);
+                rotatedX = tempX;
+            } else {
+                int tempX = (int) Math.round(rotatedX * COS_60 + rotatedY * SIN_60);
+                rotatedY = (int) Math.round(-rotatedX * SIN_60 + rotatedY * COS_60);
+                rotatedX = tempX;
+            }
+        }
         
-        return newCoordinate; // Return the new coordinates
+        newCoordinate[0] = rotatedX + originX;
+        newCoordinate[1] = rotatedY + originY;
+
+        return newCoordinate;
     }
+
+
 
     
 

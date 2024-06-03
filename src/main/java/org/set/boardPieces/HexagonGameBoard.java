@@ -1,11 +1,16 @@
 package org.set.boardPieces;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.set.InputHelper;
 import org.set.Player;
 
 import org.set.cards.Card;
 
 import java.awt.*;
 import javax.swing.*;
+
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -22,7 +27,8 @@ public class HexagonGameBoard extends JPanel {
     public List<Player> players;
     public Map<String, Tile> ParentMap;
     public Map<String, BoardPiece> boardPieces;
-    public List<int[]> coordinateList;
+    public List<double[]> coordinateList;
+    public JSONArray pathInfo;
     public List<Card> PlayerCards;
 
     public HexagonGameBoard(int numRows, int numCols, int hexSize) {
@@ -38,43 +44,56 @@ public class HexagonGameBoard extends JPanel {
         Terrain.resetWinningCount();
         Blockade.resetCount();
         WinningPiece.resetCount();
-        coordinateList = Arrays.asList(
-                new int[] { 6, 4 },
-                new int[] { 0, 8 },
-                new int[] { -6, 4 }
-        // new int[]{0, 8}
-        );
-//        coordinateList = Arrays.asList(
-//        		new int[]{ 0, 7 },
-//        		new int[]{ 0, 7 },
-//        		new int[]{ 5, 4 },
-//        		new int[]{ 5, -4 },
-//        		new int[]{ 0, -7 }
-//    );
+        coordinateList = new ArrayList<>(List.of(
+                new double[]{6, 4},
+                new double[]{0, 8},
+                new double[]{-6, 4}
+        ));
         loadTileData();
+        if(pathInfo!=null) {
+        	initBoardTeam3();
+        }else {
         initBoard();
-    }
+    }}
 
     public void initBoard() {
-        int maxIndex = 0;
-        List<Terrain> terrains = getAllTerrains();
+        for (double[] coordinates : coordinateList) {
+            Terrain terrainLatest=getLastTerrain();
+            addTerrain(coordinates[0], coordinates[1], terrainLatest);
+        }
         
-        for (Terrain terrain : terrains) {
-            String name = terrain.getName();
-            int index = Integer.parseInt(name.substring("Terrain_".length()));
+    }
+    public void initBoardTeam3() {
+    	coordinateList.clear();
+    	 for (int i = 0; i < pathInfo.length(); i++) {
+             JSONObject jsonObject = pathInfo.getJSONObject(i);
+             double addRow = jsonObject.getDouble("addRow");
+             double addCol = jsonObject.getDouble("addCol");
+             String sectionType = jsonObject.getString("sectionType");
+             int rotation = jsonObject.getInt("rotation");
+             
+             if(addRow!=0 || addCol!=0) {
+             addTerrain(addRow, addCol, getLastTerrain());
+             if(i==0) {
+            	 boardPieces.remove("Terrain_1"); //remove the template
+             }else{
+            	 coordinateList.add(new double[]{addRow, addCol});}
+             }
 
-            // Check if this index is greater than the current maxIndex
-            if (index > maxIndex) {
-                maxIndex = index;
-            }
+             if(sectionType.startsWith("ElDorado")) {
+            	WinningPiece wps=getLastWinningPiece();
+            	Tile axisTile=getLastTerrain().axisTile;
+            	Tile temp=TileDataDic.tilesMap.get(axisTile.getRow()+","+axisTile.getCol());
+            	wps.rotate(rotation, temp.getX(), temp.getY());
+            	if(sectionType.equals("ElDoradoTwo")) {
+            		wps.setColor(Color.CYAN);
+            	}
+             }else {
 
-        }
-
-        for (int[] coordinates : coordinateList) {
-            Terrain modelter = (Terrain) boardPieces.get("Terrain_" + maxIndex);
-            addTerrain(coordinates[0], coordinates[1], modelter);
-            maxIndex++;
-        }
+                 getLastTerrain().reFillTile(sectionType);
+                 getLastTerrain().rotate(rotation);
+             }
+    	 }
         
         
     }
@@ -83,6 +102,12 @@ public class HexagonGameBoard extends JPanel {
         TileDataDic tdd = new TileDataDic(numRows, numCols, hexSize);
         boardPieces.put(tdd.terrainA.getName(), tdd.terrainA);
         boardPieces.put(tdd.wpa.getName(), tdd.wpa);
+        boolean changeBoard=InputHelper.getYesNoInput("Do you want to use Team 3's set up?");
+        if(changeBoard) {
+        	//Board.getPath(); //get this from team 3
+        	String path="Serpentine";//placeholder
+        	pathInfo=tdd.readPathData(path);
+        }
     }
 
     @Override
@@ -110,8 +135,8 @@ public class HexagonGameBoard extends JPanel {
     }
 
     public void drawPlayerDeck(Graphics2D g2d) {
-        Tile temp = TileDataDic.tilesMap.get("1,6");
-
+        Tile temp = TileDataDic.tilesMap.get("1,"+(numCols-12));
+        int startY=10;
         g2d.setColor(Color.BLACK);
         int fontSize = 12;
         Font font = new Font("Arial", Font.BOLD, fontSize);
@@ -131,7 +156,7 @@ public class HexagonGameBoard extends JPanel {
             int col = i % maxCardsPerRow; // Calculate the column index
 
             int x = temp.getX() + captionWidth + col * (cardWidth + cardSpacing);
-            int y = 10 + row * (cardHeight + cardSpacing);
+            int y = startY + row * (cardHeight + cardSpacing);
 
             PlayerCards.get(i).draw(g2d, x, y, cardWidth, cardHeight);
             g2d.drawString("Index: " + i, x + 5, y + cardHeight / 2);
@@ -142,7 +167,38 @@ public class HexagonGameBoard extends JPanel {
             }
         }
     }
+    public Terrain getLastTerrain() {
+    	 int maxIndex = 0;
+         List<Terrain> terrains = getAllTerrains();
+         
+         for (Terrain terrain : terrains) {
+             String name = terrain.getName();
+             int index = Integer.parseInt(name.substring("Terrain_".length()));
 
+             // Check if this index is greater than the current maxIndex
+             if (index > maxIndex) {
+                 maxIndex = index;
+             }
+
+         }
+    	return (Terrain) boardPieces.get("Terrain_"+maxIndex);
+    }
+    public WinningPiece getLastWinningPiece() {
+   	 int maxIndex = 0;
+        List<WinningPiece> WinningPieces = getAllWinningPieces();
+        
+        for (WinningPiece wp : WinningPieces) {
+            String name = wp.getName();
+            int index = Integer.parseInt(name.substring("Winning_".length()));
+
+            // Check if this index is greater than the current maxIndex
+            if (index > maxIndex) {
+                maxIndex = index;
+            }
+
+        }
+   	return (WinningPiece) boardPieces.get("Winning_"+maxIndex);
+   }
     public List<Terrain> getAllTerrains() {
         return boardPieces.keySet().stream()
                 .filter(key -> key.startsWith("Terrain_"))
@@ -163,11 +219,11 @@ public class HexagonGameBoard extends JPanel {
                 .map(key -> (WinningPiece) boardPieces.get(key))
                 .collect(Collectors.toList());
     }
-
-    public void addTerrain(int addRow, int addCol, Terrain terrainA) {
-        List<WinningPiece> WP = getAllWinningPieces();
-        addWinningPiece(addRow, addCol, WP.get(WP.size() - 1));
-        Terrain terrainB = terrainA.clone(addRow, addCol);
+ 
+    
+    public void addTerrain(double addRow, double addCol, Terrain terrainA) {
+        addWinningPiece(addRow, addCol, getLastWinningPiece());
+        Terrain terrainB = terrainA.clone(addRow, addCol,hexSize);
         terrainB.randomizeTiles();
         boardPieces.put(terrainB.getName(), terrainB);
         Set<int[]> neighbors = terrainA.findOverlappingNeighbors(terrainB);
@@ -189,8 +245,8 @@ public class HexagonGameBoard extends JPanel {
         }
     }
 
-    public void addWinningPiece(int addRow, int addCol, WinningPiece wpa) {
-        WinningPiece wpb = wpa.clone(addRow, addCol);
+    public void addWinningPiece(double addRow, double addCol, WinningPiece wpa) {
+        WinningPiece wpb = wpa.clone(addRow, addCol,hexSize);
 
         for (Tile tile : wpa.getTiles()) {
             tile.setParent(null);
@@ -204,26 +260,25 @@ public class HexagonGameBoard extends JPanel {
         Blockade blockRemove = (Blockade) boardPieces.get("Blockade_" + (blockRemoveIndex));
         int indexTerrain = blockRemove.getTerrainNeighbors()[0];
         boardPieces.remove("Blockade_" + (blockRemoveIndex));
-        int[] change;
+        double[] change;
 
         if (coordinateList.get(indexTerrain - 1)[0] > 0) {
-            change = new int[] { -1, 0 }; // Move one unit up
+            change = new double[] { -1, 0 }; // Move one unit up
         } else if (coordinateList.get(indexTerrain - 1)[0] < 0) {
-            change = new int[] { 1, 0 }; // Move one unit down
+            change = new double[] { 1, 0 }; // Move one unit down
         } else {
-            change = new int[] { 0, -1 }; // Move one unit left
+            change = new double[] { -0.5, -0.5 }; // Move one unit left
         }
 
         for (BoardPiece piece : boardPieces.values()) {
             if (piece.getName().startsWith("Terrain_")) {
-                String indexString = piece.getName().substring("Terrain_".length()); // Extract the substring after
-                                                                                     // "Terrain_"
+                String indexString = piece.getName().substring("Terrain_".length()); 
                 int index = Integer.parseInt(indexString);
                 if (index <= indexTerrain) {
                     continue;
                 }
             }
-            piece.move(change[0], change[1]);
+            piece.move(change[0], change[1],hexSize);
         }
     }
 

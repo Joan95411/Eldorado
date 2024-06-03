@@ -37,41 +37,28 @@ public abstract class BoardPiece {
         this.tiles = tiles;
     }
 
-    protected int[] calculateRowAndCol(Tile tile, int addRow, int addCol) {
-        int[] result = new int[2];
-
-        if (addCol % 2 == 0) {
-            result[0] = tile.getRow() + addRow;
-            result[1] = tile.getCol() + addCol;
-        } else {
-            result[0] = tile.getRow() + addRow;
-            result[1] = tile.getCol() + addCol;
-            if (result[1] % 2 == 0) {
-                if (addRow % 2 == 0) {
-                    result[0]++;
-                } else {
-                    result[0]--;
-                }
-            }
-        }
-
-        return result;
-    }
-
+    
+    
     public abstract void draw(Graphics2D g2d, int size);
 
-    public abstract BoardPiece clone(int addRow, int addCol);
+    public abstract BoardPiece clone(double addRow, double addCol,int hexSize);
 
-    public void move(int addRow, int addCol) {
+    
+    public void move(double addRow, double addCol,int hexSize) {
+    	int addX = (int)(addCol * 1.5 * hexSize);
+        int addY = (int)(addRow *  Math.sqrt(3) * hexSize);
+        if (addCol % 2 == 1) {
+        	addY += (int) (Math.sqrt(3) / 2 * hexSize);
+        }
         for (Tile tile : tiles) {
-            int[] result = calculateRowAndCol(tile, addRow, addCol);
-            int newRow = result[0];
-            int newCol = result[1];
-            tile.setRow(newRow);
-            tile.setCol(newCol);
+        	int newX = tile.getX()+addX;
+          	int newY = tile.getY()+addY;
+          	int[] closestCoordinate = TileDataDic.findClosestCoordinate(newX, newY);
+          	 if (closestCoordinate != null) {
+            tile.setRow(closestCoordinate[0]);
+            tile.setCol(closestCoordinate[1]);}
         }
     }
-
     public Set<int[]> findOverlappingNeighbors(BoardPiece bpB) {
         Set<int[]> overlappingNeighbors = new LinkedHashSet<>();
         Set<int[]> neighborsA = new LinkedHashSet<>(getAllNeighbors());

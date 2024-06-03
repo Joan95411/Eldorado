@@ -54,7 +54,7 @@ public class BlockadeTest {
     @Test
     public void cloneBlockade() {
         hexagonGameBoard.loadTileData();
-        blockade.clone(0, 1);
+        blockade.clone(0, 1,hexSize);
     }
 
     /**

@@ -1,11 +1,15 @@
 package org.set.boardPieces;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.awt.Color;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import io.github.cdimascio.dotenv.Dotenv;
 import io.github.cdimascio.dotenv.DotenvException;
@@ -16,12 +20,13 @@ public class TileDataDic {
     public Terrain terrainA;
     public WinningPiece wpa;
     public static Map<String, Tile> tilesMap;
+    public static List<Tile> starters;
     
     public TileDataDic(int numRows, int numCols, int hexSize) {
         terrainA = new Terrain();
         wpa = new WinningPiece();
         tilesMap = new HashMap<>();
-
+        starters=new ArrayList<>();
         String tileDataPath;
 
         try {
@@ -41,7 +46,7 @@ public class TileDataDic {
         }
 
         fillTilesMap(numRows, numCols, hexSize, tileInfo, winningPieceInfo);
-        tilesMap = Collections.unmodifiableMap(tilesMap);
+        
     }
        
     public void fillTilesMap(int numRows, int numCols, int hexSize, JSONObject tileInfo, JSONObject winningPieceInfo) {
@@ -85,10 +90,45 @@ public class TileDataDic {
                 
                 tile.setColor(color);
                 tile.setPoints(points);
+
+                if(colorName.equals("Start")) {
+                	starters.add(tile);
+                }
                 tilesMap.put(key, tile);
             }
         }
         
     }
+    public static int[] findClosestCoordinate(int x, int y) {
+        double minDistance = Double.MAX_VALUE;
+        int[] closestCoordinate = null;
+
+        for (Entry<String, Tile> entry : tilesMap.entrySet()) {
+            String key = entry.getKey();
+            String[] parts = key.split(",");
+            Tile tile = entry.getValue();
+
+            int tileX = tile.getX();
+            int tileY = tile.getY();
+
+            double distance = Math.sqrt(Math.pow(tileX - x, 2) + Math.pow(tileY - y, 2));
+            if (distance < minDistance) {
+                minDistance = distance;
+                closestCoordinate = new int[] { Integer.parseInt(parts[0]), Integer.parseInt(parts[1]),tileX,tileY };
+            }
+        }
+
+        return closestCoordinate;
+    }
     
+    public JSONArray readPathData(String pathType) {
+    	String tileDataPath = "src/main/java/org/set/boardPieces/Sections";
+    	String filename = "Path.json";
+    	JSONObject jsonData = Util.readJsonData(tileDataPath, filename);
+        JSONArray pathArray = jsonData.optJSONArray(pathType);
+    	
+    	return pathArray;
+    }
+
+	
 }

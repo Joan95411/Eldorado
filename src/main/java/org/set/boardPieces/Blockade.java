@@ -42,29 +42,33 @@ public class Blockade extends BoardPiece {
     }
 
     @Override
-    public Blockade clone(int addRow, int addCol) {
-        Blockade clonedBlock = new Blockade();
-        for (Tile tile : tiles) {
-            int[] result = calculateRowAndCol(tile, addRow, addCol);
-            int newRow = result[0];
-            int newCol = result[1];
-
-            String targetKey = newRow + "," + newCol;
-            Tile clonedTile = TileDataDic.tilesMap.get(targetKey);
-
-            try {
-                clonedBlock.addTile(clonedTile);
-            } catch (Exception e) {
-                e.printStackTrace();
-                System.err.println("Tile not found for row " + newRow + ", col " + newCol);
-                System.err.println("Tile not found for row " + newRow + ", col " + newCol);
-            }
+    public Blockade clone(double addRow, double addCol,int hexSize) {
+    	Blockade clonedBlock = new Blockade();
+        int addX = (int)(addCol * 1.5 * hexSize);
+        int addY = (int)(addRow *  Math.sqrt(3) * hexSize);
+        if (addCol % 2 == 1) {
+        	addY += (int) (Math.sqrt(3) / 2 * hexSize);
         }
+        
+        for (Tile tile : tiles) {
+      	int newX = tile.getX()+addX;
+      	int newY = tile.getY()+addY;
+      	int[] closestCoordinate = TileDataDic.findClosestCoordinate(newX, newY);
+      	
+        Tile clonedTile = tile.clone();
+          if (closestCoordinate != null) {
+              
+      	clonedTile.setRow(closestCoordinate[0]);
+      	clonedTile.setCol(closestCoordinate[1]);
+      	clonedTile.setX(closestCoordinate[2]);
+      	clonedTile.setY(closestCoordinate[3]);
+      	clonedBlock.addTile(clonedTile);
+          }
+      }
         clonedBlock.setColor(this.color);
         clonedBlock.setPoints(this.points);
-        return clonedBlock;
+      return clonedBlock;
     }
-
     public void randomizeTiles() {
         Random random = new Random();
         int index = random.nextInt(COLOR_RANGE.length);
