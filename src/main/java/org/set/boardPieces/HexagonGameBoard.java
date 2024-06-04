@@ -135,10 +135,10 @@ public class HexagonGameBoard extends JPanel {
     }
 
     public void drawPlayerDeck(Graphics2D g2d) {
-        Tile temp = TileDataDic.tilesMap.get("1,"+(numCols-12));
+        Tile temp = TileDataDic.tilesMap.get("1,"+(numCols-10));
         int startY=10;
         g2d.setColor(Color.BLACK);
-        int fontSize = 12;
+        int fontSize = hexSize/3;
         Font font = new Font("Arial", Font.BOLD, fontSize);
         g2d.setFont(font);
 
@@ -183,6 +183,22 @@ public class HexagonGameBoard extends JPanel {
          }
     	return (Terrain) boardPieces.get("Terrain_"+maxIndex);
     }
+    public Terrain getFirstTerrain() {
+   	 int minIndex = 100;
+        List<Terrain> terrains = getAllTerrains();
+        
+        for (Terrain terrain : terrains) {
+            String name = terrain.getName();
+            int index = Integer.parseInt(name.substring("Terrain_".length()));
+
+            // Check if this index is greater than the current maxIndex
+            if (index < minIndex) {
+            	minIndex = index;
+            }
+
+        }
+   	return (Terrain) boardPieces.get("Terrain_"+minIndex);
+   }
     public WinningPiece getLastWinningPiece() {
    	 int maxIndex = 0;
         List<WinningPiece> WinningPieces = getAllWinningPieces();
@@ -220,6 +236,15 @@ public class HexagonGameBoard extends JPanel {
                 .collect(Collectors.toList());
     }
  
+    public List<Tile> findStarterTiles(){
+    	List<Tile> starterTiles = new ArrayList<>();
+    	Color targetColor=new Color(0,100,0);
+    	for (Tile tile : getFirstTerrain().getTiles()) {
+    	    if (tile.getColor().equals(targetColor)) {
+    	    	starterTiles.add(tile);
+    	    }
+    	} return starterTiles;
+    }
     
     public void addTerrain(double addRow, double addCol, Terrain terrainA) {
         addWinningPiece(addRow, addCol, getLastWinningPiece());

@@ -1,9 +1,11 @@
 package org.set.boardPieces;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.awt.Color;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -20,13 +22,13 @@ public class TileDataDic {
     public Terrain terrainA;
     public WinningPiece wpa;
     public static Map<String, Tile> tilesMap;
-    public static List<Tile> starters;
+    public static Map<String, Tile> coordinateMap;
     
     public TileDataDic(int numRows, int numCols, int hexSize) {
         terrainA = new Terrain();
         wpa = new WinningPiece();
         tilesMap = new HashMap<>();
-        starters=new ArrayList<>();
+        coordinateMap = new HashMap<>();
         String tileDataPath;
 
         try {
@@ -91,10 +93,8 @@ public class TileDataDic {
                 tile.setColor(color);
                 tile.setPoints(points);
 
-                if(colorName.equals("Start")) {
-                	starters.add(tile);
-                }
                 tilesMap.put(key, tile);
+                coordinateMap.put(x+","+y, tile);
             }
         }
         
@@ -102,7 +102,10 @@ public class TileDataDic {
     public static int[] findClosestCoordinate(int x, int y) {
         double minDistance = Double.MAX_VALUE;
         int[] closestCoordinate = null;
-
+        Tile tileFoundCorMap=coordinateMap.get(x+","+y);
+        if(tileFoundCorMap!=null) {
+        	closestCoordinate = new int[] { tileFoundCorMap.getRow(), tileFoundCorMap.getCol(),x,y };
+        	return closestCoordinate; }
         for (Entry<String, Tile> entry : tilesMap.entrySet()) {
             String key = entry.getKey();
             String[] parts = key.split(",");

@@ -46,8 +46,8 @@ public class GameController {
         List<Card> currentDeck = player.myDeck.getCardsInHand();
         boolean movementNotQualified = true;
         while (movementNotQualified) {
-            int cardIndex = InputHelper.getIntInput("Choose 1 card for Movement, input index (e.g. 0)");
-            
+            int cardIndex = InputHelper.getIntInput("Choose 1 card for Movement, input index (e.g. 0), or '-1' to stop with movement");
+            if(cardIndex==-1) {break;}
             if (cardIndex >= currentDeck.size()) {
                 System.out.println("Please enter a number between 0 to " + (player.myDeck.getCardsInHand().size() - 1));
                 continue;
@@ -61,19 +61,27 @@ public class GameController {
             }
             
             ExpeditionCard expeditionCard = (ExpeditionCard) selectedCard;
-            System.out.println("Where do you want to move with this card?");
+            int residulePower=expeditionCard.getPower();
+            while(residulePower>0) {
+            System.out.println("Where do you want to move with the Power of "+residulePower);
             String targetKey = player.getCurrentRow() + "," + player.getCurrentCol();
             Tile PlayerStandingTile = board.ParentMap.get(targetKey);
             Tile MovingTo = InputHelper.getPlayerMoveInput(board, PlayerStandingTile);
+            if(MovingTo.getRow()==-100) {residulePower=0;break;}
             Color cardcolor = Util.getColorFromString(selectedCard.cardType.toString());
-            
             if (cardcolor.equals(MovingTo.getColor())) {
                 if (expeditionCard.getPower() >= MovingTo.getPoints()) {
                     player.setPlayerPosition(MovingTo.getRow(), MovingTo.getCol());
+                    residulePower-=MovingTo.getPoints();
                     movementNotQualified = false;
+                    board.repaint();
                     // implement the leftover power
+                }else {
+                	System.out.println("Your card does not have enough power to move here.");
                 }
-            }
+            }else {
+            	System.out.println("Card color does not match tile color.");
+            }}
         }
     }
 
@@ -109,11 +117,12 @@ public class GameController {
                 Player currentPlayer = players.get(currentPlayerIndex);
                 System.out.println("Turn " + turnNumber + ": Player " + (currentPlayerIndex + 1) + "'s turn.");
                 PlayerDrawCards(turnNumber, currentPlayerIndex);
-
-                int[] position = InputHelper.getPositionInput(board);
-
-                currentPlayer.setPlayerPosition(position[0], position[1]);
-                board.repaint();
+                PlayerMove(currentPlayer);
+//                int[] position = InputHelper.getPositionInput(board);
+//
+//                currentPlayer.setPlayerPosition(position[0], position[1]);
+                
+                
             }
 
             turnNumber++;

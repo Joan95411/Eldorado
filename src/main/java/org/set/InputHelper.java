@@ -1,8 +1,10 @@
 package org.set;
 
+import java.util.HashSet;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
+import java.util.Set;
 
 import org.set.boardPieces.HexagonGameBoard;
 import org.set.boardPieces.Tile;
@@ -34,24 +36,24 @@ public class InputHelper {
     }
 
     public static int getIntInput(String prompt) {
-        int userInput;
-        do {
+        while (true) {
             System.out.println(prompt);
             System.out.print("> ");
             try {
-                userInput = scanner.nextInt();
+            	int  userInput = scanner.nextInt();
                 scanner.nextLine(); // Consume the newline character
                 return userInput;
             } catch (InputMismatchException e) {
                 System.out.println("Invalid input. Please enter an integer.");
                 scanner.nextLine(); // Consume the invalid input
             }
-        } while (true);
+        } 
     }
 
     public static int[] getPositionInput(HexagonGameBoard board) {
         while (true) {
-            String[] tokens = getInput("Enter row and column for player's position (e.g., '2,3'), or type 'stop' to end the game:", 2);
+            String[] tokens = getInput("Enter row and column for player's position (e.g., '2,3'), or type 'stop' to stop with moving:", 2);
+            if(tokens==null) {break;}
             try {
                 int row = Integer.parseInt(tokens[0].trim());
                 int col = Integer.parseInt(tokens[1].trim());
@@ -69,12 +71,18 @@ public class InputHelper {
             }
 
         }
+    	return new int[] { -100, -100 };
     }
 
     public static Tile getPlayerMoveInput(HexagonGameBoard board, Tile tile) {
-        List<int[]> neighbors = tile.getNeighbors();
+//        List<int[]> neighbors = tile.getNeighbors();
+    	Set<String> neighborSet = new HashSet<>();
+        for (int[] neighbor : tile.getNeighbors()) {
+            neighborSet.add(neighbor[0] + "," + neighbor[1]);
+        }
         while (true) {
-            String[] tokens = getInput("Enter row and column for player's position (e.g., '2,3'), or type 'stop' to end the game:", 2);
+            String[] tokens = getInput("Enter row and column for player's position (e.g., '2,3'), or type 'stop' to stop with moving:", 2);
+            if(tokens==null) {break;}
             try {
                 int row = Integer.parseInt(tokens[0].trim());
                 int col = Integer.parseInt(tokens[1].trim());
@@ -83,23 +91,21 @@ public class InputHelper {
                     System.out.println("Invalid position. Please enter valid coordinates.");
                     continue;
                 }
-
-                if (!neighbors.contains(new int[] { row, col })) {
+                String moveKey = row + "," + col;
+                if (!neighborSet.contains(moveKey)) {
                     System.out.println("You can only move one step at a time???");
                     continue;
                 }
                 
-                String targetKey = row + "," + col;
-                Tile temp = board.ParentMap.get(targetKey);
-
-                System.out.println("You are currently on " + temp.getParent());
+                Tile temp = board.ParentMap.get(moveKey);
+//                System.out.println("You are currently on " + temp.getParent());
                 return temp;
             } catch (NumberFormatException e) {
                 System.out.println("Invalid input. Please enter valid integers for row and column.");
                 continue;
             }
 
-        }
+        }return new Tile(-100,-100);
     }
 
     public static boolean getYesNoInput(String question) {

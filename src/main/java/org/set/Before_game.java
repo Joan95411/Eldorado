@@ -80,9 +80,10 @@ public class Before_game {
     }
 
     public static void placePlayersOnBoard(HexagonGameBoard board) {
+    	List<Tile> starterTiles=board.findStarterTiles();
     	for (int i = 0; i < board.players.size(); i++) {
     	    Player player = board.players.get(i);
-    	    Tile tile = TileDataDic.starters.get(i % TileDataDic.starters.size());
+    	    Tile tile = starterTiles.get(i % starterTiles.size());
     	    player.setPlayerPosition(tile.getRow(), tile.getCol());
     	}
 
