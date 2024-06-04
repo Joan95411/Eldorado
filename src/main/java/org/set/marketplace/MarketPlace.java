@@ -1,24 +1,16 @@
 package org.set.marketplace;
-import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.nio.file.Files;
 import java.util.HashMap;
 
-import io.github.cdimascio.dotenv.DotenvException;
 import org.set.boardPieces.Util;
 import org.set.cards.*;
 import org.set.cards.action.ActionCard;
 import org.set.cards.action.ActionCardType;
 import org.set.cards.expedition.ExpeditionCard;
 import org.set.cards.expedition.ExpeditionCardType;
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import io.github.cdimascio.dotenv.Dotenv;
-
 public class MarketPlace {
-    public static Dotenv dotenv;
     private JSONObject cardData;
 
     private HashMap<String, Integer> marketBoardOptions = new HashMap<String, Integer>();
@@ -41,7 +33,7 @@ public class MarketPlace {
     public Card BuyCard(String cardName, Integer goldAmount) {
         if (this.currentMarketBoard.containsKey(cardName) && this.TakeCard(cardName, goldAmount)) {
             return CreateCard(cardName);
-        } else if(this.currentMarketBoard.size() < 6 && this.AddCardToMarketBoard(cardName, goldAmount)){
+        } else if (this.currentMarketBoard.size() < 6 && this.AddCardToMarketBoard(cardName, goldAmount)) {
             return CreateCard(cardName);
         } else {
             return null;
@@ -50,6 +42,7 @@ public class MarketPlace {
 
     private Card CreateCard(String cardName){
         Card boughtCard = null;
+
         if (this.cardType.get(cardName).equals("PURPLE")) {
             boughtCard = new ActionCard(ActionCardType.valueOf(cardName));
         } else {
@@ -61,17 +54,16 @@ public class MarketPlace {
 
     private boolean AddCardToMarketBoard(String cardName, Integer goldAmount){
         boolean succes = false;
+
         if (this.marketBoardOptions.containsKey(cardName)) {
             System.err.println("added "+cardName);
 
             this.marketBoardOptions.remove(cardName);
             this.currentMarketBoard.put(cardName, 3);
             succes = this.TakeCard(cardName, goldAmount);
-
-            return succes;
-        } else {
-            return succes;
         }
+
+        return succes;
     }
     
     private boolean TakeCard(String cardName, Integer goldAmount) {

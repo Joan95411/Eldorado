@@ -1,19 +1,23 @@
 package org.set.tokens;
 
 import org.set.player.Player;
+import org.junit.jupiter.api.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Random;
 
-import org.junit.jupiter.api.*;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
+/**
+ * Test class for the {@link Token} class.
+ */
 public class TokenTest {
     private static ArrayList<Token> tokens = new ArrayList<>();
     private static Player player = new Player(Color.WHITE);
 
+    /**
+     * Test for creating all the tokens.
+     */
     @BeforeAll
     public static void createTokens() {
         tokens.add(new Token(CaveTokenType.Coin, 1));
@@ -35,6 +39,10 @@ public class TokenTest {
         assertEquals(tokens.size(), 14);
     }
 
+    /**
+     * Test for creating a token without a power.
+     * This should not be possible because the tokens: Coin, Machete and Paddle should have a power.
+     */
     @Test
     public void creatingIllegalTokensWithoutPower() {
         CaveTokenType[] caveTokenTypes = {CaveTokenType.Coin, CaveTokenType.Machete, CaveTokenType.Paddle};
@@ -48,6 +56,10 @@ public class TokenTest {
         }
     }
 
+    /**
+     * Test for creating a token with a power.
+     * This should not be possible because the tokens: Draw, Remove, Replace, ImmediatePlay, PassThrough, Adjacent and Symbol cannot have a power.
+     */
     @Test
     public void creatingIllegalTokensWithPower() {
         CaveTokenType[] caveTokenTypes = {CaveTokenType.Draw, CaveTokenType.Remove, CaveTokenType.Replace, CaveTokenType.ImmediatePlay, CaveTokenType.PassThrough, CaveTokenType.Adjacent, CaveTokenType.Symbol};
@@ -61,6 +73,10 @@ public class TokenTest {
         }
     }
 
+    /**
+     * Test for using all the tokens.
+     * TODO: When the actions for the tokens are finished they should be tested individually like {@link org.set.cards.ActionCardTest}
+     */
     @Test
     public void useToken() {
         for (Token token : tokens) {
