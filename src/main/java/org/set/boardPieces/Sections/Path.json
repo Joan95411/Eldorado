@@ -1,5 +1,43 @@
 {
+  "Default": [
+    {
+      "sectionType": "B",
+      "rotation": 1,
+      "addRow": 14,
+      "addCol": 0
+    },
+    {
+      "sectionType": "C",
+      "rotation": -2,
+      "addRow": -6,
+      "addCol": 4
+    },
+    {
+      "sectionType": "N",
+      "rotation": 1,
+      "addRow": -1,
+      "addCol": 8
+    },
+    {
+      "sectionType": "I",
+      "rotation": 1,
+      "addRow": 0,
+      "addCol": 8
+    },
+    {
+      "sectionType": "K",
+      "rotation": -1,
+      "addRow": -6,
+      "addCol": 4
+    },
 
+    {
+      "sectionType": "ElDoradoTwo",
+      "rotation": -1,
+      "addRow": 0,
+      "addCol": 0
+    }
+  ],
     "Serpentine": [
       {
         "sectionType": "A",
@@ -87,6 +125,186 @@
         "rotation":-2,
         "addRow": 0,
         "addCol": 0
-      }]
+      }],
+
+  "HillsOfGold": [
+    {
+      "sectionType": "B",
+      "rotation": 1,
+      "addRow": 12,
+      "addCol": 0
+    },
+    {
+      "sectionType": "C",
+      "rotation": 0,
+      "addRow": -5,
+      "addCol": 4
+    },
+    {
+      "sectionType": "G",
+      "rotation": -2,
+      "addRow": -5,
+      "addCol": 4
+    },
+    {
+      "sectionType": "K",
+      "rotation": 1,
+      "addRow": 5,
+      "addCol": 4
+    },
+    {
+      "sectionType": "J",
+      "rotation": 1,
+      "addRow": 5,
+      "addCol": 4
+    },
+    {
+      "sectionType": "N",
+      "rotation": -2,
+      "addRow": 0.5,
+      "addCol": 7
+    },
+    {
+      "sectionType": "ElDorado",
+      "rotation": 1,
+      "addRow": 0,
+      "addCol": 0
+    }],
+
+  "WindingPaths": [
+    {
+      "sectionType": "B",
+      "rotation": 1,
+      "addRow": 7,
+      "addCol": 0
+    },
+    {
+      "sectionType": "I",
+      "rotation": 3,
+      "addRow": -5,
+      "addCol": 4
+    },
+    {
+      "sectionType": "F",
+      "rotation": -3,
+      "addRow": 0,
+      "addCol": 7
+    },
+    {
+      "sectionType": "G",
+      "rotation": 1,
+      "addRow": 5,
+      "addCol": 4
+    },
+    {
+      "sectionType": "C",
+      "rotation": 0,
+      "addRow": -5,
+      "addCol": 4
+    },
+    {
+      "sectionType": "N",
+      "rotation": -2,
+      "addRow": 0,
+      "addCol": 7
+    },
+    {
+      "sectionType": "ElDoradoTwo",
+      "rotation": 0,
+      "addRow": 0,
+      "addCol": 0
+    }],
+  "Swamplands": [
+    {
+      "sectionType": "A",
+      "rotation": 0,
+      "addRow": 0,
+      "addCol": 0
+    },
+    {
+      "sectionType": "R",
+      "rotation": 1,
+      "addRow": 0,
+      "addCol": 7
+    },
+    {
+      "sectionType": "D",
+      "rotation": 2,
+      "addRow": 0,
+      "addCol": 7
+    },
+    {
+      "sectionType": "H",
+      "rotation": 2,
+      "addRow": 5,
+      "addCol": 4
+    },
+    {
+      "sectionType": "E",
+      "rotation": 1,
+      "addRow": 5,
+      "addCol": 3
+    },
+    {
+      "sectionType": "O",
+      "rotation": 4,
+      "addRow": 0.5,
+      "addCol": -7
+    },{
+      "sectionType": "K",
+      "rotation": 0,
+      "addRow": -0.5,
+      "addCol": -7
+    },
+    {
+      "sectionType": "ElDoradoTwo",
+      "rotation": 3,
+      "addRow": 0,
+      "addCol": 0
+    }],
+
+  "HomeStretch": [
+    {
+      "sectionType": "B",
+      "rotation": 1,
+      "addRow": 7,
+      "addCol": 0
+    },
+    {
+      "sectionType": "J",
+      "rotation": -1,
+      "addRow": -5,
+      "addCol": 4
+    },
+    {
+      "sectionType": "Q",
+      "rotation": 4,
+      "addRow": 0,
+      "addCol": 7
+    },
+    {
+      "sectionType": "K",
+      "rotation": 0,
+      "addRow": 0,
+      "addCol": 7
+    },
+    {
+      "sectionType": "M",
+      "rotation": -2,
+      "addRow": 0,
+      "addCol": 7
+    },
+    {
+      "sectionType": "C",
+      "rotation": 0,
+      "addRow": 0,
+      "addCol": 7
+    },
+    {
+      "sectionType": "ElDorado",
+      "rotation": 0,
+      "addRow": 0,
+      "addCol": 0
+    }]
       }
 

@@ -52,6 +52,7 @@ public class HexagonGameBoard extends JPanel {
         loadTileData();
         if(pathInfo!=null) {
         	initBoardTeam3();
+            System.out.println(boardPieces.keySet());
         }else {
         initBoard();
     }}
@@ -76,6 +77,7 @@ public class HexagonGameBoard extends JPanel {
              addTerrain(addRow, addCol, getLastTerrain());
              if(i==0) {
             	 boardPieces.remove("Terrain_1"); //remove the template
+            	 boardPieces.remove("Blockade_1"); 
              }else{
             	 coordinateList.add(new double[]{addRow, addCol});}
              }
@@ -104,8 +106,8 @@ public class HexagonGameBoard extends JPanel {
         boardPieces.put(tdd.wpa.getName(), tdd.wpa);
         boolean changeBoard=InputHelper.getYesNoInput("Do you want to use Team 3's set up?");
         if(changeBoard) {
-        	//Board.getPath(); //get this from team 3
-        	String path="Serpentine";//placeholder
+        	String path=Util.InitiateTeam03Board();
+//        	String path="Default";
         	pathInfo=tdd.readPathData(path);
         }
     }

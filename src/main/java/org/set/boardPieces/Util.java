@@ -10,9 +10,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.JFrame;
+import javax.swing.JScrollPane;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.utwente.Main;
+import org.utwente.game.GameController;
 
 public class Util {
 	public static Color getColorFromString(String colorName) {
@@ -31,7 +36,7 @@ public class Util {
         colorMap.put("pink", Color.PINK);
         colorMap.put("black", Color.BLACK);
         colorMap.put("mountain", Color.BLACK);
-        colorMap.put("cave", Color.BLACK);
+        colorMap.put("cave", new Color(102,51,0));
         colorMap.put("cyan", Color.CYAN);
         colorMap.put("purple", Color.BLUE);
         colorMap.put("magenta", Color.MAGENTA);
@@ -90,6 +95,26 @@ public class Util {
         }
     	return parsedData;
     }
+	
+	public static String InitiateTeam03Board() {
+		
+        Main mainPanel = new Main();
+        GameController gameController = mainPanel.getGameController();
+        JFrame frame = new JFrame(gameController.getGame().getGameName());
+        gameController.getGame().placePlayersStart();
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        JScrollPane scrollPane = new JScrollPane(mainPanel);
+        frame.add(scrollPane);
+
+        frame.setSize(mainPanel.getPreferredSize());
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+
+		System.out.println(gameController.getGame().getBoard().getPath().name());
+    
+	return gameController.getGame().getBoard().getPath().name();
+}
 	
 	}
 	
