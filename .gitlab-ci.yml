@@ -17,7 +17,7 @@ build-job:
     paths:
     - "~/.m2/repository"
 
-test-implemented-tests:
+test-job:
   stage: test
   tags:
   - SET2024
@@ -34,7 +34,7 @@ verify-job:
   dependencies:
   - build-job
   script:
-  - echo "Running additional verification tests."
+  - echo "Running verification job."
   - mvn verify
 
 package-prod:

@@ -14,6 +14,9 @@ import org.set.boardPieces.Terrain;
 import org.set.boardPieces.WinningPiece;
 import org.set.boardPieces.TileDataDic;
 
+/**
+ * UI user test class for the {@link TileDataDic} class.
+ */
 public class tileDataDicTest extends JPanel {
     private TileDataDic tdd;
     private JFrame frame;
@@ -23,6 +26,9 @@ public class tileDataDicTest extends JPanel {
     int numCols = 15;
     int hexSize = 30;
 
+    /**
+     * For each UI tile data dic test a new frame should be created.
+     */
     @BeforeEach
     void setUp() {
         try {
@@ -39,10 +45,12 @@ public class tileDataDicTest extends JPanel {
 
             // Get the Graphics2D object
             g2d = (Graphics2D) getGraphics();
+
             if (g2d == null) {
                 System.err.println("Graphics context is null. Skipping the test.");
                 frame.dispose(); // Close the frame if unable to get the graphics context
             }
+
             repaint();
         } catch (FileNotFoundException e) {
             System.out.println("ERROR");
@@ -50,6 +58,10 @@ public class tileDataDicTest extends JPanel {
         }
     }
 
+    /**
+     * This is used for every UI hexagon game board draw test to get the input of the user
+     * This does not test anything, it is just to get the user input
+     */
     private void waitForUserInput() {
     	// Prompt the user to continue
         System.out.println("Press any key to continue to the next test. Press f if failed");
@@ -64,6 +76,9 @@ public class tileDataDicTest extends JPanel {
         frame.dispose();
     }
 
+    /**
+     * Test for drawing the terrain
+     */
     @Test
     public void testTerrainDraw() {
         Terrain ta = tdd.terrainA;
@@ -72,7 +87,10 @@ public class tileDataDicTest extends JPanel {
         // Wait for the user to press Enter
         waitForUserInput();
     }
-    
+
+    /**
+     * Test for drawing the winning piece
+     */
     @Test
     public void testWPDraw() {
         // Draw the terrain

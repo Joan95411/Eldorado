@@ -23,8 +23,7 @@ public class Token {
         this.cardType = setCardType(caveTokenType);
         this.caveTokenType = caveTokenType;
 
-        if (caveTokenType == CaveTokenType.Coin || caveTokenType == CaveTokenType.Paddle
-                || caveTokenType == CaveTokenType.Machete) {
+        if (caveTokenType == CaveTokenType.Coin || caveTokenType == CaveTokenType.Paddle  || caveTokenType == CaveTokenType.Machete) {
             throw new IllegalStateException("The cave token type (" + caveTokenType + ") must have a power");
         }
     }

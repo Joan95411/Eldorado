@@ -12,6 +12,9 @@ import org.set.player.PlayerCardDeck;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Test class for the {@link PlayerCardDeck} class.
+ */
 public class PlayerCardDeckTest {
     PlayerCardDeck playerCardDeck;
     Card blueCard;

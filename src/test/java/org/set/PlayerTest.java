@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * This class PlayerTest contains JUnit tests for the {@link Player} class.
+ * Test class for the {@link Player} class.
  */
 public class PlayerTest {
     protected static Player player = new Player(new Color(255,254,253));

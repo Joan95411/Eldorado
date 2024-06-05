@@ -1,20 +1,14 @@
 package org.set;
 
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.set.boardPieces.*;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.util.Map;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.set.PlayerTest.players;
 
 /**
- * Test class for the {@link org.set.boardPieces.Blockade} class.
+ * Test class for the {@link Blockade} class.
  */
 public class BlockadeTest {
     private static HexagonGameBoard hexagonGameBoard;
@@ -59,6 +53,7 @@ public class BlockadeTest {
 
     /**
      * Test for drawing blockade.
+     * TODO: This still needs some work
      */
     @Test
     public void drawingBlockade() {

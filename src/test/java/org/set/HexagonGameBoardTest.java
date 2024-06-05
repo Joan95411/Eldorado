@@ -6,12 +6,8 @@ import org.set.boardPieces.HexagonGameBoard;
 import org.set.boardPieces.Terrain;
 import org.set.boardPieces.BoardPiece;
 
-import javax.swing.*;
-import org.set.boardPieces.Blockade;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -128,10 +124,13 @@ public class HexagonGameBoardTest {
         hexagonGameBoard.setLocation(newPoint);
         assertEquals(hexagonGameBoard.getLocation(), newPoint, "The newly setLocation(newPoint) should have set the location to " + newPoint);
     }
-   
-//
-//   @Test
-//   public void testHexagonGameBoardPlayer() {
+
+    /**
+     * Test for the player interacting with the hexageon game board.
+     * TODO: This still needs some work
+     */
+   @Test
+   public void testHexagonGameBoardPlayer() {
 //       int row = 0;
 //       int col = 0;
 //       int maxPlayers = 4;
@@ -174,10 +173,11 @@ public class HexagonGameBoardTest {
 //
 //       //player1 is already at 2,3 so it's not a valid position for others to come here
 //       assertFalse(hexagonGameBoard.isValidPosition(2, 3));
-//   }
+   }
 
     /**
      * Test for drawing player deck.
+     * TODO: This still needs some work
      */
     @Test
     public void drawingPlayerDeck() {
@@ -212,6 +212,7 @@ public class HexagonGameBoardTest {
     /**
      * Test for checking if the location a valid location.
      * Also test if you can move to a location where another player is standing
+     * TODO: This still needs some work
      */
     @Test
     public void testIsValidLocation() {
