@@ -15,6 +15,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class Util {
+	private static final String allowedDirectory = "src/main/java/org/set/";
+
 	public static Color getColorFromString(String colorName) {
 		Map<String, Color> colorMap = new HashMap<>();
 		colorMap.put("gray", Color.GRAY);
@@ -62,10 +64,25 @@ public class Util {
 		String sanitizedFileName = FilenameUtils.getName(fileName);
 		File file = new File(filePath, sanitizedFileName);
 
-		if (!file.exists()) {
-			throw new FileNotFoundException();
+		if (!isPathWithinAllowedDirectory(file)) {
+			throw new FileNotFoundException("Invalid file path: " + file.getPath());
 		}
 
-		return Util.readJsonData(filePath, fileName, specific);
+		if (!file.exists()) {
+			throw new FileNotFoundException("File not found: " + file.getPath());
+		}
+
+		return Util.readJsonData(filePath, sanitizedFileName, specific);
+	}
+
+	private static boolean isPathWithinAllowedDirectory(File file) {
+		try {
+			String canonicalFilePath = file.getCanonicalPath();
+			String canonicalAllowedDirPath = new File(allowedDirectory).getCanonicalPath();
+
+			return canonicalFilePath.startsWith(canonicalAllowedDirPath);
+		} catch (IOException e) {
+			return false;
+		}
 	}
 }

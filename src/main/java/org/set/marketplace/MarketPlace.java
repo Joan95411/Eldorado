@@ -14,7 +14,7 @@ public class MarketPlace {
     private JSONObject cardData;
 
     private HashMap<String, Integer> marketBoardOptions = new HashMap<String, Integer>();
-    private HashMap<String, Integer> currentMarketBoard = new HashMap<String, Integer>();
+    protected HashMap<String, Integer> currentMarketBoard = new HashMap<String, Integer>();
     private HashMap<String, Integer> cardValues = new HashMap<String, Integer>();
     private HashMap<String, String>  cardType = new HashMap<String, String>();
     private HashMap<String, Boolean> singleUse = new HashMap<String, Boolean>();
@@ -80,6 +80,8 @@ public class MarketPlace {
                 succes = true;
 
                 return succes;
+            } else {
+                throw new IllegalArgumentException("Not enough gold to buy this card");
             }
         }
 
@@ -95,7 +97,7 @@ public class MarketPlace {
                 return false;
             }
         }
-        
+
         return false;
     }
 
@@ -104,6 +106,7 @@ public class MarketPlace {
             JSONObject currentCardInfo = this.cardData.getJSONObject(currentKey);
 
             Integer marketStart = currentCardInfo.getInt("marketStart");
+
             if (marketStart == 0) {
                 this.marketBoardOptions.put(currentKey, 1);
             } else if (marketStart == 1) {
@@ -117,15 +120,16 @@ public class MarketPlace {
             this.cardType.put(currentKey, cardInfo);
 
             Integer singleUseInfo = currentCardInfo.getInt("singleUse");
-            
+
             if (singleUseInfo == 1) {
                 this.singleUse.put(currentKey, true);
             } else {
                 this.singleUse.put(currentKey, false);
             }
-            
+
             Integer cardPowerInfo = currentCardInfo.getInt("cardPower");
             this.cardPower.put(currentKey, cardPowerInfo);
         }
     }
 }
+
