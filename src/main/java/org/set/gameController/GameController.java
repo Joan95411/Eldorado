@@ -1,8 +1,10 @@
-package org.set;
+package org.set.gameController;
 
 import java.awt.Color;
 import java.util.List;
 
+import org.set.InputHelper;
+import org.set.Player;
 import org.set.boardPieces.HexagonGameBoard;
 import org.set.boardPieces.Tile;
 import org.set.boardPieces.Util;

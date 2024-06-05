@@ -3,9 +3,9 @@ package org.set.UI;
 import java.awt.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.set.GameController;
 import org.set.Player;
 import org.set.boardPieces.HexagonGameBoard;
+import org.set.gameController.GameController;
 
 public class GameControllerTest {
 

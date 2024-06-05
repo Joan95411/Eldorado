@@ -107,7 +107,7 @@ public class HexagonGameBoard extends JPanel {
         boolean changeBoard=InputHelper.getYesNoInput("Do you want to use Team 3's set up?");
         if(changeBoard) {
         	String path=Util.InitiateTeam03Board();
-//        	String path="Default";
+        	path="Swamplands";
         	pathInfo=tdd.readPathData(path);
         }
     }

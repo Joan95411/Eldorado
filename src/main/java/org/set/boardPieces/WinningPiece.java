@@ -24,6 +24,8 @@ public class WinningPiece extends BoardPiece {
 			}
 		}
     }
+	
+	@Override
 	public void randomizeTiles() {
 		Random random = new Random();
 		double rand = random.nextDouble();

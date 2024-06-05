@@ -28,6 +28,7 @@ public class Terrain extends BoardPiece {
         terrainCount = 0;
     }
 
+    @Override
     public void randomizeTiles() {
         Random random = new Random();
         for (Tile tile : tiles) {

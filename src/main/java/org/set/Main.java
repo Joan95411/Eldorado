@@ -4,6 +4,7 @@ package org.set;
 import javax.swing.*;
 
 import org.set.boardPieces.HexagonGameBoard;
+import org.set.gameController.GameController;
 
 public class Main {
     public static void main(String[] args) {

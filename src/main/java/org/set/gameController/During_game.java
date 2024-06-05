@@ -1,7 +1,8 @@
-package org.set;
+package org.set.gameController;
 
 import java.util.List;
 
+import org.set.InputHelper;
 import org.set.boardPieces.Blockade;
 import org.set.boardPieces.HexagonGameBoard;
 

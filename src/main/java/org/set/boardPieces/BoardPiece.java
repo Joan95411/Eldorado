@@ -37,7 +37,7 @@ public abstract class BoardPiece {
         this.tiles = tiles;
     }
 
-    
+    public abstract void randomizeTiles();
     
     public abstract void draw(Graphics2D g2d, int size);
 
