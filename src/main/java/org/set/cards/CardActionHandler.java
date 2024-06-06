@@ -14,62 +14,82 @@ public class CardActionHandler {
 
         switch (actionCardType) {
             case Transmitter:
-                // Take any expedition card without paying for it
-                ExpeditionCardType selectedCardType = null;
-
-                while (selectedCardType == null) {
-                    System.out.println("Please enter a card type from the following options:");
-                    for (ExpeditionCardType type : ExpeditionCardType.values()) {
-                        System.out.println("- " + type);
-                    }
-
-                    String userInput = scanner.nextLine();
-                    selectedCardType = getExpeditionCardType(userInput);
-
-                    if (selectedCardType == null) {
-                        System.out.println("Invalid input. Please try again.");
-                    } else {
-                        System.out.println("You have selected: " + selectedCardType);
-                    }
-                }
-
-                player.myDeck.drawExpeditionCard(selectedCardType);
-                scanner.close();
-
+                TransmitterAction(player);
                 return;
 
             case Cartographer:
-                // Draw 2 cards from the draw pile and play them this turn
-                player.myDeck.draw(2, true);
-
+                CartographerAction(player);
                 return;
 
             case Scientist:
-                // Logic for scientist
-                player.myDeck.drawAndRemoveCards(player, scanner, 1, 0,1);
-
+                ScientistAction(player);
                 return;
 
             case Compass:
-                // Draw 3 cards
-                player.myDeck.draw(3);
-
+                CompassAction(player);
                 return;
 
             case Travel_Log:
-                // Logic for travel log
-                player.myDeck.drawAndRemoveCards(player, scanner, 2, 0,2);
-
-                System.out.println("Travel Log action performed");
+                TravelLogAction(player);
                 return;
 
             case Native:
-                System.out.println("Native action performed");
+                NativeAction(player);
                 return;
 
             default:
                 throw new IllegalStateException("Unexpected value: " + actionCardType);
         }
+    }
+
+    private void TransmitterAction(Player player) {
+        // Take any expedition card without paying for it
+        ExpeditionCardType selectedCardType = null;
+
+        while (selectedCardType == null) {
+            System.out.println("Please enter a card type from the following options:");
+            for (ExpeditionCardType type : ExpeditionCardType.values()) {
+                System.out.println("- " + type);
+            }
+
+            String userInput = scanner.nextLine();
+            selectedCardType = getExpeditionCardType(userInput);
+
+            if (selectedCardType == null) {
+                System.out.println("Invalid input. Please try again.");
+            } else {
+                System.out.println("You have selected: " + selectedCardType);
+            }
+        }
+
+        player.myDeck.drawExpeditionCard(selectedCardType);
+        scanner.close();
+    }
+
+    private void CartographerAction(Player player) {
+        // Draw 2 cards from the draw pile and play them this turn
+        player.myDeck.draw(2, true);
+    }
+
+    private void ScientistAction(Player player) {
+        // Logic for scientist
+        player.myDeck.drawAndRemoveCards(player, scanner, 1, 0,1);
+    }
+
+    private void CompassAction(Player player) {
+        // Draw 3 cards
+        player.myDeck.draw(3);
+    }
+
+    private void TravelLogAction(Player player) {
+        // Logic for travel log
+        player.myDeck.drawAndRemoveCards(player, scanner, 2, 0,2);
+
+        System.out.println("Travel Log action performed");
+    }
+
+    private void NativeAction(Player player) {
+        System.out.println("Native action performed");
     }
 
     protected static ExpeditionCardType getExpeditionCardType(String userInput) {
