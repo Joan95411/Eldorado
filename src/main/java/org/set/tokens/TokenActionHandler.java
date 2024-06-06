@@ -12,35 +12,40 @@ public class TokenActionHandler {
     public void doAction(Token token, Player player) {
         CaveTokenType caveTokenType = token.caveTokenType;
 
-        switch (caveTokenType) {
-            case Machete:
-            case Coin:
-            case Paddle:
-                handleBasicTokens(caveTokenType, player);
-                break;
-            case Draw:
-                drawAction(player);
-                break;
-            case Remove:
-                removeAction(player);
-                break;
-            case Replace:
-                replaceAction(player);
-                break;
-            case ImmediatePlay:
-                immediatePlayAction(player);
-                break;
-            case PassThrough:
-                passThroughAction(player);
-                break;
-            case Adjacent:
-                adjacentAction(player);
-                break;
-            case Symbol:
-                symbolAction(player);
-                break;
-            default:
-                throw new IllegalArgumentException("Unknown cave token type: " + caveTokenType);
+        if (caveTokenType == CaveTokenType.Machete || caveTokenType == CaveTokenType.Coin || caveTokenType == CaveTokenType.Paddle) {
+            handleBasicTokens(caveTokenType, player);
+        } else {
+            handleActionTokens(caveTokenType, player);
+        }
+    }
+
+    private void handleActionTokens(CaveTokenType caveTokenType, Player player) {
+        if (caveTokenType == CaveTokenType.Draw) {
+            drawAction(player);
+        }
+
+        if (caveTokenType == CaveTokenType.Remove) {
+            removeAction(player);
+        }
+
+        if (caveTokenType == CaveTokenType.Replace) {
+            replaceAction(player);
+        }
+
+        if (caveTokenType == CaveTokenType.ImmediatePlay) {
+            immediatePlayAction(player);
+        }
+
+        if (caveTokenType == CaveTokenType.PassThrough) {
+            passThroughAction(player);
+        }
+
+        if (caveTokenType == CaveTokenType.Adjacent) {
+            adjacentAction(player);
+        }
+
+        if (caveTokenType == CaveTokenType.Symbol) {
+            symbolAction(player);
         }
     }
 
