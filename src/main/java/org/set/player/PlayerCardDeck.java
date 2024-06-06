@@ -62,18 +62,19 @@ public class PlayerCardDeck {
         discardPile.addAll(discardedCards);
     }
 
-    // return the top card of the drawPile, if it is empty shuffle discardPile to
-    // create new drawPile
+    // return the top card of the drawPile, if it is empty shuffle discardPile to create new drawPile
     public void drawCards(boolean cardsMustBePlayedThisTurn) {
         if (drawPile.isEmpty()) {
             shuffle();
         }
-        
+
         if (!drawPile.isEmpty()) {
+            int cardIndex = drawPile.size() - 1;
+
             if (cardsMustBePlayedThisTurn) {
-                mustBePlayedCardsInHand.add(drawPile.remove(drawPile.size() - 1));
+                mustBePlayedCardsInHand.add(drawPile.get(cardIndex));
             } else {
-                cardsInHand.add(drawPile.remove(drawPile.size() - 1));
+                cardsInHand.add(drawPile.remove(cardIndex));
             }
         }
     }
