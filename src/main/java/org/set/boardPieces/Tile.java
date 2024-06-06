@@ -76,10 +76,17 @@ public class Tile {
         this.points = points;
     }
 
-    public void drawTile(Graphics2D g2d, int x, int y, int size, Color color, int row, int col, int points) {
+    public void drawTile(Graphics2D g2d, int size) {
+        int x = this.getX();
+        int y = this.getY();
+        Color color = this.getColor();
+        int row = this.getRow();
+        int col = this.getCol();
+        int points = this.getPoints();
+
         // Adjust the alpha value (0-255) as needed
         Color transparentColor = new Color(color.getRed(), color.getGreen(), color.getBlue(), 150); 
-        drawHexagon(g2d, x, y, size, transparentColor, Color.BLACK);
+        drawHexagon(g2d, size, transparentColor, Color.BLACK);
 
         // Draw row and column numbers
         FontMetrics fm = g2d.getFontMetrics();
@@ -92,25 +99,26 @@ public class Tile {
         g2d.drawString(rowColStr, centerX - rowColWidth, centerY + rowColHeight);
 
         if (points != 0) {
-            g2d.drawString(Points, (centerX - size / 2) - rowColWidth / 2,
-                    (centerY - size * 9 / 10) + rowColHeight / 2);
+            g2d.drawString(Points, (centerX - size / 2) - rowColWidth / 2, (centerY - size * 9 / 10) + rowColHeight / 2);
         }
     }
 
-    public void drawHexagon(Graphics2D g2d, int x, int y, int size, Color color, Color border) {
+    public void drawHexagon(Graphics2D g2d, int size, Color color, Color border) {
         int[] xPoints = new int[6];
         int[] yPoints = new int[6];
 
         for (int i = 0; i < 6; i++) {
-            xPoints[i] = (int) (x + size * Math.cos(i * Math.PI / 3));
-            yPoints[i] = (int) (y + size * Math.sin(i * Math.PI / 3));
+            xPoints[i] = (int) (this.getX() + size * Math.cos(i * Math.PI / 3));
+            yPoints[i] = (int) (this.getY() + size * Math.sin(i * Math.PI / 3));
         }
 
         g2d.setColor(color);
         g2d.fillPolygon(xPoints, yPoints, 6);
+
         if (border != null) {
             g2d.setColor(border);
         }
+
         g2d.drawPolygon(xPoints, yPoints, 6);
     }
 

@@ -13,7 +13,6 @@ public class Main {
          frame.pack();
          frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
          frame.setVisible(true);
-         GameController GameControl = new GameController(board);
-//        MarketPlace marketPlace = new MarketPlace()e;
+         new GameController(board);
     }
 }

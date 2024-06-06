@@ -59,17 +59,7 @@ public class Terrain extends BoardPiece {
     @Override
     public void draw(Graphics2D g2d, int size, Map<String, Tile> tilesMap) {
         for (Tile tile : tiles) {
-            String targetKey = tile.getRow() + "," + tile.getCol();
-            Tile temp = tilesMap.get(targetKey);
-
-            int x = temp.getX();
-            int y = temp.getY();
-            int hexSize = size;
-            Color color = tile.getColor();
-            int row = tile.getRow();
-            int col = tile.getCol();
-            int points = tile.getPoints();
-            tile.drawTile(g2d, x, y, hexSize, color, row, col, points);
+            tile.drawTile(g2d, size);
         }
     }
 

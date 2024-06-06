@@ -80,6 +80,7 @@ public class Blockade extends BoardPiece {
     public void draw(Graphics2D g2d, int size, Map<String, Tile> tilesMap) {
         int totalX = 0;
         int totalY = 0;
+
         for (Tile tile : tiles) {
             String targetKey = tile.getRow() + "," + tile.getCol();
             Tile temp = tilesMap.get(targetKey);
@@ -87,15 +88,21 @@ public class Blockade extends BoardPiece {
             int y = temp.getY();
             totalX += x;
             totalY += y;
-            tile.drawHexagon(g2d, x, y, size, color, null);
+            tile.drawHexagon(g2d, size, color,null);
         }
+
         int centerX = totalX / tiles.size();
         int centerY = totalY / tiles.size();
+
         g2d.setColor(Color.BLACK);
+
         String pointText = points + "P"; // Unicode character for a bullet point
+
         FontMetrics fm = g2d.getFontMetrics();
+
         int textWidth = fm.stringWidth(pointText);
         int textHeight = fm.getHeight();
+
         g2d.drawString(pointText, centerX - textWidth / 2, centerY + textHeight / 2);
     }
 }
