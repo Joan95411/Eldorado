@@ -12,7 +12,7 @@ public class GameControllerTest {
     GameController gameController;
     @BeforeEach
     public void setUp(){
-        gameController = new GameController(new HexagonGameBoard(0,0,0));
+        gameController = new GameController(new HexagonGameBoard(0,0,0,false));
     }
 
     @Test

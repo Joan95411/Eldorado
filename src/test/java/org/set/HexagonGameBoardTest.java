@@ -31,7 +31,7 @@ public class HexagonGameBoardTest {
      */
    @BeforeEach
    void setUp() {
-	   hexagonGameBoard = new HexagonGameBoard(numRows, numCols, hexSize);
+	   hexagonGameBoard = new HexagonGameBoard(numRows, numCols, hexSize,false);
        assertNotNull(hexagonGameBoard, "hexagonGameBoard should not be null");
    }
 
@@ -88,7 +88,7 @@ public class HexagonGameBoardTest {
 	   int countBlockade = hexagonGameBoard.getAllBlockades().size();
 	   assertEquals(1, countBlockade, "Actual count: " + countBlockade);
 
-	   hexagonGameBoard.addTerrain(5, 5, ta); //blockade shouldn't be added
+	   hexagonGameBoard.addTerrain(5, 4, ta); //blockade shouldn't be added
 	   countBlockade = hexagonGameBoard.getAllBlockades().size();
 	   assertEquals(1, countBlockade, "Actual count: " + countBlockade);
    }

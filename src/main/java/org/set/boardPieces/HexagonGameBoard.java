@@ -30,13 +30,14 @@ public class HexagonGameBoard extends JPanel {
     public List<double[]> coordinateList;
     public JSONArray pathInfo;
     public List<Card> PlayerCards;
-
-    public HexagonGameBoard(int numRows, int numCols, int hexSize) {
+    public boolean setupChange;
+    public HexagonGameBoard(int numRows, int numCols, int hexSize,boolean setupChange) {
         this.numRows = numRows;
         this.numCols = numCols;
         this.hexSize = hexSize;
         this.cardWidth = hexSize * 2;
         this.cardHeight = cardWidth / 2 * 3;
+        this.setupChange=setupChange;
         setPreferredSize(new Dimension((int) (numCols * 1.5 * hexSize), (int) (numRows * Math.sqrt(3) * hexSize)));
 
         ParentMap = new HashMap<>();
@@ -104,10 +105,9 @@ public class HexagonGameBoard extends JPanel {
         TileDataDic tdd = new TileDataDic(numRows, numCols, hexSize);
         boardPieces.put(tdd.terrainA.getName(), tdd.terrainA);
         boardPieces.put(tdd.wpa.getName(), tdd.wpa);
-        boolean changeBoard=InputHelper.getYesNoInput("Do you want to use Team 3's set up?");
-        if(changeBoard) {
+        if(setupChange) {
         	String path=Util.InitiateTeam03Board();
-        	path="Swamplands";
+//        	path="Swamplands";
         	pathInfo=tdd.readPathData(path);
         }
     }

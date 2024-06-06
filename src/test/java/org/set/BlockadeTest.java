@@ -29,7 +29,7 @@ public class BlockadeTest {
    @BeforeAll
    public static void setUp() {
        blockade = new Blockade();
-       hexagonGameBoard = new HexagonGameBoard(numRows, numCols, hexSize);
+       hexagonGameBoard = new HexagonGameBoard(numRows, numCols, hexSize,false);
    }
 
     /**

@@ -23,7 +23,7 @@ public class HexgonGameBoardDrawTest {
 
     @BeforeEach
     void setUp() {
-    	board = new HexagonGameBoard(numRows, numCols, hexSize);
+    	board = new HexagonGameBoard(numRows, numCols, hexSize,false);
 
         frame = new JFrame("GameBoardTest");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
