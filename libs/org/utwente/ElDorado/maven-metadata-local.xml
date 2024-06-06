@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+  <groupId>org.utwente</groupId>
+  <artifactId>ElDorado</artifactId>
+  <versioning>
+    <versions>
+      <version>1.0-SNAPSHOT-all</version>
+    </versions>
+    <lastUpdated>20240606090004</lastUpdated>
+  </versioning>
+</metadata>

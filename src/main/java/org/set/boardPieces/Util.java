@@ -17,7 +17,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.utwente.Main;
-import org.utwente.game.GameController;
+import org.utwente.game.controller.GameController;
 
 public class Util {
 	public static Color getColorFromString(String colorName) {
