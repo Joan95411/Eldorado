@@ -6,58 +6,58 @@ import org.set.player.Player;
 
 import java.util.Scanner;
 
-import java.util.Scanner;
-
 public class TokenActionHandler {
     private Scanner scanner = new Scanner(System.in);
 
     public void doAction(Token token, Player player) {
         CaveTokenType caveTokenType = token.caveTokenType;
 
+        switch (caveTokenType) {
+            case Machete:
+            case Coin:
+            case Paddle:
+                handleBasicTokens(caveTokenType, player);
+                break;
+            case Draw:
+                drawAction(player);
+                break;
+            case Remove:
+                removeAction(player);
+                break;
+            case Replace:
+                replaceAction(player);
+                break;
+            case ImmediatePlay:
+                immediatePlayAction(player);
+                break;
+            case PassThrough:
+                passThroughAction(player);
+                break;
+            case Adjacent:
+                adjacentAction(player);
+                break;
+            case Symbol:
+                symbolAction(player);
+                break;
+            default:
+                throw new IllegalArgumentException("Unknown cave token type: " + caveTokenType);
+        }
+    }
+
+    private void handleBasicTokens(CaveTokenType caveTokenType, Player player) {
+        // Play machete, coin, or paddle tokens to move onto same-colored spaces.
+        // Alternatively, you can use coin tokens to buy a card.
+
         if (caveTokenType == CaveTokenType.Machete) {
             System.out.println("Machete token played");
-            // Play machete, coin, or paddle tokens to move onto same-colored spaces.
-            // Alternatively, you can use coin tokens to buy a card.
         }
 
         if (caveTokenType == CaveTokenType.Coin) {
             System.out.println("Coin token played");
-            // Play machete, coin, or paddle tokens to move onto same-colored spaces.
-            // Alternatively, you can use coin tokens to buy a card.
         }
 
         if (caveTokenType == CaveTokenType.Paddle) {
             System.out.println("Paddle token played");
-            // Play machete, coin, or paddle tokens to move onto same-colored spaces.
-            // Alternatively, you can use coin tokens to buy a card.
-        }
-
-        if (caveTokenType == CaveTokenType.Draw) {
-            drawAction(player);
-        }
-
-        if (caveTokenType == CaveTokenType.Remove) {
-            removeAction(player);
-        }
-
-        if (caveTokenType == CaveTokenType.Replace) {
-            replaceAction(player);
-        }
-
-        if (caveTokenType == CaveTokenType.ImmediatePlay) {
-            immediatePlayAction(player);
-        }
-
-        if (caveTokenType == CaveTokenType.PassThrough) {
-            passThroughAction(player);
-        }
-
-        if (caveTokenType == CaveTokenType.Adjacent) {
-            adjacentAction(player);
-        }
-
-        if (caveTokenType == CaveTokenType.Symbol) {
-            symbolAction(player);
         }
     }
 
