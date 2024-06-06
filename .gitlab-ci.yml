@@ -77,6 +77,7 @@ sigridpublish:
     - sigrid-ci-output/*
     expire_in: 1 week
     when: always
+  needs: ["sigridci"]
   tags:
   - SET2024
   rules:
