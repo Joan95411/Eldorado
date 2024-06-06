@@ -77,11 +77,7 @@ public class Tile {
     }
 
     public void drawTile(Graphics2D g2d, int size) {
-        int x = this.getX();
-        int y = this.getY();
         Color color = this.getColor();
-        int row = this.getRow();
-        int col = this.getCol();
         int points = this.getPoints();
 
         // Adjust the alpha value (0-255) as needed
@@ -90,12 +86,14 @@ public class Tile {
 
         // Draw row and column numbers
         FontMetrics fm = g2d.getFontMetrics();
-        String rowColStr = row + "," + col;
+        String rowColStr = this.getRow() + "," + this.getCol();
         String Points = points + "P";
+
         int rowColWidth = fm.stringWidth(rowColStr);
         int rowColHeight = fm.getHeight();
-        int centerX = x + size / 2;
-        int centerY = y + size / 10;
+        int centerX = this.getX() + size / 2;
+        int centerY = this.getY() + size / 10;
+
         g2d.drawString(rowColStr, centerX - rowColWidth, centerY + rowColHeight);
 
         if (points != 0) {
