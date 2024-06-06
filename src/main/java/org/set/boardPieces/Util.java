@@ -36,28 +36,21 @@ public class Util {
 
 	public static JSONObject readJsonData(String basePath, String fileName, String type) {
 		try {
-			// Construct the full path
-			Path fullPath = Paths.get(basePath, fileName);
+			String sanitizedFileName = FilenameUtils.getName(fileName);
+			Path fullPath = Paths.get(basePath, sanitizedFileName);
 
-			// Check if the file exists and is a regular file
 			if (Files.exists(fullPath) && Files.isRegularFile(fullPath)) {
-				// Read the file content
 				String tileDataJson = new String(Files.readAllBytes(fullPath));
-
-				// Parse the JSON data
 				JSONObject jsonData = new JSONObject(tileDataJson);
-
-				// Lookup the JSON object based on the provided type
 				JSONObject result = jsonData.optJSONObject(type);
 				return result;
 			} else {
-				// Handle if the file does not exist or is not a regular file
 				System.err.println("Tile data file not found or is not a regular file.");
 			}
 		} catch (IOException | JSONException e) {
 			e.printStackTrace();
 		}
-		return null; // Return null if an exception occurs or the file is not found
+		return null;
 	}
 
 	public static JSONObject getFile(String filePath, String fileName, String specific) throws FileNotFoundException {
