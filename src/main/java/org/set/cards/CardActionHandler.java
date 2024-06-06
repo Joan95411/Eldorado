@@ -12,33 +12,18 @@ public class CardActionHandler {
     public void doAction(Card card, Player player) {
         ActionCardType actionCardType = ActionCardType.valueOf(card.name);
 
-        switch (actionCardType) {
-            case Transmitter:
-                TransmitterAction(player);
-                return;
-
-            case Cartographer:
-                CartographerAction(player);
-                return;
-
-            case Scientist:
-                ScientistAction(player);
-                return;
-
-            case Compass:
-                CompassAction(player);
-                return;
-
-            case Travel_Log:
-                TravelLogAction(player);
-                return;
-
-            case Native:
-                NativeAction(player);
-                return;
-
-            default:
-                throw new IllegalStateException("Unexpected value: " + actionCardType);
+        if (actionCardType == ActionCardType.Transmitter) {
+            TransmitterAction(player);
+        } else if (actionCardType == ActionCardType.Cartographer) {
+            CartographerAction(player);
+        } else if (actionCardType == ActionCardType.Scientist) {
+            ScientistAction(player);
+        } else if (actionCardType == ActionCardType.Compass) {
+            CompassAction(player);
+        } else if (actionCardType == ActionCardType.Travel_Log) {
+            TravelLogAction(player);
+        } else if (actionCardType == ActionCardType.Native) {
+            NativeAction(player);
         }
     }
 
