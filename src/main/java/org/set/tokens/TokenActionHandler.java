@@ -11,8 +11,6 @@ import java.util.Scanner;
 public class TokenActionHandler {
     private Scanner scanner = new Scanner(System.in);
 
-    private Scanner scanner = new Scanner(System.in);
-
     public void doAction(Token token, Player player) {
         CaveTokenType caveTokenType = token.caveTokenType;
 
