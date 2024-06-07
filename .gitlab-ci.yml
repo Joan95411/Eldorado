@@ -42,13 +42,11 @@ verify-job:
   dependencies:
   - build-job
   script:
-<<<<<<< HEAD
+
   - echo "Running additional verification tests."
   - mvn install:install-file -Dfile=$CI_PROJECT_DIR/libs/eldorado-1.0-SNAPSHOT.jar -DgroupId=org.utwente -DartifactId=eldorado -Dversion=1.0-SNAPSHOT -Dpackaging=jar -DgeneratePom=true
   - mvn install:install-file -Dfile=$CI_PROJECT_DIR/libs/Dependency-SNAPSHOT-all.jar -DgroupId=org.utwente -DartifactId=dependency -Dversion=SNAPSHOT-all -Dpackaging=jar -DgeneratePom=true
-=======
   - echo "Running verification job."
->>>>>>> develop
   - mvn verify
 
 package-prod:
