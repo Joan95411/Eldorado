@@ -2,12 +2,16 @@ package org.set;
 
 import org.junit.jupiter.api.Test;
 import org.set.boardPieces.Tile;
+import org.set.player.PlayerCardDeck;
 
 import static org.junit.jupiter.api.Assertions.*;
 import java.awt.Color;
 import java.util.List;
 import java.util.Arrays;
 
+/**
+ * Test class for the {@link TileTest} class.
+ */
 class TileTest {
 	//HexagonGameBoard gameBoard = new HexagonGameBoard(15, 35, 30);
     @Test

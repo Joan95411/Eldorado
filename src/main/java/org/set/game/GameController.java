@@ -1,10 +1,9 @@
-package org.set.gameController;
+package org.set.game;
 
 import java.awt.Color;
 import java.util.List;
 
-import org.set.InputHelper;
-import org.set.Player;
+import org.set.player.Player;
 import org.set.boardPieces.HexagonGameBoard;
 import org.set.boardPieces.Tile;
 import org.set.boardPieces.Util;
@@ -20,9 +19,9 @@ public class GameController {
     public GameController(HexagonGameBoard board) {
         this.board = board;
         GameState = "Game Starts";
-        // Before_game.setSpecialColor(board);
         During_game.removeblock(board);
         players = Before_game.addPlayer(board);
+        
         Before_game.placePlayersOnBoard(board);
         GameSession();
     }
@@ -33,10 +32,16 @@ public class GameController {
         return GameState;
     }
 
-    private void PlayerDrawCards(int turn, int currentPlayerIndex) {
+    private void PlayerDrawCards(int turn, int currentPlayerIndex, Player player) {
+        // Phase 3
+        // draw cards from your draw pile until you have 4 cards in your hand.
+        // If your draw pile doesn't contain enough cards to draw for your next turn,
+        // draw as many as possible.
+        // Then, shuffle your discard pile to form your new draw pile, then draw the
+        // rest of the cards you need.
         System.out.println("Player " + (currentPlayerIndex + 1) + " drawing cards");
         Player currentPlayer = players.get(currentPlayerIndex);
-        currentPlayer.myDeck.draw(5);
+        player.myDeck.draw(4 - player.myDeck.getCardsInHand().size());
         board.PlayerCards = currentPlayer.myDeck.getCardsInHand();
         board.repaint();
     }
@@ -47,43 +52,36 @@ public class GameController {
 
         List<Card> currentDeck = player.myDeck.getCardsInHand();
         boolean movementNotQualified = true;
+
         while (movementNotQualified) {
-            int cardIndex = InputHelper.getIntInput("Choose 1 card for Movement, input index (e.g. 0), or '-1' to stop with movement");
-            if(cardIndex==-1) {break;}
+            int cardIndex = InputHelper.getIntInput("Choose 1 card for Movement, input index (e.g. 0)");
+
             if (cardIndex >= currentDeck.size()) {
                 System.out.println("Please enter a number between 0 to " + (player.myDeck.getCardsInHand().size() - 1));
                 continue;
             }
-            
+
             Card selectedCard = currentDeck.get(cardIndex);// only expedition card can move?
-            
+
             if (!(selectedCard instanceof ExpeditionCard)) {
                 System.out.println("Please select an Expedition card.");
                 continue;
             }
-            
+
             ExpeditionCard expeditionCard = (ExpeditionCard) selectedCard;
-            int residulePower=expeditionCard.getPower();
-            while(residulePower>0) {
-            System.out.println("Where do you want to move with the Power of "+residulePower);
+            System.out.println("Where do you want to move with this card?");
             String targetKey = player.getCurrentRow() + "," + player.getCurrentCol();
             Tile PlayerStandingTile = board.ParentMap.get(targetKey);
             Tile MovingTo = InputHelper.getPlayerMoveInput(board, PlayerStandingTile);
-            if(MovingTo.getRow()==-100) {residulePower=0;break;}
             Color cardcolor = Util.getColorFromString(selectedCard.cardType.toString());
+
             if (cardcolor.equals(MovingTo.getColor())) {
                 if (expeditionCard.getPower() >= MovingTo.getPoints()) {
                     player.setPlayerPosition(MovingTo.getRow(), MovingTo.getCol());
-                    residulePower-=MovingTo.getPoints();
                     movementNotQualified = false;
-                    board.repaint();
                     // implement the leftover power
-                }else {
-                	System.out.println("Your card does not have enough power to move here.");
                 }
-            }else {
-            	System.out.println("Card color does not match tile color.");
-            }}
+            }
         }
     }
 
@@ -96,35 +94,33 @@ public class GameController {
         // Phase 2
         // Discard Played Cards, keep card in your hand for your next turn
         // decide for each card individually.
-        for (Card card : player.myDeck.getCardsInHand()) {// for al cards left in your hand
-            // decide if you want to keep the card or discard
-            // TODO: implement user interface for this
+        if(!InputHelper.getYesNoInput("Do you want to discard any cards?")){
+            return;
         }
-    }
-
-    public void PlayerDrawCard(Player player) {
-        // Phase 3
-        // draw cards from your draw pile until you have 4 cards in your hand.
-        player.myDeck.draw(4 - player.myDeck.getCardsInHand().size());
-        // If your draw pile doesn't contain enough cards to draw for your next turn,
-        // draw as many as possible.
-        // Then, shuffle your discard pile to form your new draw pile, then draw the
-        // rest of the cards you need.
+        int handSize = player.myDeck.getCardsInHand().size() - 1;
+        for (int i = handSize; i >= 0; i--) {// for al cards left in your hand
+            if(InputHelper.getYesNoInput("Do you want to discard card: " + i + "?")){
+                player.myDeck.discardFromHand(i);
+                board.PlayerCards = player.myDeck.getCardsInHand();
+                board.repaint();
+            }
+        }
     }
 
     public void GameSession() {
         int turnNumber = 0;
+
         while (true) {
             for (int currentPlayerIndex = 0; currentPlayerIndex < players.size(); currentPlayerIndex++) {
                 Player currentPlayer = players.get(currentPlayerIndex);
                 System.out.println("Turn " + turnNumber + ": Player " + (currentPlayerIndex + 1) + "'s turn.");
-                PlayerDrawCards(turnNumber, currentPlayerIndex);
-                PlayerMove(currentPlayer);
-//                int[] position = InputHelper.getPositionInput(board);
-//
-//                currentPlayer.setPlayerPosition(position[0], position[1]);
-                
-                
+                PlayerDrawCards(turnNumber, currentPlayerIndex, currentPlayer);
+
+                int[] position = InputHelper.getPositionInput(board);
+
+                currentPlayer.setPlayerPosition(position[0], position[1]);
+                board.repaint();
+                PlayerDiscard(currentPlayer);
             }
 
             turnNumber++;

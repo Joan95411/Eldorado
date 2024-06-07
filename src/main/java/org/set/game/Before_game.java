@@ -1,10 +1,10 @@
-package org.set.gameController;
+package org.set.game;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.set.InputHelper;
-import org.set.Player;
+import org.set.game.InputHelper;
+import org.set.player.Player;
 import org.set.boardPieces.HexagonGameBoard;
 import org.set.boardPieces.Tile;
 import org.set.boardPieces.TileDataDic;

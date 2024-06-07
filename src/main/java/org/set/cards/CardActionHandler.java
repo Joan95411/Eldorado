@@ -1,55 +1,99 @@
 package org.set.cards;
 
-import org.set.Player;
+import org.set.player.Player;
 import org.set.cards.action.ActionCardType;
+import org.set.cards.expedition.ExpeditionCardType;
+
+import java.util.Scanner;
 
 public class CardActionHandler {
+    private Scanner scanner = new Scanner(System.in);
+
     public void doAction(Card card, Player player) {
         ActionCardType actionCardType = ActionCardType.valueOf(card.name);
 
-        switch (actionCardType) {
-            case Transmitter:
-                System.out.println("Transmitter action performed");
+        if (actionCardType == ActionCardType.Transmitter) {
+            TransmitterAction(player);
+        }
 
-                // Logic to take any expedition card without paying for it
-                // Add the selected card to the discard pile
-                // Remove the Transmitter card from the game
+        if (actionCardType == ActionCardType.Cartographer) {
+            CartographerAction(player);
+        }
 
-                return;
+        if (actionCardType == ActionCardType.Scientist) {
+            ScientistAction(player);
+        }
 
-            case Cartographer:
-                System.out.println("Cartographer action performed");
+        if (actionCardType == ActionCardType.Compass) {
+            CompassAction(player);
+        }
 
-                // Logic to draw 2 cards from the draw pile and play them this turn
-                // player.drawCards(2);
+        if (actionCardType == ActionCardType.Travel_Log) {
+            TravelLogAction(player);
+        }
 
-                return;
+        if (actionCardType == ActionCardType.Native) {
+            NativeAction(player);
+        }
+    }
 
-            case Scientist:
-                System.out.println("Scientist action performed");
+    private void TransmitterAction(Player player) {
+        // Take any expedition card without paying for it
+        ExpeditionCardType selectedCardType = null;
 
-                // Logic for scientist
+        while (selectedCardType == null) {
+            System.out.println("Please enter a card type from the following options:");
+            for (ExpeditionCardType type : ExpeditionCardType.values()) {
+                System.out.println("- " + type);
+            }
 
-                return;
+            String userInput = scanner.nextLine();
+            selectedCardType = getExpeditionCardType(userInput);
 
-            case Compass:
-                System.out.println("Compass action performed");
+            if (selectedCardType == null) {
+                System.out.println("Invalid input. Please try again.");
+            } else {
+                System.out.println("You have selected: " + selectedCardType);
+            }
+        }
 
-                // Logic to draw 3 cards
-                // player.drawCards(3);
+        player.myDeck.drawExpeditionCard(selectedCardType);
+        scanner.close();
+    }
 
-                return;
+    private void CartographerAction(Player player) {
+        // Draw 2 cards from the draw pile and play them this turn
+        player.myDeck.draw(2, true);
+    }
 
-            case Travel_Log:
-                System.out.println("Travel Log action performed");
-                return;
+    private void ScientistAction(Player player) {
+        // Logic for scientist
+        player.myDeck.drawAndRemoveCards(player, scanner, 1, 0,1);
+    }
 
-            case Native:
-                System.out.println("Native action performed");
-                return;
+    private void CompassAction(Player player) {
+        // Draw 3 cards
+        player.myDeck.draw(3);
+    }
 
-            default:
-                throw new IllegalStateException("Unexpected value: " + actionCardType);
+    private void TravelLogAction(Player player) {
+        // Logic for travel log
+        player.myDeck.drawAndRemoveCards(player, scanner, 2, 0,2);
+
+        System.out.println("Travel Log action performed");
+    }
+
+    private void NativeAction(Player player) {
+        System.out.println("Native action performed");
+    }
+
+    protected static ExpeditionCardType getExpeditionCardType(String userInput) {
+        try {
+            return ExpeditionCardType.valueOf(userInput);
+        } catch (IllegalArgumentException e) {
+            return null;
         }
     }
 }
+
+

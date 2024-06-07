@@ -135,10 +135,16 @@ public class Tile {
 
     
 
-    public void drawTile(Graphics2D g2d, int x, int y, int size, Color color, int row, int col, int points) {
-        // Adjust the alpha value (0-255) as needed
-        Color transparentColor = new Color(color.getRed(), color.getGreen(), color.getBlue(), 150); 
-        drawHexagon(g2d, x, y, size, transparentColor, Color.BLACK);
+    public void drawTile(Graphics2D g2d, int size, Color tileColor, Color border) {
+    	int row = this.getRow();
+        int col = this.getCol();
+    	String targetKey = row + "," + col;
+        int[] temp = TileDataDic.tilesMap.get(targetKey);
+        int x = temp[0];
+        int y = temp[1];
+        int points = this.getPoints();
+        
+        drawHexagon(g2d, x, y, size, tileColor, border);
 
         // Draw row and column numbers
         FontMetrics fm = g2d.getFontMetrics();

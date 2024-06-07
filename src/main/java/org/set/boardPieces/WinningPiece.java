@@ -94,20 +94,13 @@ public class WinningPiece extends BoardPiece {
 	@Override
 	public void draw(Graphics2D g2d, int size) {
 		for (Tile tile : tiles) {
-			String targetKey = tile.getRow() + "," + tile.getCol();
-			int[] temp = TileDataDic.tilesMap.get(targetKey);
-            int x = temp[0];
-            int y = temp[1];
-			int hexSize = size;
-			Color color = tile.getColor();
-			int row = tile.getRow();
-			int col = tile.getCol();
+			Color color=tile.getColor();
 			int points = tile.getPoints();
 			
 			if (points > 0) {
-				tile.drawTile(g2d, x, y, hexSize, color, row, col, points);
+				tile.drawTile(g2d,  size,color, Color.BLACK);
 			} else {
-				tile.drawHexagon(g2d, x, y, hexSize, color, null);
+				tile.drawTile(g2d, size,color, null);
 			}
 		}
 

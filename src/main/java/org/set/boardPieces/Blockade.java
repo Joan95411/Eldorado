@@ -26,7 +26,9 @@ public class Blockade extends BoardPiece {
     }
 
     public void setColor(Color color) {
-        this.color = color;
+    	for (Tile tile : tiles) {
+    		tile.setColor(color);
+    	}
     }
 
     public void setPoints(int points) {
@@ -108,8 +110,7 @@ public class Blockade extends BoardPiece {
         Random random = new Random();
         int index = random.nextInt(COLOR_RANGE.length);
         Color temp = COLOR_RANGE[index];
-        Color transparentColor = new Color(temp.getRed(), temp.getGreen(), temp.getBlue(), 50);
-        this.color = transparentColor;
+        setColor(temp);
 
         int points = random.nextInt(POINTS_MAX - POINTS_MIN + 1) + POINTS_MIN;
         this.points = points;
@@ -120,18 +121,14 @@ public class Blockade extends BoardPiece {
         int totalX = 0;
         int totalY = 0;
         for (Tile tile : tiles) {
-            String targetKey = tile.getRow() + "," + tile.getCol();
-            int[] temp = TileDataDic.tilesMap.get(targetKey);
-            int x = temp[0];
-            int y = temp[1];
-            totalX += x;
-            totalY += y;
-            tile.drawHexagon(g2d, x, y, size, color, null);
+            Color color=tile.getColor();
+            Color transparentColor = new Color(color.getRed(), color.getGreen(), color.getBlue(), 50); 
+            tile.drawTile(g2d,  size,transparentColor, null);
         }
         int centerX = totalX / tiles.size();
         int centerY = totalY / tiles.size();
         g2d.setColor(Color.BLACK);
-        String pointText = points + "P"; // Unicode character for a bullet point
+        String pointText = points + "P"; 
         FontMetrics fm = g2d.getFontMetrics();
         int textWidth = fm.stringWidth(pointText);
         int textHeight = fm.getHeight();
