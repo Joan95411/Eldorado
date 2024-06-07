@@ -13,7 +13,6 @@ build-job:
   script:
   - echo "Maven building started."
   - ls -la $CI_PROJECT_DIR/libs  # List the contents of libs directory
-  - if [ ! -f "$CI_PROJECT_DIR/libs/eldorado-1.0-SNAPSHOT.jar" ]; then echo "JAR file not found!"; exit 1; fi
   - mvn install:install-file -Dfile=$CI_PROJECT_DIR/libs/eldorado-1.0-SNAPSHOT.jar -DgroupId=org.utwente -DartifactId=eldorado -Dversion=1.0-SNAPSHOT -Dpackaging=jar -DgeneratePom=true
   - mvn install:install-file -Dfile=$CI_PROJECT_DIR/libs/Dependency-SNAPSHOT-all.jar -DgroupId=org.utwente -DartifactId=dependency -Dversion=SNAPSHOT-all -Dpackaging=jar -DgeneratePom=true
     
@@ -32,6 +31,8 @@ test-implemented-tests:
   - build-job
   script:
   - echo "Running all tests."
+  - mvn install:install-file -Dfile=$CI_PROJECT_DIR/libs/eldorado-1.0-SNAPSHOT.jar -DgroupId=org.utwente -DartifactId=eldorado -Dversion=1.0-SNAPSHOT -Dpackaging=jar -DgeneratePom=true
+  - mvn install:install-file -Dfile=$CI_PROJECT_DIR/libs/Dependency-SNAPSHOT-all.jar -DgroupId=org.utwente -DartifactId=dependency -Dversion=SNAPSHOT-all -Dpackaging=jar -DgeneratePom=true
   - mvn test
 
 verify-job:
@@ -42,6 +43,8 @@ verify-job:
   - build-job
   script:
   - echo "Running additional verification tests."
+  - mvn install:install-file -Dfile=$CI_PROJECT_DIR/libs/eldorado-1.0-SNAPSHOT.jar -DgroupId=org.utwente -DartifactId=eldorado -Dversion=1.0-SNAPSHOT -Dpackaging=jar -DgeneratePom=true
+  - mvn install:install-file -Dfile=$CI_PROJECT_DIR/libs/Dependency-SNAPSHOT-all.jar -DgroupId=org.utwente -DartifactId=dependency -Dversion=SNAPSHOT-all -Dpackaging=jar -DgeneratePom=true
   - mvn verify
 
 package-prod:
