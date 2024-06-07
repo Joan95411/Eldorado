@@ -12,6 +12,12 @@
         <repository>
             <id>local-repo</id>
             <url>file://${project.basedir}/libs</url>
+            <releases>
+            <enabled>true</enabled>
+        </releases>
+        <snapshots>
+            <enabled>true</enabled>
+        </snapshots>
         </repository>
     </repositories>
 
