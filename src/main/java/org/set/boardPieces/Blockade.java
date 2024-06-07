@@ -57,10 +57,14 @@ public class Blockade extends BoardPiece {
     		addRowCol[0]+=1;}
             else if(addRow<-1) {
             	addRowCol[0]-=1;}
-            else {
+            else if (addCol>1){
             	addRowCol[0]-=0.5;
             	addRowCol[1]+= 1;
+            }else if (addCol<-1){
+            	addRowCol[0]-=0.5;
+            	addRowCol[1]-= 1;
             }
+    	
 //            else if(addCol>1) {
 //            	addRowCol[1]+= 1;}
 //            else if(addCol<-1) {
