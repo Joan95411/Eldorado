@@ -12,8 +12,9 @@ build-job:
   - SET2024
   script:
   - echo "Maven building started."
+  - mvn clean install -Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository -X
   #- mvn -B -DskipTests clean package
-  - mvn clean install
+  #- mvn clean install
   cache:
     paths:
     - "~/.m2/repository"
