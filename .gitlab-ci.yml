@@ -12,7 +12,8 @@ build-job:
   - SET2024
   script:
   - echo "Maven building started."
-  - mvn -B -DskipTests clean package
+  #- mvn -B -DskipTests clean package
+  - mvn clean install
   cache:
     paths:
     - "~/.m2/repository"
