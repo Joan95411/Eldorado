@@ -45,3 +45,4 @@ build/
 
 /.idea
 /.gitlab-ci-local
+/.apt_generated_tests/

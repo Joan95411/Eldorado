@@ -9,21 +9,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.swing.JFrame;
-import javax.swing.JScrollPane;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.utwente.Main;
-import org.utwente.game.controller.GameController;
-
 public class Util {
 	public static Color getColorFromString(String colorName) {
         Map<String, Color> colorMap = new HashMap<>();
         colorMap.put("gray", Color.GRAY);
-        colorMap.put("discard", Color.GRAY);//???
+        colorMap.put("discard", Color.GRAY);
         colorMap.put("joker", Color.GRAY);
         colorMap.put("red", Color.RED);
         colorMap.put("basecamp", Color.RED);
@@ -95,26 +88,15 @@ public class Util {
         }
     	return parsedData;
     }
+	public static JSONArray readPathData(String pathType) {
+    	String tileDataPath = "src/main/java/org/set/boardPieces/Sections";
+    	String filename = "Path.json";
+    	JSONObject jsonData = Util.readJsonData(tileDataPath, filename);
+        JSONArray pathArray = jsonData.optJSONArray(pathType);
+    	
+    	return pathArray;
+    }
 	
-	public static String InitiateTeam03Board() {
-		
-        Main mainPanel = new Main();
-        GameController gameController = mainPanel.getGameController();
-        JFrame frame = new JFrame(gameController.getGame().getGameName());
-        gameController.getGame().placePlayersStart();
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        JScrollPane scrollPane = new JScrollPane(mainPanel);
-        frame.add(scrollPane);
-
-        frame.setSize(mainPanel.getPreferredSize());
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
-
-		System.out.println(gameController.getGame().getBoard().getPath().name());
-    
-	return gameController.getGame().getBoard().getPath().name();
-}
 	
 	}
 	

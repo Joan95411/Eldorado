@@ -21,8 +21,8 @@ public class GameController {
         this.board = board;
         GameState = "Game Starts";
         // Before_game.setSpecialColor(board);
+        During_game.removeblock(board);
         players = Before_game.addPlayer(board);
-        //During_game.removeblock(board);
         Before_game.placePlayersOnBoard(board);
         GameSession();
     }

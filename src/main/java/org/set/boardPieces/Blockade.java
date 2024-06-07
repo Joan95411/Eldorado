@@ -11,13 +11,14 @@ public class Blockade extends BoardPiece {
     private Color color;
     private int points;
     private int[] neighbors;
-
+    private double[] addRowCol;
     public Blockade() {
         super();
         int index = ++blockadeCount;
         this.name = "Blockade_" + index;
         this.pieceCount = 5;
         this.neighbors = new int[2];
+        this.addRowCol=new double[2];
     }
 
     public static void resetCount() {
@@ -40,7 +41,35 @@ public class Blockade extends BoardPiece {
     public int[] getTerrainNeighbors() {
         return neighbors;
     }
-
+    public void setTerrainAddRowCol(double addRow, double addCol) {
+        this.addRowCol[0] = addRow;
+        this.addRowCol[1] = addCol;
+    }
+    
+    public double[] getTerrainAddRowCol() {
+        return addRowCol;
+    }
+    public double[] calcRowColChange(double addRow, double addCol) {
+    	double[] addRowCol=new double[2];
+    	addRowCol[0]=0;
+    	addRowCol[1]=0;
+    	if(addRow>1) {
+    		addRowCol[0]+=1;}
+            else if(addRow<-1) {
+            	addRowCol[0]-=1;}
+            else {
+            	addRowCol[0]-=0.5;
+            	addRowCol[1]+= 1;
+            }
+//            else if(addCol>1) {
+//            	addRowCol[1]+= 1;}
+//            else if(addCol<-1) {
+//            	addRowCol[1]-= 1;}
+            
+            
+		return addRowCol;
+    	
+    }
     @Override
     public Blockade clone(double addRow, double addCol,int hexSize) {
     	Blockade clonedBlock = new Blockade();
@@ -88,9 +117,9 @@ public class Blockade extends BoardPiece {
         int totalY = 0;
         for (Tile tile : tiles) {
             String targetKey = tile.getRow() + "," + tile.getCol();
-            Tile temp = TileDataDic.tilesMap.get(targetKey);
-            int x = temp.getX();
-            int y = temp.getY();
+            int[] temp = TileDataDic.tilesMap.get(targetKey);
+            int x = temp[0];
+            int y = temp[1];
             totalX += x;
             totalY += y;
             tile.drawHexagon(g2d, x, y, size, color, null);

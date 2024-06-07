@@ -21,8 +21,8 @@ public class TileDataDic {
     public static Dotenv dotenv;
     public Terrain terrainA;
     public WinningPiece wpa;
-    public static Map<String, Tile> tilesMap;
-    public static Map<String, Tile> coordinateMap;
+    public static Map<String, int[]> tilesMap;
+    public static Map<String, int[]> coordinateMap;
     
     public TileDataDic(int numRows, int numCols, int hexSize) {
         terrainA = new Terrain();
@@ -92,9 +92,9 @@ public class TileDataDic {
                 
                 tile.setColor(color);
                 tile.setPoints(points);
-
-                tilesMap.put(key, tile);
-                coordinateMap.put(x+","+y, tile);
+                
+                tilesMap.put(key, new int[] {x,y});
+                coordinateMap.put(x+","+y, new int[] {row,col});
             }
         }
         
@@ -102,17 +102,16 @@ public class TileDataDic {
     public static int[] findClosestCoordinate(int x, int y) {
         double minDistance = Double.MAX_VALUE;
         int[] closestCoordinate = null;
-        Tile tileFoundCorMap=coordinateMap.get(x+","+y);
+        int[] tileFoundCorMap=coordinateMap.get(x+","+y);
         if(tileFoundCorMap!=null) {
-        	closestCoordinate = new int[] { tileFoundCorMap.getRow(), tileFoundCorMap.getCol(),x,y };
+        	closestCoordinate = new int[] { tileFoundCorMap[0], tileFoundCorMap[1],x,y };
         	return closestCoordinate; }
-        for (Entry<String, Tile> entry : tilesMap.entrySet()) {
+        for (Entry<String, int[]> entry : tilesMap.entrySet()) {
             String key = entry.getKey();
             String[] parts = key.split(",");
-            Tile tile = entry.getValue();
 
-            int tileX = tile.getX();
-            int tileY = tile.getY();
+            int tileX = entry.getValue()[0];
+            int tileY = entry.getValue()[1];
 
             double distance = Math.sqrt(Math.pow(tileX - x, 2) + Math.pow(tileY - y, 2));
             if (distance < minDistance) {
@@ -124,14 +123,7 @@ public class TileDataDic {
         return closestCoordinate;
     }
     
-    public JSONArray readPathData(String pathType) {
-    	String tileDataPath = "src/main/java/org/set/boardPieces/Sections";
-    	String filename = "Path.json";
-    	JSONObject jsonData = Util.readJsonData(tileDataPath, filename);
-        JSONArray pathArray = jsonData.optJSONArray(pathType);
-    	
-    	return pathArray;
-    }
+    
 
 	
 }

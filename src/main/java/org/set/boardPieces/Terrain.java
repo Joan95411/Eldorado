@@ -128,10 +128,9 @@ public class Terrain extends BoardPiece {
     public void draw(Graphics2D g2d, int hexSize) {
         for (Tile tile : tiles) {
             String targetKey = tile.getRow() + "," + tile.getCol();
-            Tile temp = TileDataDic.tilesMap.get(targetKey);
-
-            int x = temp.getX();
-            int y = temp.getY();
+            int[] temp = TileDataDic.tilesMap.get(targetKey);
+            int x = temp[0];
+            int y = temp[1];
             Color color = tile.getColor();
             int row = tile.getRow();
             int col = tile.getCol();

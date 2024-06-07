@@ -40,9 +40,9 @@ public class WinningPiece extends BoardPiece {
 	}
 	public void rotate(int degree, int axisX, int axisY) {
 		for (Tile tile : tiles) {
-			Tile temp=TileDataDic.tilesMap.get(tile.getRow()+","+tile.getCol());
-			tile.setX(temp.getX());
-			tile.setY(temp.getY());
+			int[] temp=TileDataDic.tilesMap.get(tile.getRow()+","+tile.getCol());
+			tile.setX(temp[0]);
+			tile.setY(temp[1]);
         	if(degree==0) {
         		break;
         	}
@@ -95,9 +95,9 @@ public class WinningPiece extends BoardPiece {
 	public void draw(Graphics2D g2d, int size) {
 		for (Tile tile : tiles) {
 			String targetKey = tile.getRow() + "," + tile.getCol();
-			Tile temp = TileDataDic.tilesMap.get(targetKey);
-			int x = temp.getX();
-			int y = temp.getY();
+			int[] temp = TileDataDic.tilesMap.get(targetKey);
+            int x = temp[0];
+            int y = temp[1];
 			int hexSize = size;
 			Color color = tile.getColor();
 			int row = tile.getRow();

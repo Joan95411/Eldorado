@@ -51,9 +51,12 @@ public abstract class BoardPiece {
         	addY += (int) (Math.sqrt(3) / 2 * hexSize);
         }
         for (Tile tile : tiles) {
-        	int newX = tile.getX()+addX;
-          	int newY = tile.getY()+addY;
+        	int[] temp = TileDataDic.tilesMap.get(tile.getRow()+","+tile.getCol());
+        	int newX = temp[0]+addX;
+          	int newY = temp[1]+addY;
           	int[] closestCoordinate = TileDataDic.findClosestCoordinate(newX, newY);
+//          	System.out.println(tile.getX()+" "+tile.getY()+" "+addX+" "+addY+" "+closestCoordinate[2]+" "+closestCoordinate[3]);
+//          	System.out.println(tile.getRow()+" "+tile.getCol()+" "+tile.getParent()+" "+closestCoordinate[0]+" "+closestCoordinate[1]);
           	 if (closestCoordinate != null) {
             tile.setRow(closestCoordinate[0]);
             tile.setCol(closestCoordinate[1]);}
