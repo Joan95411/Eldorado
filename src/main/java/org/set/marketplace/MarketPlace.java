@@ -8,13 +8,16 @@ import org.set.cards.action.ActionCard;
 import org.set.cards.action.ActionCardType;
 import org.set.cards.expedition.ExpeditionCard;
 import org.set.cards.expedition.ExpeditionCardType;
+
+import lombok.Getter;
+
 import org.json.JSONObject;
 
 public class MarketPlace {
     private JSONObject cardData;
 
     private HashMap<String, Integer> marketBoardOptions = new HashMap<String, Integer>();
-    protected HashMap<String, Integer> currentMarketBoard = new HashMap<String, Integer>();
+    protected HashMap<String, Integer> currentMarketBoard = new HashMap<String, Integer>(); //i need Card-power map, so i can get the attributes from the card, not string
     private HashMap<String, Integer> cardValues = new HashMap<String, Integer>();
     private HashMap<String, String>  cardType = new HashMap<String, String>();
     private HashMap<String, Boolean> singleUse = new HashMap<String, Boolean>();
@@ -29,7 +32,12 @@ public class MarketPlace {
 
         LoadDataIntoVariables();
     }
-
+    public HashMap<String, Integer> getCurrentMarketBoard() {
+        return currentMarketBoard;
+    }
+    public HashMap<String, Integer> getMarketBoardOption() {
+        return marketBoardOptions;
+    }
     public Card BuyCard(String cardName, Integer goldAmount) {
         if (this.currentMarketBoard.containsKey(cardName) && this.TakeCard(cardName, goldAmount)) {
             return CreateCard(cardName);

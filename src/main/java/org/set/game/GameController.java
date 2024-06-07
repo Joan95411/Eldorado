@@ -1,7 +1,9 @@
 package org.set.game;
 
 import java.awt.Color;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.set.player.Player;
 import org.set.boardPieces.HexagonGameBoard;
@@ -9,27 +11,48 @@ import org.set.boardPieces.Tile;
 import org.set.boardPieces.Util;
 import org.set.cards.Card;
 import org.set.cards.expedition.ExpeditionCard;
+import org.set.marketplace.MarketPlace;
 
 public class GameController {
     private HexagonGameBoard board;
     private List<Player> players;
     private String GameState;
     public int turnCounter;
+    public MarketPlace market;
 
     public GameController(HexagonGameBoard board) {
         this.board = board;
         GameState = "Game Starts";
         During_game.removeblock(board);
+        market=new MarketPlace();
         players = Before_game.addPlayer(board);
-        
         Before_game.placePlayersOnBoard(board);
         GameSession();
     }
-
+    
     private String displayGameState() {
         // Display the current state of the game, including the board and player
         // positions
         return GameState;
+    }
+    private void displayMarketInfo() {
+    	HashMap<String, Integer> marketoption = market.getMarketBoardOption();
+
+        // Iterate over the entries of the HashMap and print each key-value pair
+        for (Map.Entry<String, Integer> entry : marketoption.entrySet()) {
+            String key = entry.getKey();
+            Integer value = entry.getValue();
+            System.out.println("marketoption: " + key + ", Value: " + value);
+        }
+        
+        HashMap<String, Integer> currentMarket = market.getCurrentMarketBoard();
+
+        // Iterate over the entries of the HashMap and print each key-value pair
+        for (Map.Entry<String, Integer> entry : currentMarket.entrySet()) {
+            String key = entry.getKey();
+            Integer value = entry.getValue();
+            System.out.println("currentMarket: " + key + ", Value: " + value);
+        }
     }
 
     private void PlayerDrawCards(int turn, int currentPlayerIndex, Player player) {
@@ -51,39 +74,51 @@ public class GameController {
         // play cards that you want to use for moving
 
         List<Card> currentDeck = player.myDeck.getCardsInHand();
-        boolean movementNotQualified = true;
-
-        while (movementNotQualified) {
-            int cardIndex = InputHelper.getIntInput("Choose 1 card for Movement, input index (e.g. 0)");
-
+        while (true) {
+            boolean keepMoving = InputHelper.getYesNoInput("Do you want to keep moving?");
+            if (!keepMoving) {
+                break; // Exit the loop if the user doesn't want to keep moving
+            }
+            int cardIndex = InputHelper.getIntInput("Choose 1 card for Movement, input index (e.g. 0), or '-1' to stop with movement");
+            if(cardIndex==-1) {break;}
             if (cardIndex >= currentDeck.size()) {
                 System.out.println("Please enter a number between 0 to " + (player.myDeck.getCardsInHand().size() - 1));
                 continue;
             }
-
+            
             Card selectedCard = currentDeck.get(cardIndex);// only expedition card can move?
-
+            
             if (!(selectedCard instanceof ExpeditionCard)) {
                 System.out.println("Please select an Expedition card.");
                 continue;
             }
-
+            
             ExpeditionCard expeditionCard = (ExpeditionCard) selectedCard;
-            System.out.println("Where do you want to move with this card?");
+            int residulePower=expeditionCard.getPower();
+            while(residulePower>0) {
+            System.out.println("You chose the " +selectedCard.cardType.toString()+" card with Power of "+residulePower);
             String targetKey = player.getCurrentRow() + "," + player.getCurrentCol();
             Tile PlayerStandingTile = board.ParentMap.get(targetKey);
             Tile MovingTo = InputHelper.getPlayerMoveInput(board, PlayerStandingTile);
+            if(MovingTo.getRow()==-100) {residulePower=0;break;}
             Color cardcolor = Util.getColorFromString(selectedCard.cardType.toString());
-
             if (cardcolor.equals(MovingTo.getColor())) {
                 if (expeditionCard.getPower() >= MovingTo.getPoints()) {
                     player.setPlayerPosition(MovingTo.getRow(), MovingTo.getCol());
-                    movementNotQualified = false;
+                    residulePower-=MovingTo.getPoints();
+                    board.repaint();
                     // implement the leftover power
+                }else {
+                	System.out.println("Your card does not have enough power to move here.");
                 }
-            }
-        }
+            }else {
+            	System.out.println("Card color does not match tile color.");
+            }}player.myDeck.discardFromHand(cardIndex);//this index is should be the same for cardsInhand
+            board.PlayerCards = player.myDeck.getCardsInHand();
+            board.repaint();
+        	} 
     }
+
 
     public void PlayerBuy(Player player) {
         // Phase 1
@@ -108,6 +143,7 @@ public class GameController {
     }
 
     public void GameSession() {
+    	displayMarketInfo();
         int turnNumber = 0;
 
         while (true) {
@@ -115,12 +151,13 @@ public class GameController {
                 Player currentPlayer = players.get(currentPlayerIndex);
                 System.out.println("Turn " + turnNumber + ": Player " + (currentPlayerIndex + 1) + "'s turn.");
                 PlayerDrawCards(turnNumber, currentPlayerIndex, currentPlayer);
-
-                int[] position = InputHelper.getPositionInput(board);
-
-                currentPlayer.setPlayerPosition(position[0], position[1]);
+                PlayerMove(currentPlayer);
+//                int[] position = InputHelper.getPositionInput(board);
+//
+//                currentPlayer.setPlayerPosition(position[0], position[1]);
                 board.repaint();
-                PlayerDiscard(currentPlayer);
+//                PlayerDiscard(currentPlayer);//???shouldn't the player already discard when he played already, to avoid playing this card again
+
             }
 
             turnNumber++;

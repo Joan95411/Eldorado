@@ -95,7 +95,7 @@ public class PlayerCardDeck {
                 }
 
                 System.out.println("What card do you want to remove?");
-                int cardIndex = scanner.nextInt();
+                int cardIndex = scanner.nextInt();// please don't use scanner here, just use inputHelper, so the scanner source is uniform, and also you didn't catch exception for not Int here
 
                 // TODO: Do we need to remove the card from the game, or do you need to place it on the discard pile?
                 if (cardIndex >= 0 && cardIndex <= player.myDeck.getCardsInHand().size()) {
