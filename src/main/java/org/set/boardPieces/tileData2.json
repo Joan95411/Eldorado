@@ -40,12 +40,12 @@
   },
 "WinningPiece": {
 
-    "2,8": {"color": "Machete", "points": 1},
-    "1,7": {"color": "Machete", "points": 1},
-    "3,8": {"color": "Machete", "points": 1},
-    "1,8": {"color": "Coin", "points": 0},
-    "1,9": {"color": "Coin", "points": 0},
-    "2,9": {"color": "Coin", "points": 0}
+    "2,8": {"color": "Winning", "points": 1},
+    "1,7": {"color": "Winning", "points": 1},
+    "3,8": {"color": "Winning", "points": 1},
+    "1,8": {"color": "Eldorado", "points": 0},
+    "1,9": {"color": "Eldorado", "points": 0},
+    "2,9": {"color": "Eldorado", "points": 0}
 
   }
 }

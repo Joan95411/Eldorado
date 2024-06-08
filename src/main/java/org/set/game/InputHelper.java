@@ -1,8 +1,6 @@
 package org.set.game;
 
 import java.util.HashSet;
-import java.util.InputMismatchException;
-import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
 
@@ -43,7 +41,7 @@ public class InputHelper {
             	int  userInput = scanner.nextInt();
                 scanner.nextLine(); // Consume the newline character
                 return userInput;
-            } catch (InputMismatchException e) {
+            } catch (Exception e) {
                 System.out.println("Invalid input. Please enter an integer.");
                 scanner.nextLine(); // Consume the invalid input
             }

@@ -321,9 +321,14 @@ public class HexagonGameBoard extends JPanel {
         		caveSet.add(temp);
         	}
         }
-        
 		return caveSet;
-    	
+    }
+    
+    public boolean isWinning(Tile tile) {
+    	if(tile.getType()==TileType.Winning) {
+    		System.out.println("this triggers the final round");
+    		return true;
+    	} return false;
     }
     public boolean isValidPosition(int row, int col) {
         String targetKey = row + "," + col;//maybe change change this to Tile 

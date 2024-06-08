@@ -19,7 +19,7 @@ public class WinningPiece extends BoardPiece {
 	}
 	public void setColor(TileType color) {
 		for (Tile tile : tiles) {
-			if (tile.getPoints() > 0) {
+			if (tile.getType()==TileType.Winning) {
 				tile.setType(color);
 			}
 		}
@@ -94,6 +94,7 @@ public class WinningPiece extends BoardPiece {
 	@Override
 	public void draw(Graphics2D g2d, int size) {
 		for (Tile tile : tiles) {
+			System.out.println(tile.getType());
 			Color color=tile.getColor();
 			int points = tile.getPoints();
 			

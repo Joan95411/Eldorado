@@ -22,6 +22,7 @@ public class Util {
         colorMap.put("basecamp", Color.RED);
         colorMap.put("yellow", Color.YELLOW);
         colorMap.put("coin", Color.YELLOW);
+        colorMap.put("eldorado", Color.YELLOW);
         colorMap.put("green", Color.GREEN);
         colorMap.put("machete", Color.GREEN);  
         colorMap.put("blue", Color.CYAN);
@@ -36,6 +37,7 @@ public class Util {
         colorMap.put("orange", Color.ORANGE);
         colorMap.put("white", Color.WHITE);
         colorMap.put("start", Color.GREEN);
+        colorMap.put("winning", Color.GREEN);
 
         return colorMap.getOrDefault(colorName.toLowerCase(), Color.WHITE);
     }
@@ -50,6 +52,8 @@ public class Util {
         colorToTileTypeMap.put("mountain", TileType.Mountain);
         colorToTileTypeMap.put("cave", TileType.Cave);
         colorToTileTypeMap.put("start", TileType.Start);
+        colorToTileTypeMap.put("winning", TileType.Winning);
+        colorToTileTypeMap.put("eldorado", TileType.Eldorado);
         return colorToTileTypeMap.getOrDefault(colorName.toLowerCase(), TileType.Default);
     }
 	

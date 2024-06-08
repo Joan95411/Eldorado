@@ -3,7 +3,7 @@ package org.set.tokens;
 import org.set.player.Player;
 import org.set.cards.CardType;
 
-public class Token {//each cave token also need a tile position??
+public class Token {//can you put all possible tokens in a list when init game? so i can randomly draw 4 for each cave
     public CardType cardType;
     public CaveTokenType caveTokenType;
     public int power;

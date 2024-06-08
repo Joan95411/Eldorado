@@ -10,6 +10,7 @@ public enum TileType {
     Mountain,
     Cave,
     Start,
+    Winning,
     Eldorado,
     Default
 }
