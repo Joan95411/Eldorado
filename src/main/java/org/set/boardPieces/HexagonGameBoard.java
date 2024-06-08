@@ -332,7 +332,11 @@ public class HexagonGameBoard extends JPanel {
             System.out.println("This tile doesn't belong in any board piece or is a block.");
             return false;
         }
-        //also cannot move to a mountain
+        if(temp.getType()==TileType.Mountain) {
+        	System.out.println("Cannot move to a mountain.");
+            return false;
+        }
+        //can you move on a cave???
         if (players != null && players.size() > 0) {
             for (Player player : players) {
                 if (player.isAtPosition(row, col)) {

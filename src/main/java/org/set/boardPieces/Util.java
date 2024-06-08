@@ -37,13 +37,14 @@ public class Util {
         colorMap.put("white", Color.WHITE);
         colorMap.put("start", Color.GREEN);
 
-        return colorMap.getOrDefault(colorName.toLowerCase(), null);
+        return colorMap.getOrDefault(colorName.toLowerCase(), Color.WHITE);
     }
 	
 	public static TileType getTileTypeFromString(String colorName) {
         Map<String, TileType> colorToTileTypeMap = new HashMap<>();
         colorToTileTypeMap.put("basecamp", TileType.BaseCamp);
         colorToTileTypeMap.put("coin", TileType.Coin);
+        colorToTileTypeMap.put("discard", TileType.Discard);
         colorToTileTypeMap.put("machete", TileType.Machete);
         colorToTileTypeMap.put("paddle", TileType.Paddle);
         colorToTileTypeMap.put("mountain", TileType.Mountain);

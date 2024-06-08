@@ -9,7 +9,7 @@ import org.set.game.GameController;
 public class Main {
     public static void main(String[] args) {
         JFrame frame = new JFrame("Hexagon Game Board");
-        HexagonGameBoard board = new HexagonGameBoard(35, 35, 25,false);
+        HexagonGameBoard board = new HexagonGameBoard(35, 35, 25,true);
         JScrollPane scrollPane = new JScrollPane(board);
         frame.add(scrollPane);
 //        frame.add(board);

@@ -15,32 +15,31 @@ import org.set.player.Player;
 public class During_game {
 	
 	public static void caveExplore(HexagonGameBoard board,Player player) {
-		//Your piece must stop there, you can't explore while passing a cave).
-		if (player.isLastActionCaveExplore()) {
-	        System.out.println("You cannot explore a cave twice in a row.");
-	        return;
-	    }
-
+		//Your piece must stop there, you can't explore while passing a cave.
 		String targetKey = player.getCurrentRow() + "," + player.getCurrentCol();
         Tile PlayerStandingTile = board.ParentMap.get(targetKey);
         Set<Tile> AroundPlayerCave=board.nextToCave(PlayerStandingTile);
-        if(AroundPlayerCave.size()>0) {
-        	boolean wantsToExplore = InputHelper.getYesNoInput("You're standing next to a cave, Do you want to explore?");
-        	if(wantsToExplore) {
+        
+        if(AroundPlayerCave.size()==0) {
+        	player.setLastActionCaveExplore(false);
+        }else if (player.isLastActionCaveExplore()) {
+	        System.out.println("You cannot explore a cave twice in a row.");
+	        return;
+	    }
+        else {
+        		 System.out.println("You're standing next to a cave, You have to explore.");
+        	
         		//get a cave coin
         		System.out.println("You'll get a cave coin here, to be implemented");
         		player.setLastActionCaveExplore(true);
-            } else {
-                player.setLastActionCaveExplore(false);
-            }
-        } else {
-            player.setLastActionCaveExplore(false);
+            } 
         }
-    }
+            
+    
 	
 	public static void PlayerMove(HexagonGameBoard board, Player player) {
 	    List<Card> currentDeck = player.myDeck.getCardsInHand();
-	    while (true) {
+	    while (currentDeck.size()>0) {//expedition card size >0
 	        boolean keepMoving = InputHelper.getYesNoInput("Do you want to make a movement?");
 	        if (!keepMoving) {
 	            break; // Exit the loop if the user doesn't want to keep moving
@@ -78,7 +77,11 @@ public class During_game {
 	            boolean discardCard = InputHelper.getYesNoInput("Are you sure to discard this card?");
 	            if (discardCard) {residualPower=0;
 	                break;
-	            }else  {continue; }
+	            }else if(expeditionCard.getPower()>residualPower) {
+	            	System.out.println("You can discard the card or make a movement with the remaining power."); 
+	            		continue; }else {
+	            			System.out.println("You didn't use the"+ selectedCard.cardType.toString() +" card.");
+	            			break;}
 	        }
 	        Color cardColor = Util.getColorFromString(selectedCard.cardType.toString());
 	        if (cardColor.equals(movingTo.getColor())) {

@@ -81,7 +81,7 @@ public class GameController {
         // Phase 2
         // Discard Played Cards, keep card in your hand for your next turn
         // decide for each card individually.
-        while(true){
+        while(player.myDeck.getCardsInHand().size()>0){
         	boolean discardCard=InputHelper.getYesNoInput("Do you want to discard any cards?");
         	if(!discardCard) {break;}
         	int cardIndex = InputHelper.getIntInput("Choose 1 card to discard, input index (e.g. 0), or '-1' to stop discarding");

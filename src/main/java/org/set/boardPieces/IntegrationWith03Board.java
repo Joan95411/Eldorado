@@ -18,7 +18,7 @@ public class IntegrationWith03Board {
 	public Board board;
 public  IntegrationWith03Board() {
 		
-		Main mainPanel = new Main(Path.Swamplands);
+		Main mainPanel = new Main(Path.WitchCauldron);
         GameController gameController = mainPanel.getGameController();
         JFrame frame = new JFrame(gameController.getGame().getGameName());
         gameController.getGame().placePlayersStart();
