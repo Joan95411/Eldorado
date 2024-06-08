@@ -3,7 +3,7 @@ package org.set.tokens;
 import org.set.player.Player;
 import org.set.cards.CardType;
 
-public class Token {
+public class Token {//each cave token also need a tile position??
     public CardType cardType;
     public CaveTokenType caveTokenType;
     public int power;

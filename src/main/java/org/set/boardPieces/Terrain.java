@@ -12,7 +12,7 @@ import org.json.JSONObject;
 
 public class Terrain extends BoardPiece {
     private static int terrainCount = 0;
-    private static final Color[] SPECIAL_COLOR_RANGE = { Color.GRAY, Color.RED, Color.BLACK };
+    private static final TileType[] SPECIAL_COLOR_RANGE = { TileType.BaseCamp, TileType.Discard, TileType.Mountain, TileType.Cave };
     private static final double GREEN_PROBABILITY = 0.3;
     private static final double specialColorProbability = 0.1;
     public Tile axisTile;
@@ -33,8 +33,8 @@ public class Terrain extends BoardPiece {
         Random random = new Random();
         for (Tile tile : tiles) {
             // Randomly select color
-            Color color = getRandomColor(random);
-            tile.setColor(color);
+        	TileType color = getRandomColor(random);
+        	tile.setType(color);
 
             // Randomly select points
             int points = random.nextInt(POINTS_MAX - POINTS_MIN + 1) + POINTS_MIN;
@@ -43,11 +43,11 @@ public class Terrain extends BoardPiece {
     }
 
 
-    private Color getRandomColor(Random random) {
+    private TileType getRandomColor(Random random) {
         double rand = random.nextDouble();
         if (rand < GREEN_PROBABILITY) {
             // Mostly green
-            return Color.GREEN;
+            return TileType.Machete;
         } else {
             double randSpecial = random.nextDouble();
 
@@ -73,7 +73,7 @@ public class Terrain extends BoardPiece {
             int power = jsonObject.getInt("power");
             for (Tile tile:tiles) {
             	if(tile.getQ()==q && tile.getR()==r) {
-            		tile.setColor(Util.getColorFromString(tileType));
+            		tile.setType(Util.getTileTypeFromString(tileType));
             		tile.setPoints(power);
             	}
             }
@@ -157,7 +157,7 @@ public class Terrain extends BoardPiece {
       	clonedTile.setCol(closestCoordinate[1]);
       	clonedTile.setX(closestCoordinate[2]);
       	clonedTile.setY(closestCoordinate[3]);
-      	clonedTile.setColor(tile.getColor());
+      	clonedTile.setType(tile.getType());
           clonedTile.setPoints(tile.getPoints());
           clonedTile.setQ(tile.getQ());
           clonedTile.setR(tile.getR());

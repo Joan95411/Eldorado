@@ -28,12 +28,15 @@ public class Before_game {
         // Loop through each player
         for (int i = 0; i < numPlayers; i++) {
             String color = InputHelper.getInput("Player " + (i + 1) + ", choose your color:", 1)[0];
-
-            // Create a new player instance with the chosen color
+            if(Util.getColorFromString(color)==null) {
+            	System.out.println("Please choose a normal color, like red, blue or black");
+            	i--;
+            }
+            else {
             Player player = new Player(Util.getColorFromString(color));
-
+            player.setName(color);
             // Add the player to the players list
-            players.add(player);
+            players.add(player);}
         }
 
         board.players = players;

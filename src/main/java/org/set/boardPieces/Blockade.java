@@ -8,7 +8,6 @@ import java.util.Random;
 
 public class Blockade extends BoardPiece {
     private static int blockadeCount = 0;
-    private Color color;
     private int points;
     private int[] neighbors;
     private double[] addRowCol;
@@ -25,9 +24,10 @@ public class Blockade extends BoardPiece {
         blockadeCount = 0;
     }
 
-    public void setColor(Color color) {
+    public void setColor(TileType color) {
+    	
     	for (Tile tile : tiles) {
-    		tile.setColor(color);
+    		tile.setType(color);
     	}
     }
 
@@ -76,8 +76,13 @@ public class Blockade extends BoardPiece {
 		return addRowCol;
     	
     }
+    
     @Override
     public Blockade clone(double addRow, double addCol,int hexSize) {
+    	if (tiles.isEmpty()) {
+            throw new IllegalStateException("Cannot clone a Blockade with no tiles added.");
+            // or return null; if you prefer
+        }
     	Blockade clonedBlock = new Blockade();
         int addX = (int)(addCol * 1.5 * hexSize);
         int addY = (int)(addRow *  Math.sqrt(3) * hexSize);
@@ -100,7 +105,7 @@ public class Blockade extends BoardPiece {
       	clonedBlock.addTile(clonedTile);
           }
       }
-        clonedBlock.setColor(this.color);
+        clonedBlock.setColor(tiles.get(0).getType());
         clonedBlock.setPoints(this.points);
       return clonedBlock;
     }
@@ -109,7 +114,7 @@ public class Blockade extends BoardPiece {
     public void randomizeTiles() {
         Random random = new Random();
         int index = random.nextInt(COLOR_RANGE.length);
-        Color temp = COLOR_RANGE[index];
+        TileType temp = COLOR_RANGE[index];
         setColor(temp);
 
         int points = random.nextInt(POINTS_MAX - POINTS_MIN + 1) + POINTS_MIN;
@@ -121,6 +126,11 @@ public class Blockade extends BoardPiece {
         int totalX = 0;
         int totalY = 0;
         for (Tile tile : tiles) {
+        	String targetKey = tile.getRow() + "," + tile.getCol();
+            int[] temp = TileDataDic.tilesMap.get(targetKey);
+            totalX += temp[0];
+            totalY += temp[1];
+
             Color color=tile.getColor();
             Color transparentColor = new Color(color.getRed(), color.getGreen(), color.getBlue(), 50); 
             tile.drawTile(g2d,  size,transparentColor, null);

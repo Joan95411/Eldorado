@@ -6,13 +6,12 @@ import org.json.JSONObject;
 import org.set.player.Player;
 
 import org.set.cards.Card;
-import org.utwente.Board.Board;
 import java.awt.*;
 import javax.swing.*;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -59,6 +58,7 @@ public class HexagonGameBoard extends JPanel {
     }}
 
     public void initBoard() {
+    	getLastTerrain().rotate(2);
         for (double[] coordinates : coordinateList) {
             Terrain terrainLatest=getLastTerrain();
             addTerrain(coordinates[0], coordinates[1], terrainLatest);
@@ -89,7 +89,7 @@ public class HexagonGameBoard extends JPanel {
             	int[] temp=TileDataDic.tilesMap.get(axisTile.getRow()+","+axisTile.getCol());
             	wps.rotate(rotation, temp[0], temp[1]);
             	if(sectionType.equals("ElDoradoTwo")) {
-            		wps.setColor(Color.CYAN);
+            		wps.setColor(TileType.Paddle);
             	}
              }else {
 
@@ -242,9 +242,8 @@ public class HexagonGameBoard extends JPanel {
  
     public List<Tile> findStarterTiles(){
     	List<Tile> starterTiles = new ArrayList<>();
-    	Color targetColor=new Color(0,100,0);
     	for (Tile tile : getFirstTerrain().getTiles()) {
-    	    if (tile.getColor().equals(targetColor)) {
+    	    if (tile.getType().equals(TileType.Start)) {
     	    	starterTiles.add(tile);
     	    }
     	} return starterTiles;
@@ -312,15 +311,28 @@ public class HexagonGameBoard extends JPanel {
             piece.move(-change2[0], -change2[1],hexSize);
         }
     }
-
+    public Set<Tile> nextToCave(Tile tile) {
+    	//you cant move on a cave right?
+    	Set<Tile> caveSet = new HashSet<>();
+        for (int[] neighbor : tile.getNeighbors()) {
+        	Tile temp = ParentMap.get(neighbor[0]+","+neighbor[1]);
+        	if(temp==null) {continue;}
+        	if(temp.getType()==TileType.Cave) {
+        		caveSet.add(temp);
+        	}
+        }
+        
+		return caveSet;
+    	
+    }
     public boolean isValidPosition(int row, int col) {
-        String targetKey = row + "," + col;
+        String targetKey = row + "," + col;//maybe change change this to Tile 
         Tile temp = ParentMap.get(targetKey);
         if (temp == null || temp.getParent() == null || temp.getParent().startsWith("Blockade_")) {
             System.out.println("This tile doesn't belong in any board piece or is a block.");
             return false;
         }
-
+        //also cannot move to a mountain
         if (players != null && players.size() > 0) {
             for (Player player : players) {
                 if (player.isAtPosition(row, col)) {

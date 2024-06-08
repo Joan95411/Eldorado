@@ -2,6 +2,7 @@ package org.set;
 
 import org.junit.jupiter.api.Test;
 import org.set.boardPieces.Tile;
+import org.set.boardPieces.TileType;
 import org.set.player.PlayerCardDeck;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -29,13 +30,13 @@ class TileTest {
         Tile tile = new Tile(1, 1);
         tile.setX(10);
         tile.setY(20);
-        tile.setColor(Color.RED);
+        tile.setType(TileType.Machete);
         tile.setPoints(5);
         tile.setParent("Parent");
         
         assertEquals(10, tile.getX());
         assertEquals(20, tile.getY());
-        assertEquals(Color.RED, tile.getColor());
+        assertEquals(Color.GREEN, tile.getColor());
         assertEquals(5, tile.getPoints());
         assertEquals("Parent", tile.getParent());
     }

@@ -34,10 +34,26 @@ public class Util {
         colorMap.put("purple", Color.BLUE);
         colorMap.put("magenta", Color.MAGENTA);
         colorMap.put("orange", Color.ORANGE);
-        colorMap.put("start", new Color(0, 100, 0));
+        colorMap.put("white", Color.WHITE);
+        colorMap.put("start", Color.GREEN);
 
-        return colorMap.getOrDefault(colorName.toLowerCase(), Color.WHITE);
+        return colorMap.getOrDefault(colorName.toLowerCase(), null);
     }
+	
+	public static TileType getTileTypeFromString(String colorName) {
+        Map<String, TileType> colorToTileTypeMap = new HashMap<>();
+        colorToTileTypeMap.put("basecamp", TileType.BaseCamp);
+        colorToTileTypeMap.put("coin", TileType.Coin);
+        colorToTileTypeMap.put("machete", TileType.Machete);
+        colorToTileTypeMap.put("paddle", TileType.Paddle);
+        colorToTileTypeMap.put("mountain", TileType.Mountain);
+        colorToTileTypeMap.put("cave", TileType.Cave);
+        colorToTileTypeMap.put("start", TileType.Start);
+        return colorToTileTypeMap.getOrDefault(colorName.toLowerCase(), TileType.Default);
+    }
+	
+	
+	
 	public static JSONObject readJsonData(String basePath, String fileName) {
 		
 		String tileDataJson = readFile(basePath, fileName);

@@ -17,10 +17,10 @@ public class WinningPiece extends BoardPiece {
 	public static void resetCount() {
 		WinningCount = 0;
 	}
-	public void setColor(Color color) {
+	public void setColor(TileType color) {
 		for (Tile tile : tiles) {
 			if (tile.getPoints() > 0) {
-				tile.setColor(color);
+				tile.setType(color);
 			}
 		}
     }
@@ -29,11 +29,11 @@ public class WinningPiece extends BoardPiece {
 	public void randomizeTiles() {
 		Random random = new Random();
 		double rand = random.nextDouble();
-		Color color;
+		TileType color;
 		if (rand < 0.5) {
-			color = Color.GREEN;
+			color = TileType.Machete;
 		} else {
-			color = Color.CYAN;
+			color = TileType.Paddle;
 		}
 		setColor(color);
 		
@@ -81,7 +81,7 @@ public class WinningPiece extends BoardPiece {
           	clonedTile.setCol(closestCoordinate[1]);
           	clonedTile.setX(closestCoordinate[2]);
           	clonedTile.setY(closestCoordinate[3]);
-          	clonedTile.setColor(tile.getColor());
+          	clonedTile.setType(tile.getType());
           clonedTile.setPoints(tile.getPoints());
           clonedTile.setQ(tile.getQ());
           clonedTile.setR(tile.getR());

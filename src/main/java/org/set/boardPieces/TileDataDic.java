@@ -24,6 +24,7 @@ public class TileDataDic {
     public static Map<String, int[]> tilesMap;
     public static Map<String, int[]> coordinateMap;
     
+    
     public TileDataDic(int numRows, int numCols, int hexSize) {
         terrainA = new Terrain();
         wpa = new WinningPiece();
@@ -82,15 +83,14 @@ public class TileDataDic {
                 }
 
                 String colorName = currentTileInfo.getString("color");
-                Color color = Util.getColorFromString(colorName);
+                TileType type=Util.getTileTypeFromString(colorName);
                 int points = currentTileInfo.getInt("points");
                 
                 String qrString=currentTileInfo.getString("qr");
                 String[] parts = qrString.split(",");
                 tile.setQ(Integer.parseInt(parts[0]));
                 tile.setR(Integer.parseInt(parts[1]));;
-                
-                tile.setColor(color);
+                tile.setType(type);
                 tile.setPoints(points);
                 
                 tilesMap.put(key, new int[] {x,y});

@@ -11,6 +11,7 @@ public class Tile {
     private int y;
     private int row;
     private int col;
+    private TileType type;
     private Color color;
     private int points;
     private String parent;
@@ -19,6 +20,7 @@ public class Tile {
     public Tile(int row, int col) {
         this.row = row;
         this.col = col;
+        this.type=TileType.Default;
     }
 
     public void setParent(String parent) {
@@ -28,7 +30,13 @@ public class Tile {
     public String getParent() {
         return parent;
     }
+    public void setType(TileType type) {
+        this.type = type;
+    }
 
+    public TileType getType() {
+        return type;
+    }
     public int getX() {
         return x;
     }
@@ -80,12 +88,12 @@ public class Tile {
     }
 
     public Color getColor() {
+    	color=Util.getColorFromString(type.toString());
+    	
         return color;
     }
 
-    public void setColor(Color color) {
-        this.color = color;
-    }
+    
 
     public int getPoints() {
         return points;
@@ -143,7 +151,9 @@ public class Tile {
         int x = temp[0];
         int y = temp[1];
         int points = this.getPoints();
-        
+        if(this.type==TileType.Start) {
+        	tileColor=new Color(0,200,0);
+    	}
         drawHexagon(g2d, x, y, size, tileColor, border);
 
         // Draw row and column numbers

@@ -53,7 +53,7 @@ public class InputHelper {
     public static int[] getPositionInput(HexagonGameBoard board) {
         while (true) {
             String[] tokens = getInput("Enter row and column for player's position (e.g., '2,3'), or type 'stop' to stop with moving:", 2);
-            if(tokens==null) {break;}
+            if(tokens==null) {break;         }
             try {
                 int row = Integer.parseInt(tokens[0].trim());
                 int col = Integer.parseInt(tokens[1].trim());

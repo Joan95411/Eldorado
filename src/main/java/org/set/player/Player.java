@@ -4,17 +4,17 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class Player {
-    private static int lastAssignedId = 0;
     private static ArrayList<Color> usedColors = new ArrayList<>();
-
-    public int id;
+    private String name;
     private int currentRow;
     private int currentCol;
     public Color color;
     public PlayerCardDeck myDeck;
+    private boolean lastActionWasCaveExplore;
+
+    
 
     public Player(Color selectedColor) {
-        this.id = ++lastAssignedId;
         this.color = selectedColor;
         myDeck = new PlayerCardDeck();
 
@@ -23,6 +23,13 @@ public class Player {
         } else {
             usedColors.add(selectedColor);
         }
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public int getCurrentRow() {
@@ -45,7 +52,13 @@ public class Player {
     public boolean isAtPosition(int row, int col) {
         return this.currentRow == row && this.currentCol == col;
     }
+    public boolean isLastActionCaveExplore() {
+        return lastActionWasCaveExplore;
+    }
 
+    public void setLastActionCaveExplore(boolean lastActionWasCaveExplore) {
+        this.lastActionWasCaveExplore = lastActionWasCaveExplore;
+    }
     public void draw(Graphics2D g2d, int size) {
         float[] hsbValues = Color.RGBtoHSB(color.getRed(), color.getGreen(), color.getBlue(), null);
         Color colorDraw = Color.getHSBColor(hsbValues[0], hsbValues[1], hsbValues[2] * 0.8f);

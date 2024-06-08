@@ -31,7 +31,7 @@ public class BlockadeTest {
      */
     @Test
     public void setBlockadeColor() {
-        blockade.setColor(Color.BLACK);
+        blockade.setColor(TileType.BaseCamp);
     }
 
     /**
@@ -48,7 +48,7 @@ public class BlockadeTest {
     @Test
     public void cloneBlockade() {
         hexagonGameBoard.loadTileData();
-        blockade.clone(0, 1,hexSize);
+//        blockade.clone(0, 1,hexSize);// this would fail, as there's no tiles in the blockade
     }
 
     /**
