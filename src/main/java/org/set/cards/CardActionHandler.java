@@ -7,7 +7,7 @@ import org.set.cards.expedition.ExpeditionCardType;
 import java.util.Scanner;
 
 public class CardActionHandler {
-    private Scanner scanner = new Scanner(System.in);
+    private final Scanner scanner = new Scanner(System.in);
 
     public void doAction(Card card, Player player) {
         ActionCardType actionCardType = ActionCardType.valueOf(card.name);

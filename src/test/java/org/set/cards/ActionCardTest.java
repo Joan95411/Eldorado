@@ -79,12 +79,12 @@ public class ActionCardTest {
         Player player = new Player(new Color(123,123,++lastAssignedColorId));
         ActionCard scientist = new ActionCard(ActionCardType.Scientist);
 
-        String input = "y\n0\n"; // Prepare the input data
-        ByteArrayInputStream inputStream = new ByteArrayInputStream(input.getBytes()); // Create a ByteArrayInputStream with the input data
-        System.setIn(inputStream); // Set System.in to use the ByteArrayInputStream
-
         assertEquals(player.myDeck.getCardsInHand().size(), 0);
         assertEquals(player.myDeck.getDiscardPile().size(), 0);
+
+        String input = "y\n0\n";
+        ByteArrayInputStream inputStream = new ByteArrayInputStream(input.getBytes());
+        System.setIn(inputStream);
 
         scientist.doAction(player);
 

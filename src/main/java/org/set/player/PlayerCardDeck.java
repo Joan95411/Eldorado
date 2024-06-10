@@ -80,7 +80,6 @@ public class PlayerCardDeck {
     }
 
     public void drawAndRemoveCards(Player player, Scanner scanner, int drawAmount, int minRemoveAmount , int maxRemoveAmount) {
-        System.out.println("Scientist action performed");
         player.myDeck.draw(drawAmount);
 
         for (int i = 0; i < maxRemoveAmount; i++) {
@@ -102,7 +101,7 @@ public class PlayerCardDeck {
                     player.myDeck.removeCard(player.myDeck.getCardsInHand().get(cardIndex));
                 }
             } else if (i < minRemoveAmount) {
-                System.out.println("Je moet nog wat kaarten weggooien");
+                System.out.println("You still have to throw away some cards");
             }
         }
     }
