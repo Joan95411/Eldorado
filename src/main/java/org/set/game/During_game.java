@@ -9,6 +9,7 @@ import org.set.boardPieces.HexagonGameBoard;
 import org.set.boardPieces.Tile;
 import org.set.boardPieces.Util;
 import org.set.cards.Card;
+import org.set.cards.CardType;
 import org.set.cards.expedition.ExpeditionCard;
 import org.set.player.Player;
 
@@ -77,14 +78,18 @@ public class During_game {
 	            boolean discardCard = InputHelper.getYesNoInput("Are you sure to discard this card?");
 	            if (discardCard) {residualPower=0;
 	                break;
-	            }else if(expeditionCard.getPower()>residualPower) {
+	            } else if(expeditionCard.getPower()>residualPower) {
 	            	System.out.println("You can discard the card or make a movement with the remaining power."); 
-	            		continue; }else {
-	            			System.out.println("You didn't use the"+ selectedCard.cardType.toString() +" card.");
-	            			break;}
+					continue;
+				}
+				else {
+					System.out.println("You didn't use the"+ selectedCard.cardType.toString() +" card.");
+					break;
+				}
 	        }
+
 	        Color cardColor = Util.getColorFromString(selectedCard.cardType.toString());
-	        if (cardColor.equals(movingTo.getColor())) {
+			if (cardColor.equals(movingTo.getColor()) || selectedCard.cardType.equals(CardType.JOKER)) {
 	            if (expeditionCard.getPower() >= movingTo.getPoints()) {
 	                player.setPlayerPosition(movingTo.getRow(), movingTo.getCol());
 	                residualPower -= movingTo.getPoints();

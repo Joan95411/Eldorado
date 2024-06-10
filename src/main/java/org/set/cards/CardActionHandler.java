@@ -1,5 +1,6 @@
 package org.set.cards;
 
+import org.set.cards.expedition.ExpeditionCard;
 import org.set.player.Player;
 import org.set.cards.action.ActionCardType;
 import org.set.cards.expedition.ExpeditionCardType;
@@ -79,12 +80,13 @@ public class CardActionHandler {
     private void TravelLogAction(Player player) {
         // Logic for travel log
         player.myDeck.drawAndRemoveCards(player, scanner, 2, 0,2);
-
-        System.out.println("Travel Log action performed");
     }
 
     private void NativeAction(Player player) {
-        System.out.println("Native action performed");
+        // Ignore color of tile or tear down barrier
+        player.myDeck.addCard(new ExpeditionCard("Native",0,true, 1));
+        System.out.println("Native action card added a card to your deck with index " + (player.myDeck.getCardsInHand().size() - 1));
+        System.out.println("This Native card ignores the space's requirements and it can also tear down blockades");
     }
 
     protected static ExpeditionCardType getExpeditionCardType(String userInput) {

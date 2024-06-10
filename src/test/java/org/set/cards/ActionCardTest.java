@@ -141,7 +141,6 @@ public class ActionCardTest {
     public void testNativeActionCard() {
         Player player = new Player(new Color(123,123,++lastAssignedColorId));
         ActionCard nativeCard = new ActionCard(ActionCardType.Native);
-
-        System.out.println("TODO: create native action card test");
+        nativeCard.doAction(player);
     }
 }

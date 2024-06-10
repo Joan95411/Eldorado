@@ -106,6 +106,10 @@ public class PlayerCardDeck {
         }
     }
 
+    public void addCard(Card card) {
+        cardsInHand.add(card);
+    }
+
     public void drawExpeditionCard(ExpeditionCardType expeditionCardType) {
         cardsInHand.add(new ExpeditionCard(expeditionCardType));
     }
