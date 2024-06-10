@@ -2,6 +2,8 @@ package org.set.tokens;
 
 import org.set.cards.CardType;
 
+import org.set.cards.CardType;
+
 public enum CaveTokenType {
     MacheteOne(CardType.GREEN, 1),
     MacheteTwo(CardType.GREEN, 2),
@@ -23,7 +25,6 @@ public enum CaveTokenType {
 
     CaveTokenType(CardType cardType) {
         this.cardType = cardType;
-        this.power = power;
     }
 
     CaveTokenType(CardType cardType, int power) {
