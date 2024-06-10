@@ -1,43 +1,21 @@
 package org.set.tokens;
 
+import org.set.cards.CardActionHandler;
+import org.set.cards.action.ActionCardType;
+import org.set.cards.expedition.ExpeditionCardType;
 import org.set.player.Player;
 import org.set.cards.CardType;
 
-public class Token {//can you put all possible tokens in a list when init game? so i can randomly draw 4 for each cave
+public class Token {
+    //can you put all possible tokens in a list when init game? so i can randomly draw 4 for each cave
     public CardType cardType;
     public CaveTokenType caveTokenType;
     public int power;
 
-    public Token(CaveTokenType caveTokenType, int power) {
-        this.cardType = setCardType(caveTokenType);
-        this.caveTokenType = caveTokenType;
-        this.power = power;
-
-        if (!(caveTokenType == CaveTokenType.Coin || caveTokenType == CaveTokenType.Paddle
-                || caveTokenType == CaveTokenType.Machete)) {
-            throw new IllegalStateException("The cave token type (" + caveTokenType + ") cannot have a power");
-        }
-    }
-
     public Token(CaveTokenType caveTokenType) {
-        this.cardType = setCardType(caveTokenType);
+        this.cardType = caveTokenType.getCardType();
         this.caveTokenType = caveTokenType;
-
-        if (caveTokenType == CaveTokenType.Coin || caveTokenType == CaveTokenType.Paddle  || caveTokenType == CaveTokenType.Machete) {
-            throw new IllegalStateException("The cave token type (" + caveTokenType + ") must have a power");
-        }
-    }
-
-    private CardType setCardType(CaveTokenType caveTokenType) {
-        if (caveTokenType == CaveTokenType.Coin) {
-            return CardType.YELLOW;
-        } else if (caveTokenType == CaveTokenType.Paddle) {
-            return CardType.BLUE;
-        } else if (caveTokenType == CaveTokenType.Machete) {
-            return CardType.GREEN;
-        } else {
-            return CardType.PURPLE;
-        }
+        this.power = caveTokenType.getPower();
     }
 
     public void useToken(Player player) {

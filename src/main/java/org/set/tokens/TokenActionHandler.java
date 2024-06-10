@@ -1,6 +1,7 @@
 package org.set.tokens;
 
 import org.set.cards.Card;
+import org.set.cards.CardType;
 import org.set.cards.expedition.ExpeditionCard;
 import org.set.player.Player;
 
@@ -11,11 +12,12 @@ public class TokenActionHandler {
 
     public void doAction(Token token, Player player) {
         CaveTokenType caveTokenType = token.caveTokenType;
+        CardType cardType = token.caveTokenType.getCardType();
 
-        if (caveTokenType == CaveTokenType.Machete || caveTokenType == CaveTokenType.Coin || caveTokenType == CaveTokenType.Paddle) {
-            handleBasicTokens(caveTokenType, player);
-        } else {
+        if (cardType == CardType.PURPLE) {
             handleActionTokens(caveTokenType, player);
+        } else {
+            handleBasicTokens(caveTokenType, player);
         }
     }
 
@@ -51,19 +53,21 @@ public class TokenActionHandler {
 
     private void handleBasicTokens(CaveTokenType caveTokenType, Player player) {
         // Play machete, coin, or paddle tokens to move onto same-colored spaces.
-        // Alternatively, you can use coin tokens to buy a card.
+        CardType cardType = caveTokenType.getCardType();
 
-        if (caveTokenType == CaveTokenType.Machete) {
+        if (cardType == CardType.GREEN) {
             System.out.println("Machete token played");
         }
 
-        if (caveTokenType == CaveTokenType.Coin) {
+        if (cardType == CardType.YELLOW) {
             System.out.println("Coin token played");
         }
 
-        if (caveTokenType == CaveTokenType.Paddle) {
+        if (cardType == CardType.BLUE) {
             System.out.println("Paddle token played");
         }
+
+        System.out.println("Power" + caveTokenType.getPower());
     }
 
     private void drawAction(Player player) {
