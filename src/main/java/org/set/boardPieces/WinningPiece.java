@@ -94,7 +94,6 @@ public class WinningPiece extends BoardPiece {
 	@Override
 	public void draw(Graphics2D g2d, int size) {
 		for (Tile tile : tiles) {
-			System.out.println(tile.getType());
 			Color color=tile.getColor();
 			int points = tile.getPoints();
 			

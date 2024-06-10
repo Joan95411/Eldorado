@@ -1,11 +1,14 @@
 package org.set.game;
 
 import java.awt.Color;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.set.player.Player;
+import org.set.tokens.Cave;
+import org.set.tokens.Token;
 import org.set.boardPieces.HexagonGameBoard;
 import org.set.boardPieces.Tile;
 import org.set.boardPieces.Util;
@@ -16,19 +19,23 @@ import org.set.marketplace.MarketPlace;
 public class GameController {
     private HexagonGameBoard board;
     private List<Player> players;
+    public static Map<String,Cave> caveMap;
     private String GameState;
     public int turnCounter;
     public MarketPlace market;
-
+    
     public GameController(HexagonGameBoard board) {
         this.board = board;
         GameState = "Game Starts";
-        During_game.removeblock(board);
+        caveMap=Before_game.allocateTokens(board);
+        //During_game.removeblock(board);
         market=new MarketPlace();
         players = Before_game.addPlayer(board);
         Before_game.placePlayersOnBoard(board);
         GameSession();
     }
+    
+    
     
     private String displayGameState() {
         // Display the current state of the game, including the board and player
@@ -54,18 +61,13 @@ public class GameController {
             System.out.println("currentMarket: " + key + ", Value: " + value);
         }
     }
-
+    
+    
     private void PlayerDrawCards(int turn, int currentPlayerIndex, Player player) {
-        // Phase 3
-        // draw cards from your draw pile until you have 4 cards in your hand.
-        // If your draw pile doesn't contain enough cards to draw for your next turn,
-        // draw as many as possible.
-        // Then, shuffle your discard pile to form your new draw pile, then draw the
-        // rest of the cards you need.
+
+    	board.currentPlayer=player;
         System.out.println("Player " + (currentPlayerIndex + 1) + " drawing cards");
-        Player currentPlayer = players.get(currentPlayerIndex);
         player.myDeck.draw(4 - player.myDeck.getCardsInHand().size());
-        board.PlayerCards = currentPlayer.myDeck.getCardsInHand();
         board.repaint();
     }
 
@@ -78,9 +80,7 @@ public class GameController {
     }
 
     public void PlayerDiscard(Player player) {
-        // Phase 2
-        // Discard Played Cards, keep card in your hand for your next turn
-        // decide for each card individually.
+    	board.currentPlayer=player;
         while(player.myDeck.getCardsInHand().size()>0){
         	boolean discardCard=InputHelper.getYesNoInput("Do you want to discard any cards?");
         	if(!discardCard) {break;}
@@ -98,7 +98,7 @@ public class GameController {
     }
 
     public void GameSession() {
-    	displayMarketInfo();
+//    	displayMarketInfo();
         int turnNumber = 0;
 
         while (true) {
@@ -106,12 +106,15 @@ public class GameController {
                 Player currentPlayer = players.get(currentPlayerIndex);
                 System.out.println("Turn " + turnNumber + ": Player " + currentPlayer.getName() + "'s turn.");
                 PlayerDrawCards(turnNumber, currentPlayerIndex, currentPlayer);
-                During_game.PlayerMove(board,currentPlayer);
-//                int[] position = InputHelper.getPositionInput(board);
-//
-//                currentPlayer.setPlayerPosition(position[0], position[1]);
+//                During_game.PlayerMove(board,currentPlayer);
+
+              int[] position = InputHelper.getPositionInput(board);
+
+              currentPlayer.setPlayerPosition(position[0], position[1]);
+              During_game.caveExplore(board, currentPlayer);
+
                 board.repaint();
-                PlayerDiscard(currentPlayer);
+//                PlayerDiscard(currentPlayer);
             }
 
             turnNumber++;

@@ -1,17 +1,65 @@
 package org.set.game;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import org.set.game.InputHelper;
 import org.set.player.Player;
+import org.set.tokens.Cave;
+import org.set.tokens.CaveTokenType;
+import org.set.tokens.Token;
 import org.set.boardPieces.HexagonGameBoard;
 import org.set.boardPieces.Tile;
-import org.set.boardPieces.TileDataDic;
 import org.set.boardPieces.Util;
 
 public class Before_game {
 
+    
+	public static ArrayList<Token> createTokens() {
+		ArrayList<Token> tokens = new ArrayList<>();
+		for(int i = 0; i < 3; i++) {
+        tokens.add(new Token(CaveTokenType.CoinOne));
+        tokens.add(new Token(CaveTokenType.CoinTwo));
+        tokens.add(new Token(CaveTokenType.PaddleOne));
+        tokens.add(new Token(CaveTokenType.PaddleTwo));
+        tokens.add(new Token(CaveTokenType.MacheteOne));
+        tokens.add(new Token(CaveTokenType.MacheteTwo));
+        tokens.add(new Token(CaveTokenType.MacheteThree));
+
+        tokens.add(new Token(CaveTokenType.Draw));
+        tokens.add(new Token(CaveTokenType.Remove));
+        tokens.add(new Token(CaveTokenType.Replace));
+        tokens.add(new Token(CaveTokenType.ImmediatePlay));
+        tokens.add(new Token(CaveTokenType.PassThrough));
+        tokens.add(new Token(CaveTokenType.Adjacent));
+        tokens.add(new Token(CaveTokenType.Symbol));}
+		return tokens;
+        }
+	
+	public static Map<String, Cave> allocateTokens(HexagonGameBoard board) {
+	    Map<String, Cave> caves = new HashMap<>();
+	    ArrayList<Token> tokenList = createTokens(); 
+	    List<Tile> caveSet = board.findCaveTiles();
+	    Random random = new Random();
+
+	    for (Tile tile : caveSet) {
+	        Cave cave = new Cave(tile);
+
+	        // Randomly draw 4 unique tokens from the tokenList
+	        List<Token> selectedTokens = new ArrayList<>();
+	        for (int i = 0; i < 4; i++) {
+	            int index = random.nextInt(tokenList.size());
+	            selectedTokens.add(tokenList.remove(index));
+	        }
+
+	        for (Token token : selectedTokens) {
+	            cave.addToken(token);
+	        }
+
+	        caves.put(tile.getRow()+","+tile.getCol(), cave); 
+	    }
+
+	    return caves;
+	}
 
     public static List<Player> addPlayer(HexagonGameBoard board) {
         int numPlayers;

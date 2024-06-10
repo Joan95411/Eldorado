@@ -11,6 +11,8 @@ import org.set.boardPieces.Util;
 import org.set.cards.Card;
 import org.set.cards.expedition.ExpeditionCard;
 import org.set.player.Player;
+import org.set.tokens.Cave;
+import org.set.tokens.Token;
 
 public class During_game {
 	
@@ -18,20 +20,26 @@ public class During_game {
 		//Your piece must stop there, you can't explore while passing a cave.
 		String targetKey = player.getCurrentRow() + "," + player.getCurrentCol();
         Tile PlayerStandingTile = board.ParentMap.get(targetKey);
-        Set<Tile> AroundPlayerCave=board.nextToCave(PlayerStandingTile);
+        String AroundPlayerCave=board.nextToCave(PlayerStandingTile);
         
-        if(AroundPlayerCave.size()==0) {
+        if(AroundPlayerCave==null) {
         	player.setLastActionCaveExplore(false);
         }else if (player.isLastActionCaveExplore()) {
 	        System.out.println("You cannot explore a cave twice in a row.");
 	        return;
 	    }
-        else {
-        		 System.out.println("You're standing next to a cave, You have to explore.");
-        	
-        		//get a cave coin
-        		System.out.println("You'll get a cave coin here, to be implemented");
+        else {	
+        		System.out.println("You're standing next to a cave, You can explore.");
+        		Cave correspondingCave = GameController.caveMap.get(AroundPlayerCave);
+        	    System.out.println("Adjacent to cave: " + correspondingCave.tile);
+        	    Token token=correspondingCave.getAtoken();
+        	    if(token!=null) {
+	        	player.addToken(token);
         		player.setLastActionCaveExplore(true);
+        		board.repaint();}
+        	    else {
+        	    	System.out.println("There's no more tokens at this cave.");
+        	    }
             } 
         }
             
@@ -89,7 +97,7 @@ public class During_game {
 	                player.setPlayerPosition(movingTo.getRow(), movingTo.getCol());
 	                residualPower -= movingTo.getPoints();
 	                board.repaint();
-	                During_game.caveExplore(board, player);
+	                caveExplore(board, player);
 	            } else {
 	                System.out.println("Your card does not have enough power to move here.");
 	            }
@@ -99,7 +107,6 @@ public class During_game {
 	    }
 	    if(residualPower==0) {
 	    player.myDeck.discardFromHand(cardIndex);
-	    board.PlayerCards = player.myDeck.getCardsInHand();
 	    board.repaint();}
 	}
 

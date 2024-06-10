@@ -1,5 +1,10 @@
 package org.set.tokens;
 
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.Polygon;
+
+import org.set.boardPieces.Util;
 import org.set.cards.CardActionHandler;
 import org.set.cards.action.ActionCardType;
 import org.set.cards.expedition.ExpeditionCardType;
@@ -7,7 +12,7 @@ import org.set.player.Player;
 import org.set.cards.CardType;
 
 public class Token {
-    //can you put all possible tokens in a list when init game? so i can randomly draw 4 for each cave
+    
     public CardType cardType;
     public CaveTokenType caveTokenType;
     public int power;
@@ -22,4 +27,32 @@ public class Token {
         TokenActionHandler actionHandler = new TokenActionHandler();
         actionHandler.doAction(this, player);
     }
+    
+    @Override
+    public String toString() {
+        return "Token{" +
+                "cardType=" + cardType +
+                ", caveTokenType=" + caveTokenType +
+                ", power=" + power +
+                '}';
+    }
+    
+    public void draw(Graphics2D g2d, int x, int y, int width, int height) {
+		Color color = Util.getColorFromString(cardType.toString());
+		Color transparentColor = new Color(color.getRed(), color.getGreen(), color.getBlue(), 100);
+		g2d.setColor(transparentColor);
+		int centerX = x + width / 2;
+	    int centerY = y + height / 2;
+	    int[] xPoints = {centerX - width, centerX, centerX + width, centerX};
+	    int[] yPoints = {centerY, centerY - height, centerY, centerY + height};
+
+
+	    g2d.fillPolygon(xPoints, yPoints, 4);
+	    g2d.setColor(Color.BLACK);
+		    
+		    if (power != 0) {
+		        g2d.drawString("Power: " + power, x + width / 2 - 15, y + height / 2 + 15);
+		    }
+		
+	}
 }

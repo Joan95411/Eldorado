@@ -4,14 +4,13 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.set.player.Player;
-
+import org.set.tokens.Token;
 import org.set.cards.Card;
 import java.awt.*;
 import javax.swing.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -25,10 +24,11 @@ public class HexagonGameBoard extends JPanel {
     public int cardHeight;
     public List<Player> players;
     public Map<String, Tile> ParentMap;
+    public List<Tile> caveSet;
     public Map<String, BoardPiece> boardPieces;
     public List<double[]> coordinateList;
     public JSONArray pathInfo;
-    public List<Card> PlayerCards;
+    public Player currentPlayer;
     public boolean setupChange;
     public HexagonGameBoard(int numRows, int numCols, int hexSize,boolean setupChange) {
         this.numRows = numRows;
@@ -38,7 +38,7 @@ public class HexagonGameBoard extends JPanel {
         this.cardHeight = cardWidth / 2 * 3;
         this.setupChange=setupChange;
         setPreferredSize(new Dimension((int) (numCols * 1.5 * hexSize), (int) (numRows * Math.sqrt(3) * hexSize)));
-
+        caveSet = new ArrayList<>();
         ParentMap = new HashMap<>();
         boardPieces = new HashMap<>();
         Terrain.resetWinningCount();
@@ -131,14 +131,55 @@ public class HexagonGameBoard extends JPanel {
                 player.draw(g2d, hexSize);
             }
         }
-
-        if (PlayerCards != null) {
-            drawPlayerDeck(g2d);
+        
+        if (currentPlayer != null) {
+        	List<Card> PlayerCards=currentPlayer.myDeck.getCardsInHand();
+        	if(PlayerCards != null) {
+            drawPlayerDeck(g2d,PlayerCards);
+        }List<Token> PlayerTokens=currentPlayer.getTokens();
+        	if(PlayerTokens != null) {
+        		drawPlayerToken(g2d,PlayerTokens);
         }
-
+        }
     }
+    
+    
+    public void drawPlayerToken(Graphics2D g2d,List<Token> PlayerTokens) {
+    	int[] temp = TileDataDic.tilesMap.get("5,"+(numCols-10));
+        int startY=temp[1];
+        g2d.setColor(Color.BLACK);
+        int fontSize = hexSize/3;
+        Font font = new Font("Arial", Font.BOLD, fontSize);
+        g2d.setFont(font);
 
-    public void drawPlayerDeck(Graphics2D g2d) {
+        FontMetrics fm = g2d.getFontMetrics();
+        String caption = "Current Player's tokens: ";
+        int captionWidth = fm.stringWidth(caption);
+        g2d.drawString(caption, temp[0], temp[1]);
+        int maxTokensPerRow = 4;
+        int tokenWidth=(int) (cardWidth/1.5);
+        int tokenHeight=(int)(cardWidth/1.5);
+        int tokenSpacing = tokenWidth ;
+        int totalTokens = PlayerTokens.size();
+        int TokenDrawn = 0;
+        for (int i = 0; i < totalTokens; i++) {
+            int row = i / maxTokensPerRow; // Calculate the row index
+            int col = i % maxTokensPerRow; // Calculate the column index
+
+            int x = temp[0] + captionWidth + col * (tokenWidth + tokenSpacing);
+            int y = startY + row * (tokenHeight + tokenSpacing);
+
+            PlayerTokens.get(i).draw(g2d, x, y, tokenWidth, tokenHeight);
+            g2d.drawString("Index: " + i, x + 5, y + tokenHeight / 2);
+            TokenDrawn++;
+
+            if (TokenDrawn >= totalTokens) {
+                break;
+            }
+        }
+    }
+    
+    public void drawPlayerDeck(Graphics2D g2d,List<Card> PlayerCards) {
         int[] temp = TileDataDic.tilesMap.get("1,"+(numCols-10));
         int startY=10;
         g2d.setColor(Color.BLACK);
@@ -150,7 +191,7 @@ public class HexagonGameBoard extends JPanel {
         String caption = "Current Player's deck: ";
         int captionWidth = fm.stringWidth(caption);
         g2d.drawString(caption, temp[0], temp[1]);
-        int maxCardsPerRow = 4;
+        int maxCardsPerRow = 5;
         int cardSpacing = cardWidth / 10;
         int totalCards = PlayerCards.size();
         int cardsDrawn = 0;
@@ -249,6 +290,15 @@ public class HexagonGameBoard extends JPanel {
     	} return starterTiles;
     }
     
+    public List<Tile> findCaveTiles(){
+    	for(Terrain terrain:getAllTerrains()) {
+    	for (Tile tile : terrain.getTiles()) {
+    	    if (tile.getType().equals(TileType.Cave)) {
+    	    	caveSet.add(tile);
+    	    }}
+    	} return caveSet;
+    }
+    
     public void addTerrain(double addRow, double addCol, Terrain terrainA) {
         addWinningPiece(addRow, addCol, getLastWinningPiece());
         Terrain terrainB = terrainA.clone(addRow, addCol,hexSize);
@@ -311,17 +361,14 @@ public class HexagonGameBoard extends JPanel {
             piece.move(-change2[0], -change2[1],hexSize);
         }
     }
-    public Set<Tile> nextToCave(Tile tile) {
-    	//you cant move on a cave right?
-    	Set<Tile> caveSet = new HashSet<>();
+    public String nextToCave(Tile tile) {
         for (int[] neighbor : tile.getNeighbors()) {
         	Tile temp = ParentMap.get(neighbor[0]+","+neighbor[1]);
         	if(temp==null) {continue;}
         	if(temp.getType()==TileType.Cave) {
-        		caveSet.add(temp);
+        		return temp.getRow()+","+temp.getCol();
         	}
-        }
-		return caveSet;
+        } return null;
     }
     
     public boolean isWinning(Tile tile) {
@@ -337,7 +384,7 @@ public class HexagonGameBoard extends JPanel {
             System.out.println("This tile doesn't belong in any board piece or is a block.");
             return false;
         }
-        if(temp.getType()==TileType.Mountain) {
+        if(temp.getType()==TileType.Mountain ||temp.getType()==TileType.Cave) {
         	System.out.println("Cannot move to a mountain.");
             return false;
         }

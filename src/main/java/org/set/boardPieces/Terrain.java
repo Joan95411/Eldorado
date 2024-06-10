@@ -36,9 +36,11 @@ public class Terrain extends BoardPiece {
         	TileType color = getRandomColor(random);
         	tile.setType(color);
 
-            // Randomly select points
+            if(tile.getType()==TileType.Cave || tile.getType()==TileType.Mountain) {
+            	tile.setPoints(0);
+            }else {
             int points = random.nextInt(POINTS_MAX - POINTS_MIN + 1) + POINTS_MIN;
-            tile.setPoints(points);
+            tile.setPoints(points);}
         }
     }
 

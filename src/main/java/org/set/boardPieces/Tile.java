@@ -22,7 +22,15 @@ public class Tile {
         this.col = col;
         this.type=TileType.Default;
     }
-
+    
+    @Override
+    public String toString() {
+        return "Tile{" +
+                "row=" + row +
+                ", col=" + col +
+                ", type=" + type +
+                '}';
+    }
     public void setParent(String parent) {
         this.parent = parent;
     }

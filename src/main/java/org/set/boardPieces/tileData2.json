@@ -28,7 +28,7 @@
     "5,2": {"color": "Machete", "points": 1,"qr": "-2,2"},
     "5,3": {"color": "Machete", "points": 1,"qr": "-1,2"},
     "5,4": {"color": "Paddle", "points": 1,"qr": "0,1"},
-    "5,5": {"color": "Cave", "points": 1,"qr": "1,1"},
+    "5,5": {"color": "Cave", "points": 0,"qr": "1,1"},
     "5,6": {"color": "Machete", "points": 1,"qr": "2,0"},
     "5,7": {"color": "Machete", "points": 1,"qr": "3,0"},
     "6,2": {"color": "Start", "points": 1,"qr": "-2,3"},

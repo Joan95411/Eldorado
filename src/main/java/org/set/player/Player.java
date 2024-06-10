@@ -2,6 +2,8 @@ package org.set.player;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.List;
+import org.set.tokens.Token;
 
 public class Player {
     private static ArrayList<Color> usedColors = new ArrayList<>();
@@ -11,13 +13,13 @@ public class Player {
     public Color color;
     public PlayerCardDeck myDeck;
     private boolean lastActionWasCaveExplore;
+    private List<Token> myTokens;
 
-    
 
     public Player(Color selectedColor) {
         this.color = selectedColor;
         myDeck = new PlayerCardDeck();
-
+        myTokens=new ArrayList<>();
         if (selectedColor == null || usedColors.contains(selectedColor)) {
             throw new IllegalArgumentException("The color " + selectedColor + " is already used");
         } else {
@@ -43,7 +45,13 @@ public class Player {
     public Color getColor() {
         return color;
     }
-
+    
+    public void addToken(Token token) {
+        myTokens.add(token);
+    }
+	public List<Token> getTokens() {
+        return myTokens;
+    }
     public void setPlayerPosition(int row, int col) {
         this.currentRow = row;
         this.currentCol = col;
