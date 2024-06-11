@@ -6,6 +6,8 @@ import org.json.JSONObject;
 import org.set.player.Player;
 import org.set.tokens.Token;
 import org.set.cards.Card;
+import org.set.marketplace.MarketPlace;
+
 import java.awt.*;
 import javax.swing.*;
 
@@ -14,6 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
 public class HexagonGameBoard extends JPanel {
@@ -29,6 +32,8 @@ public class HexagonGameBoard extends JPanel {
     public List<double[]> coordinateList;
     public JSONArray pathInfo;
     public Player currentPlayer;
+    public MarketPlace market;
+    public boolean discardPhase;
     public boolean setupChange;
     public HexagonGameBoard(int numRows, int numCols, int hexSize,boolean setupChange) {
         this.numRows = numRows;
@@ -41,6 +46,7 @@ public class HexagonGameBoard extends JPanel {
         caveSet = new ArrayList<>();
         ParentMap = new HashMap<>();
         boardPieces = new HashMap<>();
+        discardPhase=false;
         Terrain.resetWinningCount();
         Blockade.resetCount();
         WinningPiece.resetCount();
@@ -136,17 +142,27 @@ public class HexagonGameBoard extends JPanel {
         	List<Card> PlayerCards=currentPlayer.myDeck.getCardsInHand();
         	if(PlayerCards != null) {
             drawPlayerDeck(g2d,PlayerCards);
-        }List<Token> PlayerTokens=currentPlayer.getTokens();
+        }List<Card> PlayerDiscardCards=currentPlayer.myDeck.getDiscardPile();
+        	if(PlayerDiscardCards != null&&discardPhase==true) {
+        		drawPlayerDiscardPile(g2d,PlayerDiscardCards);
+        }
+        	List<Token> PlayerTokens=currentPlayer.getTokens();
         	if(PlayerTokens != null) {
         		drawPlayerToken(g2d,PlayerTokens);
         }
         }
+        if(market!=null) {
+        if(market.getCurrentMarketBoard()!=null) {
+        	drawCurrentMarket(g2d);
+        }
+        if(market.getMarketBoardOptions()!=null&&discardPhase==false) {
+        	drawMarketOptions(g2d);
+        }}
     }
     
     
     public void drawPlayerToken(Graphics2D g2d,List<Token> PlayerTokens) {
-    	int[] temp = TileDataDic.tilesMap.get("5,"+(numCols-10));
-        int startY=temp[1];
+    	int[] temp = TileDataDic.tilesMap.get((numRows-10)+",19");
         g2d.setColor(Color.BLACK);
         int fontSize = hexSize/3;
         Font font = new Font("Arial", Font.BOLD, fontSize);
@@ -156,9 +172,9 @@ public class HexagonGameBoard extends JPanel {
         String caption = "Current Player's tokens: ";
         int captionWidth = fm.stringWidth(caption);
         g2d.drawString(caption, temp[0], temp[1]);
-        int maxTokensPerRow = 4;
-        int tokenWidth=(int) (cardWidth/1.5);
-        int tokenHeight=(int)(cardWidth/1.5);
+        int maxTokensPerRow = 6;
+        int tokenWidth=cardWidth;
+        int tokenHeight=cardWidth;
         int tokenSpacing = tokenWidth ;
         int totalTokens = PlayerTokens.size();
         int TokenDrawn = 0;
@@ -167,10 +183,10 @@ public class HexagonGameBoard extends JPanel {
             int col = i % maxTokensPerRow; // Calculate the column index
 
             int x = temp[0] + captionWidth + col * (tokenWidth + tokenSpacing);
-            int y = startY + row * (tokenHeight + tokenSpacing);
+            int y = temp[1] + row * (tokenHeight + tokenSpacing);
 
             PlayerTokens.get(i).draw(g2d, x, y, tokenWidth, tokenHeight);
-            g2d.drawString("Index: " + i, x + 5, y + tokenHeight / 2);
+            g2d.drawString("Index: " + i, (int)(x + tokenWidth/5),(int)( y + tokenWidth/3));
             TokenDrawn++;
 
             if (TokenDrawn >= totalTokens) {
@@ -179,21 +195,71 @@ public class HexagonGameBoard extends JPanel {
         }
     }
     
-    public void drawPlayerDeck(Graphics2D g2d,List<Card> PlayerCards) {
-        int[] temp = TileDataDic.tilesMap.get("1,"+(numCols-10));
-        int startY=10;
+    
+    
+    public void drawPlayerDeck(Graphics2D g2d, List<Card> PlayerCards) {
+        int[] temp = TileDataDic.tilesMap.get((numRows - 10) + ",1");
+        drawCards(g2d, PlayerCards, "Current Player's deck: ", temp, 8, cardWidth / 10);
+    }
+
+    public void drawCurrentMarket(Graphics2D g2d) {
+        int[] temp = TileDataDic.tilesMap.get((numRows - 6) + ",1");
+        Map<Card, Integer> currentMarket = market.getCurrentMarketBoard();
+        drawPiles(g2d, currentMarket, "Current Market: ", temp, 6,cardWidth / 5);
+        
+    }
+    public void drawPlayerDiscardPile(Graphics2D g2d, List<Card> PlayerCards) {
+        int[] temp = TileDataDic.tilesMap.get((numRows-6)+",19");
+        drawCards(g2d, PlayerCards, "Current Player's Discard pile: ", temp, 8, cardWidth / 10);
+    }
+    public void drawMarketOptions(Graphics2D g2d) {
+        int[] temp = TileDataDic.tilesMap.get((numRows-6)+",19");
+        HashMap<Card, Integer> marketoption = market.getMarketBoardOptions();
+        drawPiles(g2d, marketoption, "More Market Options: ", temp, 6,cardWidth / 5);
+    }
+    
+    public void drawPiles(Graphics2D g2d, Map<Card, Integer> currentMarket, String caption, int[] temp, int maxCardsPerRow,int cardSpacing) {
         g2d.setColor(Color.BLACK);
-        int fontSize = hexSize/3;
+        int fontSize = hexSize / 3;
         Font font = new Font("Arial", Font.BOLD, fontSize);
         g2d.setFont(font);
 
         FontMetrics fm = g2d.getFontMetrics();
-        String caption = "Current Player's deck: ";
         int captionWidth = fm.stringWidth(caption);
         g2d.drawString(caption, temp[0], temp[1]);
-        int maxCardsPerRow = 5;
-        int cardSpacing = cardWidth / 10;
-        int totalCards = PlayerCards.size();
+        int totalCards = currentMarket.size();
+        int cardsDrawn = 0;
+        int i=0;
+        for (Entry<Card, Integer> entry : currentMarket.entrySet()) {
+            Card key = entry.getKey();
+            Integer value = entry.getValue(); 
+            int row = i / maxCardsPerRow; // Calculate the row index
+            int col = i % maxCardsPerRow; // Calculate the column index
+
+            int x = temp[0] + captionWidth + col * (cardWidth + cardSpacing);
+            int y = temp[1] + row * (cardHeight + cardSpacing);
+
+            key.draw(g2d, x, y, cardWidth, cardHeight);
+            g2d.drawString("Index: " + i, x + 5, y + cardHeight / 2);
+            g2d.drawString("Left: " + value, x + 5, (int)(y + cardHeight / 1.5));
+            cardsDrawn++;
+            
+            if (cardsDrawn >= totalCards) {
+                break;
+            }i++;
+        }
+    }
+    
+    public void drawCards(Graphics2D g2d, List<Card> cards, String caption, int[] temp, int maxCardsPerRow,int cardSpacing) {
+        g2d.setColor(Color.BLACK);
+        int fontSize = hexSize / 3;
+        Font font = new Font("Arial", Font.BOLD, fontSize);
+        g2d.setFont(font);
+
+        FontMetrics fm = g2d.getFontMetrics();
+        int captionWidth = fm.stringWidth(caption);
+        g2d.drawString(caption, temp[0], temp[1]);
+        int totalCards = cards.size();
         int cardsDrawn = 0;
 
         for (int i = 0; i < totalCards; i++) {
@@ -201,17 +267,21 @@ public class HexagonGameBoard extends JPanel {
             int col = i % maxCardsPerRow; // Calculate the column index
 
             int x = temp[0] + captionWidth + col * (cardWidth + cardSpacing);
-            int y = startY + row * (cardHeight + cardSpacing);
+            int y = temp[1] + row * (cardHeight + cardSpacing);
 
-            PlayerCards.get(i).draw(g2d, x, y, cardWidth, cardHeight);
+            cards.get(i).draw(g2d, x, y, cardWidth, cardHeight);
             g2d.drawString("Index: " + i, x + 5, y + cardHeight / 2);
+            
             cardsDrawn++;
-
+            
             if (cardsDrawn >= totalCards) {
                 break;
             }
         }
     }
+
+    
+
     public Terrain getLastTerrain() {
     	 int maxIndex = 0;
          List<Terrain> terrains = getAllTerrains();

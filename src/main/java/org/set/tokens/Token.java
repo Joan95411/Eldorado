@@ -41,17 +41,23 @@ public class Token {
 		Color color = Util.getColorFromString(cardType.toString());
 		Color transparentColor = new Color(color.getRed(), color.getGreen(), color.getBlue(), 100);
 		g2d.setColor(transparentColor);
+		int radius = Math.min(width, height) / 2; 
 		int centerX = x + width / 2;
 	    int centerY = y + height / 2;
-	    int[] xPoints = {centerX - width, centerX, centerX + width, centerX};
-	    int[] yPoints = {centerY, centerY - height, centerY, centerY + height};
+	    int[] xPoints = new int[6];
+	    int[] yPoints = new int[6];
 
+	    for (int i = 0; i < 6; i++) {
+	        xPoints[i] = centerX + (int) (radius * Math.cos(Math.toRadians(60 * i - 30)));
+	        yPoints[i] = centerY + (int) (radius * Math.sin(Math.toRadians(60 * i - 30)));
+	    }
 
-	    g2d.fillPolygon(xPoints, yPoints, 4);
+	    g2d.fillPolygon(xPoints, yPoints, 6);
 	    g2d.setColor(Color.BLACK);
+	    g2d.drawPolygon(xPoints, yPoints, 6);
 		    
 		    if (power != 0) {
-		        g2d.drawString("Power: " + power, x + width / 2 - 15, y + height / 2 + 15);
+		        g2d.drawString("Power: " + power, x + width / 2 - 15, y + height / 2 + 10);
 		    }
 		
 	}

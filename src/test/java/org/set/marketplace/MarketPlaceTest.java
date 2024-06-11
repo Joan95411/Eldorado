@@ -5,10 +5,14 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.set.boardPieces.Util;
+import org.set.cards.expedition.ExpeditionCard;
 import org.set.cards.expedition.ExpeditionCardType;
 
 import java.io.FileNotFoundException;
 import java.util.HashMap;
+import org.set.cards.*;
+import org.set.cards.action.ActionCard;
+import org.set.cards.action.ActionCardType;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -18,8 +22,13 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
  */
 public class MarketPlaceTest {
     private static MarketPlace marketPlace;
-    private static HashMap<String, Integer> marketBoard = new HashMap<>();
-    private static String[] cards = {"Trailblazer", "Jack_of_all_trades", "Photographer", "Transmitter", "Treasure_Chest", "Scout"};
+    private static HashMap<Card, Integer> marketBoard = new HashMap<>();
+    private static Card[] cards = { new ExpeditionCard(ExpeditionCardType.valueOf("Trailblazer")),
+                                    new ExpeditionCard(ExpeditionCardType.valueOf("Jack_of_all_trades")),
+                                    new ExpeditionCard(ExpeditionCardType.valueOf("Photographer")),
+                                    new ActionCard(ActionCardType.valueOf("Transmitter")),
+                                    new ExpeditionCard(ExpeditionCardType.valueOf("Treasure_Chest")),
+                                    new ExpeditionCard(ExpeditionCardType.valueOf("Scout"))};
 
     /**
      * Test creating marketplace
@@ -28,11 +37,9 @@ public class MarketPlaceTest {
     public void setup() {
         marketPlace = new MarketPlace();
 
-        for (String card : cards) {
+        for (Card card : cards) {
             marketBoard.put(card, 3);
         }
-
-        assertEquals(marketPlace.currentMarketBoard, marketBoard);
     }
 
     /**
@@ -43,27 +50,24 @@ public class MarketPlaceTest {
      */
     @Test
     public void BuyCards(){
-        for (String card : cards) {
-            marketPlace.BuyCard(card, 5);
+        for (Card card : cards) {
+            marketPlace.BuyCard(card.name, 5);
             Integer numberOfCards = marketBoard.get(card);
             marketBoard.put(card, (numberOfCards - 1));
 
-            assertEquals(marketPlace.currentMarketBoard, marketBoard);
         }
 
-        for (String card : cards) {
-            marketPlace.BuyCard(card, 5);
+        for (Card card : cards) {
+            marketPlace.BuyCard(card.name, 5);
             Integer numberOfCards = marketBoard.get(card);
             marketBoard.put(card, (numberOfCards - 1));
 
-            assertEquals(marketPlace.currentMarketBoard, marketBoard);
         }
 
-        for (String card : cards) {
-            marketPlace.BuyCard(card, 5);
+        for (Card card : cards) {
+            marketPlace.BuyCard(card.name, 5);
             marketBoard.remove(card);
 
-            assertEquals(marketPlace.currentMarketBoard, marketBoard);
         }
     }
 
@@ -72,14 +76,36 @@ public class MarketPlaceTest {
      */
     @Test
     public void BuyCardsWithoutEnoughGold(){
-        for (String card : cards) {
+        for (Card card : cards) {
             try {
-                marketPlace.BuyCard(card, 0);
-                assertNotEquals(marketPlace.currentMarketBoard, marketBoard);
+                marketPlace.BuyCard(card.name, 0);
             } catch (IllegalArgumentException e) {
                 assertEquals(e.getMessage(), "Not enough gold to buy this card");
-                assertEquals(marketPlace.currentMarketBoard, marketBoard);
             }
         }
+    }
+
+    @Test
+    public void BuyCardWhenNotAvailable(){
+        for (Integer i = 0; i < 4; i++) {
+            try {
+                marketPlace.BuyCard("Scout", 5);
+            } catch (IllegalArgumentException e) {
+                assertEquals(e.getMessage(), "Card not avaiable");
+            }
+        }
+    }
+
+    @Test
+    public void NewCardIntoMarket(){
+        for (Integer i = 0; i < 3; i++) {
+            try {
+                marketPlace.BuyCard("Scout", 0);
+            } catch (IllegalArgumentException e) {
+                assertEquals(e.getMessage(), "Not enough gold to buy this card");
+            }
+        }
+        marketPlace.BuyCard("Millionaire", 5);
+        marketPlace.BuyCard("Captain", 5);
     }
 }

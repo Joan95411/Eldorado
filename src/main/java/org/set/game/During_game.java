@@ -52,7 +52,7 @@ public class During_game {
 	        if (!keepMoving) {
 	            break; // Exit the loop if the user doesn't want to keep moving
 	        }
-	        int cardIndex = InputHelper.getIntInput("Choose 1 card for Movement, input index (e.g. 0), or '-1' to stop with movement");
+	        int cardIndex = InputHelper.getIntInput("Choose 1 card for Movement, input index (e.g. 0), or '-1' to stop with movement",currentDeck.size()-1);
 	        if (cardIndex == -1) {
 	            break;
 	        }

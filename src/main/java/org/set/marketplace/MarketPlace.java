@@ -1,6 +1,12 @@
 package org.set.marketplace;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics2D;
 import java.io.FileNotFoundException;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map.Entry;
 
 import org.set.boardPieces.Util;
 import org.set.cards.*;
@@ -8,20 +14,15 @@ import org.set.cards.action.ActionCard;
 import org.set.cards.action.ActionCardType;
 import org.set.cards.expedition.ExpeditionCard;
 import org.set.cards.expedition.ExpeditionCardType;
-
-import lombok.Getter;
-
 import org.json.JSONObject;
 
 public class MarketPlace {
     private JSONObject cardData;
 
-    private HashMap<String, Integer> marketBoardOptions = new HashMap<String, Integer>();
-    protected HashMap<String, Integer> currentMarketBoard = new HashMap<String, Integer>(); //i need Card-power map, so i can get the attributes from the card, not string
-    private HashMap<String, Integer> cardValues = new HashMap<String, Integer>();
+    private HashMap<Card, Integer> marketBoardOptions = new HashMap<Card, Integer>();
+    private HashMap<Card, Integer> currentMarketBoard = new HashMap<Card, Integer>();
+
     private HashMap<String, String>  cardType = new HashMap<String, String>();
-    private HashMap<String, Boolean> singleUse = new HashMap<String, Boolean>();
-    private HashMap<String, Integer> cardPower = new HashMap<String, Integer>();
     
     public MarketPlace() {
         try {
@@ -32,19 +33,34 @@ public class MarketPlace {
 
         LoadDataIntoVariables();
     }
-    public HashMap<String, Integer> getCurrentMarketBoard() {
+
+    public HashMap<Card, Integer> getCurrentMarketBoard(){
         return currentMarketBoard;
     }
-    public HashMap<String, Integer> getMarketBoardOption() {
+
+    public HashMap<Card, Integer> getMarketBoardOptions(){
         return marketBoardOptions;
     }
+
     public Card BuyCard(String cardName, Integer goldAmount) {
-        if (this.currentMarketBoard.containsKey(cardName) && this.TakeCard(cardName, goldAmount)) {
-            return CreateCard(cardName);
-        } else if (this.currentMarketBoard.size() < 6 && this.AddCardToMarketBoard(cardName, goldAmount)) {
-            return CreateCard(cardName);
+        Card card = this.CreateCard(cardName);
+        if (this.currentMarketBoard.containsKey(card) && this.TakeCard(card, goldAmount)) {
+            return card;
+        } else if (this.currentMarketBoard.size() < 6 && this.AddCardToMarketBoard(card, goldAmount)) {
+            return card;
         } else {
             return null;
+        }
+    }
+    public void moveOptionToCurrentMarket(Card card) {
+        if (marketBoardOptions.containsKey(card)) {
+            // Retrieve the quantity from marketBoardOptions
+            Integer quantity = marketBoardOptions.remove(card);
+            // Add the card and quantity to currentMarketBoard
+            currentMarketBoard.put(card, quantity);
+            System.out.println("Moved card '" + card + "' to current market.");
+        } else {
+            System.out.println("Card '" + card + "' not found in market options.");
         }
     }
 
@@ -60,30 +76,28 @@ public class MarketPlace {
         return boughtCard;
     }
 
-    private boolean AddCardToMarketBoard(String cardName, Integer goldAmount){
+    private boolean AddCardToMarketBoard(Card card, Integer goldAmount){
         boolean succes = false;
 
-        if (this.marketBoardOptions.containsKey(cardName)) {
-            System.err.println("added "+cardName);
-
-            this.marketBoardOptions.remove(cardName);
-            this.currentMarketBoard.put(cardName, 3);
-            succes = this.TakeCard(cardName, goldAmount);
+        if (this.marketBoardOptions.containsKey(card)) {
+            this.marketBoardOptions.remove(card);
+            this.currentMarketBoard.put(card, 3);
+            succes = this.TakeCard(card, goldAmount);
         }
 
         return succes;
     }
     
-    private boolean TakeCard(String cardName, Integer goldAmount) {
+    private boolean TakeCard(Card card, Integer goldAmount) {
         boolean succes = false;
         
-        if (this.currentMarketBoard.containsKey(cardName)) {
-            if (CheckSufficientGold(cardName,goldAmount)) {
-                Integer numberOfCards = this.currentMarketBoard.get(cardName);
+        if (this.currentMarketBoard.containsKey(card)) {
+            if (CheckSufficientGold(card,goldAmount)) {
+                Integer numberOfCards = this.currentMarketBoard.get(card);
                 if ((numberOfCards-1) > 0) {
-                    this.currentMarketBoard.put(cardName,(numberOfCards-1));
+                    this.currentMarketBoard.put(card,(numberOfCards-1));
                 } else {
-                    this.currentMarketBoard.remove(cardName);
+                    this.currentMarketBoard.remove(card);
                 }
                 succes = true;
 
@@ -96,48 +110,35 @@ public class MarketPlace {
         return succes;
     }
 
-    private boolean CheckSufficientGold(String cardName, Integer goldAmount) {
-        if (this.cardValues.containsKey(cardName)) {
-            Integer value = this.cardValues.get(cardName);
-            if (goldAmount >= value) {
-                return true;
-            } else {
-                return false;
-            }
+    private boolean CheckSufficientGold(Card card, Integer goldAmount) {
+        if (goldAmount >= card.cost) {
+            return true;
+        } else {
+            return false;
         }
-
-        return false;
     }
 
     private void LoadDataIntoVariables(){
         for (String currentKey : this.cardData.keySet()) {
             JSONObject currentCardInfo = this.cardData.getJSONObject(currentKey);
 
+            String cardInfo = currentCardInfo.getString("cardType");
+            this.cardType.put(currentKey, cardInfo);
+            Card card = CreateCard(currentKey);
             Integer marketStart = currentCardInfo.getInt("marketStart");
 
             if (marketStart == 0) {
-                this.marketBoardOptions.put(currentKey, 1);
+                this.marketBoardOptions.put(card, 1);
             } else if (marketStart == 1) {
-                this.currentMarketBoard.put(currentKey, 3);
+                this.currentMarketBoard.put(card, 3);
             }
 
-            Integer cardValuesInfo = currentCardInfo.getInt("cost");
-            this.cardValues.put(currentKey, cardValuesInfo);
 
-            String cardInfo = currentCardInfo.getString("cardType");
-            this.cardType.put(currentKey, cardInfo);
 
-            Integer singleUseInfo = currentCardInfo.getInt("singleUse");
 
-            if (singleUseInfo == 1) {
-                this.singleUse.put(currentKey, true);
-            } else {
-                this.singleUse.put(currentKey, false);
-            }
-
-            Integer cardPowerInfo = currentCardInfo.getInt("cardPower");
-            this.cardPower.put(currentKey, cardPowerInfo);
         }
     }
+    
+    
 }
 

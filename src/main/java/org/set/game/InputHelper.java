@@ -1,6 +1,8 @@
 package org.set.game;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
 
@@ -33,21 +35,65 @@ public class InputHelper {
         }
     }
 
-    public static int getIntInput(String prompt) {
+    public static int getIntInput(String prompt, int max) {
         while (true) {
             System.out.println(prompt);
             System.out.print("> ");
             try {
-            	int  userInput = scanner.nextInt();
+                int userInput = scanner.nextInt();
                 scanner.nextLine(); // Consume the newline character
-                return userInput;
+                
+                if (userInput == -1) {
+                    return -1; // Exit the loop
+                }
+
+                if (userInput >= 0 && userInput <= max) {
+                    return userInput;
+                } else {
+                    System.out.println("Please input an index between 0 and " + max + ", or enter -1 to exit.");
+                }
             } catch (Exception e) {
                 System.out.println("Invalid input. Please enter an integer.");
                 scanner.nextLine(); // Consume the invalid input
             }
-        } 
-    }
+        }}
+    
+    public static List<Integer> getIntListInput(String prompt, int max) {
+        while (true) {
+            System.out.println(prompt);
+            System.out.print("> ");
+            String input = scanner.nextLine();
+            if (input.equalsIgnoreCase("stop")) {
+            	List<Integer> stopList = new ArrayList<>();
+                stopList.add(-1);
+                return stopList;
+            }
+            String[] tokens = input.split(",");
+            List<Integer> indices = new ArrayList<>();
+            boolean valid = true;
+            
+            for (String token : tokens) {
+                try {
+                    int index = Integer.parseInt(token.trim());
+                    if (index >= 0 && index <= max) {
+                        indices.add(index);
+                    } else {
+                        System.out.println("Index out of range: " + index + ". Please enter indices between 0 and " + max);
+                        valid = false;
+                        break;
+                    }
+                } catch (NumberFormatException e) {
+                    System.out.println("Invalid input: " + token + ". Please enter valid integers separated by commas.");
+                    valid = false;
+                    break;
+                }
+            }
 
+            if (valid) {
+                return indices;
+            }
+        }}
+    
     public static int[] getPositionInput(HexagonGameBoard board) {
         while (true) {
             String[] tokens = getInput("Enter row and column for player's position (e.g., '2,3'), or type 'stop' to stop with moving:", 2);

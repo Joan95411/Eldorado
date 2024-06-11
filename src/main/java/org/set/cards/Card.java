@@ -10,11 +10,11 @@ import org.set.boardPieces.Util;
 public abstract class Card {
 	public String name;
 	public CardType cardType;
-	public int cost;
+	public double cost;
 	public boolean singleUse;
 	public boolean removedCard = false;
 
-	public Card(String name, int cost, boolean singleUse) {
+	public Card(String name, double cost, boolean singleUse) {
 		this.name = name;
 		this.cardType = getCardType();
 		this.cost = cost;
@@ -42,7 +42,12 @@ public abstract class Card {
 			throw new IllegalStateException("The explorer card type is illegal.");
 		}
 	}
-
+	
+	public double getCost() {
+		if(cost>0) {
+        return cost;}
+		else {return 0.5;}
+    }
 	public void removeCard() {
 		if (!singleUse) {
 			throw new IllegalArgumentException("This is not a single use card, so this card cannot be removed.");
@@ -52,6 +57,14 @@ public abstract class Card {
 			removedCard = true;
 		}
 	}
+	@Override
+    public String toString() {
+        return "Card{" +
+                "cardType=" + cardType +
+                ", name=" + name +
+                ", cost=" + cost +
+                '}';
+    }
 
 	public void draw(Graphics2D g2d, int x, int y, int width, int height) {
 		Color color = Util.getColorFromString(cardType.toString());
@@ -60,9 +73,7 @@ public abstract class Card {
 		g2d.fillRect(x, y, width, height);
 		g2d.setColor(Color.BLACK);
 		g2d.drawRect(x, y, width, height);
-		g2d.drawString("Cost: " + cost, x + 5, y + 15);
-		// g2d.drawString("Index: "+id, x+5, y+(height-20)/2);
-		// g2d.drawString("Worth: "+worthValue, x+5, y+height-5);
+		g2d.drawString("Value: " + cost, x + 5, y + 15);
 	}
 
 }

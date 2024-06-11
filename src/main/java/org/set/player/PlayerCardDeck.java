@@ -59,6 +59,7 @@ public class PlayerCardDeck {
     }
 
     public void discard(List<Card> discardedCards) {
+    	cardsInHand.removeAll(discardedCards);
         discardPile.addAll(discardedCards);
     }
 
