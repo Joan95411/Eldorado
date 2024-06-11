@@ -47,7 +47,14 @@ public class PlayerCardDeck {
         discardPile.clear();
         Collections.shuffle(drawPile);
     }
-
+    
+    public double getValue() {
+    	double totalGold=0;
+    	for(int i = 0; i < cardsInHand.size(); i++) {
+    		totalGold+=cardsInHand.get(i).getValue();
+    	}
+    	return totalGold;
+    }
     // Add a card to the discard pile
     public void removeCard(Card card) {
         cardsInHand.remove(card);

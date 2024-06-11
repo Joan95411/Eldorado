@@ -64,10 +64,8 @@ public class Before_game {
     public static List<Player> addPlayer(Template board2) {
         int numPlayers;
         do {
-            numPlayers = InputHelper.getIntInput("How many players are playing?",4);
-            if (numPlayers < 1 || numPlayers > 4) {
-                System.out.println("Please enter a number between 1 and 4.");
-            }
+            numPlayers = InputHelper.getIntInput("How many players are playing?",4,1);
+            
         } while (numPlayers < 1 || numPlayers > 4);
 
         // Create an array to store player instances

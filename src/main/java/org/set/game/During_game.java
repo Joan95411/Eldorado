@@ -52,20 +52,72 @@ public class During_game {
 	        if (!keepMoving) {
 	            break; // Exit the loop if the user doesn't want to keep moving
 	        }
-	        int cardIndex = InputHelper.getIntInput("Choose 1 card for Movement, input index (e.g. 0), or '-1' to stop with movement",currentDeck.size()-1);
+	        int cardIndex = InputHelper.getIntInput("Choose 1 card for Movement, input index (e.g. 0), or '-2' to use token for movement, or '-1' to stop with movement",currentDeck.size()-1,-2);
 	        if (cardIndex == -1) {
 	            break;
 	        }
-	        if (cardIndex >= currentDeck.size()) {
-	            System.out.println("Please enter a number between 0 to " + (currentDeck.size() - 1));
-	            continue;
+	        if(cardIndex==-2) {
+	        	if(player.getTokenPower()>0) {
+	        	singleTokenMove(board, player, player.getTokens(), cardIndex);
+	        	
+		        }
+	        	else {
+	        		System.out.println("Your don't have enough token power");
+	        		continue;
+	        	}
 	        }
-
+	        
 	        singleMove(board, player, currentDeck, cardIndex);
 	    }
 	    System.out.println("You have still "+player.myDeck.getCardsInHand().size()+" cards for this turn.");
 	}
 
+	public static void singleTokenMove(Template board, Player player, List<Token> tokenDeck, int cardIndex) {
+		while(player.getTokenPower()>0) {
+			int tokenIndex = InputHelper.getIntInput("Choose 1 token for Movement, or '-1' to stop with movement",tokenDeck.size()-1,-1);
+	        if (tokenIndex == -1) {
+	            break;
+	        }
+	        Token selectedToken=tokenDeck.get(tokenIndex);
+	        if(selectedToken.power==0) {
+	        	System.out.println("Please select a token with power.");
+	        }
+	        int residualPower = selectedToken.power;
+		    while (residualPower > 0) {
+		    	System.out.println("You chose the " + selectedToken.toString() );
+		    	
+		    	 String targetKey = player.getCurrentRow() + "," + player.getCurrentCol();
+		         Tile playerStandingTile = board.ParentMap.get(targetKey);
+		         Tile movingTo = InputHelper.getPlayerMoveInput(board, playerStandingTile);
+		         if (movingTo.getRow() == -100) {
+		             boolean discardToken = InputHelper.getYesNoInput("Are you sure to discard this token?");
+		             if (discardToken) {
+		                 residualPower = 0;
+		                 break;
+		             } else {
+		                 System.out.println("You can discard the token or make a movement with the remaining power.");
+		                 continue;
+		             }
+		         }
+		         if (Util.getColorFromString(selectedToken.cardType.toString()).equals(movingTo.getColor())) {
+		             if (residualPower >= movingTo.getPoints()) {
+		                 player.setPlayerPosition(movingTo.getRow(), movingTo.getCol());
+		                 residualPower -= movingTo.getPoints();
+		                 board.repaint();
+		                 caveExplore(board, player);
+		             } else {
+		                 System.out.println("Your token does not have enough power to move here.");
+		             }
+		         } else {
+		             System.out.println("Token color does not match tile color.");
+		         }
+		     }
+		     if (residualPower == 0) {
+		         player.discardToken(tokenIndex);
+		         board.repaint();
+		     }
+		}
+	}
 	public static void singleMove(Template board, Player player, List<Card> currentDeck, int cardIndex) {
 	    Card selectedCard = currentDeck.get(cardIndex);
 
@@ -88,7 +140,7 @@ public class During_game {
 	            }else if(expeditionCard.getPower()>residualPower) {
 	            	System.out.println("You can discard the card or make a movement with the remaining power."); 
 	            		continue; }else {
-	            			System.out.println("You didn't use the"+ selectedCard.cardType.toString() +" card.");
+	            			System.out.println("You didn't use the "+ selectedCard.cardType.toString() +" card.");
 	            			break;}
 	        }
 	        Color cardColor = Util.getColorFromString(selectedCard.cardType.toString());

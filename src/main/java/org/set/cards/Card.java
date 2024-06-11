@@ -1,6 +1,7 @@
 package org.set.cards;
 
 import org.set.cards.action.ActionCardType;
+import org.set.cards.expedition.ExpeditionCard;
 import org.set.cards.expedition.ExpeditionCardType;
 
 import java.awt.*;
@@ -10,11 +11,11 @@ import org.set.boardPieces.Util;
 public abstract class Card {
 	public String name;
 	public CardType cardType;
-	public double cost;
+	public int cost;
 	public boolean singleUse;
 	public boolean removedCard = false;
 
-	public Card(String name, double cost, boolean singleUse) {
+	public Card(String name, int cost, boolean singleUse) {
 		this.name = name;
 		this.cardType = getCardType();
 		this.cost = cost;
@@ -43,10 +44,11 @@ public abstract class Card {
 		}
 	}
 	
-	public double getCost() {
-		if(cost>0) {
-        return cost;}
-		else {return 0.5;}
+	public int getCost() {
+		return cost;
+    }
+	public double getValue() {
+		return 0.5;
     }
 	public void removeCard() {
 		if (!singleUse) {

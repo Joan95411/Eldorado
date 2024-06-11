@@ -3,6 +3,7 @@ package org.set.cards.expedition;
 import java.awt.Graphics2D;
 
 import org.set.cards.Card;
+import org.set.cards.CardType;
 
 public class ExpeditionCard extends Card {
     private int power;
@@ -20,6 +21,11 @@ public class ExpeditionCard extends Card {
 
     public int getPower() {
         return power;
+    }
+    public double getValue() {
+		if(cardType==CardType.YELLOW) {
+        return power;}
+		else {return 0.5;}
     }
 
     public void setPower(int power) {

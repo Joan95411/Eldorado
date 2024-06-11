@@ -123,7 +123,7 @@ public abstract class Template extends JPanel {
         int maxTokensPerRow = 6;
         int tokenWidth=cardWidth;
         int tokenHeight=cardWidth;
-        int tokenSpacing = tokenWidth ;
+        int tokenSpacing = tokenWidth/5 ;
         int totalTokens = PlayerTokens.size();
         int TokenDrawn = 0;
         for (int i = 0; i < totalTokens; i++) {

@@ -35,7 +35,7 @@ public class InputHelper {
         }
     }
 
-    public static int getIntInput(String prompt, int max) {
+    public static int getIntInput(String prompt, int max,int min) {
         while (true) {
             System.out.println(prompt);
             System.out.print("> ");
@@ -43,11 +43,8 @@ public class InputHelper {
                 int userInput = scanner.nextInt();
                 scanner.nextLine(); // Consume the newline character
                 
-                if (userInput == -1) {
-                    return -1; // Exit the loop
-                }
 
-                if (userInput >= 0 && userInput <= max) {
+                if (userInput >= min && userInput <= max) {
                     return userInput;
                 } else {
                     System.out.println("Please input an index between 0 and " + max + ", or enter -1 to exit.");
@@ -67,6 +64,10 @@ public class InputHelper {
             	List<Integer> stopList = new ArrayList<>();
                 stopList.add(-1);
                 return stopList;
+            }if (input.equalsIgnoreCase("skip")) {
+            	List<Integer> skipList = new ArrayList<>();
+            	skipList.add(-2);
+                return skipList;
             }
             String[] tokens = input.split(",");
             List<Integer> indices = new ArrayList<>();

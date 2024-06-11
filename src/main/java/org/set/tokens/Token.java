@@ -21,6 +21,7 @@ public class Token {
         this.cardType = caveTokenType.getCardType();
         this.caveTokenType = caveTokenType;
         this.power = caveTokenType.getPower();
+        
     }
     
     public void useToken(Player player) {
@@ -59,6 +60,14 @@ public class Token {
 		    if (power != 0) {
 		        g2d.drawString("Power: " + power, x + width / 2 - 15, y + height / 2 + 10);
 		    }
+		    
 		
+	}
+
+	public int getValue() {
+		if(caveTokenType==CaveTokenType.CoinOne||caveTokenType==CaveTokenType.CoinTwo) {
+			return power;
+		}
+		return 0;
 	}
 }

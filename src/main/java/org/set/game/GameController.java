@@ -28,7 +28,7 @@ public class GameController {
         this.board = board2;
         GameState = "Game Starts";
         caveMap=Before_game.allocateTokens(board2);
-        During_game.removeblock(board);
+//        During_game.removeblock(board);
         
         players = Before_game.addPlayer(board2);
         Before_game.placePlayersOnBoard(board2);
@@ -67,7 +67,7 @@ public class GameController {
     	if(currentMarket.size()<6) {
     		boolean fillEmptyMarket=InputHelper.getYesNoInput("There's empty space on market, do you fill in with any pile?");
     		if(fillEmptyMarket) {
-    			int marketOptionIndex = InputHelper.getIntInput("Choose 1 card pile to fill, input index (e.g. 0), or '-1' to stop",cardList.size()-1);
+    			int marketOptionIndex = InputHelper.getIntInput("Choose 1 card pile to fill, input index (e.g. 0), or '-1' to stop",cardList.size()-1,-1);
     			if (marketOptionIndex == -1) {
     	            return;
     	        }
@@ -80,61 +80,71 @@ public class GameController {
 
     public void PlayerBuy(Player player) {
     	List<Card> mydeck=player.myDeck.getCardsInHand();
-    	double totalGold=0;
-    	for(int i = 0; i < mydeck.size(); i++) {
-    		totalGold+=mydeck.get(i).cost;
-    	}
-    	System.out.println("You have "+totalGold+" gold now.");
+    	double totalGold=player.myDeck.getValue();
+    	System.out.println("You have "+(totalGold+player.getTokenValue())+" gold now.");
     	while(totalGold>0){
         	boolean toBuyCard=InputHelper.getYesNoInput("Do you want to buy any cards?");
         	if(!toBuyCard) {break;}
         	fillEmptyMarketSpace();
         	Map<Card, Integer> currentMarketBoard = market.getCurrentMarketBoard();
         	List<Card> cardList = new ArrayList<>(currentMarketBoard.keySet());
-        	int cardIndex = InputHelper.getIntInput("Choose 1 card to buy, input index (e.g. 0), or '-1' to stop buying",cardList.size()-1);
+        	int cardIndex = InputHelper.getIntInput("Choose 1 card to buy, input index (e.g. 0), or '-1' to stop buying",cardList.size()-1,-1);
 	        if (cardIndex == -1) {
 	            break;
 	        } Card theCard=cardList.get(cardIndex);
 	        if(currentMarketBoard.get(theCard)==0) {
 	        	System.out.println("There's no card of this type in the market, choose another card.");
 	        }
-	        else if(totalGold<theCard.cost){
+	        else if(totalGold+player.getTokenValue()<theCard.getCost()){
 	        	System.out.println("You do not have enough gold for this card, choose another card.");
 	        	continue;
 	        }
 
         	double buyingGold=0;
-        	List<Integer> indices=new ArrayList<>();
-	        while(buyingGold<theCard.cost){
-	        	indices.clear();
-	        	indices = InputHelper.getIntListInput("Please enter indices for your buying cards, separated by commas, or 'stop' to choose another card ", cardList.size()-1);
-	        	 if (indices != null && indices.size() == 1 && indices.get(0) == -1) {
-	        		 indices.clear();
+        	List<Integer> cardIndices=new ArrayList<>();
+        	List<Integer> tokenIndices=new ArrayList<>();
+	        while(buyingGold<theCard.getCost()){
+	        	cardIndices.clear();
+	        	cardIndices = InputHelper.getIntListInput("Please enter indices for your buying cards, separated by commas, or 'skip' to use tokens to buy, or 'stop' to stop this transaction ", cardList.size()-1);
+	        	 if (cardIndices != null && cardIndices.size() == 1 && cardIndices.get(0) == -1) {
+	        		 cardIndices.clear();
 	                 break;
-	             }
+	             }else if(cardIndices.get(0) != -2) {
 	        	for(int i = 0; i < mydeck.size(); i++) {
-	        		if (indices.contains(i)) {
+	        		if (cardIndices.contains(i)) {
 	        	        Card card = mydeck.get(i);
-	        	        buyingGold += card.cost; 
+	        	        buyingGold += card.getValue(); 
 	        		}
-	        	}
-	        	if(buyingGold<cardList.get(cardIndex).cost) {
-	        	System.out.println("This is "+buyingGold+" gold, that's not enough.");
-	        	
-	        	}
+	        	}System.out.println("You gathered " + buyingGold + " gold so far for the buy.");}
+	        	 
+	        	if (buyingGold < theCard.getCost() && player.getTokenValue() > 0) {
+	                
+	                tokenIndices = InputHelper.getIntListInput("If you want to use your tokens, please enter indices for them, separated by commas, or 'stop' to stop this transaction", player.getTokens().size() - 1);
+	                for (int i : tokenIndices) {
+	                    buyingGold += player.getTokens().get(i).getValue();  
+	                }
+	            }else {
+	            	System.out.println("You do not have enough token that can buy this card.");
+	            }
 	        }
-	        if(indices.size()>0) {
+
+	        if (cardIndices.size() > 0 || tokenIndices.size() > 0) {
 	        player.myDeck.discard(theCard);	
-	        System.out.println("This card has been placed on your discard pile to be reshuffled into the draw pile.");
+	        System.out.println("Deal! This card has been placed on your discard pile to be reshuffled into the draw pile.");
 	        currentMarketBoard.put(theCard, currentMarketBoard.get(theCard)-1);
 	        if(currentMarketBoard.get(theCard)==0) {
 	        	currentMarketBoard.remove(theCard);}
-        	List<Card> toDiscard=new ArrayList<>();
-	        for(int i=0; i<indices.size();i++) {
-	        Card toBeDiscard=player.myDeck.getCardsInHand().get(indices.get(i));
-	        toDiscard.add(toBeDiscard);
-	        }player.myDeck.discard(toDiscard);
-        	break;}
+	        List<Card> toDiscard = new ArrayList<>();
+            for (int i : cardIndices) {
+                toDiscard.add(mydeck.get(i));
+            }
+            player.myDeck.discard(toDiscard);
+
+            // Handle discarding tokens
+            for (int i : tokenIndices) {
+                player.discardToken(i);
+            }
+            break;}
     	}
     	board.discardPhase=true;
     	board.currentPlayer=player;
@@ -149,14 +159,14 @@ public class GameController {
         while(player.myDeck.getCardsInHand().size()>0){
         	boolean discardCard=InputHelper.getYesNoInput("Do you want to discard any cards?");
         	if(!discardCard) {break;}
-        	int cardIndex = InputHelper.getIntInput("Choose 1 card to discard, input index (e.g. 0), or '-1' to stop discarding",player.myDeck.getCardsInHand().size()-1);
+        	int cardIndex = InputHelper.getIntInput("Choose 1 card to discard, input index (e.g. 0), or '-1' to stop discarding",player.myDeck.getCardsInHand().size()-1,-1);
 	        if (cardIndex == -1) {
 	            break;
 	        }
 	        player.myDeck.discardFromHand(cardIndex);
 	        board.repaint();
         }
-        board.discardPhase=false;
+        
     }
 
     public void GameSession() {
@@ -167,16 +177,18 @@ public class GameController {
                 Player currentPlayer = players.get(currentPlayerIndex);
                 System.out.println("Turn " + turnNumber + ": Player " + currentPlayer.getName() + "'s turn.");
                 PlayerDrawCards(turnNumber, currentPlayerIndex, currentPlayer);
-//                During_game.PlayerMove(board,currentPlayer);
+                During_game.PlayerMove(board,currentPlayer);
 
-              int[] position = InputHelper.getPositionInput(board);
-
-              currentPlayer.setPlayerPosition(position[0], position[1]);
-
+//              int[] position = InputHelper.getPositionInput(board);
+//
+//              currentPlayer.setPlayerPosition(position[0], position[1]);
+//              During_game.caveExplore(board, currentPlayer);
               board.repaint();
               displayMarketInfo();
               PlayerBuy(currentPlayer);
               PlayerDiscard(currentPlayer);
+              boolean discardCard=InputHelper.getYesNoInput("Your turn will finish now.");
+              board.discardPhase=false;
             }
 
             turnNumber++;

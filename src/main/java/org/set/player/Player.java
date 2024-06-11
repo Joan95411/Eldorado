@@ -25,6 +25,7 @@ public class Player {
         } else {
             usedColors.add(selectedColor);
         }
+        
     }
     public void setName(String name) {
         this.name = name;
@@ -46,12 +47,7 @@ public class Player {
         return color;
     }
     
-    public void addToken(Token token) {
-        myTokens.add(token);
-    }
-	public List<Token> getTokens() {
-        return myTokens;
-    }
+    
     public void setPlayerPosition(int row, int col) {
         this.currentRow = row;
         this.currentCol = col;
@@ -85,4 +81,30 @@ public class Player {
         g2d.setColor(colorDraw);
         g2d.fillPolygon(xPoints, yPoints, 8);
     }
+    
+    public void addToken(Token token) {
+        myTokens.add(token);
+    }
+	public List<Token> getTokens() {
+        return myTokens;
+    }
+	
+	public double getTokenValue() {
+    	int totalGold=0;
+    	for(int i = 0; i < myTokens.size(); i++) {
+    		totalGold+=myTokens.get(i).getValue();
+    	}
+    	return totalGold;
+    }
+	public void discardToken(int i) {
+		myTokens.remove(i);
+		
+	}
+	public int getTokenPower() {
+		int totalPower=0;
+    	for(int i = 0; i < myTokens.size(); i++) {
+    		totalPower+=myTokens.get(i).power;
+    	}
+    	return totalPower;
+	}
 }
