@@ -2,7 +2,7 @@
     "MarketCards":{
         "Scout": {"cost": 1, "cardType": "GREEN",  "singleUse": 0 ,"marketStart": 1, "cardPower":0},
         "Trailblazer": {"cost": 3, "cardType": "GREEN",  "singleUse": 0 ,"marketStart": 1, "cardPower":0},
-        "Jack_of_all_trades": {"cost": 2, "cardType": "JOKER",  "singleUse": 0 ,"marketStart": 1, "cardPower":0},
+        "Jack": {"cost": 2, "cardType": "JOKER",  "singleUse": 0 ,"marketStart": 1, "cardPower":0},
         "Photographer": {"cost": 2, "cardType": "YELLOW", "singleUse": 0 ,"marketStart": 1, "cardPower":0},
         "Treasure_Chest": {"cost": 3, "cardType": "YELLOW", "singleUse": 1 ,"marketStart": 1, "cardPower":0},
         "Transmitter": {"cost": 4, "cardType": "PURPLE", "singleUse": 1 ,"marketStart": 1, "cardPower":0},

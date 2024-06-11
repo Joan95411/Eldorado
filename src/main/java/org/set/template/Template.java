@@ -1,10 +1,18 @@
-package org.set.boardPieces;
+package org.set.template;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.set.player.Player;
 import org.set.tokens.Token;
+import org.set.boardPieces.Blockade;
+import org.set.boardPieces.BoardPiece;
+import org.set.boardPieces.IntegrationWith03Board;
+import org.set.boardPieces.Terrain;
+import org.set.boardPieces.Tile;
+import org.set.boardPieces.TileDataDic;
+import org.set.boardPieces.TileType;
+import org.set.boardPieces.WinningPiece;
 import org.set.cards.Card;
 import org.set.marketplace.MarketPlace;
 
@@ -19,7 +27,7 @@ import java.util.Set;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
-public class HexagonGameBoard extends JPanel {
+public abstract class Template extends JPanel {
     public int numRows;
     public int numCols;
     public int hexSize;
@@ -29,19 +37,17 @@ public class HexagonGameBoard extends JPanel {
     public Map<String, Tile> ParentMap;
     public List<Tile> caveSet;
     public Map<String, BoardPiece> boardPieces;
-    public List<double[]> coordinateList;
+    
     public JSONArray pathInfo;
     public Player currentPlayer;
     public MarketPlace market;
     public boolean discardPhase;
-    public boolean setupChange;
-    public HexagonGameBoard(int numRows, int numCols, int hexSize,boolean setupChange) {
+    public Template(int numRows, int numCols, int hexSize) {
         this.numRows = numRows;
         this.numCols = numCols;
         this.hexSize = hexSize;
         this.cardWidth = hexSize * 2;
         this.cardHeight = cardWidth / 2 * 3;
-        this.setupChange=setupChange;
         setPreferredSize(new Dimension((int) (numCols * 1.5 * hexSize), (int) (numRows * Math.sqrt(3) * hexSize)));
         caveSet = new ArrayList<>();
         ParentMap = new HashMap<>();
@@ -50,73 +56,15 @@ public class HexagonGameBoard extends JPanel {
         Terrain.resetWinningCount();
         Blockade.resetCount();
         WinningPiece.resetCount();
-        coordinateList = new ArrayList<>(List.of(
-                new double[]{6, 4},
-                new double[]{0, 8},
-                new double[]{-6, 4}
-        ));
         
         loadTileData();
-        if(pathInfo!=null) {
-        	initBoardTeam3();
-        }else {
         initBoard();
-    }}
-
-    public void initBoard() {
-    	getLastTerrain().rotate(2);
-        for (double[] coordinates : coordinateList) {
-            Terrain terrainLatest=getLastTerrain();
-            addTerrain(coordinates[0], coordinates[1], terrainLatest);
-        }
-        
-    }
-    public void initBoardTeam3() {
-    	coordinateList.clear();
-    	 for (int i = 0; i < pathInfo.length(); i++) {
-             JSONObject jsonObject = pathInfo.getJSONObject(i);
-             double addRow = jsonObject.getDouble("addRow");
-             double addCol = jsonObject.getDouble("addCol");
-             String sectionType = jsonObject.getString("sectionType");
-             int rotation = jsonObject.getInt("rotation");
-             
-             if(addRow!=0 || addCol!=0) {
-             addTerrain(addRow, addCol, getLastTerrain());
-             if(i==0) {
-            	 boardPieces.remove("Terrain_1"); //remove the template
-            	 boardPieces.remove("Blockade_1"); 
-             }else{
-            	 coordinateList.add(new double[]{addRow, addCol});}
-             }
-
-             if(sectionType.startsWith("ElDorado")) {
-            	WinningPiece wps=getLastWinningPiece();
-            	Tile axisTile=getLastTerrain().axisTile;
-            	int[] temp=TileDataDic.tilesMap.get(axisTile.getRow()+","+axisTile.getCol());
-            	wps.rotate(rotation, temp[0], temp[1]);
-            	if(sectionType.equals("ElDoradoTwo")) {
-            		wps.setColor(TileType.Paddle);
-            	}
-             }else {
-
-                 getLastTerrain().reFillTile(sectionType);
-                 getLastTerrain().rotate(rotation);
-             }
-    	 }
-        
-        
     }
 
-    public void loadTileData() {
-        TileDataDic tdd = new TileDataDic(numRows, numCols, hexSize);
-        boardPieces.put(tdd.terrainA.getName(), tdd.terrainA);
-        boardPieces.put(tdd.wpa.getName(), tdd.wpa);
-        if(setupChange) {
-        	IntegrationWith03Board game03= new IntegrationWith03Board();
-        	pathInfo=game03.Get03Path();
-        	
-        }
-    }
+
+	abstract public void initBoard();
+
+	abstract public void loadTileData();
 
     
     @Override
@@ -205,7 +153,7 @@ public class HexagonGameBoard extends JPanel {
     public void drawCurrentMarket(Graphics2D g2d) {
         int[] temp = TileDataDic.tilesMap.get((numRows - 6) + ",1");
         Map<Card, Integer> currentMarket = market.getCurrentMarketBoard();
-        drawPiles(g2d, currentMarket, "Current Market: ", temp, 6,cardWidth / 5);
+        drawPiles(g2d, currentMarket, "Current Market: ", temp, 6,cardWidth / 4);
         
     }
     public void drawPlayerDiscardPile(Graphics2D g2d, List<Card> PlayerCards) {
@@ -215,7 +163,7 @@ public class HexagonGameBoard extends JPanel {
     public void drawMarketOptions(Graphics2D g2d) {
         int[] temp = TileDataDic.tilesMap.get((numRows-6)+",19");
         HashMap<Card, Integer> marketoption = market.getMarketBoardOptions();
-        drawPiles(g2d, marketoption, "More Market Options: ", temp, 6,cardWidth / 5);
+        drawPiles(g2d, marketoption, "More Market Options: ", temp, 6,cardWidth / 4);
     }
     
     public void drawPiles(Graphics2D g2d, Map<Card, Integer> currentMarket, String caption, int[] temp, int maxCardsPerRow,int cardSpacing) {
@@ -242,6 +190,7 @@ public class HexagonGameBoard extends JPanel {
             key.draw(g2d, x, y, cardWidth, cardHeight);
             g2d.drawString("Index: " + i, x + 5, y + cardHeight / 2);
             g2d.drawString("Left: " + value, x + 5, (int)(y + cardHeight / 1.5));
+            g2d.drawString( key.name, x , y );
             cardsDrawn++;
             
             if (cardsDrawn >= totalCards) {
@@ -271,7 +220,7 @@ public class HexagonGameBoard extends JPanel {
 
             cards.get(i).draw(g2d, x, y, cardWidth, cardHeight);
             g2d.drawString("Index: " + i, x + 5, y + cardHeight / 2);
-            
+            g2d.drawString( cards.get(i).name, x , y );
             cardsDrawn++;
             
             if (cardsDrawn >= totalCards) {
@@ -393,7 +342,7 @@ public class HexagonGameBoard extends JPanel {
             int indexB = Integer.parseInt(terrainB.getName().substring("Terrain_".length()));
             blockade.setTerrainNeighbors(indexA, indexB);
             blockade.setTerrainAddRowCol(addRow, addCol);
-            System.out.println(addRow+" "+ addCol+" "+blockade.name);
+            System.out.println(addRow+" "+ addCol+" "+blockade.getName());
             boardPieces.put(blockade.getName(), blockade);
         }
     }

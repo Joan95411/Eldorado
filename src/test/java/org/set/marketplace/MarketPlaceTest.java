@@ -24,7 +24,7 @@ public class MarketPlaceTest {
     private static MarketPlace marketPlace;
     private static HashMap<Card, Integer> marketBoard = new HashMap<>();
     private static Card[] cards = { new ExpeditionCard(ExpeditionCardType.valueOf("Trailblazer")),
-                                    new ExpeditionCard(ExpeditionCardType.valueOf("Jack_of_all_trades")),
+                                    new ExpeditionCard(ExpeditionCardType.valueOf("Jack")),
                                     new ExpeditionCard(ExpeditionCardType.valueOf("Photographer")),
                                     new ActionCard(ActionCardType.valueOf("Transmitter")),
                                     new ExpeditionCard(ExpeditionCardType.valueOf("Treasure_Chest")),

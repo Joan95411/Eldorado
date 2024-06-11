@@ -8,9 +8,9 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.set.player.Player;
+import org.set.template.Template;
 import org.set.tokens.Cave;
 import org.set.tokens.Token;
-import org.set.boardPieces.HexagonGameBoard;
 import org.set.boardPieces.Tile;
 import org.set.boardPieces.Util;
 import org.set.cards.Card;
@@ -18,20 +18,20 @@ import org.set.cards.expedition.ExpeditionCard;
 import org.set.marketplace.MarketPlace;
 
 public class GameController {
-    private HexagonGameBoard board;
+    private Template board;
     private List<Player> players;
     public static Map<String,Cave> caveMap;
     private String GameState;
     public int turnCounter;
     public MarketPlace market=new MarketPlace();
-    public GameController(HexagonGameBoard board) {
-        this.board = board;
+    public GameController(Template board2) {
+        this.board = board2;
         GameState = "Game Starts";
-        caveMap=Before_game.allocateTokens(board);
-        //During_game.removeblock(board);
+        caveMap=Before_game.allocateTokens(board2);
+        During_game.removeblock(board);
         
-        players = Before_game.addPlayer(board);
-        Before_game.placePlayersOnBoard(board);
+        players = Before_game.addPlayer(board2);
+        Before_game.placePlayersOnBoard(board2);
         GameSession();
     }
     
@@ -120,7 +120,7 @@ public class GameController {
 	        	}
 	        	if(buyingGold<cardList.get(cardIndex).cost) {
 	        	System.out.println("This is "+buyingGold+" gold, that's not enough.");
-	        	chooseToken(player);
+	        	
 	        	}
 	        }
 	        if(indices.size()>0) {
@@ -143,9 +143,7 @@ public class GameController {
         
     }
     
-    public void chooseToken(Player player) {
-    	//use coin token for gold
-    }
+    
     public void PlayerDiscard(Player player) {
     	board.currentPlayer=player;
         while(player.myDeck.getCardsInHand().size()>0){
@@ -176,7 +174,6 @@ public class GameController {
               currentPlayer.setPlayerPosition(position[0], position[1]);
 
               board.repaint();
-              During_game.caveExplore(board, currentPlayer);
               displayMarketInfo();
               PlayerBuy(currentPlayer);
               PlayerDiscard(currentPlayer);

@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
 
-import org.set.boardPieces.HexagonGameBoard;
 import org.set.boardPieces.Tile;
+import org.set.template.Template;
 
 public class InputHelper {
     private static final Scanner scanner = new Scanner(System.in);
@@ -94,7 +94,7 @@ public class InputHelper {
             }
         }}
     
-    public static int[] getPositionInput(HexagonGameBoard board) {
+    public static int[] getPositionInput(Template board) {
         while (true) {
             String[] tokens = getInput("Enter row and column for player's position (e.g., '2,3'), or type 'stop' to stop with moving:", 2);
             if(tokens==null) {break;         }
@@ -118,7 +118,7 @@ public class InputHelper {
     	return new int[] { -100, -100 };
     }
 
-    public static Tile getPlayerMoveInput(HexagonGameBoard board, Tile tile) {
+    public static Tile getPlayerMoveInput(Template board, Tile tile) {
 //        List<int[]> neighbors = tile.getNeighbors();
     	Set<String> neighborSet = new HashSet<>();
         for (int[] neighbor : tile.getNeighbors()) {

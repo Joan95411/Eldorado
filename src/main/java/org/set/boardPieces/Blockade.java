@@ -30,6 +30,9 @@ public class Blockade extends BoardPiece {
     		tile.setType(color);
     	}
     }
+    public String getName() {
+    	return name;
+    }
 
     public void setPoints(int points) {
         this.points = points;

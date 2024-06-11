@@ -13,7 +13,7 @@ public enum ExpeditionCardType {
     Journalist(3, false, 3),
     Millionaire(5, false, 4),
     Treasure_Chest(3, true, 4),
-    Jack_of_all_trades(2, false, 1),
+    Jack(2, false, 1),
     Adventurer(4, false, 2),
     Prop_Plane(4, true, 4);
 

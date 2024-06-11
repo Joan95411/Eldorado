@@ -9,14 +9,15 @@ import javax.swing.JFrame;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.set.boardPieces.HexagonGameBoard;
+import org.set.template.Team04Board;
+import org.set.template.Template;
 import org.set.boardPieces.BoardPiece;
 
 /**
  * UI user test class for the {@link HexagonGameBoard} class.
  */
 public class HexgonGameBoardDrawTest {
-	private HexagonGameBoard board;
+	private Template board;
     private JFrame frame;
 
     int numRows = 15;
@@ -28,7 +29,7 @@ public class HexgonGameBoardDrawTest {
      */
     @BeforeEach
     void setUp() {
-    	board = new HexagonGameBoard(numRows, numCols, hexSize,false);
+    	board = new Team04Board(numRows, numCols, hexSize);
 
         frame = new JFrame("GameBoardTest");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

@@ -3,6 +3,8 @@ package org.set;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.set.boardPieces.*;
+import org.set.template.Team04Board;
+import org.set.template.Template;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -11,7 +13,7 @@ import java.awt.image.BufferedImage;
  * Test class for the {@link Blockade} class.
  */
 public class BlockadeTest {
-    private static HexagonGameBoard hexagonGameBoard;
+    private static Template hexagonGameBoard;
     private static int numRows = 15;
     private static int numCols = 35;
     private static int hexSize = 35;
@@ -23,7 +25,7 @@ public class BlockadeTest {
    @BeforeAll
    public static void setUp() {
        blockade = new Blockade();
-       hexagonGameBoard = new HexagonGameBoard(numRows, numCols, hexSize,false);
+       hexagonGameBoard = new Team04Board(numRows, numCols, hexSize);
    }
 
     /**

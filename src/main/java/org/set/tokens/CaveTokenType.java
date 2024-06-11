@@ -23,7 +23,6 @@ public enum CaveTokenType {
 
     CaveTokenType(CardType cardType) {
         this.cardType = cardType;
-        this.power = power;
     }
 
     CaveTokenType(CardType cardType, int power) {

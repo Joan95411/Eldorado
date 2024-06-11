@@ -22,7 +22,7 @@ public class Token {
         this.caveTokenType = caveTokenType;
         this.power = caveTokenType.getPower();
     }
-
+    
     public void useToken(Player player) {
         TokenActionHandler actionHandler = new TokenActionHandler();
         actionHandler.doAction(this, player);

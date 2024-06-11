@@ -4,10 +4,8 @@ import java.awt.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.set.player.Player;
-
-import org.set.game.GameController;
-
-import org.set.boardPieces.HexagonGameBoard;
+import org.set.template.Team04Board;
+import org.set.template.Template;
 import org.set.game.GameController;
 
 /**
@@ -21,7 +19,8 @@ public class GameControllerTest {
      */
     @BeforeEach
     public void setUp(){
-        gameController = new GameController(new HexagonGameBoard(0,0,0,false));
+    	Template board=new Team04Board(25,35,25);
+        gameController = new GameController(board);
     }
 
     /**

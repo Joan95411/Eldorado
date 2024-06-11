@@ -2,8 +2,9 @@ package org.set;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.set.boardPieces.HexagonGameBoard;
 import org.set.boardPieces.Terrain;
+import org.set.template.Team04Board;
+import org.set.template.Template;
 import org.set.boardPieces.BoardPiece;
 
 import java.awt.*;
@@ -17,7 +18,7 @@ import static org.set.PlayerTest.players;
  * Test class for the {@link HexagonGameBoard} class.
  */
 public class HexagonGameBoardTest {
-    private static HexagonGameBoard hexagonGameBoard;
+    private static Template hexagonGameBoard;
     private int numRows = 15;
     private int numCols = 35;
     private int hexSize = 30;
@@ -27,7 +28,7 @@ public class HexagonGameBoardTest {
      */
    @BeforeEach
    void setUp() {
-	   hexagonGameBoard = new HexagonGameBoard(numRows, numCols, hexSize,false);
+	   hexagonGameBoard = new Team04Board(numRows, numCols, hexSize);
        assertNotNull(hexagonGameBoard, "hexagonGameBoard should not be null");
    }
 

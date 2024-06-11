@@ -5,18 +5,18 @@ import java.util.List;
 import java.util.Set;
 
 import org.set.boardPieces.Blockade;
-import org.set.boardPieces.HexagonGameBoard;
 import org.set.boardPieces.Tile;
 import org.set.boardPieces.Util;
 import org.set.cards.Card;
 import org.set.cards.expedition.ExpeditionCard;
 import org.set.player.Player;
+import org.set.template.Template;
 import org.set.tokens.Cave;
 import org.set.tokens.Token;
 
 public class During_game {
 	
-	public static void caveExplore(HexagonGameBoard board,Player player) {
+	public static void caveExplore(Template board,Player player) {
 		//Your piece must stop there, you can't explore while passing a cave.
 		String targetKey = player.getCurrentRow() + "," + player.getCurrentCol();
         Tile PlayerStandingTile = board.ParentMap.get(targetKey);
@@ -45,7 +45,7 @@ public class During_game {
             
     
 	
-	public static void PlayerMove(HexagonGameBoard board, Player player) {
+	public static void PlayerMove(Template board, Player player) {
 	    List<Card> currentDeck = player.myDeck.getCardsInHand();
 	    while (currentDeck.size()>0) {//expedition card size >0
 	        boolean keepMoving = InputHelper.getYesNoInput("Do you want to make a movement?");
@@ -66,14 +66,14 @@ public class During_game {
 	    System.out.println("You have still "+player.myDeck.getCardsInHand().size()+" cards for this turn.");
 	}
 
-	public static void singleMove(HexagonGameBoard board, Player player, List<Card> currentDeck, int cardIndex) {
+	public static void singleMove(Template board, Player player, List<Card> currentDeck, int cardIndex) {
 	    Card selectedCard = currentDeck.get(cardIndex);
 
 	    if (!(selectedCard instanceof ExpeditionCard)) {
 	        System.out.println("Please select an Expedition card.");
 	        return;
 	    }
-
+	    
 	    ExpeditionCard expeditionCard = (ExpeditionCard) selectedCard;
 	    int residualPower = expeditionCard.getPower();
 	    while (residualPower > 0) {
@@ -111,7 +111,7 @@ public class During_game {
 	}
 
 	
-	public static void removeblock(HexagonGameBoard board) {
+	public static void removeblock(Template board) {
 		while (true) {
 			boolean wantsToContinue = InputHelper.getYesNoInput("Do you want to remove block?");
 			

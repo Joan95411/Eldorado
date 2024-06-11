@@ -9,6 +9,7 @@ import javax.swing.JScrollPane;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.utwente.Main;
+import org.utwente.Tile.TileType;
 import org.utwente.Board.Board;
 import org.utwente.Board.Path;
 import org.utwente.game.controller.GameController;
@@ -18,7 +19,7 @@ public class IntegrationWith03Board {
 	public Board board;
 public  IntegrationWith03Board() {
 		
-		Main mainPanel = new Main(Path.WitchCauldron);
+		Main mainPanel = new Main(Path.HillsOfGold);
         GameController gameController = mainPanel.getGameController();
         JFrame frame = new JFrame(gameController.getGame().getGameName());
         gameController.getGame().placePlayersStart();
@@ -26,14 +27,10 @@ public  IntegrationWith03Board() {
 
         JScrollPane scrollPane = new JScrollPane(mainPanel);
         frame.add(scrollPane);
-
-        frame.setSize(mainPanel.getPreferredSize());
+        frame.setSize(1250, 650);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
         board=gameController.getGame().getBoard();
-//		System.out.println(gameController.getGame().getBoard().getPath().name());
-//		System.out.println(gameController.getGame().getBoard().getBlockades().get(0).getSection1().getSectionType());
-//		System.out.println(gameController.getGame().getBoard().getBlockades().get(0).getSection2().getSectionType());
 	
 }
 	public JSONArray Get03Path() {

@@ -4,10 +4,10 @@ import java.util.*;
 
 import org.set.game.InputHelper;
 import org.set.player.Player;
+import org.set.template.Template;
 import org.set.tokens.Cave;
 import org.set.tokens.CaveTokenType;
 import org.set.tokens.Token;
-import org.set.boardPieces.HexagonGameBoard;
 import org.set.boardPieces.Tile;
 import org.set.boardPieces.Util;
 
@@ -35,10 +35,10 @@ public class Before_game {
 		return tokens;
         }
 	
-	public static Map<String, Cave> allocateTokens(HexagonGameBoard board) {
+	public static Map<String, Cave> allocateTokens(Template board2) {
 	    Map<String, Cave> caves = new HashMap<>();
 	    ArrayList<Token> tokenList = createTokens(); 
-	    List<Tile> caveSet = board.findCaveTiles();
+	    List<Tile> caveSet = board2.findCaveTiles();
 	    Random random = new Random();
 
 	    for (Tile tile : caveSet) {
@@ -61,7 +61,7 @@ public class Before_game {
 	    return caves;
 	}
 
-    public static List<Player> addPlayer(HexagonGameBoard board) {
+    public static List<Player> addPlayer(Template board2) {
         int numPlayers;
         do {
             numPlayers = InputHelper.getIntInput("How many players are playing?",4);
@@ -87,18 +87,18 @@ public class Before_game {
             players.add(player);}
         }
 
-        board.players = players;
+        board2.players = players;
         return players;
     }
 
-    public static void placePlayersOnBoard(HexagonGameBoard board) {
-    	List<Tile> starterTiles=board.findStarterTiles();
-    	for (int i = 0; i < board.players.size(); i++) {
-    	    Player player = board.players.get(i);
+    public static void placePlayersOnBoard(Template board2) {
+    	List<Tile> starterTiles=board2.findStarterTiles();
+    	for (int i = 0; i < board2.players.size(); i++) {
+    	    Player player = board2.players.get(i);
     	    Tile tile = starterTiles.get(i % starterTiles.size());
     	    player.setPlayerPosition(tile.getRow(), tile.getCol());
     	}
 
-        board.repaint();
+        board2.repaint();
     }
 }
