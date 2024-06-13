@@ -75,6 +75,7 @@ public class During_game {
 	        String targetKey = player.getCurrentRow() + "," + player.getCurrentCol();
 	        Tile playerStandingTile = board.ParentMap.get(targetKey);
 	        int[] movingToInt = InputHelper.getPlayerMoveInput(board, playerStandingTile);
+	        
 	        if (movingToInt[0] == -100) {
 	            boolean discardMovable = InputHelper.getYesNoInput("Are you sure to discard this " + selectedMovable + "?");
 	            if (discardMovable) {
@@ -87,8 +88,11 @@ public class During_game {
             			System.out.println("You didn't use the "+ selectedMovable );
             			break;}
 	        }
+	        
 	        else if(movingToInt[0] == -200) {
 	        	int NextToBlockade=board.nextToBlockade(playerStandingTile);
+	        	if(NextToBlockade==-1) {System.out.println("You're not next to a blockade.");}
+	        	else {
 	        	Blockade block=(Blockade) board.boardPieces.get("Blockade_"+NextToBlockade);
 	        	if (Util.getColorFromString(selectedMovable.getCardType().toString()).equals(block.getColor())) {
 		            if (residualPower >= block.getPoints()) {
@@ -97,12 +101,13 @@ public class During_game {
 		                board.repaint();
 		                caveExplore(board, player);
 		            } else {
-		                System.out.println("Your " + selectedMovable + " does not have enough power to move here.");
+		                System.out.println("Your " + selectedMovable + " does not have enough power to move blockade.");
 		            }
 		        } else {
-		            System.out.println("Color of " + selectedMovable + " does not match tile color.");
-		        }
+		            System.out.println("Color of " + selectedMovable + " does not match blockade color.");
+		        }}
 	        }
+	        
 	        else {
 	        Tile movingTo=board.ParentMap.get(movingToInt[0]+","+movingToInt[1]);
 	        if (Util.getColorFromString(selectedMovable.getCardType().toString()).equals(movingTo.getColor())) {
@@ -124,6 +129,35 @@ public class During_game {
 	    }
 	}
 
-	
+	public static void removeblock(Template board) {
+		while (true) {
+			boolean wantsToContinue = InputHelper.getYesNoInput("Do you want to remove block?");
+			
+			if (wantsToContinue == false) {
+				break;
+			}
+			
+			int minIndex = 100;
+			List<Blockade> blocks = board.getAllBlockades();
+			
+			if (blocks.size() > 0) {
+				for (Blockade block : blocks) {
+					String name = block.getName();
+					int index = Integer.parseInt(name.substring("Blockade_".length()));
+
+					if (index < minIndex) {
+						minIndex = index;
+					}
+				}
+			} else {
+				System.out.println("Sorry no more blockade left");
+			}
+
+			board.removeBlockade(minIndex);
+
+			board.repaint();
+		}
+	}
+
 	
 }

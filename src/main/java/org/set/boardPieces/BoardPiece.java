@@ -62,6 +62,34 @@ public abstract class BoardPiece {
             tile.setCol(closestCoordinate[1]);}
         }
     }
+    
+    protected void cloneTiles(BoardPiece clonedPiece, double addRow, double addCol, int hexSize) {
+        int addX = (int)(addCol * 1.5 * hexSize);
+        int addY = (int)(addRow * Math.sqrt(3) * hexSize);
+        if (addCol % 2 == 1) {
+            addY += (int) (Math.sqrt(3) / 2 * hexSize);
+        }
+
+        for (Tile tile : tiles) {
+            int newX = tile.getX() + addX;
+            int newY = tile.getY() + addY;
+            int[] closestCoordinate = TileDataDic.findClosestCoordinate(newX, newY);
+
+            Tile clonedTile = tile.clone();
+            if (closestCoordinate != null) {
+                clonedTile.setRow(closestCoordinate[0]);
+                clonedTile.setCol(closestCoordinate[1]);
+                clonedTile.setX(closestCoordinate[2]);
+                clonedTile.setY(closestCoordinate[3]);
+                clonedTile.setType(tile.getType());
+                clonedTile.setPoints(tile.getPoints());
+                clonedTile.setQ(tile.getQ());
+                clonedTile.setR(tile.getR());
+                clonedPiece.addTile(clonedTile);
+            }
+        }
+    }
+
     public Set<int[]> findOverlappingNeighbors(BoardPiece bpB) {
         Set<int[]> overlappingNeighbors = new LinkedHashSet<>();
         Set<int[]> neighborsA = new LinkedHashSet<>(getAllNeighbors());

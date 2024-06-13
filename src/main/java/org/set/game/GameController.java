@@ -30,7 +30,7 @@ public class GameController {
         this.board = board2;
         GameState = "Game Starts";
         caveMap=Before_game.allocateTokens(board2);
-
+//        During_game.removeblock(board2);
         
         players = Before_game.addPlayer(board2);
         Before_game.placePlayersOnBoard(board2);

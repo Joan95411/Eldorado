@@ -63,32 +63,8 @@ public class WinningPiece extends BoardPiece {
 	@Override
 	public WinningPiece clone(double addRow, double addCol,int hexSize) {
 		WinningPiece clonedWinning = new WinningPiece();
-		int addX = (int)(addCol * 1.5 * hexSize);
-        int addY = (int)(addRow *  Math.sqrt(3) * hexSize);
-
-        if (addCol % 2 == 1) {
-        	addY += (int) (Math.sqrt(3) / 2 * hexSize);
-        }
-        for (Tile tile : tiles) {
-      	int newX = tile.getX()+addX;
-      	int newY = tile.getY()+addY;
-      	int[] closestCoordinate = TileDataDic.findClosestCoordinate(newX, newY);
-      	
-        Tile clonedTile = tile.clone();
-          if (closestCoordinate != null) {
-              // Update tile's position to the closest original coordinate
-          	clonedTile.setRow(closestCoordinate[0]);
-          	clonedTile.setCol(closestCoordinate[1]);
-          	clonedTile.setX(closestCoordinate[2]);
-          	clonedTile.setY(closestCoordinate[3]);
-          	clonedTile.setType(tile.getType());
-          clonedTile.setPoints(tile.getPoints());
-          clonedTile.setQ(tile.getQ());
-          clonedTile.setR(tile.getR());
-          clonedWinning.addTile(clonedTile);
-          }
-      }
-      return clonedWinning;
+        cloneTiles(clonedWinning, addRow, addCol, hexSize);
+        return clonedWinning;
     }
 	
 	@Override

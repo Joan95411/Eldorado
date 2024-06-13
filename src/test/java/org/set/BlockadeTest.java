@@ -41,7 +41,8 @@ public class BlockadeTest {
      */
     @Test
     public void setBlockadePoints() {
-        blockade.setPoints(5);
+//        blockade.setPoints(5);
+//    	no need to set points, all blockade only have 1 points from the game box
     }
 
     /**

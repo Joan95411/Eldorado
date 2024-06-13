@@ -8,7 +8,7 @@ import java.util.Random;
 
 public class Blockade extends BoardPiece {
     private static int blockadeCount = 0;
-    private int points;
+    private int points=1;
     private int[] neighbors;
     private Color color;
     private double[] addRowCol;
@@ -39,9 +39,6 @@ public class Blockade extends BoardPiece {
     	return name;
     }
 
-    public void setPoints(int points) {
-        this.points = points;
-    }
     public int getPoints() {
     	return points;
     }
@@ -83,35 +80,10 @@ public class Blockade extends BoardPiece {
     
     @Override
     public Blockade clone(double addRow, double addCol,int hexSize) {
-    	if (tiles.isEmpty()) {
-            throw new IllegalStateException("Cannot clone a Blockade with no tiles added.");
-            // or return null; if you prefer
-        }
-    	Blockade clonedBlock = new Blockade();
-        int addX = (int)(addCol * 1.5 * hexSize);
-        int addY = (int)(addRow *  Math.sqrt(3) * hexSize);
-        if (addCol % 2 == 1) {
-        	addY += (int) (Math.sqrt(3) / 2 * hexSize);
-        }
-        
-        for (Tile tile : tiles) {
-      	int newX = tile.getX()+addX;
-      	int newY = tile.getY()+addY;
-      	int[] closestCoordinate = TileDataDic.findClosestCoordinate(newX, newY);
-      	
-        Tile clonedTile = tile.clone();
-          if (closestCoordinate != null) {
-              
-      	clonedTile.setRow(closestCoordinate[0]);
-      	clonedTile.setCol(closestCoordinate[1]);
-      	clonedTile.setX(closestCoordinate[2]);
-      	clonedTile.setY(closestCoordinate[3]);
-      	clonedBlock.addTile(clonedTile);
-          }
-      }
+        Blockade clonedBlock = new Blockade();
+        cloneTiles(clonedBlock, addRow, addCol, hexSize);
         clonedBlock.setColor(tiles.get(0).getType());
-        clonedBlock.setPoints(this.points);
-      return clonedBlock;
+        return clonedBlock;
     }
     
     @Override
@@ -121,8 +93,6 @@ public class Blockade extends BoardPiece {
         TileType temp = COLOR_RANGE[index];
         setColor(temp);
 
-        int points = random.nextInt(POINTS_MAX - POINTS_MIN + 1) + POINTS_MIN;
-        this.points = points;
     }
 
     @Override
