@@ -130,8 +130,6 @@ public class Terrain extends BoardPiece {
     public void draw(Graphics2D g2d, int hexSize) {
         for (Tile tile : tiles) {
         	Color color=tile.getColor();
-        	if(color==null) {
-        	System.out.println(tile.getType());}
             Color transparentColor = new Color(color.getRed(), color.getGreen(), color.getBlue(), 150); 
             tile.drawTile(g2d, hexSize,transparentColor,Color.BLACK);
         }

@@ -17,7 +17,7 @@ public class Main {
         if(setupChange) {
         	board=new Team03Board(35,35,25);
         }else {
-        	board=new Team04Board(25,35,25);
+        	board=new Team04Board(25,30,25);
         }
         JScrollPane scrollPane = new JScrollPane(board);
         frame.add(scrollPane);

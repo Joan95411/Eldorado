@@ -69,26 +69,37 @@ public class Util {
     }
 	
 	public static String readFile(String basePath, String fileName) {
-		try {
-			// Construct the full path
-			Path fullPath = Paths.get(basePath, fileName);
+	    try {
+	        // Validate the fileName to prevent path traversal
+	        if (fileName.contains("..") || fileName.contains("/") || fileName.contains("\\")) {
+	            System.err.println("Invalid file name.");
+	            return null;
+	        }
 
-			// Check if the file exists and is a regular file
-			if (Files.exists(fullPath) && Files.isRegularFile(fullPath)) {
-				// Read the file content
-				String tileDataJson = new String(Files.readAllBytes(fullPath));
-				return tileDataJson;
-			}
-			else {
-				// Handle if the file does not exist or is not a regular file
-				System.err.println("Data file not found or is not a regular file.");
-			}
-		
-		
-	}catch (IOException | JSONException e) {
-		e.printStackTrace();
+	        // Construct the full path
+	        Path baseDir = Paths.get(basePath).toRealPath(); // Get the canonical path to the base directory
+	        Path fullPath = baseDir.resolve(fileName).normalize(); // Resolve and normalize the file path
+
+	        // Check if the file is within the base directory
+	        if (!fullPath.startsWith(baseDir)) {
+	            System.err.println("Invalid file path. File must be within the base directory.");
+	            return null;
+	        }
+
+	        // Check if the file exists and is a regular file
+	        if (Files.exists(fullPath) && Files.isRegularFile(fullPath)) {
+	            // Read the file content
+	            return new String(Files.readAllBytes(fullPath));
+	        } else {
+	            // Handle if the file does not exist or is not a regular file
+	            System.err.println("Data file not found or is not a regular file.");
+	        }
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
+	    return null;
 	}
-	return null;}
+
 	
 	public static JSONObject readJsonData(String basePath, String fileName, String type) {
 		String tileDataJson=readFile(basePath,fileName);
