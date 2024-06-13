@@ -1,5 +1,6 @@
 package org.set.game;
 
+import java.awt.Color;
 import java.util.*;
 
 import org.set.game.InputHelper;
@@ -70,18 +71,18 @@ public class Before_game {
 
         // Create an array to store player instances
         List<Player> players = new ArrayList<>();
-
+        List <Color> colors=new ArrayList<>();
         // Loop through each player
         for (int i = 0; i < numPlayers; i++) {
             String color = InputHelper.getInput("Player " + (i + 1) + ", choose your color:", 1)[0];
-            if(Util.getColorFromString(color)==null) {
-            	System.out.println("Please choose a normal color, like red, blue or black");
+            if(colors.contains(Util.getColorFromString(color))) {
+            	System.out.println("This color is not available, choose another color.");
             	i--;
             }
             else {
             Player player = new Player(Util.getColorFromString(color));
             player.setName(color);
-            // Add the player to the players list
+            colors.add(Util.getColorFromString(color));
             players.add(player);}
         }
 

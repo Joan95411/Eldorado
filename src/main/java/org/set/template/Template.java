@@ -117,13 +117,8 @@ public abstract class Template extends JPanel {
     
     
     public void drawPiles(Graphics2D g2d, Map<Card, Integer> currentMarket, String caption, int[] temp, int maxCardsPerRow,int cardSpacing) {
-        g2d.setColor(Color.BLACK);
-        int fontSize = hexSize / 3;
-        Font font = new Font("Arial", Font.BOLD, fontSize);
-        g2d.setFont(font);
-
-        FontMetrics fm = g2d.getFontMetrics();
-        int captionWidth = fm.stringWidth(caption);
+        
+    	int captionWidth = setAssetFont(g2d, caption, temp);
         g2d.drawString(caption, temp[0], temp[1]);
         int totalCards = currentMarket.size();
         int cardsDrawn = 0;
@@ -148,18 +143,11 @@ public abstract class Template extends JPanel {
             }i++;
         }
     }
+    
     public void drawAssets(Graphics2D g2d, List<? extends Asset> assets, String caption, int[] temp, int maxAssetsPerRow, int assetSpacing) {
-        g2d.setColor(Color.BLACK);
-        int fontSize = hexSize / 3;
-        Font font = new Font("Arial", Font.BOLD, fontSize);
-        g2d.setFont(font);
+        
+        int captionWidth = setAssetFont(g2d, caption, temp);
 
-        FontMetrics fm = g2d.getFontMetrics();
-        int captionWidth = fm.stringWidth(caption);
-        g2d.drawString(caption, temp[0], temp[1]);
-
-        int assetWidth = cardWidth; // Assuming cardWidth is the same for both cards and tokens
-        int assetHeight = cardHeight; // Assuming cardHeight is the same for both cards and tokens
         int totalAssets = assets.size();
         int assetsDrawn = 0;
 
@@ -167,11 +155,11 @@ public abstract class Template extends JPanel {
             int row = i / maxAssetsPerRow; // Calculate the row index
             int col = i % maxAssetsPerRow; // Calculate the column index
 
-            int x = temp[0] + captionWidth + col * (assetWidth + assetSpacing);
-            int y = temp[1] + row * (assetHeight + assetSpacing);
+            int x = temp[0] + captionWidth + col * (cardWidth + assetSpacing);
+            int y = temp[1] + row * (cardHeight + assetSpacing);
 
-            assets.get(i).draw(g2d, x, y, assetWidth, assetHeight);
-            g2d.drawString("Index: " + i, x + 10, y + assetHeight / 2);
+            assets.get(i).draw(g2d, x, y, cardWidth, cardHeight);
+            g2d.drawString("Index: " + i, x + 10, y + cardHeight / 2);
             g2d.drawString(assets.get(i).getName(), x, y);
             assetsDrawn++;
 
@@ -181,7 +169,17 @@ public abstract class Template extends JPanel {
         }
     }
 
-    
+    public int setAssetFont(Graphics2D g2d,String caption, int[] temp) {
+    	g2d.setColor(Color.BLACK);
+        int fontSize = hexSize / 3;
+        Font font = new Font("Arial", Font.BOLD, fontSize);
+        g2d.setFont(font);
+
+        FontMetrics fm = g2d.getFontMetrics();
+        int captionWidth = fm.stringWidth(caption);
+        g2d.drawString(caption, temp[0], temp[1]);
+        return captionWidth;
+    }
     
 
     public Terrain getLastTerrain() {
@@ -330,6 +328,7 @@ public abstract class Template extends JPanel {
             piece.move(-change2[0], -change2[1],hexSize);
         }
     }
+    
     public String nextToCave(Tile tile) {
         for (int[] neighbor : tile.getNeighbors()) {
         	Tile temp = ParentMap.get(neighbor[0]+","+neighbor[1]);
@@ -339,6 +338,7 @@ public abstract class Template extends JPanel {
         	}
         } return null;
     }
+    
     public int nextToBlockade(Tile tile) {
         for (int[] neighbor : tile.getNeighbors()) {
         	Tile temp = ParentMap.get(neighbor[0]+","+neighbor[1]);
@@ -349,12 +349,14 @@ public abstract class Template extends JPanel {
         	}
         } return -1;
     }
+    
     public boolean isWinning(Tile tile) {
     	if(tile.getType()==TileType.Winning) {
     		System.out.println("this triggers the final round");
     		return true;
     	} return false;
     }
+    
     public boolean isValidPosition(int row, int col) {
         String targetKey = row + "," + col;//maybe change change this to Tile 
         Tile temp = ParentMap.get(targetKey);

@@ -128,7 +128,8 @@ public class During_game {
 	        board.repaint();
 	    }
 	}
-
+	
+	
 	public static void removeblock(Template board) {
 		while (true) {
 			boolean wantsToContinue = InputHelper.getYesNoInput("Do you want to remove block?");

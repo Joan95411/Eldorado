@@ -36,6 +36,29 @@ public class InputHelper {
             return tokens;
         }
     }
+    public static int[] getPositionInput(Template board) {//to be deleted, only for testing use
+        while (true) {
+            String[] tokens = getInput("Enter row and column for player's position (e.g., '2,3'), or type 'stop' to stop with moving:", 2);
+            if(tokens==null) {break;         }
+            try {
+                int row = Integer.parseInt(tokens[0].trim());
+                int col = Integer.parseInt(tokens[1].trim());
+                if (!board.isValidPosition(row, col)) {
+                    System.out.println("Invalid position. Please enter valid coordinates.");
+                    continue;
+                }
+                String targetKey = row + "," + col;
+                Tile temp = board.ParentMap.get(targetKey);
+                System.out.println("You are currently on " + temp.getParent());
+                return new int[] { row, col };
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter valid integers for row and column.");
+                continue;
+            }
+
+        }
+    	return new int[] { -100, -100 };
+    }
 
     public static int getIntInput(String prompt, int max,int min) {
         while (true) {
