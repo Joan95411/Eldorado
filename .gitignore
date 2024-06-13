@@ -40,8 +40,11 @@ build/
 .DS_Store
 
 /target
+!/target/site/
+!/target/site/jacoco
 /out
 .env
+
 
 /.idea
 /.gitlab-ci-local
