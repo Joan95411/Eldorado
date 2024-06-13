@@ -1,5 +1,5 @@
 package org.set.boardPieces;
-
+import org.apache.commons.io.FilenameUtils;
 import java.awt.Color;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -68,23 +68,15 @@ public class Util {
 	    return null;
     }
 	
+	
+
 	public static String readFile(String basePath, String fileName) {
 	    try {
-	        // Validate the fileName to prevent path traversal
-	        if (fileName.contains("..") || fileName.contains("/") || fileName.contains("\\")) {
-	            System.err.println("Invalid file name.");
-	            return null;
-	        }
+	        // Sanitize the file name to prevent path traversal
+	        String sanitizedFileName = FilenameUtils.getName(fileName);
 
 	        // Construct the full path
-	        Path baseDir = Paths.get(basePath).toRealPath(); // Get the canonical path to the base directory
-	        Path fullPath = baseDir.resolve(fileName).normalize(); // Resolve and normalize the file path
-
-	        // Check if the file is within the base directory
-	        if (!fullPath.startsWith(baseDir)) {
-	            System.err.println("Invalid file path. File must be within the base directory.");
-	            return null;
-	        }
+	        Path fullPath = Paths.get(basePath, sanitizedFileName).normalize();
 
 	        // Check if the file exists and is a regular file
 	        if (Files.exists(fullPath) && Files.isRegularFile(fullPath)) {
@@ -99,6 +91,7 @@ public class Util {
 	    }
 	    return null;
 	}
+
 
 	
 	public static JSONObject readJsonData(String basePath, String fileName, String type) {
