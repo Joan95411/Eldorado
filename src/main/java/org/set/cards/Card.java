@@ -3,12 +3,13 @@ package org.set.cards;
 import org.set.cards.action.ActionCardType;
 import org.set.cards.expedition.ExpeditionCard;
 import org.set.cards.expedition.ExpeditionCardType;
+import org.set.player.Asset;
 
 import java.awt.*;
 import java.util.Arrays;
 import org.set.boardPieces.Util;
 
-public abstract class Card {
+public abstract class Card extends Asset{
 	public String name;
 	public CardType cardType;
 	public int cost;
@@ -21,8 +22,9 @@ public abstract class Card {
 		this.cost = cost;
 		this.singleUse = singleUse;
 	}
-
-	private CardType getCardType() {
+	
+	@Override
+	public CardType getCardType() {
 		String[] greenCardTypes = { ExpeditionCardType.Explorer.toString(), ExpeditionCardType.Scout.toString(), ExpeditionCardType.Trailblazer.toString(), ExpeditionCardType.Pioneer.toString(), ExpeditionCardType.Giant_Machete.toString() };
 		String[] blueCardTypes = { ExpeditionCardType.Sailor.toString(), ExpeditionCardType.Captain.toString() };
 		String[] yellowCardTypes = { ExpeditionCardType.Traveller.toString(), ExpeditionCardType.Photographer.toString(), ExpeditionCardType.Journalist.toString(), ExpeditionCardType.Treasure_Chest.toString(), ExpeditionCardType.Millionaire.toString() };
@@ -47,6 +49,11 @@ public abstract class Card {
 	public int getCost() {
 		return cost;
     }
+	@Override
+	public String getName() {
+		return name;
+    }
+	@Override
 	public double getValue() {
 		return 0.5;
     }
@@ -67,7 +74,8 @@ public abstract class Card {
                 ", cost=" + cost +
                 '}';
     }
-
+	
+	@Override
 	public void draw(Graphics2D g2d, int x, int y, int width, int height) {
 		Color color = Util.getColorFromString(cardType.toString());
 		Color transparentColor = new Color(color.getRed(), color.getGreen(), color.getBlue(), 100);

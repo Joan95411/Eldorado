@@ -8,10 +8,11 @@ import org.set.boardPieces.Util;
 import org.set.cards.CardActionHandler;
 import org.set.cards.action.ActionCardType;
 import org.set.cards.expedition.ExpeditionCardType;
+import org.set.player.Asset;
 import org.set.player.Player;
 import org.set.cards.CardType;
 
-public class Token {
+public class Token extends Asset{
     
     public CardType cardType;
     public CaveTokenType caveTokenType;
@@ -38,6 +39,7 @@ public class Token {
                 '}';
     }
     
+    @Override
     public void draw(Graphics2D g2d, int x, int y, int width, int height) {
 		Color color = Util.getColorFromString(cardType.toString());
 		Color transparentColor = new Color(color.getRed(), color.getGreen(), color.getBlue(), 100);
@@ -61,13 +63,27 @@ public class Token {
 		        g2d.drawString("Power: " + power, x + width / 2 - 15, y + height / 2 + 10);
 		    }
 		    
-		
 	}
-
-	public int getValue() {
+    
+    public CardType getCardType() {
+    	return cardType;
+    }
+    
+    @Override
+	public double getValue() {
 		if(caveTokenType==CaveTokenType.CoinOne||caveTokenType==CaveTokenType.CoinTwo) {
 			return power;
-		}
-		return 0;
+		}else {
+		return 0;}
+	}
+    
+    public int getPower() {
+        return power;
+    }
+    
+	@Override
+	public String getName() {
+		
+		return caveTokenType.toString();
 	}
 }

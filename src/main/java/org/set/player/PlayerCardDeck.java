@@ -3,6 +3,7 @@ package org.set.player;
 import org.set.cards.Card;
 import org.set.cards.expedition.ExpeditionCard;
 import org.set.cards.expedition.ExpeditionCardType;
+import org.set.tokens.Token;
 
 import java.util.*;
 
@@ -11,12 +12,15 @@ public class PlayerCardDeck {
     private final List<Card> discardPile;
     private final List<Card> cardsInHand;
     private final List<Card> mustBePlayedCardsInHand;
+    private List<Token> myTokens;
 
     public PlayerCardDeck() {
         drawPile = new ArrayList<>();
         discardPile = new ArrayList<>();
         cardsInHand = new ArrayList<>();
         mustBePlayedCardsInHand = new ArrayList<>();
+        myTokens=new ArrayList<>();
+        
         int blueCount = 1;
         int greenCount = 3;
         int yellowCount = 4;
@@ -48,7 +52,7 @@ public class PlayerCardDeck {
         Collections.shuffle(drawPile);
     }
     
-    public double getValue() {
+    public double getCardsValue() {
     	double totalGold=0;
     	for(int i = 0; i < cardsInHand.size(); i++) {
     		totalGold+=cardsInHand.get(i).getValue();
@@ -148,4 +152,69 @@ public class PlayerCardDeck {
     public List<Card> getMustBePlayedCardsInHand() {
         return mustBePlayedCardsInHand;
     }
+    
+    public void addToken(Token token) {
+        myTokens.add(token);
+    }
+	public List<Token> getTokens() {
+        return myTokens;
+    }
+	
+	public double getTokenValue() {
+    	int totalGold=0;
+    	for(int i = 0; i < myTokens.size(); i++) {
+    		totalGold+=myTokens.get(i).getValue();
+    	}
+    	return totalGold;
+    }
+	public void discardToken(int i) {
+		myTokens.remove(i);
+		
+	}
+	public int getTokenPower() {
+		int totalPower=0;
+    	for(int i = 0; i < myTokens.size(); i++) {
+    		totalPower+=myTokens.get(i).power;
+    	}
+    	return totalPower;
+	}
+	public List<Asset> getMyasset() {
+		List<Asset> assets=new ArrayList<>();
+		assets.addAll(cardsInHand);
+		assets.addAll(myTokens);
+		return assets;
+	}
+	
+	public double getTotalValue() {
+    	
+    	return getCardsValue()+getTokenValue();
+    }
+	
+	public double getSelectedValue(List<Integer> assetIndices) {
+		double buyingGold = 0;
+		for (int i : assetIndices) {
+            Asset asset = getMyasset().get(i);
+            buyingGold += asset.getValue();
+        }
+		return buyingGold;
+	}
+	public void discardAsset(int assetIndex) {
+	    List<Asset> assets = getMyasset();
+	    Asset selectedAsset = assets.get(assetIndex);
+
+	    if (selectedAsset instanceof Card) {
+	        // Find the corresponding index in cardsInHand and discard the card
+	        int cardIndex = cardsInHand.indexOf(selectedAsset);
+	        if (cardIndex != -1) {
+	            discardFromHand(cardIndex);
+	        }
+	    } else if (selectedAsset instanceof Token) {
+	        // Find the corresponding index in myTokens and discard the token
+	        int tokenIndex = myTokens.indexOf(selectedAsset);
+	        if (tokenIndex != -1) {
+	            discardToken(tokenIndex);
+	        }
+	    }
+	}
+
 }

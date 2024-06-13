@@ -2,7 +2,7 @@ package org.set.template;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-
+import org.set.player.Asset;
 import org.set.player.Player;
 import org.set.tokens.Token;
 import org.set.boardPieces.Blockade;
@@ -87,84 +87,34 @@ public abstract class Template extends JPanel {
         }
         
         if (currentPlayer != null) {
-        	List<Card> PlayerCards=currentPlayer.myDeck.getCardsInHand();
-        	if(PlayerCards != null) {
-            drawPlayerDeck(g2d,PlayerCards);
-        }List<Card> PlayerDiscardCards=currentPlayer.myDeck.getDiscardPile();
-        	if(PlayerDiscardCards != null&&discardPhase==true) {
-        		drawPlayerDiscardPile(g2d,PlayerDiscardCards);
-        }
-        	List<Token> PlayerTokens=currentPlayer.getTokens();
-        	if(PlayerTokens != null) {
-        		drawPlayerToken(g2d,PlayerTokens);
-        }
+        	List<Asset> assets=currentPlayer.myDeck.getMyasset();
+        	if(assets.size()>0) {
+        		int[] temp = TileDataDic.tilesMap.get((numRows - 10) + ",1");
+        		drawAssets(g2d, assets, "Current Player's assets: ", temp, 10, cardWidth / 10);
+        		}
+        	List<Card> playerDiscardCards = currentPlayer.myDeck.getDiscardPile();
+        	if (playerDiscardCards != null && discardPhase) {
+        	    int[] temp = TileDataDic.tilesMap.get((numRows - 6) + ",19");
+        	    drawAssets(g2d, playerDiscardCards, "Current Player's Discard pile: ", temp, 8, cardWidth / 10);
+        	}
         }
         if(market!=null) {
         if(market.getCurrentMarketBoard()!=null) {
-        	drawCurrentMarket(g2d);
+        	int[] temp = TileDataDic.tilesMap.get((numRows - 6) + ",1");
+            Map<Card, Integer> currentMarket = market.getCurrentMarketBoard();
+            drawPiles(g2d, currentMarket, "Current Market: ", temp, 6,cardWidth / 4);
         }
         if(market.getMarketBoardOptions()!=null&&discardPhase==false) {
-        	drawMarketOptions(g2d);
+        	int[] temp = TileDataDic.tilesMap.get((numRows-6)+",19");
+            HashMap<Card, Integer> marketoption = market.getMarketBoardOptions();
+            drawPiles(g2d, marketoption, "More Market Options: ", temp, 6,cardWidth / 4);
         }}
     }
     
     
-    public void drawPlayerToken(Graphics2D g2d,List<Token> PlayerTokens) {
-    	int[] temp = TileDataDic.tilesMap.get((numRows-10)+",19");
-        g2d.setColor(Color.BLACK);
-        int fontSize = hexSize/3;
-        Font font = new Font("Arial", Font.BOLD, fontSize);
-        g2d.setFont(font);
-
-        FontMetrics fm = g2d.getFontMetrics();
-        String caption = "Current Player's tokens: ";
-        int captionWidth = fm.stringWidth(caption);
-        g2d.drawString(caption, temp[0], temp[1]);
-        int maxTokensPerRow = 6;
-        int tokenWidth=cardWidth;
-        int tokenHeight=cardWidth;
-        int tokenSpacing = tokenWidth/5 ;
-        int totalTokens = PlayerTokens.size();
-        int TokenDrawn = 0;
-        for (int i = 0; i < totalTokens; i++) {
-            int row = i / maxTokensPerRow; // Calculate the row index
-            int col = i % maxTokensPerRow; // Calculate the column index
-
-            int x = temp[0] + captionWidth + col * (tokenWidth + tokenSpacing);
-            int y = temp[1] + row * (tokenHeight + tokenSpacing);
-
-            PlayerTokens.get(i).draw(g2d, x, y, tokenWidth, tokenHeight);
-            g2d.drawString("Index: " + i, (int)(x + tokenWidth/5),(int)( y + tokenWidth/3));
-            TokenDrawn++;
-
-            if (TokenDrawn >= totalTokens) {
-                break;
-            }
-        }
-    }
     
     
     
-    public void drawPlayerDeck(Graphics2D g2d, List<Card> PlayerCards) {
-        int[] temp = TileDataDic.tilesMap.get((numRows - 10) + ",1");
-        drawCards(g2d, PlayerCards, "Current Player's deck: ", temp, 8, cardWidth / 10);
-    }
-
-    public void drawCurrentMarket(Graphics2D g2d) {
-        int[] temp = TileDataDic.tilesMap.get((numRows - 6) + ",1");
-        Map<Card, Integer> currentMarket = market.getCurrentMarketBoard();
-        drawPiles(g2d, currentMarket, "Current Market: ", temp, 6,cardWidth / 4);
-        
-    }
-    public void drawPlayerDiscardPile(Graphics2D g2d, List<Card> PlayerCards) {
-        int[] temp = TileDataDic.tilesMap.get((numRows-6)+",19");
-        drawCards(g2d, PlayerCards, "Current Player's Discard pile: ", temp, 8, cardWidth / 10);
-    }
-    public void drawMarketOptions(Graphics2D g2d) {
-        int[] temp = TileDataDic.tilesMap.get((numRows-6)+",19");
-        HashMap<Card, Integer> marketoption = market.getMarketBoardOptions();
-        drawPiles(g2d, marketoption, "More Market Options: ", temp, 6,cardWidth / 4);
-    }
     
     public void drawPiles(Graphics2D g2d, Map<Card, Integer> currentMarket, String caption, int[] temp, int maxCardsPerRow,int cardSpacing) {
         g2d.setColor(Color.BLACK);
@@ -198,8 +148,7 @@ public abstract class Template extends JPanel {
             }i++;
         }
     }
-    
-    public void drawCards(Graphics2D g2d, List<Card> cards, String caption, int[] temp, int maxCardsPerRow,int cardSpacing) {
+    public void drawAssets(Graphics2D g2d, List<? extends Asset> assets, String caption, int[] temp, int maxAssetsPerRow, int assetSpacing) {
         g2d.setColor(Color.BLACK);
         int fontSize = hexSize / 3;
         Font font = new Font("Arial", Font.BOLD, fontSize);
@@ -208,27 +157,31 @@ public abstract class Template extends JPanel {
         FontMetrics fm = g2d.getFontMetrics();
         int captionWidth = fm.stringWidth(caption);
         g2d.drawString(caption, temp[0], temp[1]);
-        int totalCards = cards.size();
-        int cardsDrawn = 0;
 
-        for (int i = 0; i < totalCards; i++) {
-            int row = i / maxCardsPerRow; // Calculate the row index
-            int col = i % maxCardsPerRow; // Calculate the column index
+        int assetWidth = cardWidth; // Assuming cardWidth is the same for both cards and tokens
+        int assetHeight = cardHeight; // Assuming cardHeight is the same for both cards and tokens
+        int totalAssets = assets.size();
+        int assetsDrawn = 0;
 
-            int x = temp[0] + captionWidth + col * (cardWidth + cardSpacing);
-            int y = temp[1] + row * (cardHeight + cardSpacing);
+        for (int i = 0; i < totalAssets; i++) {
+            int row = i / maxAssetsPerRow; // Calculate the row index
+            int col = i % maxAssetsPerRow; // Calculate the column index
 
-            cards.get(i).draw(g2d, x, y, cardWidth, cardHeight);
-            g2d.drawString("Index: " + i, x + 5, y + cardHeight / 2);
-            g2d.drawString( cards.get(i).name, x , y );
-            cardsDrawn++;
-            
-            if (cardsDrawn >= totalCards) {
+            int x = temp[0] + captionWidth + col * (assetWidth + assetSpacing);
+            int y = temp[1] + row * (assetHeight + assetSpacing);
+
+            assets.get(i).draw(g2d, x, y, assetWidth, assetHeight);
+            g2d.drawString("Index: " + i, x + 10, y + assetHeight / 2);
+            g2d.drawString(assets.get(i).getName(), x, y);
+            assetsDrawn++;
+
+            if (assetsDrawn >= totalAssets) {
                 break;
             }
         }
     }
 
+    
     
 
     public Terrain getLastTerrain() {
@@ -389,7 +342,16 @@ public abstract class Template extends JPanel {
         	}
         } return null;
     }
-    
+    public int nextToBlockade(Tile tile) {
+        for (int[] neighbor : tile.getNeighbors()) {
+        	Tile temp = ParentMap.get(neighbor[0]+","+neighbor[1]);
+        	if(temp==null) {continue;}
+        	if(temp.getParent().startsWith("Blockade_")) {
+        		int blockIndex=Integer.parseInt(temp.getParent().substring("Blockade_".length()));
+        		return blockIndex;
+        	}
+        } return -1;
+    }
     public boolean isWinning(Tile tile) {
     	if(tile.getType()==TileType.Winning) {
     		System.out.println("this triggers the final round");

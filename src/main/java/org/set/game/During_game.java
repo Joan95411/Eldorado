@@ -1,6 +1,7 @@
 package org.set.game;
 
 import java.awt.Color;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -9,6 +10,7 @@ import org.set.boardPieces.Tile;
 import org.set.boardPieces.Util;
 import org.set.cards.Card;
 import org.set.cards.expedition.ExpeditionCard;
+import org.set.player.Asset;
 import org.set.player.Player;
 import org.set.template.Template;
 import org.set.tokens.Cave;
@@ -34,7 +36,7 @@ public class During_game {
         	    System.out.println("Adjacent to cave: " + correspondingCave.tile);
         	    Token token=correspondingCave.getAtoken();
         	    if(token!=null) {
-	        	player.addToken(token);
+	        	player.myDeck.addToken(token);
         		player.setLastActionCaveExplore(true);
         		board.repaint();}
         	    else {
@@ -43,151 +45,88 @@ public class During_game {
             } 
         }
             
-    
-	
-	public static void PlayerMove(Template board, Player player) {
-	    List<Card> currentDeck = player.myDeck.getCardsInHand();
-	    while (currentDeck.size()>0) {//expedition card size >0
+	public static void PlayerMove2(Template board, Player player) {
+	    
+	    
+	    while (player.myDeck.getMyasset().size() > 0) {
 	        boolean keepMoving = InputHelper.getYesNoInput("Do you want to make a movement?");
 	        if (!keepMoving) {
 	            break; // Exit the loop if the user doesn't want to keep moving
 	        }
-	        int cardIndex = InputHelper.getIntInput("Choose 1 card for Movement, input index (e.g. 0), or '-2' to use token for movement, or '-1' to stop with movement",currentDeck.size()-1,-2);
-	        if (cardIndex == -1) {
+
+	        int index = InputHelper.getIntInput("Choose 1 card/token for Movement, input index (e.g. 0), or '-1' to stop with movement", player.myDeck.getMyasset().size() - 1, -1);
+	        if (index == -1) {
 	            break;
 	        }
-	        if(cardIndex==-2) {
-	        	if(player.getTokenPower()>0) {
-	        	singleTokenMove(board, player, player.getTokens(), cardIndex);
-	        	
-		        }
-	        	else {
-	        		System.out.println("Your don't have enough token power");
-	        		continue;
-	        	}
-	        }
-	        
-	        singleMove(board, player, currentDeck, cardIndex);
+
+	        singleMove2(board, player, player.myDeck.getMyasset(), index);
 	    }
-	    System.out.println("You have still "+player.myDeck.getCardsInHand().size()+" cards for this turn.");
+
+	    System.out.println("You have still " + player.myDeck.getCardsInHand().size() + " cards for this turn.");
 	}
 
-	public static void singleTokenMove(Template board, Player player, List<Token> tokenDeck, int cardIndex) {
-		while(player.getTokenPower()>0) {
-			int tokenIndex = InputHelper.getIntInput("Choose 1 token for Movement, or '-1' to stop with movement",tokenDeck.size()-1,-1);
-	        if (tokenIndex == -1) {
-	            break;
-	        }
-	        Token selectedToken=tokenDeck.get(tokenIndex);
-	        if(selectedToken.power==0) {
-	        	System.out.println("Please select a token with power.");
-	        }
-	        int residualPower = selectedToken.power;
-		    while (residualPower > 0) {
-		    	System.out.println("You chose the " + selectedToken.toString() );
-		    	
-		    	 String targetKey = player.getCurrentRow() + "," + player.getCurrentCol();
-		         Tile playerStandingTile = board.ParentMap.get(targetKey);
-		         Tile movingTo = InputHelper.getPlayerMoveInput(board, playerStandingTile);
-		         if (movingTo.getRow() == -100) {
-		             boolean discardToken = InputHelper.getYesNoInput("Are you sure to discard this token?");
-		             if (discardToken) {
-		                 residualPower = 0;
-		                 break;
-		             } else {
-		                 System.out.println("You can discard the token or make a movement with the remaining power.");
-		                 continue;
-		             }
-		         }
-		         if (Util.getColorFromString(selectedToken.cardType.toString()).equals(movingTo.getColor())) {
-		             if (residualPower >= movingTo.getPoints()) {
-		                 player.setPlayerPosition(movingTo.getRow(), movingTo.getCol());
-		                 residualPower -= movingTo.getPoints();
-		                 board.repaint();
-		                 caveExplore(board, player);
-		             } else {
-		                 System.out.println("Your token does not have enough power to move here.");
-		             }
-		         } else {
-		             System.out.println("Token color does not match tile color.");
-		         }
-		     }
-		     if (residualPower == 0) {
-		         player.discardToken(tokenIndex);
-		         board.repaint();
-		     }
-		}
-	}
-	public static void singleMove(Template board, Player player, List<Card> currentDeck, int cardIndex) {
-	    Card selectedCard = currentDeck.get(cardIndex);
-
-	    if (!(selectedCard instanceof ExpeditionCard)) {
-	        System.out.println("Please select an Expedition card.");
-	        return;
-	    }
-	    
-	    ExpeditionCard expeditionCard = (ExpeditionCard) selectedCard;
-	    int residualPower = expeditionCard.getPower();
+	public static void singleMove2(Template board, Player player, List<Asset> myAsset, int index) {
+	    Asset selectedMovable = myAsset.get(index);
+	    System.out.println("You chose the " + selectedMovable);
+	    int residualPower = selectedMovable.getPower();
 	    while (residualPower > 0) {
-	        System.out.println("You chose the " + selectedCard.cardType.toString() + " card with Power of " + residualPower);
+	        System.out.println("You have residual Power of " + residualPower);
 	        String targetKey = player.getCurrentRow() + "," + player.getCurrentCol();
 	        Tile playerStandingTile = board.ParentMap.get(targetKey);
 	        Tile movingTo = InputHelper.getPlayerMoveInput(board, playerStandingTile);
 	        if (movingTo.getRow() == -100) {
-	            boolean discardCard = InputHelper.getYesNoInput("Are you sure to discard this card?");
-	            if (discardCard) {residualPower=0;
+	            boolean discardMovable = InputHelper.getYesNoInput("Are you sure to discard this " + selectedMovable + "?");
+	            if (discardMovable) {
+	                residualPower = 0;
 	                break;
-	            }else if(expeditionCard.getPower()>residualPower) {
-	            	System.out.println("You can discard the card or make a movement with the remaining power."); 
-	            		continue; }else {
-	            			System.out.println("You didn't use the "+ selectedCard.cardType.toString() +" card.");
-	            			break;}
+	            } else if(selectedMovable.getPower()>residualPower) {
+	                System.out.println("You can discard the " + selectedMovable + " or make a movement with the remaining power.");
+	                continue;
+	            } else {
+            			System.out.println("You didn't use the "+ selectedMovable );
+            			break;}
+
 	        }
-	        Color cardColor = Util.getColorFromString(selectedCard.cardType.toString());
-	        if (cardColor.equals(movingTo.getColor())) {
-	            if (expeditionCard.getPower() >= movingTo.getPoints()) {
+	        if (Util.getColorFromString(selectedMovable.getCardType().toString()).equals(movingTo.getColor())) {
+	            if (residualPower >= movingTo.getPoints()) {
 	                player.setPlayerPosition(movingTo.getRow(), movingTo.getCol());
 	                residualPower -= movingTo.getPoints();
 	                board.repaint();
 	                caveExplore(board, player);
 	            } else {
-	                System.out.println("Your card does not have enough power to move here.");
+	                System.out.println("Your " + selectedMovable + " does not have enough power to move here.");
 	            }
 	        } else {
-	            System.out.println("Card color does not match tile color.");
+	            System.out.println("Color of " + selectedMovable + " does not match tile color.");
 	        }
 	    }
-	    if(residualPower==0) {
-	    player.myDeck.discardFromHand(cardIndex);
-	    board.repaint();}
+	    if (residualPower == 0) {
+	        player.myDeck.discardAsset(index);
+	        board.repaint();
+	    }
 	}
 
 	
-	public static void removeblock(Template board) {
-		while (true) {
-			boolean wantsToContinue = InputHelper.getYesNoInput("Do you want to remove block?");
+	
+
+	
+	public static void removeblock(Template board, Player player,int power) {
+		String targetKey = player.getCurrentRow() + "," + player.getCurrentCol();
+        Tile PlayerStandingTile = board.ParentMap.get(targetKey);
+        int NextToBlockade=board.nextToBlockade(PlayerStandingTile);
+		while (NextToBlockade>0) {
+			boolean wantsToContinue = InputHelper.getYesNoInput("You're standing next to the blockade, do you want to remove it?");
 			
 			if (wantsToContinue == false) {
 				break;
 			}
-			
-			int minIndex = 100;
-			List<Blockade> blocks = board.getAllBlockades();
-			
-			if (blocks.size() > 0) {
-				for (Blockade block : blocks) {
-					String name = block.getName();
-					int index = Integer.parseInt(name.substring("Blockade_".length()));
-
-					if (index < minIndex) {
-						minIndex = index;
-					}
-				}
-			} else {
-				System.out.println("Sorry no more blockade left");
-			}
-
-			board.removeBlockade(minIndex);
+			Blockade block=(Blockade) board.boardPieces.get("Blockade_"+NextToBlockade);
+			int cardIndex = InputHelper.getIntInput("This blockade requires "+block.getPoints()+" power. Choose 1 card/token to remove it, input index (e.g. 0), or '-1' to stop with movement",player.myDeck.getCardsInHand().size()-1,-1);
+	        if (cardIndex == -1) {
+	            break;
+	        };
+	        
+			board.removeBlockade(NextToBlockade);
 
 			board.repaint();
 		}

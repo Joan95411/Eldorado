@@ -31,5 +31,12 @@ public class ExpeditionCard extends Card {
     public void setPower(int power) {
         this.power = power;
     }
-
+    @Override
+    public String toString() {
+        return "Card{" +
+                "cardType=" + cardType +
+                ", name=" + name +
+                ", power=" + power +
+                '}';
+    }
 }

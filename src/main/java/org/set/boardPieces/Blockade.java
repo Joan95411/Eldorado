@@ -37,7 +37,9 @@ public class Blockade extends BoardPiece {
     public void setPoints(int points) {
         this.points = points;
     }
-
+    public int getPoints() {
+    	return points;
+    }
     public void setTerrainNeighbors(int neighbor1, int neighbor2) {
         this.neighbors[0] = neighbor1;
         this.neighbors[1] = neighbor2;

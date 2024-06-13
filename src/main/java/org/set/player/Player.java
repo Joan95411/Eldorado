@@ -13,13 +13,12 @@ public class Player {
     public Color color;
     public PlayerCardDeck myDeck;
     private boolean lastActionWasCaveExplore;
-    private List<Token> myTokens;
+    
 
 
     public Player(Color selectedColor) {
         this.color = selectedColor;
         myDeck = new PlayerCardDeck();
-        myTokens=new ArrayList<>();
         if (selectedColor == null || usedColors.contains(selectedColor)) {
             throw new IllegalArgumentException("The color " + selectedColor + " is already used");
         } else {
@@ -82,29 +81,5 @@ public class Player {
         g2d.fillPolygon(xPoints, yPoints, 8);
     }
     
-    public void addToken(Token token) {
-        myTokens.add(token);
-    }
-	public List<Token> getTokens() {
-        return myTokens;
-    }
-	
-	public double getTokenValue() {
-    	int totalGold=0;
-    	for(int i = 0; i < myTokens.size(); i++) {
-    		totalGold+=myTokens.get(i).getValue();
-    	}
-    	return totalGold;
-    }
-	public void discardToken(int i) {
-		myTokens.remove(i);
-		
-	}
-	public int getTokenPower() {
-		int totalPower=0;
-    	for(int i = 0; i < myTokens.size(); i++) {
-    		totalPower+=myTokens.get(i).power;
-    	}
-    	return totalPower;
-	}
+    
 }
