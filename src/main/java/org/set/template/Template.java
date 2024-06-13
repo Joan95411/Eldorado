@@ -317,10 +317,7 @@ public abstract class Template extends JPanel {
         double[] change2=blockRemove.calcRowColChange(blockAddRowCol[0], blockAddRowCol[1]);
         int indexTerrain = blockRemove.getTerrainNeighbors()[0];
         boardPieces.remove("Blockade_" + (blockRemoveIndex));
-        
-        System.out.println(blockAddRowCol[0]+" "+ blockAddRowCol[1]);
-        System.out.println((-change2[0])+" "+(-change2[1]));
-        
+                
         for (BoardPiece piece : boardPieces.values()) {
             if (piece.getName().startsWith("Terrain_")) {
                 String indexString = piece.getName().substring("Terrain_".length()); 

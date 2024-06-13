@@ -22,7 +22,9 @@ public class InputHelper {
             if (input.equalsIgnoreCase("stop")) {
                 return null; // Return null to indicate stopping
             }
-
+            if (input.equalsIgnoreCase("block")) {
+                return new String[] {"block"}; 
+            }
             String[] tokens = input.split(",");
 
             // Check if the input length matches the expected length
@@ -97,8 +99,9 @@ public class InputHelper {
     
     public static int[] getPositionInput(Template board) {
         while (true) {
-            String[] tokens = getInput("Enter row and column for player's position (e.g., '2,3'), or type 'stop' to stop with moving:", 2);
-            if(tokens==null) {break;         }
+            String[] tokens = getInput("Enter row and column for player's position (e.g., '2,3'), or type 'block' to remove block, or 'stop' to stop with moving:", 2);
+            if(tokens==null) {break;}
+            if(tokens[0]=="block") {return new int[] {-200,-200};}
             try {
                 int row = Integer.parseInt(tokens[0].trim());
                 int col = Integer.parseInt(tokens[1].trim());
@@ -119,8 +122,7 @@ public class InputHelper {
     	return new int[] { -100, -100 };
     }
 
-    public static Tile getPlayerMoveInput(Template board, Tile tile) {
-//        List<int[]> neighbors = tile.getNeighbors();
+    public static int[] getPlayerMoveInput(Template board, Tile tile) {
     	Set<String> neighborSet = new HashSet<>();
         for (int[] neighbor : tile.getNeighbors()) {
             neighborSet.add(neighbor[0] + "," + neighbor[1]);
@@ -128,6 +130,7 @@ public class InputHelper {
         while (true) {
             String[] tokens = getInput("Enter row and column for player's position (e.g., '2,3'), or type 'stop' to stop with moving:", 2);
             if(tokens==null) {break;}
+            if(tokens[0]=="block") {return new int[] {-200,-200};}
             try {
                 int row = Integer.parseInt(tokens[0].trim());
                 int col = Integer.parseInt(tokens[1].trim());
@@ -142,15 +145,14 @@ public class InputHelper {
                     continue;
                 }
                 
-                Tile temp = board.ParentMap.get(moveKey);
-//                System.out.println("You are currently on " + temp.getParent());
-                return temp;
+                
+                return new int[] { row, col };
             } catch (NumberFormatException e) {
                 System.out.println("Invalid input. Please enter valid integers for row and column.");
                 continue;
             }
 
-        }return new Tile(-100,-100);
+        }return new int[] { -100, -100 };
     }
 
     public static boolean getYesNoInput(String question) {

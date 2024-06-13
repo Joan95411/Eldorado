@@ -10,6 +10,7 @@ public class Blockade extends BoardPiece {
     private static int blockadeCount = 0;
     private int points;
     private int[] neighbors;
+    private Color color;
     private double[] addRowCol;
     public Blockade() {
         super();
@@ -25,11 +26,15 @@ public class Blockade extends BoardPiece {
     }
 
     public void setColor(TileType color) {
-    	
+    	this.color=Util.getColorFromString(color.toString());
     	for (Tile tile : tiles) {
     		tile.setType(color);
     	}
     }
+    public Color getColor() {
+        return color;
+    }
+    
     public String getName() {
     	return name;
     }
@@ -72,12 +77,6 @@ public class Blockade extends BoardPiece {
             	addRowCol[1]-= 1;
             }
     	
-//            else if(addCol>1) {
-//            	addRowCol[1]+= 1;}
-//            else if(addCol<-1) {
-//            	addRowCol[1]-= 1;}
-            
-            
 		return addRowCol;
     	
     }

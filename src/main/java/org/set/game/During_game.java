@@ -69,12 +69,13 @@ public class During_game {
 	    Asset selectedMovable = myAsset.get(index);
 	    System.out.println("You chose the " + selectedMovable);
 	    int residualPower = selectedMovable.getPower();
+	    
 	    while (residualPower > 0) {
 	        System.out.println("You have residual Power of " + residualPower);
 	        String targetKey = player.getCurrentRow() + "," + player.getCurrentCol();
 	        Tile playerStandingTile = board.ParentMap.get(targetKey);
-	        Tile movingTo = InputHelper.getPlayerMoveInput(board, playerStandingTile);
-	        if (movingTo.getRow() == -100) {
+	        int[] movingToInt = InputHelper.getPlayerMoveInput(board, playerStandingTile);
+	        if (movingToInt[0] == -100) {
 	            boolean discardMovable = InputHelper.getYesNoInput("Are you sure to discard this " + selectedMovable + "?");
 	            if (discardMovable) {
 	                residualPower = 0;
@@ -85,8 +86,25 @@ public class During_game {
 	            } else {
             			System.out.println("You didn't use the "+ selectedMovable );
             			break;}
-
 	        }
+	        else if(movingToInt[0] == -200) {
+	        	int NextToBlockade=board.nextToBlockade(playerStandingTile);
+	        	Blockade block=(Blockade) board.boardPieces.get("Blockade_"+NextToBlockade);
+	        	if (Util.getColorFromString(selectedMovable.getCardType().toString()).equals(block.getColor())) {
+		            if (residualPower >= block.getPoints()) {
+		                board.removeBlockade(NextToBlockade);
+		                residualPower -= block.getPoints();
+		                board.repaint();
+		                caveExplore(board, player);
+		            } else {
+		                System.out.println("Your " + selectedMovable + " does not have enough power to move here.");
+		            }
+		        } else {
+		            System.out.println("Color of " + selectedMovable + " does not match tile color.");
+		        }
+	        }
+	        else {
+	        Tile movingTo=board.ParentMap.get(movingToInt[0]+","+movingToInt[1]);
 	        if (Util.getColorFromString(selectedMovable.getCardType().toString()).equals(movingTo.getColor())) {
 	            if (residualPower >= movingTo.getPoints()) {
 	                player.setPlayerPosition(movingTo.getRow(), movingTo.getCol());
@@ -99,7 +117,7 @@ public class During_game {
 	        } else {
 	            System.out.println("Color of " + selectedMovable + " does not match tile color.");
 	        }
-	    }
+	    }}
 	    if (residualPower == 0) {
 	        player.myDeck.discardAsset(index);
 	        board.repaint();
@@ -108,27 +126,4 @@ public class During_game {
 
 	
 	
-
-	
-	public static void removeblock(Template board, Player player,int power) {
-		String targetKey = player.getCurrentRow() + "," + player.getCurrentCol();
-        Tile PlayerStandingTile = board.ParentMap.get(targetKey);
-        int NextToBlockade=board.nextToBlockade(PlayerStandingTile);
-		while (NextToBlockade>0) {
-			boolean wantsToContinue = InputHelper.getYesNoInput("You're standing next to the blockade, do you want to remove it?");
-			
-			if (wantsToContinue == false) {
-				break;
-			}
-			Blockade block=(Blockade) board.boardPieces.get("Blockade_"+NextToBlockade);
-			int cardIndex = InputHelper.getIntInput("This blockade requires "+block.getPoints()+" power. Choose 1 card/token to remove it, input index (e.g. 0), or '-1' to stop with movement",player.myDeck.getCardsInHand().size()-1,-1);
-	        if (cardIndex == -1) {
-	            break;
-	        };
-	        
-			board.removeBlockade(NextToBlockade);
-
-			board.repaint();
-		}
-	}
 }
