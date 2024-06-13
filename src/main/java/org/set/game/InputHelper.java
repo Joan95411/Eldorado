@@ -97,31 +97,7 @@ public class InputHelper {
             }
         }}
     
-    public static int[] getPositionInput(Template board) {
-        while (true) {
-            String[] tokens = getInput("Enter row and column for player's position (e.g., '2,3'), or type 'block' to remove block, or 'stop' to stop with moving:", 2);
-            if(tokens==null) {break;}
-            if(tokens[0]=="block") {return new int[] {-200,-200};}
-            try {
-                int row = Integer.parseInt(tokens[0].trim());
-                int col = Integer.parseInt(tokens[1].trim());
-                if (!board.isValidPosition(row, col)) {
-                    System.out.println("Invalid position. Please enter valid coordinates.");
-                    continue;
-                }
-                String targetKey = row + "," + col;
-                Tile temp = board.ParentMap.get(targetKey);
-                System.out.println("You are currently on " + temp.getParent());
-                return new int[] { row, col };
-            } catch (NumberFormatException e) {
-                System.out.println("Invalid input. Please enter valid integers for row and column.");
-                continue;
-            }
-
-        }
-    	return new int[] { -100, -100 };
-    }
-
+    
     public static int[] getPlayerMoveInput(Template board, Tile tile) {
     	Set<String> neighborSet = new HashSet<>();
         for (int[] neighbor : tile.getNeighbors()) {

@@ -38,6 +38,7 @@ public class Tile {
     public String getParent() {
         return parent;
     }
+
     public void setType(TileType type) {
         this.type = type;
     }
