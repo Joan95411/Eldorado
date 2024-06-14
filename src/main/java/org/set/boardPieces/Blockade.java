@@ -24,7 +24,7 @@ public class Blockade extends BoardPiece {
     public static void resetCount() {
         blockadeCount = 0;
     }
-
+    
     public void setColor(TileType color) {
     	this.color=Util.getColorFromString(color.toString());
     	for (Tile tile : tiles) {
@@ -38,7 +38,9 @@ public class Blockade extends BoardPiece {
     public String getName() {
     	return name;
     }
-
+    public void setPoints(int points) {
+    	this.points=points;
+    }
     public int getPoints() {
     	return points;
     }
@@ -92,6 +94,8 @@ public class Blockade extends BoardPiece {
         int index = random.nextInt(COLOR_RANGE.length);
         TileType temp = COLOR_RANGE[index];
         setColor(temp);
+        int points = random.nextInt(POINTS_MAX - POINTS_MIN + 1) + POINTS_MIN;
+        this.points = points;
 
     }
 

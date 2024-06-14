@@ -1,31 +1,28 @@
 package org.set.template;
 
+import java.util.List;
+
 import org.json.JSONObject;
 import org.set.boardPieces.IntegrationWith03Board;
 import org.set.boardPieces.Tile;
 import org.set.boardPieces.TileDataDic;
 import org.set.boardPieces.TileType;
+import org.set.boardPieces.Util;
 import org.set.boardPieces.WinningPiece;
 
 public class Team03Board extends Template{
 
 	public Team03Board(int numRows, int numCols, int hexSize) {
 		super(numRows, numCols, hexSize);
-		// TODO Auto-generated constructor stub
+		
 	}
-	@Override
-	public void loadTileData() {
-        TileDataDic tdd = new TileDataDic(numRows, numCols, hexSize);
-        boardPieces.put(tdd.terrainA.getName(), tdd.terrainA);
-        boardPieces.put(tdd.wpa.getName(), tdd.wpa);
-        IntegrationWith03Board game03= new IntegrationWith03Board();
-        pathInfo=game03.Get03Path();
-        	
-    }
+	
 	
 	@Override
 	public void initBoard() {
-    	
+		IntegrationWith03Board game03= new IntegrationWith03Board();
+        pathInfo=game03.Get03Path();
+        
     	 for (int i = 0; i < pathInfo.length(); i++) {
              JSONObject jsonObject = pathInfo.getJSONObject(i);
              double addRow = jsonObject.getDouble("addRow");
@@ -40,13 +37,16 @@ public class Team03Board extends Template{
             	 boardPieces.remove("Blockade_1"); 
              }
              }
-
+             String blockColor = jsonObject.optString("blockColor","noBlock");
+             if(blockColor!="noBlock") {
+            	 getLastBlockade().setColor(Util.getTileTypeFromString(blockColor));
+             }
              if(sectionType.startsWith("ElDorado")) {
             	WinningPiece wps=getLastWinningPiece();
             	Tile axisTile=getLastTerrain().axisTile;
             	int[] temp=TileDataDic.tilesMap.get(axisTile.getRow()+","+axisTile.getCol());
             	wps.rotate(rotation, temp[0], temp[1]);
-            	if(sectionType.equals("ElDoradoTwo")) {
+            	if(sectionType.equals("ElDorado")) {
             		wps.setColor(TileType.Paddle);
             	}
              }else {
@@ -55,7 +55,7 @@ public class Team03Board extends Template{
                  getLastTerrain().rotate(rotation);
              }
     	 }
-        
+    	 
         
     }
 }

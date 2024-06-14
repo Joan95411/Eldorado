@@ -177,7 +177,7 @@ public class GameController {
                 	isGameOver = true;
                 	continue;
                 }
-//              board.repaint();
+
               PlayerBuy(currentPlayer);
               PlayerDiscard(currentPlayer);
               boolean discardCard=InputHelper.getYesNoInput("Your turn will finish now.");

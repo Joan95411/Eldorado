@@ -89,10 +89,6 @@ public class InputHelper {
             	List<Integer> stopList = new ArrayList<>();
                 stopList.add(-1);
                 return stopList;
-            }if (input.equalsIgnoreCase("skip")) {
-            	List<Integer> skipList = new ArrayList<>();
-            	skipList.add(-2);
-                return skipList;
             }
             String[] tokens = input.split(",");
             List<Integer> indices = new ArrayList<>();

@@ -1,5 +1,6 @@
 package org.set.player;
 
+import org.set.boardPieces.Blockade;
 import org.set.cards.Card;
 import org.set.cards.expedition.ExpeditionCard;
 import org.set.cards.expedition.ExpeditionCardType;
@@ -13,6 +14,7 @@ public class PlayerCardDeck {
     private final List<Card> cardsInHand;
     private final List<Card> mustBePlayedCardsInHand;
     private List<Token> myTokens;
+    private List<Blockade> blocks;
 
     public PlayerCardDeck() {
         drawPile = new ArrayList<>();
@@ -63,7 +65,9 @@ public class PlayerCardDeck {
     public void removeCard(Card card) {
         cardsInHand.remove(card);
     }
-
+    public void removeCard(List<Card> discardedCards) {
+    	cardsInHand.removeAll(discardedCards);
+    }
     // Add a card to the discard pile
     public void discard(Card card) {
         discardPile.add(card);
@@ -215,6 +219,17 @@ public class PlayerCardDeck {
 	            discardToken(tokenIndex);
 	        }
 	    }
+	}
+	
+	public void earnBlockade(Blockade block) {
+		blocks.add(block);
+	}
+	public int calculateBlockPoint() {
+		int blockPoints=0;
+		for(Blockade block:blocks) {
+			blockPoints=block.getPoints();
+		}
+		return blockPoints;
 	}
 
 }

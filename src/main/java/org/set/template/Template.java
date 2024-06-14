@@ -64,7 +64,11 @@ public abstract class Template extends JPanel {
 
 	abstract public void initBoard();
 
-	abstract public void loadTileData();
+	public void loadTileData() {
+        TileDataDic tdd = new TileDataDic(numRows, numCols, hexSize);
+        boardPieces.put(tdd.terrainA.getName(), tdd.terrainA);
+        boardPieces.put(tdd.wpa.getName(), tdd.wpa);
+        }
 
     
     @Override
@@ -236,6 +240,22 @@ public abstract class Template extends JPanel {
                 .map(key -> (Terrain) boardPieces.get(key))
                 .collect(Collectors.toList());
     }
+    public Blockade getLastBlockade() {
+   	 int maxIndex = 0;
+        List<Blockade> blocks = getAllBlockades();
+        
+        for (Blockade block : blocks) {
+            String name = block.getName();
+            int index = Integer.parseInt(name.substring("Blockade_".length()));
+
+            // Check if this index is greater than the current maxIndex
+            if (index > maxIndex) {
+                maxIndex = index;
+            }
+
+        }
+   	return (Blockade) boardPieces.get("Blockade_"+maxIndex);
+   }
 
     public List<Blockade> getAllBlockades() {
         return boardPieces.keySet().stream()

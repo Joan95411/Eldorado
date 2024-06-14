@@ -7,6 +7,7 @@ import java.util.Set;
 
 import org.set.boardPieces.Blockade;
 import org.set.boardPieces.Tile;
+import org.set.boardPieces.TileType;
 import org.set.boardPieces.Util;
 import org.set.cards.Card;
 import org.set.cards.expedition.ExpeditionCard;
@@ -47,25 +48,73 @@ public class During_game {
             
 	public static void PlayerMove2(Template board, Player player) {
 	    
-	    
+	    board.discardPhase=true;
 	    while (player.myDeck.getMyasset().size() > 0) {
 	        boolean keepMoving = InputHelper.getYesNoInput("Do you want to make a movement?");
 	        if (!keepMoving) {
 	            break; // Exit the loop if the user doesn't want to keep moving
 	        }
 
-	        int index = InputHelper.getIntInput("Choose 1 card/token for Movement, input index (e.g. 0), or '-1' to stop with movement", player.myDeck.getMyasset().size() - 1, -1);
+	        int index = InputHelper.getIntInput("Choose 1 card/token for Movement, input index (e.g. 0), or '-1' to stop with movement, or choose -2 to move to basecamp", player.myDeck.getMyasset().size() - 1, -2);
 	        if (index == -1) {
 	            break;
 	        }
+	        if(index==-2) {
+	        	baseCampMove(board, player);
+	        	continue;
+	        }
 
-	        singleMove2(board, player, player.myDeck.getMyasset(), index);
+	        singleMove2(board, player,  index);
 	    }
 
 	    System.out.println("You have still " + player.myDeck.getCardsInHand().size() + " cards for this turn.");
+	    board.discardPhase=false;
 	}
 
-	public static void singleMove2(Template board, Player player, List<Asset> myAsset, int index) {
+	
+	public static void baseCampMove(Template board, Player player) {
+		List<Integer> indexs = InputHelper.getIntListInput("Choose cards indices for basecamp movement, separate by comma, (e.g. 0,1,2), or 'stop' to stop the move", player.myDeck.getMyasset().size() - 1);
+        
+        if (indexs.get(0) == -1) {
+            return;
+        }
+		List<Card> myCards=player.myDeck.getCardsInHand();
+		List<Card> toDiscard=new ArrayList<>();
+		for (int i : indexs) {
+		    if (i >= myCards.size()) {
+		        System.out.println("Incorrect index, need to be index from cards in your hand.");
+		        return; 
+		    }else{toDiscard.add(myCards.get(i));}
+		    }
+		System.out.println("You have the base camp moving Power of " + indexs.size());
+        String targetKey = player.getCurrentRow() + "," + player.getCurrentCol();
+        Tile playerStandingTile = board.ParentMap.get(targetKey);
+        int[] movingToInt = InputHelper.getPlayerMoveInput(board, playerStandingTile);
+        if (movingToInt[0] == -100) {
+        	return;
+        }
+        Tile movingTo=board.ParentMap.get(movingToInt[0]+","+movingToInt[1]);
+        if(movingTo.getType()==TileType.BaseCamp||movingTo.getType()==TileType.Discard) {
+        	if(indexs.size()>=movingTo.getPoints()) {
+        		player.setPlayerPosition(movingTo.getRow(), movingTo.getCol());
+                if(movingTo.getType()==TileType.BaseCamp) {
+                	player.myDeck.discard(toDiscard);
+                }else {
+                	player.myDeck.removeCard(toDiscard);
+                }
+                board.repaint();
+                caveExplore(board, player);
+        	}else {
+        		System.out.println("This base camp has "+movingTo.getPoints()+" points. You need to discard more cards to get here.");
+        	}
+        }else {
+        	System.out.println("This is not a base camp, you can't discard multiple cards to move here.");
+        }
+	}
+	
+	
+	public static void singleMove2(Template board, Player player,  int index) {
+		List<Asset> myAsset=player.myDeck.getMyasset();
 	    Asset selectedMovable = myAsset.get(index);
 	    System.out.println("You chose the " + selectedMovable);
 	    int residualPower = selectedMovable.getPower();
@@ -98,6 +147,8 @@ public class During_game {
 		            if (residualPower >= block.getPoints()) {
 		                board.removeBlockade(NextToBlockade);
 		                residualPower -= block.getPoints();
+		                player.myDeck.earnBlockade(block);
+		                System.out.println("You have the blockade in your possession now");
 		                board.repaint();
 		                caveExplore(board, player);
 		            } else {
@@ -116,10 +167,12 @@ public class During_game {
 	                residualPower -= movingTo.getPoints();
 	                board.repaint();
 	                caveExplore(board, player);
-	            } else {
+	            } 
+	            	else {
 	                System.out.println("Your " + selectedMovable + " does not have enough power to move here.");
 	            }
-	        } else {
+	        }
+	        else {
 	            System.out.println("Color of " + selectedMovable + " does not match tile color.");
 	        }
 	    }}
@@ -130,7 +183,7 @@ public class During_game {
 	}
 	
 	
-	public static void removeblock(Template board) {
+	public static void removeblock(Template board) {//to be deleted, only for testing
 		while (true) {
 			boolean wantsToContinue = InputHelper.getYesNoInput("Do you want to remove block?");
 			

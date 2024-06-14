@@ -1,5 +1,6 @@
 package org.set.boardPieces;
 
+import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,7 +20,7 @@ public class IntegrationWith03Board {
 	public Board board;
 public  IntegrationWith03Board() {
 		
-		Main mainPanel = new Main(Path.HillsOfGold);
+		Main mainPanel = new Main(Path.Serpentine);
         GameController gameController = mainPanel.getGameController();
         JFrame frame = new JFrame(gameController.getGame().getGameName());
         gameController.getGame().placePlayersStart();
@@ -36,16 +37,16 @@ public  IntegrationWith03Board() {
 	public JSONArray Get03Path() {
 		String path= board.getPath().name();
 		JSONArray pathInfo=Util.readPathData(path);
-    	List<String[]> blockNeighbor=Get03BlocksNeighbor();
-    	for (String[] blockade : blockNeighbor) {
-            String sectionType1 = blockade[0];
-            String sectionType2 = blockade[1];
+		for (Blockade block:board.getBlockades()) {
+			String sectionType1 = block.getSection1().getSectionType().toString();
+            String sectionType2 = block.getSection2().getSectionType().toString();
+            String color = block.getTileType().toString();
             System.out.println(sectionType1+" "+sectionType2);
             for (int i = 0; i < pathInfo.length()-1; i++) {
                 JSONObject section1 = pathInfo.getJSONObject(i);
                 JSONObject section2 = pathInfo.getJSONObject(i+1);
                 if (section1.getString("sectionType").equals(sectionType1) && section2.getString("sectionType").equals(sectionType2)) {
-                	 
+                	section2.put("blockColor", color);
                     double addRow = section2.getDouble("addRow");
                     double addCol = section2.getDouble("addCol");
                     if(addRow>1) {
@@ -63,13 +64,5 @@ public  IntegrationWith03Board() {
     	System.out.println(pathInfo);
 	return pathInfo;
 }
-	public List<String[]> Get03BlocksNeighbor(){
-		List<String[]> pairs = new ArrayList<>();
-		for (Blockade block:board.getBlockades()) {
-			String sectionType1 = block.getSection1().getSectionType().toString();
-            String sectionType2 = block.getSection2().getSectionType().toString();
-            pairs.add(new String[]{sectionType1, sectionType2});
-		}
-		return pairs;
-	}
+	
 }

@@ -121,7 +121,7 @@
         "addCol": -7
       },
       {
-        "sectionType": "ElDoradoTwo",
+        "sectionType": "ElDorado",
         "rotation":-2,
         "addRow": 0,
         "addCol": 0
@@ -165,7 +165,7 @@
       "addCol": 7
     },
     {
-      "sectionType": "ElDorado",
+      "sectionType": "ElDoradoTwo",
       "rotation": 1,
       "addRow": 0,
       "addCol": 0
@@ -209,7 +209,7 @@
       "addCol": 7
     },
     {
-      "sectionType": "ElDoradoTwo",
+      "sectionType": "ElDorado",
       "rotation": 0,
       "addRow": 0,
       "addCol": 0
@@ -257,7 +257,7 @@
       "addCol": -7
     },
     {
-      "sectionType": "ElDoradoTwo",
+      "sectionType": "ElDorado",
       "rotation": 3,
       "addRow": 0,
       "addCol": 0
@@ -301,7 +301,7 @@
       "addCol": 7
     },
     {
-      "sectionType": "ElDorado",
+      "sectionType": "ElDoradoTwo",
       "rotation": 0,
       "addRow": 0,
       "addCol": 0

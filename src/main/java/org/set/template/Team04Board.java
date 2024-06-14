@@ -11,12 +11,7 @@ public class Team04Board extends Template{
 	public Team04Board(int numRows, int numCols, int hexSize) {
 		super(numRows, numCols, hexSize);
 	}
-	@Override
-	public void loadTileData() {
-        TileDataDic tdd = new TileDataDic(numRows, numCols, hexSize);
-        boardPieces.put(tdd.terrainA.getName(), tdd.terrainA);
-        boardPieces.put(tdd.wpa.getName(), tdd.wpa);
-        }
+	
 	@Override
 	public void initBoard() {
 		List<double[]> coordinateList = new ArrayList<>(List.of(
