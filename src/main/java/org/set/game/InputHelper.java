@@ -11,10 +11,19 @@ import org.set.template.Template;
 
 public class InputHelper {
     private static final Scanner scanner = new Scanner(System.in);
-
+    
+    public static void printPromptInRows(String prompt) {
+        // Split the prompt by commas
+        String[] parts = prompt.split(";");
+        
+        // Print each part in a new line
+        for (String part : parts) {
+            System.out.println(part.trim());
+        }
+    }
     public static String[] getInput(String question, int expectedLength) {
         while (true) {
-            System.out.println(question);
+        	printPromptInRows(question);
             System.out.print("> ");
             String input = scanner.nextLine();
 
@@ -38,7 +47,7 @@ public class InputHelper {
     }
     public static int[] getPositionInput(Template board) {//to be deleted, only for testing use
         while (true) {
-            String[] tokens = getInput("Enter row and column for player's position (e.g., '2,3'), or type 'stop' to stop with moving:", 2);
+            String[] tokens = getInput("Enter row and column for player's position (e.g., '2,3'); or type 'stop' to stop with moving:", 2);
             if(tokens==null) {break;         }
             try {
                 int row = Integer.parseInt(tokens[0].trim());
@@ -62,7 +71,7 @@ public class InputHelper {
 
     public static int getIntInput(String prompt, int max,int min) {
         while (true) {
-            System.out.println(prompt);
+        	printPromptInRows(prompt);
             System.out.print("> ");
             try {
                 int userInput = scanner.nextInt();
@@ -82,7 +91,7 @@ public class InputHelper {
     
     public static List<Integer> getIntListInput(String prompt, int max) {
         while (true) {
-            System.out.println(prompt);
+        	printPromptInRows(prompt);
             System.out.print("> ");
             String input = scanner.nextLine();
             if (input.equalsIgnoreCase("stop")) {
@@ -123,7 +132,7 @@ public class InputHelper {
             neighborSet.add(neighbor[0] + "," + neighbor[1]);
         }
         while (true) {
-            String[] tokens = getInput("Enter row and column for player's position (e.g., '2,3'), or type 'stop' to stop with moving:", 2);
+            String[] tokens = getInput("Enter row and column for player's position (e.g., '2,3'); or type 'stop' to stop with moving:", 2);
             if(tokens==null) {break;}
             if(tokens[0]=="block") {return new int[] {-200,-200};}
             try {
@@ -152,7 +161,7 @@ public class InputHelper {
 
     public static boolean getYesNoInput(String question) {
         while (true) {
-            System.out.println(question);
+        	printPromptInRows(question);
             System.out.print("> ");
             String input = scanner.nextLine().toLowerCase();
 

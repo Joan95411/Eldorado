@@ -18,6 +18,8 @@ import org.set.boardPieces.TileType;
 import org.set.boardPieces.Util;
 import org.set.boardPieces.WinningPiece;
 import org.set.cards.Card;
+import org.set.cards.CardActionHandler;
+import org.set.cards.action.ActionCard;
 import org.set.cards.expedition.ExpeditionCard;
 import org.set.marketplace.MarketPlace;
 
@@ -64,7 +66,7 @@ public class GameController {
     	HashMap<Card, Integer> currentMarket = market.getCurrentMarketBoard();
     	List<Card> cardList = new ArrayList<>(marketoption.keySet());
     	if(currentMarket.size()<6) {
-    		boolean fillEmptyMarket=InputHelper.getYesNoInput("There's empty space on market, do you fill in with any pile?");
+    		boolean fillEmptyMarket=InputHelper.getYesNoInput("There's empty space on market, do you want to fill in with any pile?");
     		if(fillEmptyMarket) {
     			int marketOptionIndex = InputHelper.getIntInput("Choose 1 card pile to fill, input index (e.g. 0), or '-1' to stop",cardList.size()-1,-1);
     			if (marketOptionIndex == -1) {
@@ -87,7 +89,7 @@ public class GameController {
         	fillEmptyMarketSpace();
         	Map<Card, Integer> currentMarketBoard = market.getCurrentMarketBoard();
         	List<Card> cardList = new ArrayList<>(currentMarketBoard.keySet());
-        	int cardIndex = InputHelper.getIntInput("Choose 1 card to buy, input index (e.g. 0), or '-1' to stop buying",cardList.size()-1,-1);
+        	int cardIndex = InputHelper.getIntInput("Choose 1 card to buy; Input index (e.g. 0), or '-1' to stop buying",cardList.size()-1,-1);
 	        if (cardIndex == -1) {
 	            break;
 	        } Card theCard=cardList.get(cardIndex);
@@ -104,7 +106,9 @@ public class GameController {
 
 	        while (buyingGold < theCard.getCost()) {
 	            assetIndices.clear();
-	            assetIndices = InputHelper.getIntListInput("Please enter indices for your buying assets, separated by commas, or 'stop' to stop this transaction", assets.size() - 1);
+	            assetIndices = InputHelper.getIntListInput("Please enter indices for your buying assets;"
+	            		+ " Separated by commas, (e.g. 0,1,2);"
+	            		+ " Or 'stop' to stop this transaction", assets.size() - 1);
 	            if (assetIndices != null && assetIndices.size() == 1 && assetIndices.get(0) == -1) {
 	                assetIndices.clear();
 	                break;
@@ -147,7 +151,9 @@ public class GameController {
         while(player.myDeck.getCardsInHand().size()>0){
         	boolean discardCard=InputHelper.getYesNoInput("Do you want to discard any cards?");
         	if(!discardCard) {break;}
-        	int cardIndex = InputHelper.getIntInput("Choose 1 card to discard, input index (e.g. 0), or '-1' to stop discarding",player.myDeck.getCardsInHand().size()-1,-1);
+        	int cardIndex = InputHelper.getIntInput("Choose 1 card to discard;"
+        			+ " Input index (e.g. 0);"
+        			+ "Or '-1' to stop discarding",player.myDeck.getCardsInHand().size()-1,-1);
 	        if (cardIndex == -1) {
 	            break;
 	        }
@@ -155,6 +161,30 @@ public class GameController {
 	        board.repaint();
         }
         
+    }
+    public void PlayActionCard(Player player) {
+    	board.currentPlayer=player;
+    	int actionIndex=player.myDeck.isThereActionCard();
+    	while(actionIndex>=0){
+        	boolean toPlay=InputHelper.getYesNoInput("Do you want to play action cards?");
+        	if(!toPlay) {break;}
+        	int cardIndex = InputHelper.getIntInput("Choose 1 action card to play;"
+        			+ " Input index (e.g. "+actionIndex+");"
+        					+ " or '-1' to stop discarding",player.myDeck.getCardsInHand().size()-1,-1);
+	        if (cardIndex == -1) {
+	            break;
+	        }
+	        Card selectedCard=player.myDeck.getCardsInHand().get(actionIndex);
+	        if (!(selectedCard instanceof ActionCard)) {
+		        System.out.println("Please select a Action card.");
+		        continue;
+		    }else {
+	        ActionCard actionCard=(ActionCard) selectedCard;
+	        CardActionHandler cah=new CardActionHandler();
+	        cah.doAction(actionCard, player);
+		    }
+	        board.repaint();
+        }
     }
 
     public void GameSession() {
@@ -165,11 +195,13 @@ public class GameController {
                 Player currentPlayer = players.get(currentPlayerIndex);
                 System.out.println("Turn " + turnNumber + ": Player " + currentPlayer.getName() + "'s turn.");
                 PlayerDrawCards(currentPlayer);
+                PlayActionCard(currentPlayer);
                 During_game.PlayerMove2(board,currentPlayer);
-                
+                PlayActionCard(currentPlayer);
+
                 int[] position = InputHelper.getPositionInput(board);
                 currentPlayer.setPlayerPosition(position[0], position[1]);
-                
+                During_game.caveExplore(board, currentPlayer);
                 if(isThereAwinnier(currentPlayer)) {
                 	System.out.println("Final Round!");	
                 	if(currentPlayerIndex!=players.size()-1) {
@@ -220,8 +252,8 @@ public class GameController {
     		System.out.println("Final round: Player " + currentPlayer.getName() + "'s turn.");
             PlayerDrawCards(currentPlayer);
             During_game.PlayerMove2(board,currentPlayer);
-            int[] position = InputHelper.getPositionInput(board);
-            currentPlayer.setPlayerPosition(position[0], position[1]);
+//            int[] position = InputHelper.getPositionInput(board);
+//            currentPlayer.setPlayerPosition(position[0], position[1]);
             if(isThereAwinnier(currentPlayer)) {
             	System.out.println("Another potential winner!");
             	isGameOver = true;

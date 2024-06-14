@@ -2,6 +2,7 @@ package org.set.player;
 
 import org.set.boardPieces.Blockade;
 import org.set.cards.Card;
+import org.set.cards.CardType;
 import org.set.cards.expedition.ExpeditionCard;
 import org.set.cards.expedition.ExpeditionCardType;
 import org.set.tokens.Token;
@@ -22,7 +23,7 @@ public class PlayerCardDeck {
         cardsInHand = new ArrayList<>();
         mustBePlayedCardsInHand = new ArrayList<>();
         myTokens=new ArrayList<>();
-        
+        blocks=new ArrayList<>();
         int blueCount = 1;
         int greenCount = 3;
         int yellowCount = 4;
@@ -140,7 +141,13 @@ public class PlayerCardDeck {
             drawCards(cardsMustBePlayedThisTurn);
         }
     }
-
+    public int isThereActionCard() {
+    	for(Card card:cardsInHand) {
+    		if(card.getCardType()==CardType.PURPLE) {
+    			return cardsInHand.indexOf(card);
+    		}
+    	}return -1;
+    }
     public List<Card> getDrawPile() {
         return drawPile;
     }

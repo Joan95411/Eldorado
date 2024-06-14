@@ -288,6 +288,7 @@ public abstract class Template extends JPanel {
     	    }}
     	} return caveSet;
     }
+
     
     public void addTerrain(double addRow, double addCol, Terrain terrainA) {
         addWinningPiece(addRow, addCol, getLastWinningPiece());
@@ -358,7 +359,15 @@ public abstract class Template extends JPanel {
         	}
         } return null;
     }
-    
+    public boolean nextToBaseCamp(Tile tile) {
+        for (int[] neighbor : tile.getNeighbors()) {
+        	Tile temp = ParentMap.get(neighbor[0]+","+neighbor[1]);
+        	if(temp==null) {continue;}
+        	if(temp.getType()==TileType.BaseCamp||temp.getType()==TileType.Discard) {
+        		return true;
+        	}
+        } return false;
+    }
     public int nextToBlockade(Tile tile) {
         for (int[] neighbor : tile.getNeighbors()) {
         	Tile temp = ParentMap.get(neighbor[0]+","+neighbor[1]);

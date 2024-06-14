@@ -37,6 +37,7 @@ public class Before_game {
         }
 	
 	public static Map<String, Cave> allocateTokens(Template board2) {
+		
 	    Map<String, Cave> caves = new HashMap<>();
 	    ArrayList<Token> tokenList = createTokens(); 
 	    List<Tile> caveSet = board2.findCaveTiles();

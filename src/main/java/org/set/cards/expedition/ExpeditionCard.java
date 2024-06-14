@@ -23,7 +23,7 @@ public class ExpeditionCard extends Card {
         return power;
     }
     public double getValue() {
-		if(cardType==CardType.YELLOW) {
+		if(cardType==CardType.YELLOW||cardType==CardType.JOKER) {
         return power;}
 		else {return 0.5;}
     }

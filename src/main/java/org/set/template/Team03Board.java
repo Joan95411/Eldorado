@@ -40,6 +40,7 @@ public class Team03Board extends Template{
              String blockColor = jsonObject.optString("blockColor","noBlock");
              if(blockColor!="noBlock") {
             	 getLastBlockade().setColor(Util.getTileTypeFromString(blockColor));
+            	 getLastBlockade().setPoints(1);
              }
              if(sectionType.startsWith("ElDorado")) {
             	WinningPiece wps=getLastWinningPiece();

@@ -10,6 +10,7 @@ import org.set.boardPieces.Tile;
 import org.set.boardPieces.TileType;
 import org.set.boardPieces.Util;
 import org.set.cards.Card;
+import org.set.cards.CardType;
 import org.set.cards.expedition.ExpeditionCard;
 import org.set.player.Asset;
 import org.set.player.Player;
@@ -32,7 +33,7 @@ public class During_game {
 	        return;
 	    }
         else {	
-        		System.out.println("You're standing next to a cave, You can explore.");
+        		System.out.println("You're standing next to a cave, You can explore. "+AroundPlayerCave);
         		Cave correspondingCave = GameController.caveMap.get(AroundPlayerCave);
         	    System.out.println("Adjacent to cave: " + correspondingCave.tile);
         	    Token token=correspondingCave.getAtoken();
@@ -54,8 +55,14 @@ public class During_game {
 	        if (!keepMoving) {
 	            break; // Exit the loop if the user doesn't want to keep moving
 	        }
-
-	        int index = InputHelper.getIntInput("Choose 1 card/token for Movement, input index (e.g. 0), or '-1' to stop with movement, or choose -2 to move to basecamp", player.myDeck.getMyasset().size() - 1, -2);
+	        String targetKey = player.getCurrentRow() + "," + player.getCurrentCol();
+	        Tile playerStandingTile = board.ParentMap.get(targetKey);
+	        int index=-1;
+	        if(board.nextToBaseCamp(playerStandingTile)) {index=InputHelper.getIntInput("Choose 1 card/token for Movement; "
+	        		+ "Input index (e.g. 0), or '-1' to stop with movement; "
+	        		+ "Or choose '-2' to move to rubble/basecamp", player.myDeck.getMyasset().size() - 1, -2);}
+	        else{index = InputHelper.getIntInput("Choose 1 card/token for Movement; "
+	        		+ "Input index (e.g. 0), or '-1' to stop with movement", player.myDeck.getMyasset().size() - 1, -1);}
 	        if (index == -1) {
 	            break;
 	        }
@@ -73,7 +80,9 @@ public class During_game {
 
 	
 	public static void baseCampMove(Template board, Player player) {
-		List<Integer> indexs = InputHelper.getIntListInput("Choose cards indices for basecamp movement, separate by comma, (e.g. 0,1,2), or 'stop' to stop the move", player.myDeck.getMyasset().size() - 1);
+		List<Integer> indexs = InputHelper.getIntListInput("Choose cards indices for basecamp movement;"
+				+ " Separate by comma, (e.g. 0,1,2);"
+				+ " Or 'stop' to stop the move", player.myDeck.getMyasset().size() - 1);
         
         if (indexs.get(0) == -1) {
             return;
@@ -97,7 +106,7 @@ public class During_game {
         if(movingTo.getType()==TileType.BaseCamp||movingTo.getType()==TileType.Discard) {
         	if(indexs.size()>=movingTo.getPoints()) {
         		player.setPlayerPosition(movingTo.getRow(), movingTo.getCol());
-                if(movingTo.getType()==TileType.BaseCamp) {
+                if(movingTo.getType()==TileType.Discard) {
                 	player.myDeck.discard(toDiscard);
                 }else {
                 	player.myDeck.removeCard(toDiscard);
@@ -143,7 +152,7 @@ public class During_game {
 	        	if(NextToBlockade==-1) {System.out.println("You're not next to a blockade.");}
 	        	else {
 	        	Blockade block=(Blockade) board.boardPieces.get("Blockade_"+NextToBlockade);
-	        	if (Util.getColorFromString(selectedMovable.getCardType().toString()).equals(block.getColor())) {
+	        	if (Util.getColorFromString(selectedMovable.getCardType().toString()).equals(block.getColor())||selectedMovable.getCardType()==CardType.JOKER) {
 		            if (residualPower >= block.getPoints()) {
 		                board.removeBlockade(NextToBlockade);
 		                residualPower -= block.getPoints();

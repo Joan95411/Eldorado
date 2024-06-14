@@ -16,10 +16,10 @@ public class Util {
 	public static Color getColorFromString(String colorName) {
         Map<String, Color> colorMap = new HashMap<>();
         colorMap.put("gray", Color.GRAY);
-        colorMap.put("discard", Color.RED);
-        colorMap.put("joker", Color.GRAY);
+        colorMap.put("discard", Color.GRAY);
+        colorMap.put("joker", new Color(255,102,0));
         colorMap.put("red", Color.RED);
-        colorMap.put("basecamp", Color.GRAY);
+        colorMap.put("basecamp", Color.RED);
         colorMap.put("yellow", Color.YELLOW);
         colorMap.put("coin", Color.YELLOW);
         colorMap.put("eldorado", Color.YELLOW);
