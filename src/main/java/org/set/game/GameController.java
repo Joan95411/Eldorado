@@ -159,39 +159,38 @@ public class GameController {
 
     public void GameSession() {
         int turnNumber = 0;
-        int currentPlayerIndex = 0;
+        int FirstWinningIndex = -1;
         while (!isGameOver) {
-            for (currentPlayerIndex = 0; currentPlayerIndex < players.size(); currentPlayerIndex++) {
+            for (int currentPlayerIndex = 0; currentPlayerIndex < players.size(); currentPlayerIndex++) {
                 Player currentPlayer = players.get(currentPlayerIndex);
                 System.out.println("Turn " + turnNumber + ": Player " + currentPlayer.getName() + "'s turn.");
                 PlayerDrawCards(currentPlayer);
                 During_game.PlayerMove2(board,currentPlayer);
                 
-//                int[] position = InputHelper.getPositionInput(board);
-//                currentPlayer.setPlayerPosition(position[0], position[1]);
+                int[] position = InputHelper.getPositionInput(board);
+                currentPlayer.setPlayerPosition(position[0], position[1]);
                 
                 if(isThereAwinnier(currentPlayer)) {
                 	System.out.println("Final Round!");	
+                	if(currentPlayerIndex!=players.size()-1) {
+                	FirstWinningIndex=currentPlayerIndex;}
                 	isGameOver = true;
-                	break;
+                	continue;
                 }
 //              board.repaint();
               PlayerBuy(currentPlayer);
               PlayerDiscard(currentPlayer);
               boolean discardCard=InputHelper.getYesNoInput("Your turn will finish now.");
               board.discardPhase=false;
-              if (isGameOver) break;
+              
             }
 
-            turnNumber++;
-            List<Player> restPlayers=new ArrayList<>(players);
-        	restPlayers.remove(currentPlayerIndex);
-            if (isFinalRound(restPlayers)) {
-            	isGameOver = true;
-                break;
-            }
+            turnNumber++;  
         }
-
+        
+        if (FirstWinningIndex != -1) {
+            FinalRound(FirstWinningIndex);
+        }
         EndGame();
     }
 
@@ -200,42 +199,39 @@ public class GameController {
     	String targetKey = player.getCurrentRow() + "," + player.getCurrentCol();
         Tile PlayerStandingTile = board.ParentMap.get(targetKey);
         boolean isWinning=board.isWinning(PlayerStandingTile);
+        
         if(isWinning) {
         	WinningPiece wp=board.getAllWinningPieces().get(0);
         	for(Tile tile:wp.getTiles()) {
-        		if(tile.getType()==TileType.Eldorado) {
+        		if(tile.getType()==TileType.Eldorado&&board.isValidPosition(tile.getRow(), tile.getCol())) {
         			player.setPlayerPosition(tile.getRow(), tile.getCol());
         			System.out.println("You've reached the ending tile!");	
         			break;
         		}
         	}
-            if(players.indexOf(player)==players.size()-1) {
-            	EndGame();
-            }
-        return true;}
+               return true;}
         else {return false;}
         
     }
 
-    private boolean isFinalRound(List<Player> restPlayers) {
-    	for (int i = 0; i < restPlayers.size(); i++) {
-    		Player currentPlayer=restPlayers.get(i);
+    private void FinalRound(int FirstWinningIndex) {
+    	for (int i = 0; i < FirstWinningIndex; i++) {
+    		Player currentPlayer=players.get(i);
     		System.out.println("Final round: Player " + currentPlayer.getName() + "'s turn.");
             PlayerDrawCards(currentPlayer);
             During_game.PlayerMove2(board,currentPlayer);
-//            int[] position = InputHelper.getPositionInput(board);
-//            currentPlayer.setPlayerPosition(position[0], position[1]);
+            int[] position = InputHelper.getPositionInput(board);
+            currentPlayer.setPlayerPosition(position[0], position[1]);
             if(isThereAwinnier(currentPlayer)) {
             	System.out.println("Another potential winner!");
             	isGameOver = true;
-            	return true;
+            	break;
             }
             PlayerBuy(currentPlayer);//final round still need to buy cards?
             PlayerDiscard(currentPlayer);
             boolean discardCard=InputHelper.getYesNoInput("Your turn will finish now.");
             board.discardPhase=false;
     	}
-        return true;
     }
 
     private void EndGame() {
