@@ -33,7 +33,7 @@ public class During_game {
 	        return;
 	    }
         else {	
-        		System.out.println("You're standing next to a cave, You can explore. "+AroundPlayerCave);
+        		System.out.println("You're standing next to a cave, You can explore. ");
         		Cave correspondingCave = GameController.caveMap.get(AroundPlayerCave);
         	    System.out.println("Adjacent to cave: " + correspondingCave.tile);
         	    Token token=correspondingCave.getAtoken();
@@ -152,7 +152,7 @@ public class During_game {
 	        	if(NextToBlockade==-1) {System.out.println("You're not next to a blockade.");}
 	        	else {
 	        	Blockade block=(Blockade) board.boardPieces.get("Blockade_"+NextToBlockade);
-	        	if (Util.getColorFromString(selectedMovable.getCardType().toString()).equals(block.getColor())||selectedMovable.getCardType()==CardType.JOKER) {
+	        	if (Util.getColorFromString(selectedMovable.getCardType().toString()).equals(block.getColor())||selectedMovable.getCardType().equals(CardType.JOKER)) {
 		            if (residualPower >= block.getPoints()) {
 		                board.removeBlockade(NextToBlockade);
 		                residualPower -= block.getPoints();
@@ -165,12 +165,13 @@ public class During_game {
 		            }
 		        } else {
 		            System.out.println("Color of " + selectedMovable + " does not match blockade color.");
+		            
 		        }}
 	        }
 	        
 	        else {
 	        Tile movingTo=board.ParentMap.get(movingToInt[0]+","+movingToInt[1]);
-	        if (Util.getColorFromString(selectedMovable.getCardType().toString()).equals(movingTo.getColor())) {
+	        if (Util.getColorFromString(selectedMovable.getCardType().toString()).equals(movingTo.getColor())||selectedMovable.getCardType().equals(CardType.JOKER)) {
 	            if (residualPower >= movingTo.getPoints()) {
 	                player.setPlayerPosition(movingTo.getRow(), movingTo.getCol());
 	                residualPower -= movingTo.getPoints();
@@ -182,7 +183,7 @@ public class During_game {
 	            }
 	        }
 	        else {
-	            System.out.println("Color of " + selectedMovable + " does not match tile color.");
+	            System.out.println("Color of " + selectedMovable + " does not match tile color."+selectedMovable.getCardType());
 	        }
 	    }}
 	    if (residualPower == 0) {

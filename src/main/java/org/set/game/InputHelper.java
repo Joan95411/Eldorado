@@ -81,7 +81,7 @@ public class InputHelper {
                 if (userInput >= min && userInput <= max) {
                     return userInput;
                 } else {
-                    System.out.println("Please input an index between 0 and " + max + ", or enter -1 to exit.");
+                    System.out.println("Please input an index between 0 to " + max + ", or enter -1 to exit.");
                 }
             } catch (Exception e) {
                 System.out.println("Invalid input. Please enter an integer.");

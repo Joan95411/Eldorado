@@ -182,8 +182,11 @@ public class GameController {
 	        ActionCard actionCard=(ActionCard) selectedCard;
 	        CardActionHandler cah=new CardActionHandler();
 	        cah.doAction(actionCard, player);
-		    }
+	        player.myDeck.discardFromHand(actionIndex);
 	        board.repaint();
+	        break;
+		    }
+	        
         }
     }
 
@@ -199,9 +202,9 @@ public class GameController {
                 During_game.PlayerMove2(board,currentPlayer);
                 PlayActionCard(currentPlayer);
 
-                int[] position = InputHelper.getPositionInput(board);
-                currentPlayer.setPlayerPosition(position[0], position[1]);
-                During_game.caveExplore(board, currentPlayer);
+//                int[] position = InputHelper.getPositionInput(board);
+//                currentPlayer.setPlayerPosition(position[0], position[1]);
+//                During_game.caveExplore(board, currentPlayer);
                 if(isThereAwinnier(currentPlayer)) {
                 	System.out.println("Final Round!");	
                 	if(currentPlayerIndex!=players.size()-1) {

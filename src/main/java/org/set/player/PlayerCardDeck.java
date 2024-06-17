@@ -5,6 +5,7 @@ import org.set.cards.Card;
 import org.set.cards.CardType;
 import org.set.cards.expedition.ExpeditionCard;
 import org.set.cards.expedition.ExpeditionCardType;
+import org.set.game.InputHelper;
 import org.set.tokens.Token;
 
 import java.util.*;
@@ -96,24 +97,21 @@ public class PlayerCardDeck {
         }
     }
 
-    public void drawAndRemoveCards(Player player, Scanner scanner, int drawAmount, int minRemoveAmount , int maxRemoveAmount) {
-        System.out.println("Scientist action performed");
+    public void drawAndRemoveCards(Player player, int drawAmount, int minRemoveAmount , int maxRemoveAmount) {
+        System.out.println("Action performed");
         player.myDeck.draw(drawAmount);
 
         for (int i = 0; i < maxRemoveAmount; i++) {
-            System.out.println("Do you want to remove a card from your hand? (y/n):");
-            String userInput = scanner.nextLine();
+            boolean userInput = InputHelper.getYesNoInput("Do you want to remove a card from your hand? (y/n):");
 
-            if (userInput.equals("y")) {
+            if (userInput) {
                 System.out.println("You have the following cards in your hand:");
 
                 for (int j = 0; j < player.myDeck.getCardsInHand().size(); j++) {
                     System.out.println(j + " - " + player.myDeck.getCardsInHand().get(j).name);
                 }
-
-                System.out.println("What card do you want to remove?");
-                int cardIndex = scanner.nextInt();// please don't use scanner here, just use inputHelper, so the scanner source is uniform, and also you didn't catch exception for not Int here
-
+                
+                int cardIndex = InputHelper.getIntInput("What card do you want to remove?", 0, player.myDeck.getCardsInHand().size()-1);
                 // TODO: Do we need to remove the card from the game, or do you need to place it on the discard pile?
                 if (cardIndex >= 0 && cardIndex <= player.myDeck.getCardsInHand().size()) {
                     player.myDeck.removeCard(player.myDeck.getCardsInHand().get(cardIndex));

@@ -3,11 +3,12 @@ package org.set.cards;
 import org.set.player.Player;
 import org.set.cards.action.ActionCardType;
 import org.set.cards.expedition.ExpeditionCardType;
+import org.set.game.InputHelper;
 
 import java.util.Scanner;
 
 public class CardActionHandler {
-    private Scanner scanner = new Scanner(System.in);
+    
 
     public void doAction(Card card, Player player) {
         ActionCardType actionCardType = ActionCardType.valueOf(card.name);
@@ -47,7 +48,7 @@ public class CardActionHandler {
                 System.out.println("- " + type);
             }
 
-            String userInput = scanner.nextLine();
+            String userInput = InputHelper.getInput("", 1)[0];
             selectedCardType = getExpeditionCardType(userInput);
 
             if (selectedCardType == null) {
@@ -58,7 +59,7 @@ public class CardActionHandler {
         }
 
         player.myDeck.drawExpeditionCard(selectedCardType);
-        scanner.close();
+       
     }
 
     private void CartographerAction(Player player) {
@@ -68,7 +69,7 @@ public class CardActionHandler {
 
     private void ScientistAction(Player player) {
         // Logic for scientist
-        player.myDeck.drawAndRemoveCards(player, scanner, 1, 0,1);
+        player.myDeck.drawAndRemoveCards(player, 1, 0,1);
     }
 
     private void CompassAction(Player player) {
@@ -78,7 +79,7 @@ public class CardActionHandler {
 
     private void TravelLogAction(Player player) {
         // Logic for travel log
-        player.myDeck.drawAndRemoveCards(player, scanner, 2, 0,2);
+        player.myDeck.drawAndRemoveCards(player,  2, 0,2);
 
         System.out.println("Travel Log action performed");
     }

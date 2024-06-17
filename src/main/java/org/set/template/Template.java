@@ -98,7 +98,7 @@ public abstract class Template extends JPanel {
         		}
         	List<Card> playerDiscardCards = currentPlayer.myDeck.getDiscardPile();
         	if (playerDiscardCards != null && discardPhase) {
-        	    int[] temp = TileDataDic.tilesMap.get((numRows - 6) + ",19");
+        	    int[] temp = TileDataDic.tilesMap.get((numRows - 6) + ",15");
         	    drawAssets(g2d, playerDiscardCards, "Current Player's Discard pile: ", temp, 8, cardWidth / 10);
         	}
         }
@@ -109,7 +109,7 @@ public abstract class Template extends JPanel {
             drawPiles(g2d, currentMarket, "Current Market: ", temp, 6,cardWidth / 4);
         }
         if(market.getMarketBoardOptions()!=null&&discardPhase==false) {
-        	int[] temp = TileDataDic.tilesMap.get((numRows-6)+",19");
+        	int[] temp = TileDataDic.tilesMap.get((numRows-6)+",15");
             HashMap<Card, Integer> marketoption = market.getMarketBoardOptions();
             drawPiles(g2d, marketoption, "More Market Options: ", temp, 6,cardWidth / 4);
         }}
