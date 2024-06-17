@@ -1,6 +1,5 @@
 package org.set.template;
 
-import java.util.List;
 
 import org.json.JSONObject;
 import org.set.boardPieces.IntegrationWith03Board;

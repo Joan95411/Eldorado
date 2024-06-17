@@ -94,8 +94,8 @@ public class Blockade extends BoardPiece {
         int index = random.nextInt(COLOR_RANGE.length);
         TileType temp = COLOR_RANGE[index];
         setColor(temp);
-        int points = random.nextInt(POINTS_MAX - POINTS_MIN + 1) + POINTS_MIN;
-        this.points = points;
+//        int points = random.nextInt(POINTS_MAX - POINTS_MIN + 1) + POINTS_MIN;
+//        this.points = points;
 
     }
 

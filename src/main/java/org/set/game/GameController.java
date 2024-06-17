@@ -26,15 +26,13 @@ import org.set.marketplace.MarketPlace;
 public class GameController {
     private Template board;
     private List<Player> players;
-    public static Map<String,Cave> caveMap;
+    public static Map<Tile,Cave> caveMap;
     private boolean isGameOver = false;
     public int turnCounter;
     public MarketPlace market=new MarketPlace();
     public GameController(Template board2) {
         this.board = board2;
         caveMap=Before_game.allocateTokens(board2);
-//        During_game.removeblock(board2);
-        
         players = Before_game.addPlayer(board2);
         Before_game.placePlayersOnBoard(board2);
         displayMarketInfo();
@@ -201,10 +199,11 @@ public class GameController {
                 PlayActionCard(currentPlayer);
                 During_game.PlayerMove2(board,currentPlayer);
                 PlayActionCard(currentPlayer);
+      //the next 3 lines are only for testing purpose, to be deleted
+      int[] position = InputHelper.getPositionInput(board);
+      currentPlayer.setPlayerPosition(position[0], position[1]);
+      During_game.caveExplore(board, currentPlayer);
 
-//                int[] position = InputHelper.getPositionInput(board);
-//                currentPlayer.setPlayerPosition(position[0], position[1]);
-//                During_game.caveExplore(board, currentPlayer);
                 if(isThereAwinnier(currentPlayer)) {
                 	System.out.println("Final Round!");	
                 	if(currentPlayerIndex!=players.size()-1) {
@@ -255,8 +254,6 @@ public class GameController {
     		System.out.println("Final round: Player " + currentPlayer.getName() + "'s turn.");
             PlayerDrawCards(currentPlayer);
             During_game.PlayerMove2(board,currentPlayer);
-//            int[] position = InputHelper.getPositionInput(board);
-//            currentPlayer.setPlayerPosition(position[0], position[1]);
             if(isThereAwinnier(currentPlayer)) {
             	System.out.println("Another potential winner!");
             	isGameOver = true;

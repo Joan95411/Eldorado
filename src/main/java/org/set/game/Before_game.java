@@ -36,9 +36,9 @@ public class Before_game {
 		return tokens;
         }
 	
-	public static Map<String, Cave> allocateTokens(Template board2) {
+	public static Map<Tile, Cave> allocateTokens(Template board2) {
 		
-	    Map<String, Cave> caves = new HashMap<>();
+	    Map<Tile, Cave> caves = new HashMap<>();
 	    ArrayList<Token> tokenList = createTokens(); 
 	    List<Tile> caveSet = board2.findCaveTiles();
 	    Random random = new Random();
@@ -57,7 +57,7 @@ public class Before_game {
 	            cave.addToken(token);
 	        }
 
-	        caves.put(tile.getRow()+","+tile.getCol(), cave); 
+	        caves.put(tile, cave); 
 	    }
 
 	    return caves;

@@ -350,12 +350,12 @@ public abstract class Template extends JPanel {
         }
     }
     
-    public String nextToCave(Tile tile) {
+    public Tile nextToCave(Tile tile) {
         for (int[] neighbor : tile.getNeighbors()) {
         	Tile temp = ParentMap.get(neighbor[0]+","+neighbor[1]);
         	if(temp==null) {continue;}
         	if(temp.getType()==TileType.Cave) {
-        		return temp.getRow()+","+temp.getCol();
+        		return temp;
         	}
         } return null;
     }

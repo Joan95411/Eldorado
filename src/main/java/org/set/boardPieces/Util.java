@@ -2,6 +2,7 @@ package org.set.boardPieces;
 import org.apache.commons.io.FilenameUtils;
 import java.awt.Color;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;

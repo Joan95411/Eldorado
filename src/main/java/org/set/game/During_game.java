@@ -24,7 +24,7 @@ public class During_game {
 		//Your piece must stop there, you can't explore while passing a cave.
 		String targetKey = player.getCurrentRow() + "," + player.getCurrentCol();
         Tile PlayerStandingTile = board.ParentMap.get(targetKey);
-        String AroundPlayerCave=board.nextToCave(PlayerStandingTile);
+        Tile AroundPlayerCave=board.nextToCave(PlayerStandingTile);
         
         if(AroundPlayerCave==null) {
         	player.setLastActionCaveExplore(false);

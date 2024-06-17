@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.set.boardPieces.Terrain;
-import org.set.boardPieces.TileDataDic;
 
 public class Team04Board extends Template{
 	 

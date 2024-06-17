@@ -1,20 +1,16 @@
 package org.set.boardPieces;
 
-import java.awt.Dimension;
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.utwente.Main;
-import org.utwente.Tile.TileType;
 import org.utwente.Board.Board;
 import org.utwente.Board.Path;
 import org.utwente.game.controller.GameController;
 import org.utwente.Board.Blockade.Blockade;
+import org.utwente.Section.Section;
 
 public class IntegrationWith03Board {
 	public Board board;
