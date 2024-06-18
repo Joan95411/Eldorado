@@ -11,8 +11,8 @@ public class TokenActionHandler {
     private final Scanner scanner = new Scanner(System.in);
 
     public void doAction(Token token, Player player) {
-        CaveTokenType caveTokenType = token.caveTokenType;
-        CardType cardType = token.caveTokenType.getCardType();
+        CaveTokenType caveTokenType = token.getType();
+        CardType cardType = token.getType().getCardType();
 
         if (cardType == CardType.PURPLE) {
             handleActionTokens(caveTokenType, player);

@@ -113,7 +113,7 @@ public class PlayerCardDeck {
                     System.out.println(j + " - " + player.myDeck.getCardsInHand().get(j).name);
                 }
                 
-                int cardIndex = InputHelper.getIntInput("What card do you want to remove?", 0, player.myDeck.getCardsInHand().size()-1);
+                int cardIndex = InputHelper.getIntInput("What card do you want to remove?", player.myDeck.getCardsInHand().size()-1,0);
                 // TODO: Do we need to remove the card from the game, or do you need to place it on the discard pile?
                 if (cardIndex >= 0 && cardIndex <= player.myDeck.getCardsInHand().size()) {
                     player.myDeck.removeCard(player.myDeck.getCardsInHand().get(cardIndex));
@@ -189,7 +189,7 @@ public class PlayerCardDeck {
 	public int getTokenPower() {
 		int totalPower=0;
     	for(int i = 0; i < myTokens.size(); i++) {
-    		totalPower+=myTokens.get(i).power;
+    		totalPower+=myTokens.get(i).getPower();
     	}
     	return totalPower;
 	}

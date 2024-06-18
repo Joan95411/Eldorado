@@ -14,9 +14,9 @@ import org.set.cards.CardType;
 
 public class Token extends Asset{
     
-    public CardType cardType;
-    public CaveTokenType caveTokenType;
-    public int power;
+    private CardType cardType;
+    private CaveTokenType caveTokenType;
+    private int power;
 
     public Token(CaveTokenType caveTokenType) {
         this.cardType = caveTokenType.getCardType();
@@ -25,6 +25,9 @@ public class Token extends Asset{
         
     }
     
+    public CaveTokenType getType() {
+        return caveTokenType;
+    }
     public void useToken(Player player) {
         TokenActionHandler actionHandler = new TokenActionHandler();
         actionHandler.doAction(this, player);
