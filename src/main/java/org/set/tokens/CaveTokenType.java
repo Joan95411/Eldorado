@@ -2,6 +2,8 @@ package org.set.tokens;
 
 import org.set.cards.CardType;
 
+import org.set.cards.CardType;
+
 public enum CaveTokenType {
     MacheteOne(CardType.GREEN, 1),
     MacheteTwo(CardType.GREEN, 2),

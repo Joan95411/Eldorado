@@ -37,7 +37,7 @@ public abstract class Card extends Asset{
 			return CardType.BLUE;
 		} else if (Arrays.asList(yellowCardTypes).contains(this.name)) {
 			return CardType.YELLOW;
-		} else if (Arrays.asList(jokerCardTypes).contains(this.name)) {
+		} else if (Arrays.asList(jokerCardTypes).contains(this.name) || this.name.equals("Native")) {
 			return CardType.JOKER;
 		} else if (Arrays.asList(purpleCardTypes).contains(this.name)) {
 			return CardType.PURPLE;

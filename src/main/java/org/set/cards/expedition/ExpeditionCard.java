@@ -13,6 +13,11 @@ public class ExpeditionCard extends Card {
         this.power = card.getPower();
     }
 
+    public ExpeditionCard(String name, int cost, boolean singleUse, int power) {
+        super(name.toString(), cost, singleUse);
+        this.power = power;
+    }
+
     @Override
     public void draw(Graphics2D g2d, int x, int y, int width, int height) {
         super.draw(g2d, x, y, width, height);

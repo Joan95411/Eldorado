@@ -12,12 +12,9 @@ build-job:
   - SET2024
   script:
   - echo "Maven building started."
-  - ls -la $CI_PROJECT_DIR/libs  # List the contents of libs directory
+  - ls -la $CI_PROJECT_DIR/libs
   - mvn install:install-file -Dfile=$CI_PROJECT_DIR/libs/eldorado-1.0-SNAPSHOT.jar -DgroupId=org.utwente -DartifactId=eldorado -Dversion=1.0-SNAPSHOT -Dpackaging=jar -DgeneratePom=true
   - mvn install:install-file -Dfile=$CI_PROJECT_DIR/libs/Dependency-SNAPSHOT-all.jar -DgroupId=org.utwente -DartifactId=dependency -Dversion=SNAPSHOT-all -Dpackaging=jar -DgeneratePom=true
-    
-  #- mvn clean install -Dmaven.repo.local=$CI_PROJECT_DIR/libs -X
-  #- mvn -B -DskipTests clean package
   - mvn clean install
   cache:
     paths:
@@ -42,7 +39,6 @@ verify-job:
   dependencies:
   - build-job
   script:
-
   - echo "Running additional verification tests."
   - mvn install:install-file -Dfile=$CI_PROJECT_DIR/libs/eldorado-1.0-SNAPSHOT.jar -DgroupId=org.utwente -DartifactId=eldorado -Dversion=1.0-SNAPSHOT -Dpackaging=jar -DgeneratePom=true
   - mvn install:install-file -Dfile=$CI_PROJECT_DIR/libs/Dependency-SNAPSHOT-all.jar -DgroupId=org.utwente -DartifactId=dependency -Dversion=SNAPSHOT-all -Dpackaging=jar -DgeneratePom=true
