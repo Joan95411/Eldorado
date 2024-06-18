@@ -39,9 +39,16 @@ public class Terrain extends BoardPiece {
             if(tile.getType()==TileType.Cave || tile.getType()==TileType.Mountain) {
             	tile.setPoints(0);
             }else {
-            int points = random.nextInt(POINTS_MAX - POINTS_MIN + 1) + POINTS_MIN;
-            tile.setPoints(points);}
-        }
+                double randValue = random.nextDouble(); // Generate a random number between 0 and 1
+                
+                if (randValue < GREEN_PROBABILITY*2) {
+                    tile.setPoints(1);
+                } else if (randValue < GREEN_PROBABILITY*2+specialColorProbability*3) {
+                    tile.setPoints(2);
+                } else {
+                    tile.setPoints(3);
+                }
+            }}
     }
 
 

@@ -52,7 +52,6 @@ public class GameController {
     
     
     private void PlayerDrawCards(Player player) {
-
     	board.currentPlayer=player;
         System.out.println("Player " + player.getName() + " drew cards");
         player.myDeck.draw(4 - player.myDeck.getCardsInHand().size());
