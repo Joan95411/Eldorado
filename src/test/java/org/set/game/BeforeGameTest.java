@@ -1,9 +1,11 @@
 package org.set.game;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.set.boardPieces.Tile;
+import org.set.cards.action.ActionCard;
 import org.set.cards.action.ActionCardType;
 import org.set.cards.expedition.ExpeditionCard;
 import org.set.cards.expedition.ExpeditionCardType;
@@ -27,10 +29,19 @@ import static org.junit.jupiter.api.Assertions.*;
  * Test class for the {@link Card} class.
  */
 public class BeforeGameTest {
+	private static InputStream backupInputStream;
+    
+	@BeforeAll
+    public static void start() {
+       
+        backupInputStream = System.in;
+    }
 
-    /**
-     * Test for creating an action card.
-     */
+    @AfterEach
+    public void cleanup(){
+        System.setIn(backupInputStream);
+    }
+    
 	@Test
     public void testCreateTokens() {
         ArrayList<Token> tokens = Before_game.createTokens();
@@ -49,16 +60,20 @@ public class BeforeGameTest {
         assertFalse(caves.isEmpty());
         // Perform assertions based on the logic of allocateTokens(), depending on mockTemplate's behavior
     }
-//	@Test
-//    public void testAddPlayer() {
-//        Template mockTemplate = new Team04Board(25,30,25);
-//        String input = "4\nred\nblue\nblack\nyellow"; // Prepare the input data
-//        ByteArrayInputStream inputStream = new ByteArrayInputStream(input.getBytes()); // Create a ByteArrayInputStream with the input data
-//        System.setIn(inputStream);
-//        List<Player> players = Before_game.addPlayer(mockTemplate);
-//        assertNotNull(players);
-//        assertFalse(players.isEmpty());
-//        assertEquals(4, players.size()); // Ensure the correct number of players are added based on mock input
-//    }
+	@Test
+    public void testAddPlayer() {
+        Template mockTemplate = new Team04Board(25,30,25);
+        String input = "4\nred\nblue\nwhite\nyellow"; // Prepare the input data
+        ByteArrayInputStream inputStream = new ByteArrayInputStream(input.getBytes()); // Create a ByteArrayInputStream with the input data
+        InputHelper.setInputStream(inputStream);
+        List<Player> players = Before_game.addPlayer(mockTemplate);
+        assertNotNull(players);
+        assertFalse(players.isEmpty());
+        assertEquals(4, players.size()); // Ensure the correct number of players are added based on mock input
+        Before_game.placePlayersOnBoard(mockTemplate);
+        assertEquals(4, mockTemplate.players.size());
+    }
+	
+	
 	 
 }

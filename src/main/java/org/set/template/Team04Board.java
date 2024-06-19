@@ -3,7 +3,9 @@ package org.set.template;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.set.boardPieces.BoardPiece;
 import org.set.boardPieces.Terrain;
+import org.set.boardPieces.Tile;
 
 public class Team04Board extends Template{
 	 
@@ -23,7 +25,11 @@ public class Team04Board extends Template{
             Terrain terrainLatest=getLastTerrain();
             addTerrain(coordinates[0], coordinates[1], terrainLatest);
         }
-        
+        for (BoardPiece piece : boardPieces.values()) {
+            for (Tile tile : piece.getTiles()) {
+                ParentMap.put(tile.getRow() + "," + tile.getCol(), tile);
+                
+            }}
     }
 
 }

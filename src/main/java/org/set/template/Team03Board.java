@@ -2,6 +2,7 @@ package org.set.template;
 
 
 import org.json.JSONObject;
+import org.set.boardPieces.BoardPiece;
 import org.set.boardPieces.IntegrationWith03Board;
 import org.set.boardPieces.Tile;
 import org.set.boardPieces.TileDataDic;
@@ -55,7 +56,11 @@ public class Team03Board extends Template{
                  getLastTerrain().rotate(rotation);
              }
     	 }
-    	 
+    	 for (BoardPiece piece : boardPieces.values()) {
+             for (Tile tile : piece.getTiles()) {
+                 ParentMap.put(tile.getRow() + "," + tile.getCol(), tile);
+                 
+             }}
         
     }
 }

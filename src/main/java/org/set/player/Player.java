@@ -13,7 +13,7 @@ public class Player {
     public Color color;
     public PlayerCardDeck myDeck;
     private boolean lastActionWasCaveExplore;
-    
+    private boolean potentialWinner=false;
 
 
     public Player(Color selectedColor) {
@@ -45,7 +45,13 @@ public class Player {
     public Color getColor() {
         return color;
     }
-    
+    public void setWinner(boolean winner) {
+        this.potentialWinner = winner;
+    }
+
+    public boolean getWinner() {
+        return potentialWinner;
+    }
     
     public void setPlayerPosition(int row, int col) {
         this.currentRow = row;

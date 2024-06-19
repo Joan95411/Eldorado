@@ -11,7 +11,7 @@ import org.set.game.GameController;
 /**
  * UI user test class for the {@link GameController} class.
  */
-public class GameControllerTest {
+public class GameControllerDrawTest {
     GameController gameController;
 
     /**

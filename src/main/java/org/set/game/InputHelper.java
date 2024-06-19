@@ -1,5 +1,6 @@
 package org.set.game;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -10,7 +11,7 @@ import org.set.boardPieces.Tile;
 import org.set.template.Template;
 
 public class InputHelper {
-    private static final Scanner scanner = new Scanner(System.in);
+    private static Scanner scanner = new Scanner(System.in);
     
     public static void printPromptInRows(String prompt) {
         // Split the prompt by commas
@@ -178,4 +179,8 @@ public class InputHelper {
     public static void closeScanner() {
         scanner.close();
     }
+    public static void setInputStream(InputStream inputStream){
+        scanner = new Scanner(inputStream);
+    }
+
 }

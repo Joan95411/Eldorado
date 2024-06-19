@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.util.*;
 
 import org.set.game.InputHelper;
+import org.set.marketplace.MarketPlace;
 import org.set.player.Player;
 import org.set.template.Template;
 import org.set.tokens.Cave;
@@ -11,6 +12,7 @@ import org.set.tokens.CaveTokenType;
 import org.set.tokens.Token;
 import org.set.boardPieces.Tile;
 import org.set.boardPieces.Util;
+import org.set.cards.Card;
 
 public class Before_game {
 
@@ -63,7 +65,7 @@ public class Before_game {
 	    return caves;
 	}
 
-    public static List<Player> addPlayer(Template board2) {
+    public static List<Player> addPlayer(Template board) {
         int numPlayers;
         do {
             numPlayers = InputHelper.getIntInput("How many players are playing?",4,1);
@@ -87,7 +89,7 @@ public class Before_game {
             players.add(player);}
         }
 
-        board2.players = players;
+        board.players = players;
         return players;
     }
 
@@ -100,5 +102,14 @@ public class Before_game {
     	}
 
         board2.repaint();
+    }
+    
+    public static void displayMarketInfo(Template board,MarketPlace market) {
+    	HashMap<Card, Integer> marketoption = market.getMarketBoardOptions();
+    	for (Map.Entry<Card, Integer> entry : marketoption.entrySet()) {
+    	    entry.setValue(3); // Set every value to 3, because it doesn't make sense when it's not on market, the value is 1
+    	    //there are always 3 cards, doesn't matter if you put the pile on market or not
+    	}
+        board.market=market;
     }
 }

@@ -3,6 +3,7 @@ package org.set.game;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.set.boardPieces.Blockade;
@@ -18,8 +19,8 @@ import org.set.template.Template;
 import org.set.tokens.Cave;
 import org.set.tokens.Token;
 
-public class During_game {
-	
+public class Player_move {
+	public static Map<Tile, Cave> caveMap;
 	public static void caveExplore(Template board,Player player) {
 		//Your piece must stop there, you can't explore while passing a cave.
 		String targetKey = player.getCurrentRow() + "," + player.getCurrentCol();
@@ -34,7 +35,7 @@ public class During_game {
 	    }
         else {	
         		System.out.println("You're standing next to a cave, You can explore. ");
-        		Cave correspondingCave = GameController.caveMap.get(AroundPlayerCave);
+        		Cave correspondingCave = caveMap.get(AroundPlayerCave);
         	    System.out.println("Adjacent to cave: " + correspondingCave.tile);
         	    Token token=correspondingCave.getAtoken();
         	    if(token!=null) {
@@ -193,35 +194,7 @@ public class During_game {
 	}
 	
 	
-	public static void removeblock(Template board) {//to be deleted, only for testing
-		while (true) {
-			boolean wantsToContinue = InputHelper.getYesNoInput("Do you want to remove block?");
-			
-			if (wantsToContinue == false) {
-				break;
-			}
-			
-			int minIndex = 100;
-			List<Blockade> blocks = board.getAllBlockades();
-			
-			if (blocks.size() > 0) {
-				for (Blockade block : blocks) {
-					String name = block.getName();
-					int index = Integer.parseInt(name.substring("Blockade_".length()));
-
-					if (index < minIndex) {
-						minIndex = index;
-					}
-				}
-			} else {
-				System.out.println("Sorry no more blockade left");
-			}
-
-			board.removeBlockade(minIndex);
-
-			board.repaint();
-		}
-	}
+	
 
 	
 }

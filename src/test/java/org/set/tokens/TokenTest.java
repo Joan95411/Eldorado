@@ -3,6 +3,7 @@ package org.set.tokens;
 import org.set.cards.Card;
 import org.set.cards.expedition.ExpeditionCard;
 import org.set.cards.expedition.ExpeditionCardType;
+import org.set.game.InputHelper;
 import org.set.player.Player;
 import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -18,7 +19,7 @@ import java.util.Random;
 public class TokenTest {
     private static ArrayList<Token> basicTokens = new ArrayList<>();
     private static ArrayList<Token> tokens = new ArrayList<>();
-    private static Player player = new Player(Color.WHITE);
+    private static Player player = new Player(new Color(124,123,211));
 
     /**
      * Test for creating all the tokens.
@@ -103,7 +104,7 @@ public class TokenTest {
 
         String input = "0\n"; // Prepare the input data
         ByteArrayInputStream inputStream = new ByteArrayInputStream(input.getBytes()); // Create a ByteArrayInputStream with the input data
-        System.setIn(inputStream); // Set System.in to use the ByteArrayInputStream
+        InputHelper.setInputStream(inputStream); // Set System.in to use the ByteArrayInputStream
 
         removeToken.useToken(player);
 
