@@ -67,9 +67,7 @@ public class MarketPlaceTest {
         }
     }
 
-    /**
-     * Test class buying all cards without having enough gold.
-     */
+    // Test class buying all cards without having enough gold.
     @Test
     public void BuyCardsWithoutEnoughGold(){
         for (String card : cards) {
@@ -81,5 +79,19 @@ public class MarketPlaceTest {
                 assertEquals(marketPlace.currentMarketBoard, marketBoard);
             }
         }
+    }
+
+    // Test trying to activate the this.AddCardToMarketBoard(cardName, goldAmount) function
+    @Test
+    public void BuyToAddToMarketBoardCard(){
+        for (int i = 0; i < 10; i++) {
+            marketPlace.BuyCard("Trailblazer", 10);
+        }
+    }
+
+    // Test trying to buying non existing cards.
+    @Test
+    public void BuyNonExistingCard(){
+        marketPlace.BuyCard("Fake", 10);
     }
 }

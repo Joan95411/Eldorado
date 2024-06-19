@@ -52,11 +52,11 @@ public class MarketPlace {
         return boughtCard;
     }
 
-    private boolean AddCardToMarketBoard(String cardName, Integer goldAmount){
+    private boolean AddCardToMarketBoard(String cardName, Integer goldAmount) {
         boolean succes = false;
 
         if (this.marketBoardOptions.containsKey(cardName)) {
-            System.err.println("added "+cardName);
+            System.err.println("added " + cardName);
 
             this.marketBoardOptions.remove(cardName);
             this.currentMarketBoard.put(cardName, 3);
