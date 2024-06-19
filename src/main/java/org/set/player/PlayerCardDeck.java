@@ -145,13 +145,7 @@ public class PlayerCardDeck {
             drawCards(cardsMustBePlayedThisTurn);
         }
     }
-    public int isThereActionCard() {
-    	for(Card card:cardsInHand) {
-    		if(card.getCardType()==CardType.PURPLE) {
-    			return cardsInHand.indexOf(card);
-    		}
-    	}return -1;
-    }
+    
     public List<Card> getDrawPile() {
         return drawPile;
     }
@@ -184,7 +178,9 @@ public class PlayerCardDeck {
     }
 	public void discardToken(int i) {
 		myTokens.remove(i);
-		
+	}
+	public void discardToken(Token token) {
+		myTokens.remove(token);
 	}
 	public int getTokenPower() {
 		int totalPower=0;
@@ -199,7 +195,13 @@ public class PlayerCardDeck {
 		assets.addAll(myTokens);
 		return assets;
 	}
-	
+	public int isThereActionAsset() {
+    	for(Asset asset:getMyasset()) {
+    		if(asset.getCardType()==CardType.PURPLE) {
+    			return getMyasset().indexOf(asset);
+    		}
+    	}return -1;
+    }
 	public double getTotalValue() {
     	
     	return getCardsValue()+getTokenValue();

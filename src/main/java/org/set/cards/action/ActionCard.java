@@ -19,6 +19,7 @@ public class ActionCard extends Card {
 
         if (this.singleUse) {
             this.removeCard();
+            player.myDeck.removeCard(this);
         } else {
             player.myDeck.discard(this);
         }
