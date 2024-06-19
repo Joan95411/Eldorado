@@ -31,6 +31,7 @@ public class Token extends Asset{
     public void useToken(Player player) {
         TokenActionHandler actionHandler = new TokenActionHandler();
         actionHandler.doAction(this, player);
+        
     }
     
     @Override

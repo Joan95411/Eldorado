@@ -4,7 +4,6 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.set.boardPieces.Tile;
-import static org.mockito.Mockito.*;
 import org.set.cards.action.ActionCardType;
 import org.set.cards.expedition.ExpeditionCard;
 import org.set.cards.expedition.ExpeditionCardType;

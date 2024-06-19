@@ -61,6 +61,7 @@ public abstract class Card extends Asset{
 		if (!singleUse) {
 			throw new IllegalArgumentException("This is not a single use card, so this card cannot be removed.");
 		} else if (removedCard) {
+			
 			throw new IllegalStateException("This card is already removed and cannot be removed once again.");
 		} else {
 			removedCard = true;

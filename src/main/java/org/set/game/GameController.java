@@ -19,6 +19,7 @@ import org.set.boardPieces.Util;
 import org.set.boardPieces.WinningPiece;
 import org.set.cards.Card;
 import org.set.cards.CardActionHandler;
+import org.set.cards.CardType;
 import org.set.cards.action.ActionCard;
 import org.set.cards.expedition.ExpeditionCard;
 import org.set.marketplace.MarketPlace;
@@ -161,28 +162,37 @@ public class GameController {
     }
     public void PlayActionCard(Player player) {
     	board.currentPlayer=player;
-    	int actionIndex=player.myDeck.isThereActionCard();
-    	while(actionIndex>=0){
-        	boolean toPlay=InputHelper.getYesNoInput("Do you want to play action cards?");
+    	while(player.myDeck.isThereActionAsset()>=0){
+        	boolean toPlay=InputHelper.getYesNoInput("Do you want to play action cards/token?");
         	if(!toPlay) {break;}
-        	int cardIndex = InputHelper.getIntInput("Choose 1 action card to play;"
-        			+ " Input index (e.g. "+actionIndex+");"
-        					+ " or '-1' to stop discarding",player.myDeck.getCardsInHand().size()-1,-1);
+        	int cardIndex = InputHelper.getIntInput("Choose 1 action card/token to play;"
+        			+ " Input index (e.g. "+player.myDeck.isThereActionAsset()+");"
+        					+ " or '-1' to stop",player.myDeck.getMyasset().size()-1,-1);
 	        if (cardIndex == -1) {
 	            break;
 	        }
-	        Card selectedCard=player.myDeck.getCardsInHand().get(actionIndex);
-	        if (!(selectedCard instanceof ActionCard)) {
-		        System.out.println("Please select a Action card.");
+	        Asset selected=player.myDeck.getMyasset().get(cardIndex);
+	        if ((selected instanceof ActionCard)) {
+	        	ActionCard actionCard=(ActionCard) selected;
+		        actionCard.doAction(player);
+		        board.repaint();
 		        continue;
-		    }else {
-	        ActionCard actionCard=(ActionCard) selectedCard;
-	        CardActionHandler cah=new CardActionHandler();
-	        cah.doAction(actionCard, player);
-	        player.myDeck.discardFromHand(actionIndex);
-	        board.repaint();
-	        break;
+		        }
+	        else if((selected instanceof Token)) {
+	        	Token selectedToken=(Token)selected;
+	        	System.out.println("You chose"+selectedToken.getName());
+	        	if(selectedToken.getCardType()==CardType.PURPLE) {
+	        		selectedToken.useToken(player);
+	        		player.myDeck.discardAsset(cardIndex);
+	        		board.repaint();
+			        continue;
+	        }else{System.out.println("This is not an Action token.");}
+	        }
+	        else{System.out.println("Please select a Action card or token.");
+		        continue;
 		    }
+	        
+//	        player.myDeck.discardFromHand(actionIndex);
 	        
         }
     }
