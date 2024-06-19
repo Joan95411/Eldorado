@@ -28,10 +28,10 @@ public class Token extends Asset{
     public CaveTokenType getType() {
         return caveTokenType;
     }
+
     public void useToken(Player player) {
         TokenActionHandler actionHandler = new TokenActionHandler();
         actionHandler.doAction(this, player);
-        
     }
     
     @Override

@@ -179,8 +179,10 @@ public class InputHelper {
     public static void closeScanner() {
         scanner.close();
     }
+
     public static void setInputStream(InputStream inputStream){
         scanner = new Scanner(inputStream);
     }
+
 
 }

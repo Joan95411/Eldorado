@@ -46,6 +46,42 @@ public class TokenTest {
         assertEquals(tokens.size(), 14);
     }
 
+    // Test the coin tokens
+    @Test
+    public void useCoinTokens() {
+        Token token;
+        token = new Token(CaveTokenType.CoinOne);
+        token.useToken(player);
+
+        token = new Token(CaveTokenType.CoinTwo);
+        token.useToken(player);
+    }
+
+    // Test the paddle tokens
+    @Test
+    public void usePaddleTokens() {
+        Token token;
+        token = new Token(CaveTokenType.PaddleOne);
+        token.useToken(player);
+
+        token = new Token(CaveTokenType.PaddleTwo);
+        token.useToken(player);
+    }
+
+    // Test the machete tokens
+    @Test
+    public void useMacheteTokens() {
+        Token token;
+        token = new Token(CaveTokenType.MacheteOne);
+        token.useToken(player);
+
+        token = new Token(CaveTokenType.MacheteTwo);
+        token.useToken(player);
+
+        token = new Token(CaveTokenType.MacheteThree);
+        token.useToken(player);
+    }
+
     /**
      * Test for using all the tokens.
      * TODO: When the actions for the tokens are finished they should be tested individually like {@link org.set.cards.ActionCardTest}
@@ -102,9 +138,11 @@ public class TokenTest {
 
         Token removeToken = new Token(CaveTokenType.Remove);
 
-        String input = "0\n"; // Prepare the input data
-        ByteArrayInputStream inputStream = new ByteArrayInputStream(input.getBytes()); // Create a ByteArrayInputStream with the input data
-        InputHelper.setInputStream(inputStream); // Set System.in to use the ByteArrayInputStream
+
+        String input = "0\n";
+        ByteArrayInputStream inputStream = new ByteArrayInputStream(input.getBytes());
+        InputHelper.setInputStream(inputStream);
+
 
         removeToken.useToken(player);
 
@@ -127,9 +165,9 @@ public class TokenTest {
 
         Token immediatePlayToken = new Token(CaveTokenType.ImmediatePlay);
 
-        String input = "0\n"; // Prepare the input data
-        ByteArrayInputStream inputStream = new ByteArrayInputStream(input.getBytes()); // Create a ByteArrayInputStream with the input data
-        System.setIn(inputStream); // Set System.in to use the ByteArrayInputStream
+        String input = "0\n";
+        ByteArrayInputStream inputStream = new ByteArrayInputStream(input.getBytes());
+        InputHelper.setInputStream(inputStream);
 
         immediatePlayToken.useToken(player);
     }
