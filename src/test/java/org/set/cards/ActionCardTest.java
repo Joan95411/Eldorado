@@ -2,9 +2,11 @@ package org.set.cards;
 
 import java.awt.*;
 import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 import org.junit.jupiter.api.*;
+import org.set.game.InputHelper;
 import org.set.player.Player;
 import org.set.cards.action.ActionCard;
 import org.set.cards.action.ActionCardType;
@@ -19,6 +21,8 @@ public class ActionCardTest {
     private static ArrayList<ActionCard> cards = new ArrayList<>();
     private static Player player = new Player(Color.BLACK);
 
+    private static InputStream backupInputStream;
+
     /**
      * Test for creating all the action cards.
      */
@@ -29,6 +33,12 @@ public class ActionCardTest {
         }
 
         assertEquals(cards.size(), ActionCardType.values().length);
+        backupInputStream = System.in;
+    }
+
+    @AfterEach
+    public void cleanup(){
+        System.setIn(backupInputStream);
     }
 
     /**
@@ -54,52 +64,55 @@ public class ActionCardTest {
     /**
      * Test for playing the transmitter action card.
      */
-//    @Test
-//    public void testTransmitterActionCard() {
-//        Player player = new Player(new Color(123, 123, ++lastAssignedColorId));
-//        ActionCard transmitter = new ActionCard(ActionCardType.Transmitter);
-//
-//        assertEquals(0, player.myDeck.getCardsInHand().size());
-//        assertEquals(0, player.myDeck.getDiscardPile().size());
-//
-//        String input = "Explorer\n"; // Prepare the input data
-//        ByteArrayInputStream inputStream = new ByteArrayInputStream(input.getBytes()); // Create a ByteArrayInputStream
-//                                                                                       // with the input data
-//        System.setIn(inputStream); // Set System.in to use the ByteArrayInputStream
-//
-//        if (transmitter.isPlayable()) {
-//            transmitter.doAction(player);
-//        }
-//
-//        assertEquals(1, player.myDeck.getCardsInHand().size());
-//        assertEquals(0, player.myDeck.getDiscardPile().size());
-//    }
+    @Test
+    public void testTransmitterActionCard() {
+        Player player = new Player(new Color(123, 123, ++lastAssignedColorId));
+        ActionCard transmitter = new ActionCard(ActionCardType.Transmitter);
+
+        assertEquals(0, player.myDeck.getCardsInHand().size());
+        assertEquals(0, player.myDeck.getDiscardPile().size());
+
+        String input = "Explorer\n"; // Prepare the input data
+        ByteArrayInputStream inputStream = new ByteArrayInputStream(input.getBytes()); // Create a ByteArrayInputStream
+                                                                                       // with the input data
+        //System.setIn(inputStream); // Set System.in to use the ByteArrayInputStream
+        InputHelper.setInputStream(inputStream);
+
+        if (transmitter.isPlayable()) {
+            transmitter.doAction(player);
+        }
+
+        assertEquals(1, player.myDeck.getCardsInHand().size());
+        assertEquals(0, player.myDeck.getDiscardPile().size());
+    }
 
     /**
      * Test for playing the transmitter action card.
      * An error was included for trying an invalid card type
      */
-//    @Test
-//    public void testTransmitterActionCardWithInvalidCardType() {
-//        Player player = new Player(new Color(123, 123, ++lastAssignedColorId));
-//        ActionCard transmitter = new ActionCard(ActionCardType.Transmitter);
-//
-//        assertEquals(0, player.myDeck.getCardsInHand().size());
-//        assertEquals(0, player.myDeck.getDiscardPile().size());
-//
-//        if (transmitter.isPlayable()) {
-//            String input = "Jack of all trades\nJack_of_all_trades\n"; // Prepare the input data
-//            ByteArrayInputStream inputStream = new ByteArrayInputStream(input.getBytes()); // Create a
-//                                                                                           // ByteArrayInputStream with
-//                                                                                           // the input data
-//            System.setIn(inputStream); // Set System.in to use the ByteArrayInputStream
-//
-//            transmitter.doAction(player);
-//        }
-//
-//        assertEquals(1, player.myDeck.getCardsInHand().size());
-//        assertEquals(0, player.myDeck.getDiscardPile().size());
-//    }
+    @Test
+    public void testTransmitterActionCardWithInvalidCardType() {
+        Player player = new Player(new Color(123, 123, ++lastAssignedColorId));
+        ActionCard transmitter = new ActionCard(ActionCardType.Transmitter);
+
+        assertEquals(0, player.myDeck.getCardsInHand().size());
+        assertEquals(0, player.myDeck.getDiscardPile().size());
+
+        if (transmitter.isPlayable()) {
+            String input = "Jack\nJack_of_all_trades\n"; // Prepare the input data
+            ByteArrayInputStream inputStream = new ByteArrayInputStream(input.getBytes()); // Create a
+                                                                                           // ByteArrayInputStream with
+                                                                                           // the input data
+            //System.setIn(inputStream); // Set System.in to use the ByteArrayInputStream
+            InputHelper.setInputStream(inputStream);
+
+
+            transmitter.doAction(player);
+        }
+
+        assertEquals(1, player.myDeck.getCardsInHand().size());
+        assertEquals(0, player.myDeck.getDiscardPile().size());
+    }
 
     /**
      * Test for playing the cartographer action card.
@@ -125,25 +138,27 @@ public class ActionCardTest {
     /**
      * Test for playing the scientist action card.
      */
-//    @Test
-//    public void testScientistActionCard() {
-//        Player player = new Player(new Color(123, 123, ++lastAssignedColorId));
-//        ActionCard scientist = new ActionCard(ActionCardType.Scientist);
-//
-//        assertEquals(0, player.myDeck.getCardsInHand().size());
-//        assertEquals(0, player.myDeck.getDiscardPile().size());
-//
-//        String input = "y\n0\n";
-//        ByteArrayInputStream inputStream = new ByteArrayInputStream(input.getBytes());
-//        System.setIn(inputStream);
-//
-//        if (scientist.isPlayable()) {
-//            scientist.doAction(player);
-//        }
-//
-//        assertEquals(0, player.myDeck.getCardsInHand().size());
-//        assertEquals(1, player.myDeck.getDiscardPile().size());
-//    }
+    @Test
+    public void testScientistActionCard() {
+        Player player = new Player(new Color(123, 123, ++lastAssignedColorId));
+        ActionCard scientist = new ActionCard(ActionCardType.Scientist);
+
+        assertEquals(0, player.myDeck.getCardsInHand().size());
+        assertEquals(0, player.myDeck.getDiscardPile().size());
+
+        String input = "y\n0\n";
+        ByteArrayInputStream inputStream = new ByteArrayInputStream(input.getBytes());
+        //System.setIn(inputStream);
+        InputHelper.setInputStream(inputStream);
+
+
+        if (scientist.isPlayable()) {
+            scientist.doAction(player);
+        }
+
+        assertEquals(0, player.myDeck.getCardsInHand().size());
+        assertEquals(1, player.myDeck.getDiscardPile().size());
+    }
 
     /**
      * Test for playing the compass action card.
@@ -168,28 +183,29 @@ public class ActionCardTest {
      * Test for playing the travel log action card.
      * TODO: Does the travel log card needs to be placed on the discard pile?
      */
-//    @Test
-//    public void testTravelLogActionCard() {
-//        Player player = new Player(new Color(123, 123, ++lastAssignedColorId));
-//        ActionCard travelLog = new ActionCard(ActionCardType.Travel_Log);
-//
-//        System.out.println("TODO: create travel log action card test");
-//
-//        String input = "y\n0\nn\n"; // Prepare the input data
-//        ByteArrayInputStream inputStream = new ByteArrayInputStream(input.getBytes()); // Create a ByteArrayInputStream
-//                                                                                       // with the input data
-//        System.setIn(inputStream); // Set System.in to use the ByteArrayInputStream
-//
-//        assertEquals(0, player.myDeck.getCardsInHand().size());
-//        assertEquals(0, player.myDeck.getDiscardPile().size());
-//
-//        if (travelLog.isPlayable()) {
-//            travelLog.doAction(player);
-//        }
-//
-//        assertEquals(1, player.myDeck.getCardsInHand().size());
-//        assertEquals(0, player.myDeck.getDiscardPile().size());
-//    }
+    @Test
+    public void testTravelLogActionCard() {
+        Player player = new Player(new Color(123, 123, ++lastAssignedColorId));
+        ActionCard travelLog = new ActionCard(ActionCardType.Travel_Log);
+
+        System.out.println("TODO: create travel log action card test");
+
+        String input = "y\n0\nn\n"; // Prepare the input data
+        ByteArrayInputStream inputStream = new ByteArrayInputStream(input.getBytes()); // Create a ByteArrayInputStream
+                                                                                       // with the input data
+        //System.setIn(inputStream); // Set System.in to use the ByteArrayInputStream
+        InputHelper.setInputStream(inputStream);
+
+        assertEquals(0, player.myDeck.getCardsInHand().size());
+        assertEquals(0, player.myDeck.getDiscardPile().size());
+
+        if (travelLog.isPlayable()) {
+            travelLog.doAction(player);
+        }
+
+        assertEquals(1, player.myDeck.getCardsInHand().size());
+        assertEquals(0, player.myDeck.getDiscardPile().size());
+    }
 
     /**
      * Test for playing the native action card.
