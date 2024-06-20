@@ -136,6 +136,9 @@ public class Player_move {
 	        int[] movingToInt = InputHelper.getPlayerMoveInput(board, playerStandingTile);
 	        
 	        if (movingToInt[0] == -100) {
+	        	if(selectedMovable.getPower()==residualPower) {
+        			System.out.println("You can keep the "+ selectedMovable +" and choose another card.");
+        			break;}
 	            boolean discardMovable = InputHelper.getYesNoInput("Are you sure to discard this " + selectedMovable + "?");
 	            if (discardMovable) {
 	                residualPower = 0;
@@ -143,9 +146,7 @@ public class Player_move {
 	            } else if(selectedMovable.getPower()>residualPower) {
 	                System.out.println("You can discard the " + selectedMovable + " or make a movement with the remaining power.");
 	                continue;
-	            } else {
-            			System.out.println("You didn't use the "+ selectedMovable );
-            			break;}
+	            } 
 	        }
 	        
 	        else if(movingToInt[0] == -200) {

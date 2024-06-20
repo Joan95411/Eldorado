@@ -30,7 +30,7 @@
 
 - [ ] [Set up project integrations](https://gitlab.utwente.nl/p4/set2024team04project/-/settings/integrations)
   - Jira is integrated, but I think nothing is done 
-
+ - If run into errors with IntegrationWithTeam03Board class, be sure to check if the two jar files in libs are also imported in your java library and build path.
 ## Test and Deploy
 
 Use the built-in continuous integration in GitLab.

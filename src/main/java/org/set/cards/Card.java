@@ -59,10 +59,12 @@ public abstract class Card extends Asset{
     }
 	public void removeCard() {
 		if (!singleUse) {
-			throw new IllegalArgumentException("This is not a single use card, so this card cannot be removed.");
+			System.out.println("This is not a single use card, so this card cannot be removed.");
+			return;
 		} else if (removedCard) {
 			
-			throw new IllegalStateException("This card is already removed and cannot be removed once again.");
+			System.out.println("This card is already removed and cannot be removed once again.");
+			return;
 		} else {
 			removedCard = true;
 		}

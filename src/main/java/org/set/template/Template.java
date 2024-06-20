@@ -58,18 +58,28 @@ public abstract class Template extends JPanel {
         WinningPiece.resetCount();
         
         loadTileData();
+        setConfiguration();
         initBoard();
+        fillParentMap();
+        System.out.println(findStarterTiles().get(0));
     }
 
 
 	abstract public void initBoard();
-
+	abstract public void setConfiguration();
 	public void loadTileData() {
         TileDataDic tdd = new TileDataDic(numRows, numCols, hexSize);
         boardPieces.put(tdd.terrainA.getName(), tdd.terrainA);
         boardPieces.put(tdd.wpa.getName(), tdd.wpa);
         }
-
+	
+	public void fillParentMap() {
+		for (BoardPiece piece : boardPieces.values()) {
+            for (Tile tile : piece.getTiles()) {
+                ParentMap.put(tile.getRow() + "," + tile.getCol(), tile);
+                
+            }}
+	}
     
     @Override
     public void paintComponent(Graphics g) {
@@ -240,6 +250,22 @@ public abstract class Template extends JPanel {
                 .map(key -> (Terrain) boardPieces.get(key))
                 .collect(Collectors.toList());
     }
+    public Blockade getFirstBlockade() {
+      	 int minIndex = 100;
+           List<Blockade> Blockades = getAllBlockades();
+           
+           for (Blockade Blockade : Blockades) {
+               String name = Blockade.getName();
+               int index = Integer.parseInt(name.substring("Blockade_".length()));
+
+               // Check if this index is greater than the current maxIndex
+               if (index < minIndex) {
+               	minIndex = index;
+               }
+
+           }
+      	return (Blockade) boardPieces.get("Blockade_"+minIndex);
+      }
     public Blockade getLastBlockade() {
    	 int maxIndex = 0;
         List<Blockade> blocks = getAllBlockades();

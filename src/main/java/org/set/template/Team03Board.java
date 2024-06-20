@@ -12,17 +12,25 @@ import org.set.boardPieces.WinningPiece;
 
 public class Team03Board extends Template{
 
+	private String pathString;
 	public Team03Board(int numRows, int numCols, int hexSize) {
 		super(numRows, numCols, hexSize);
-		
 	}
+	public void setPathString(String pathString) {
+        this.pathString = pathString;
+    }
 	
+	@Override
+	public void setConfiguration() {
+		// TODO Auto-generated method stub
+		setPathString("HillsOfGold");
+	}
 	
 	@Override
 	public void initBoard() {
-		IntegrationWith03Board game03= new IntegrationWith03Board();
+		IntegrationWith03Board game03= new IntegrationWith03Board(pathString);
         pathInfo=game03.Get03Path();
-        
+        game03.Get03Frame(); //only if you want to compare our board to their board visually
     	 for (int i = 0; i < pathInfo.length(); i++) {
              JSONObject jsonObject = pathInfo.getJSONObject(i);
              double addRow = jsonObject.getDouble("addRow");
@@ -32,9 +40,11 @@ public class Team03Board extends Template{
              
              if(addRow!=0 || addCol!=0) {
              addTerrain(addRow, addCol, getLastTerrain());
+             
              if(i==0) {
-            	 boardPieces.remove("Terrain_1"); //remove the template
-            	 boardPieces.remove("Blockade_1"); 
+            	 boardPieces.remove(getFirstTerrain().getName()); //remove the template
+            	 if(getAllBlockades().size()>0) {
+            	 boardPieces.remove(getFirstBlockade().getName()); }
              }
              }
              String blockColor = jsonObject.optString("blockColor","noBlock");
@@ -56,11 +66,8 @@ public class Team03Board extends Template{
                  getLastTerrain().rotate(rotation);
              }
     	 }
-    	 for (BoardPiece piece : boardPieces.values()) {
-             for (Tile tile : piece.getTiles()) {
-                 ParentMap.put(tile.getRow() + "," + tile.getCol(), tile);
-                 
-             }}
+    	 
         
     }
+	
 }

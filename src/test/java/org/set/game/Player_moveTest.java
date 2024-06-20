@@ -4,7 +4,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.awt.Color;
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -75,8 +77,12 @@ class Player_moveTest {
     	player.setPlayerPosition(3, 3);
     	Player_move.caveExplore(board, player);
     	assertEquals(1,player.myDeck.getTokens().size());
-    	player.setPlayerPosition(3, 2);
+    	ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outputStream));
+    	player.setPlayerPosition(4, 2);
     	Player_move.caveExplore(board, player);
+    	String expectedOutput = "You cannot explore a cave twice in a row." + System.lineSeparator();
+        assertEquals(expectedOutput, outputStream.toString());
     	assertEquals(1,player.myDeck.getTokens().size());
     }
     
@@ -84,6 +90,26 @@ class Player_moveTest {
 	 * Integrationtest
 	 * Classes used: ExpeditionCard, ExpeditionCardType, Template, Player, Marketplace, Team04Board, Tile, TileType, Cave
 	 * Tesing actioncards
+	*/
+    @Test
+    public void testCaveExplore3() {//go somewhere else and back to cave again
+    	Player_move.caveMap=Before_game.allocateTokens(board);
+    	Player player = players.get(0);
+    	player.setPlayerPosition(3, 3);
+    	Player_move.caveExplore(board, player);
+    	assertEquals(1,player.myDeck.getTokens().size());
+    	player.setPlayerPosition(3, 2);
+    	Player_move.caveExplore(board, player);
+    	assertEquals(1,player.myDeck.getTokens().size());
+    	player.setPlayerPosition(4, 2);
+    	Player_move.caveExplore(board, player);
+    	assertEquals(2,player.myDeck.getTokens().size());
+    }
+
+	/**
+	 * Integrationtest
+	 * Classes used: ExpeditionCard, ExpeditionCardType, Template, Player, Marketplace, Team04Board, Tile, TileType, Cave
+	 * Tesing moving without sufficient power
 	*/
     @Test
     public void testMovewithEnoughPower() {
@@ -101,13 +127,8 @@ class Player_moveTest {
     	assertEquals(4,player.getCurrentCol());
     }
 
-	/**
-	 * Integrationtest
-	 * Classes used: ExpeditionCard, ExpeditionCardType, Template, Player, Marketplace, Team04Board, Tile, TileType, Cave
-	 * Tesing moving without sufficient power
-	*/
     @Test
-    public void testMovewithNotEnoughPower() {
+    public void testMovewithNotCorrectColor() {
     	Player player = players.get(0);
     	Before_game.placePlayersOnBoard(board);
     	player.myDeck.getDrawPile().clear();
@@ -119,6 +140,22 @@ class Player_moveTest {
     	Player_move.PlayerMove2(board, player);
     	assertEquals(1,player.getCurrentRow());
     	assertEquals(4,player.getCurrentCol());
+    }
+    @Test
+    public void testMovewithNotEnoughPower() {
+    	Player player = players.get(0);
+    	Before_game.placePlayersOnBoard(board);
+    	player.myDeck.getDrawPile().clear();
+        player.myDeck.addCard(new ExpeditionCard(ExpeditionCardType.Sailor));
+    	player.myDeck.draw(1);
+    	player.setPlayerPosition(4, 4);
+    	String input = "y\n0\n5,4\nstop\nn\nn\n";
+        ByteArrayInputStream inputStream = new ByteArrayInputStream(input.getBytes()); 
+        InputHelper.setInputStream(inputStream);
+    	Player_move.PlayerMove2(board, player);
+    	assertEquals(4,player.getCurrentRow());
+    	assertEquals(4,player.getCurrentCol());
+    	
     }
     
 	/**
@@ -149,6 +186,40 @@ class Player_moveTest {
 	 * Classes used: ExpeditionCard, ExpeditionCardType, Template, Player, Marketplace, Team04Board, Tile, TileType, Cave
 	 * Tesing basecamp with the cards needed to go to the basecamp
 	*/
+    @Test
+    public void testRemoveBlockWithNotRightColor() {
+    	Player player = players.get(0);
+    	Before_game.placePlayersOnBoard(board);
+    	player.myDeck.getDrawPile().clear();
+        player.myDeck.addCard(new ExpeditionCard(ExpeditionCardType.Explorer));
+    	player.myDeck.draw(1);
+    	Blockade block=(Blockade) board.boardPieces.get("Blockade_1");
+    	block.setColor(TileType.Paddle);
+    	block.setPoints(1);
+    	player.setPlayerPosition(6, 6);
+    	String input = "y\n0\nblock\nstop\nn\nn\n";
+        ByteArrayInputStream inputStream = new ByteArrayInputStream(input.getBytes()); 
+        InputHelper.setInputStream(inputStream);
+    	Player_move.PlayerMove2(board, player);
+    	assertEquals(0,player.myDeck.calculateBlockPoint());
+    }
+    @Test
+    public void testRemoveBlockWithNotRightPower() {
+    	Player player = players.get(0);
+    	Before_game.placePlayersOnBoard(board);
+    	player.myDeck.getDrawPile().clear();
+        player.myDeck.addCard(new ExpeditionCard(ExpeditionCardType.Sailor));
+    	player.myDeck.draw(1);
+    	Blockade block=(Blockade) board.boardPieces.get("Blockade_1");
+    	block.setColor(TileType.Paddle);
+    	block.setPoints(2);
+    	player.setPlayerPosition(6, 6);
+    	String input = "y\n0\nblock\nstop\nn\nn\n";
+        ByteArrayInputStream inputStream = new ByteArrayInputStream(input.getBytes()); 
+        InputHelper.setInputStream(inputStream);
+    	Player_move.PlayerMove2(board, player);
+    	assertEquals(0,player.myDeck.calculateBlockPoint());
+    }
     @Test
     public void testBaseCampMoveWithEnoughCardsToDiscard() {
     	Player player = players.get(0);

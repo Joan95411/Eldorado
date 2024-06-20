@@ -14,19 +14,34 @@ import org.utwente.Section.Section;
 
 public class IntegrationWith03Board {
 	public Board board;
-public  IntegrationWith03Board() {
-		
-		Main mainPanel = new Main(Path.HillsOfGold);
-        GameController gameController = mainPanel.getGameController();
-        JFrame frame = new JFrame(gameController.getGame().getGameName());
-        gameController.getGame().placePlayersStart();
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        JScrollPane scrollPane = new JScrollPane(mainPanel);
-        frame.add(scrollPane);
-        frame.setSize(1250, 650);
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
+	public Main mainPanel;
+	public GameController gameController;
+	
+public  IntegrationWith03Board(String pathString) {
+	Path path;
+	switch (pathString.toLowerCase()) {
+    case "homestretch":
+        path = Path.HomeStretch;
+        break;
+    case "swamplands":
+        path = Path.Swamplands;
+        break;
+    case "windingpaths":
+        path = Path.WindingPaths;
+        break;
+    case "witchcauldron":
+        path = Path.WitchCauldron;
+        break;
+    case "serpentine":
+        path = Path.Serpentine;
+        break;
+    default:
+        path = Path.HillsOfGold;
+        break;
+	}	
+		mainPanel = new Main(path);
+        gameController = mainPanel.getGameController();
+        
         board=gameController.getGame().getBoard();
 	
 }
@@ -60,5 +75,17 @@ public  IntegrationWith03Board() {
     	System.out.println(pathInfo);
 	return pathInfo;
 }
+	public void Get03Frame() {
+		
+		JFrame frame = new JFrame(gameController.getGame().getGameName());
+        gameController.getGame().placePlayersStart();
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        JScrollPane scrollPane = new JScrollPane(mainPanel);
+        frame.add(scrollPane);
+        frame.setSize(1250, 650);
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+	}
 	
 }

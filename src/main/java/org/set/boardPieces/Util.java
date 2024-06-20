@@ -1,8 +1,6 @@
 package org.set.boardPieces;
-import org.apache.commons.io.FilenameUtils;
 import java.awt.Color;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -10,8 +8,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.apache.commons.io.FilenameUtils;
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 public class Util {
 	public static Color getColorFromString(String colorName) {
@@ -57,7 +56,6 @@ public class Util {
         colorToTileTypeMap.put("eldorado", TileType.Eldorado);
         return colorToTileTypeMap.getOrDefault(colorName.toLowerCase(), TileType.Default);
     }
-	
 	
 	
 	public static JSONObject readJsonData(String basePath, String fileName) {

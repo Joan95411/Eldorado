@@ -11,7 +11,8 @@ public class ActionCard extends Card {
 
     public void doAction(Player player) {
         if (!this.isPlayable()) {
-            throw new IllegalStateException("This card is not playable");
+        	System.out.println("This card is not playable");
+        	return;
         }
 
         CardActionHandler handler = new CardActionHandler();
