@@ -48,6 +48,11 @@ public class Player_draw_discard {
 	        if ((selected instanceof ActionCard)) {
 	        	ActionCard actionCard=(ActionCard) selected;
 		        actionCard.doAction(player);
+		        if(actionCard.singleUse) {
+		        	player.myDeck.removeCard(actionCard);
+		        }else {
+		        	player.myDeck.discard(actionCard);
+		        }
 		        board.repaint();
 		        continue;
 		        }

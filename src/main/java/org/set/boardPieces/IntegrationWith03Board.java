@@ -18,33 +18,29 @@ public class IntegrationWith03Board {
 	public GameController gameController;
 	
 public  IntegrationWith03Board(String pathString) {
-	Path path;
-	switch (pathString.toLowerCase()) {
-    case "homestretch":
-        path = Path.HomeStretch;
-        break;
-    case "swamplands":
-        path = Path.Swamplands;
-        break;
-    case "windingpaths":
-        path = Path.WindingPaths;
-        break;
-    case "witchcauldron":
-        path = Path.WitchCauldron;
-        break;
-    case "serpentine":
-        path = Path.Serpentine;
-        break;
-    default:
-        path = Path.HillsOfGold;
-        break;
-	}	
+	Path path= convertStringToPath(pathString);
 		mainPanel = new Main(path);
         gameController = mainPanel.getGameController();
-        
         board=gameController.getGame().getBoard();
 	
 }
+private Path convertStringToPath(String pathString) {
+    switch (pathString.toLowerCase()) {
+        case "homestretch":
+            return Path.HomeStretch;
+        case "swamplands":
+            return Path.Swamplands;
+        case "windingpaths":
+            return Path.WindingPaths;
+        case "witchcauldron":
+            return Path.WitchCauldron;
+        case "serpentine":
+            return Path.Serpentine;
+        default:
+            return Path.HillsOfGold;
+    }
+}
+
 	public JSONArray Get03Path() {
 		String path= board.getPath().name();
 		JSONArray pathInfo=Util.readPathData(path);

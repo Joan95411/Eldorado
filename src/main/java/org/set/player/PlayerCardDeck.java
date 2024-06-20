@@ -72,6 +72,7 @@ public class PlayerCardDeck {
     }
     // Add a card to the discard pile
     public void discard(Card card) {
+    	cardsInHand.remove(card);
         discardPile.add(card);
     }
 

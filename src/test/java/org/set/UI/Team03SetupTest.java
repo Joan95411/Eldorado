@@ -1,4 +1,4 @@
-package org.set;
+package org.set.UI;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -41,7 +41,7 @@ class Team03SetupTest {
 	
 	@Test
     public void testwindingpaths() {
-		 Team03Board Board = new Team03Board(45, 35, 25);
+		 Team03Board Board = new Team03Board(35, 35, 25);
 		 Board.boardPieces.clear();
 		 Board.setPathString("windingpaths"); 
 		 Board.loadTileData();
