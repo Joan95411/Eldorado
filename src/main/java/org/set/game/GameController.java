@@ -36,7 +36,6 @@ public class GameController {
         players = Before_game.addPlayer(board);
         Before_game.placePlayersOnBoard(board);
         Before_game.displayMarketInfo(board,market);
-        GameSession();
     }
     
     public void GameSession() {

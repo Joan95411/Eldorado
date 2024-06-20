@@ -37,6 +37,7 @@ public class EldoradoGame implements Runnable {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
         gameControl = new GameController(board);
+        gameControl.GameSession();
         //        frame.dispose();
     }
 

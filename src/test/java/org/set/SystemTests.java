@@ -53,5 +53,6 @@ public class SystemTests {
         //test some condition to be true
         //System.out.println(eldoradoGame.gameControl);
         assertNotNull(eldoradoGame.board);
+        assertNotNull(eldoradoGame.gameControl);
     }
 }
