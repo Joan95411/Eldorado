@@ -1,25 +1,14 @@
 package org.set.game;
 
 import javax.swing.*;
-import lombok.Getter;
 import org.set.template.Team03Board;
 import org.set.template.Team04Board;
 import org.set.template.Template;
-
-import javax.swing.*;
-
-import org.set.game.GameController;
-import org.set.game.InputHelper;
-import org.set.template.Team03Board;
-import org.set.template.Team04Board;
-import org.set.template.Template;
-import org.utwente.Board.Board;
 
 public class EldoradoGame implements Runnable {
 
    public Template board;
    public JFrame frame;
-   @Getter
    public GameController gameControl;
 
     @Override
