@@ -44,19 +44,35 @@ class Final_roundTest {
     public void cleanup(){
         System.setIn(backupInputStream);
     }
-    
+
+    /**
+	 * Integrationtest
+	 * Classes used: ExpeditionCard, ExpeditionCardType, Template, Player, Team04Board
+	 * Tesing whether there is just one winner
+	*/
     @Test
     public void testIsThereAWinnier_NoWinner() {
     	Player player=players.get(0);
         assertFalse(Final_round.isThereAwinnier(board, player));
     }
     
+    /**
+	 * Integrationtest
+	 * Classes used: ExpeditionCard, ExpeditionCardType, Template, Player, Marketplace, Team04Board, Tile, TileType, Cave
+	 * Tesing whether there is a second winner
+	*/
     @Test
     public void testIsThereAWinnier_WithWinner() {
     	Player player=players.get(1);
     	player.setPlayerPosition(1, 23);
         assertTrue(Final_round.isThereAwinnier(board, player));
     }
+
+    /**
+	 * Integrationtest
+	 * Classes used: ExpeditionCard, ExpeditionCardType, Template, Player, Marketplace, Team04Board, Tile, TileType, Cave
+	 * Tesing the final round
+	*/
     @Test
     public void testFinal_round() {
     	players.get(1).setPlayerPosition(1, 23);

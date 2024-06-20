@@ -26,7 +26,7 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * Test class for the {@link Card} class.
+ * Test class for the {@link BeforeGameTest} class.
  */
 public class BeforeGameTest {
 	private static InputStream backupInputStream;
@@ -42,6 +42,11 @@ public class BeforeGameTest {
         System.setIn(backupInputStream);
     }
     
+    /**
+	 * Integrationtest
+	 * Classes used: Template, Player, Cave, Team04Board and token
+	 * Testing the creation of tokens
+	*/
 	@Test
     public void testCreateTokens() {
         ArrayList<Token> tokens = Before_game.createTokens();
@@ -51,6 +56,11 @@ public class BeforeGameTest {
         assertEquals(42, tokens.size()); // Ensure all expected tokens are created
     }
 	
+    /**
+	 * Integrationtest
+	 * Classes used: ExpeditionCard, ExpeditionCardType, Template, Player, Marketplace, Team04Board, Tile, TileType, Cave
+	 * Tesing the allocation of tokens
+	*/
 	@Test
     public void testAllocateTokens() {
         Template mockTemplate = new Team04Board(25,30,25); // Create a mock Template object for testing
@@ -60,6 +70,12 @@ public class BeforeGameTest {
         assertFalse(caves.isEmpty());
         // Perform assertions based on the logic of allocateTokens(), depending on mockTemplate's behavior
     }
+
+    /**
+	 * Integrationtest
+	 * Classes used: ExpeditionCard, ExpeditionCardType, Template, Player, Marketplace, Team04Board, Tile, TileType, Cave
+	 * Tesing multiple players
+	*/
 	@Test
     public void testAddPlayer() {
         Template mockTemplate = new Team04Board(25,30,25);

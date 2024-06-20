@@ -21,16 +21,27 @@ import org.set.player.Player;
 import org.set.template.Team04Board;
 import org.set.template.Template;
 
+/**
+ * Test class for the {@link Player_buyTest} class.
+ */
 class Player_buyTest {
 	private Template board;
     private List<Player> players;
     private static InputStream backupInputStream;
     private MarketPlace market;
+
+     /**
+     * Creating inputstream
+     */
     @BeforeAll
     public static void start() {
        
         backupInputStream = System.in;
     }
+
+     /**
+     * Setting up the board and players
+     */
     @BeforeEach
     public void setUp() {
         board = new Team04Board(25,30,25); // Example dimensions
@@ -42,13 +53,21 @@ class Player_buyTest {
 
     }
     
+     /**
+     * Cleaning up the system
+     */
     @AfterEach
     public void cleanup(){
         System.setIn(backupInputStream);
     }
     
+     /**
+     * Integrationtest
+     * Classes used: ExpeditionCard, ExpeditionCardType, Template, Player, Asset, Marketplace, Team04Board
+     * Test for buying new cards with enough money
+     */
 	@Test
-    public void testPlayerBuy() {//enough money to buy
+    public void testPlayerBuy() {
         Player player = players.get(0);
         player.myDeck.getDrawPile().clear();
         for(int i=0;i<4;i++) {
@@ -61,8 +80,14 @@ class Player_buyTest {
         Player_buy.PlayerBuy(board, player, market);
         assertEquals(5, player.myDeck.getDiscardPile().size());
     }
+
+    /**
+     * Integrationtest
+     * Classes used: ExpeditionCard, ExpeditionCardType, Template, Player, Asset, Marketplace, Team04Board
+     * Test for buying new cards with not enough money
+     */   
 	@Test
-    public void testPlayerBuy2() {//not enough money to buy
+    public void testPlayerBuy2() {
         Player player = players.get(0);
         player.myDeck.getDrawPile().clear();
         for(int i=0;i<4;i++) {
@@ -76,8 +101,13 @@ class Player_buyTest {
         assertEquals(0, player.myDeck.getDiscardPile().size());
     }
 	
+    /**
+     * Integrationtest
+     * Classes used: ExpeditionCard, ExpeditionCardType, Template, Player, Asset, Marketplace, Team04Board
+     * Testing if player can fill an empty marketslot
+     */ 
 	@Test
-    public void testFillMarket() {//can fill empty market
+    public void testFillMarket() {
 	market.getCurrentMarketBoard().clear();
 	String input = "y\n0\n";
     ByteArrayInputStream inputStream = new ByteArrayInputStream(input.getBytes()); 

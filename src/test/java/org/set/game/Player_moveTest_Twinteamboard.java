@@ -21,11 +21,12 @@ import org.set.cards.expedition.ExpeditionCard;
 import org.set.cards.expedition.ExpeditionCardType;
 import org.set.marketplace.MarketPlace;
 import org.set.player.Player;
+import org.set.template.Team03Board;
 import org.set.template.Team04Board;
 import org.set.template.Template;
 import org.set.tokens.Cave;
 
-class Player_moveTest {
+class Player_moveTest_Twinteamboard {
 	private Template board;
     private List<Player> players;
     private static InputStream backupInputStream;
@@ -37,7 +38,7 @@ class Player_moveTest {
     }
     @BeforeEach
     public void setUp() {
-    	board = new Team04Board(25,30,25); 
+    	board = new Team03Board(25,30,25); 
         Random random = new Random();
         players = new ArrayList<>();
         players.add(new Player(new Color(random.nextInt(256),random.nextInt(256),random.nextInt(256))));

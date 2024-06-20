@@ -1,7 +1,6 @@
 package org.set.game;
 
 import static org.junit.jupiter.api.Assertions.*;
-
 import org.junit.jupiter.api.Test;
 import org.set.boardPieces.Tile;
 import org.set.cards.action.ActionCard;
@@ -24,17 +23,27 @@ import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Test class for the {@link Player_draw_discardTest} class.
+ */
 public class Player_draw_discardTest {
 
 	    private Template board;
 	    private List<Player> players;
 	    private static InputStream backupInputStream;
 	    
+		/**
+		 * Setting up input stream
+		 */
 	    @BeforeAll
 	    public static void start() {
 	       
 	        backupInputStream = System.in;
 	    }
+
+		/**
+		 * Setting up the board
+		 */
 	    @BeforeEach
 	    public void setUp() {
 	        board = new Team04Board(25,30,25); // Example dimensions
@@ -47,11 +56,20 @@ public class Player_draw_discardTest {
 	        board.players = players;
 
 	    }
-	    
+
+		/**
+		 * Cleaning up the board
+		 */	    
 	    @AfterEach
 	    public void cleanup(){
 	        System.setIn(backupInputStream);
 	    }
+
+		/**
+		 * Integrationtest
+		 * Classes used: ExpeditionCard, ExpeditionCardType, Template, Player, Marketplace, Team04Board
+		 * Test for the amount of players on the board
+		 */
 	    @Test
 	    public void testPlacePlayersOnBoard() {
 	        Before_game.placePlayersOnBoard(board);
@@ -65,6 +83,11 @@ public class Player_draw_discardTest {
 	        }
 	    }
 
+		/**
+		 * Integrationtest
+		 * Classes used: ExpeditionCard, ExpeditionCardType, Template, Player, Marketplace, Team04Board
+		 * Test the drawing of new cards
+		 */
 	    @Test
 	    public void testPlayerDrawCards() {
 	        Player player = players.get(0);
@@ -73,6 +96,11 @@ public class Player_draw_discardTest {
 	        assertEquals(4, player.myDeck.getCardsInHand().size());
 	    }
 	    
+		/**
+		 * Integrationtest
+		 * Classes used: ExpeditionCard, ExpeditionCardType, Template, Player, Marketplace, Team04Board
+		 * Test discarding cards
+		 */
 	    @Test
 	    public void testPlayerDiscard() {
 	        Player player = players.get(0);
@@ -85,6 +113,11 @@ public class Player_draw_discardTest {
 	        assertEquals(1, player.myDeck.getDiscardPile().size());
 	    }
 	    
+		/**
+		 * Integrationtest
+		 * Classes used: ExpeditionCard, ExpeditionCardType, Template, Player, Marketplace, Team04Board
+		 * Tesing actioncards
+		 */
 	    @Test
 	    public void testPlayActionCardWithActionCard() {
 	    	Player player = players.get(0);
