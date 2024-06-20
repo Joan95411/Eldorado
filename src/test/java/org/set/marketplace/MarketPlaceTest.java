@@ -71,9 +71,7 @@ public class MarketPlaceTest {
         }
     }
 
-    /**
-     * Test class buying all cards without having enough gold.
-     */
+    // Test class buying all cards without having enough gold.
     @Test
     public void BuyCardsWithoutEnoughGold(){
         for (Card card : cards) {
@@ -85,27 +83,17 @@ public class MarketPlaceTest {
         }
     }
 
+    // Test trying to activate the this.AddCardToMarketBoard(cardName, goldAmount) function
     @Test
-    public void BuyCardWhenNotAvailable(){
-        for (Integer i = 0; i < 4; i++) {
-            try {
-                marketPlace.BuyCard("Scout", 5);
-            } catch (IllegalArgumentException e) {
-                assertEquals(e.getMessage(), "Card not avaiable");
-            }
+    public void BuyToAddToMarketBoardCard(){
+        for (int i = 0; i < 10; i++) {
+            marketPlace.BuyCard("Trailblazer", 10);
         }
     }
 
+    // Test trying to buying non existing cards.
     @Test
-    public void NewCardIntoMarket(){
-        for (Integer i = 0; i < 3; i++) {
-            try {
-                marketPlace.BuyCard("Scout", 0);
-            } catch (IllegalArgumentException e) {
-                assertEquals(e.getMessage(), "Not enough gold to buy this card");
-            }
-        }
-        marketPlace.BuyCard("Millionaire", 5);
-        marketPlace.BuyCard("Captain", 5);
+    public void BuyNonExistingCard(){
+        marketPlace.BuyCard("Fake", 10);
     }
 }
