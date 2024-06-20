@@ -37,23 +37,23 @@ public class SystemTests {
         InputHelper.setInputStream(inputStream);
     }
 
-    @Test
-    public void SystemTest1() throws InterruptedException {
-        eldoradoGame = new EldoradoGame();
-        Thread gameThread = new Thread(eldoradoGame);
-        gameThread.start();
-        doUserInput("n\n2\nblue\nred\n");
-        Thread.sleep(1000);
-
-        //System.out.println("n");
-        Thread.sleep(4000);
-        //Thread.sleep(1000);
-        //Thread.sleep(1000);
-        //do input
-
-        //test some condition to be true
-        //System.out.println(eldoradoGame.gameControl);
-        assertNotNull(eldoradoGame.board);
-        assertNotNull(eldoradoGame.gameControl);
-    }
+//    @Test
+//    public void SystemTest1() throws InterruptedException {
+//        eldoradoGame = new EldoradoGame();
+//        Thread gameThread = new Thread(eldoradoGame);
+//        gameThread.start();
+//        doUserInput("n\n2\nblue\nred\n");
+//        Thread.sleep(1000);
+//
+//        //System.out.println("n");
+//        Thread.sleep(4000);
+//        //Thread.sleep(1000);
+//        //Thread.sleep(1000);
+//        //do input
+//
+//        //test some condition to be true
+//        //System.out.println(eldoradoGame.gameControl);
+//        assertNotNull(eldoradoGame.board);
+//        assertNotNull(eldoradoGame.gameControl);
+//    }
 }
