@@ -61,7 +61,7 @@ class Player_moveTest_Twinteamboard {
     public void testCaveExplore() {
     	Player_move.caveMap=Before_game.allocateTokens(board);
     	Player player = players.get(0);
-    	player.setPlayerPosition(16, 6);//save cave tile in json
+    	player.setPlayerPosition(5, 4);//save cave tile in json
     	Player_move.caveExplore(board, player);
     	assertEquals(1,player.myDeck.getTokens().size());
     }
@@ -75,12 +75,12 @@ class Player_moveTest_Twinteamboard {
     public void testCaveExplore2() {//explore twice
     	Player_move.caveMap=Before_game.allocateTokens(board);
     	Player player = players.get(0);
-    	player.setPlayerPosition(16, 6);
+    	player.setPlayerPosition(5, 4);
     	Player_move.caveExplore(board, player);
     	assertEquals(1,player.myDeck.getTokens().size());
     	ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputStream));
-    	player.setPlayerPosition(16, 5);
+    	player.setPlayerPosition(5, 5);
     	Player_move.caveExplore(board, player);
     	String expectedOutput = "You cannot explore a cave twice in a row." + System.lineSeparator();
         assertEquals(expectedOutput, outputStream.toString());
@@ -91,13 +91,13 @@ class Player_moveTest_Twinteamboard {
     public void testCaveExplore3() {//go somewhere else and back to cave again
     	Player_move.caveMap=Before_game.allocateTokens(board);
     	Player player = players.get(0);
-    	player.setPlayerPosition(16, 6);
+    	player.setPlayerPosition(5, 4);
     	Player_move.caveExplore(board, player);
     	assertEquals(1,player.myDeck.getTokens().size());
-    	player.setPlayerPosition(15, 5);
+    	player.setPlayerPosition(6, 4);
     	Player_move.caveExplore(board, player);
     	assertEquals(1,player.myDeck.getTokens().size());
-    	player.setPlayerPosition(16, 5);
+    	player.setPlayerPosition(5, 5);
     	Player_move.caveExplore(board, player);
     	assertEquals(2,player.myDeck.getTokens().size());
     }
@@ -115,11 +115,11 @@ class Player_moveTest_Twinteamboard {
         for(int i=0;i<4;i++) {
         player.myDeck.addCard(new ExpeditionCard(ExpeditionCardType.Explorer));}
     	player.myDeck.draw(4);
-    	String input = "y\n0\n14,2\nn\n";
+    	String input = "y\n0\n4,2\nn\n";
         ByteArrayInputStream inputStream = new ByteArrayInputStream(input.getBytes()); 
         InputHelper.setInputStream(inputStream);
     	Player_move.PlayerMove2(board, player);
-    	assertEquals(14,player.getCurrentRow());
+    	assertEquals(4,player.getCurrentRow());
     	assertEquals(2,player.getCurrentCol());
     }
 
@@ -135,11 +135,11 @@ class Player_moveTest_Twinteamboard {
     	player.myDeck.getDrawPile().clear();
         player.myDeck.addCard(new ExpeditionCard(ExpeditionCardType.Sailor));
     	player.myDeck.draw(1);
-    	String input = "y\n0\n14,2\nstop\nn\nn\n";
+    	String input = "y\n0\n4,2\nstop\nn\nn\n";
         ByteArrayInputStream inputStream = new ByteArrayInputStream(input.getBytes()); 
         InputHelper.setInputStream(inputStream);
     	Player_move.PlayerMove2(board, player);
-    	assertEquals(14,player.getCurrentRow());
+    	assertEquals(4,player.getCurrentRow());
     	assertEquals(1,player.getCurrentCol());
     }
     
@@ -150,13 +150,13 @@ class Player_moveTest_Twinteamboard {
     	player.myDeck.getDrawPile().clear();
         player.myDeck.addCard(new ExpeditionCard(ExpeditionCardType.Explorer));
     	player.myDeck.draw(1);
-    	player.setPlayerPosition(8, 15);
-    	String input = "y\n0\n9,16\nstop\nn\nn\n";
+    	player.setPlayerPosition(9, 18);
+    	String input = "y\n0\n10,18\nstop\nn\nn\n";
         ByteArrayInputStream inputStream = new ByteArrayInputStream(input.getBytes()); 
         InputHelper.setInputStream(inputStream);
     	Player_move.PlayerMove2(board, player);
-    	assertEquals(8,player.getCurrentRow());
-    	assertEquals(15,player.getCurrentCol());
+    	assertEquals(9,player.getCurrentRow());
+    	assertEquals(18,player.getCurrentCol());
     	
     }
 	/**
@@ -174,7 +174,7 @@ class Player_moveTest_Twinteamboard {
     	Blockade block=(Blockade) board.boardPieces.get("Blockade_1");
     	block.setColor(TileType.Paddle);
     	block.setPoints(1);
-    	player.setPlayerPosition(13, 5);
+    	player.setPlayerPosition(8, 5);
     	String input = "y\n0\nblock\ny\n";
         ByteArrayInputStream inputStream = new ByteArrayInputStream(input.getBytes()); 
         InputHelper.setInputStream(inputStream);
@@ -192,8 +192,8 @@ class Player_moveTest_Twinteamboard {
     	Player player = players.get(0);
     	Before_game.placePlayersOnBoard(board);
     	player.myDeck.draw(4);
-    	player.setPlayerPosition(11, 5);
-    	String input = "y\n-2\n0\n11,6\nn\n";
+    	player.setPlayerPosition(6, 6);
+    	String input = "y\n-2\n0\n5,7\nn\n";
         ByteArrayInputStream inputStream = new ByteArrayInputStream(input.getBytes()); 
         InputHelper.setInputStream(inputStream);
     	Player_move.PlayerMove2(board, player);

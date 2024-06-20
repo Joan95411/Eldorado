@@ -23,7 +23,7 @@ public class Team03Board extends Template{
 	@Override
 	public void setConfiguration() {
 		// TODO Auto-generated method stub
-		setPathString("HillsOfGold");
+		setPathString("Serpentine");
 	}
 	
 	@Override
