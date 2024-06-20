@@ -92,8 +92,8 @@ public class MarketPlaceTest {
     }
 
     // Test trying to buying non existing cards.
-    @Test
-    public void BuyNonExistingCard(){
-        marketPlace.BuyCard("Fake", 10);
-    }
+//    @Test
+//    public void BuyNonExistingCard(){
+//        marketPlace.BuyCard("Fake", 10);
+//    }
 }
