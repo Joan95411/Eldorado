@@ -16,6 +16,7 @@ build-job:
   - mvn install:install-file -Dfile=$CI_PROJECT_DIR/libs/eldorado-1.0-SNAPSHOT.jar -DgroupId=org.utwente -DartifactId=eldorado -Dversion=1.0-SNAPSHOT -Dpackaging=jar -DgeneratePom=true
   - mvn install:install-file -Dfile=$CI_PROJECT_DIR/libs/Dependency-SNAPSHOT-all.jar -DgroupId=org.utwente -DartifactId=dependency -Dversion=SNAPSHOT-all -Dpackaging=jar -DgeneratePom=true
   - mvn clean install
+  - mvn compile
   cache:
     paths:
     - "~/.m2/repository"

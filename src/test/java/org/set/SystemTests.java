@@ -19,6 +19,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class SystemTests {
     public EldoradoGame eldoradoGame;
 
+    @Test
     public void startMain() throws InterruptedException {
         eldoradoGame = new EldoradoGame();
         Thread gameThread = new Thread(eldoradoGame);
