@@ -1,5 +1,7 @@
 package org.set.game;
 
+import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -12,7 +14,12 @@ import org.set.template.Template;
 
 public class InputHelper {
     private static Scanner scanner = new Scanner(System.in);
-    
+
+    private static InputStream originalInputStream = System.in;
+
+    private static boolean isSystemInput = true;
+
+
     public static void printPromptInRows(String prompt) {
         // Split the prompt by commas
         String[] parts = prompt.split(";");
@@ -26,7 +33,7 @@ public class InputHelper {
         while (true) {
         	printPromptInRows(question);
             System.out.print("> ");
-            String input = scanner.nextLine();
+            String input = readScanner();
 
             // Check if the user wants to stop
             if (input.equalsIgnoreCase("stop")) {
@@ -75,9 +82,13 @@ public class InputHelper {
         	printPromptInRows(prompt);
             System.out.print("> ");
             try {
-                int userInput = scanner.nextInt();
-                scanner.nextLine(); // Consume the newline character
-                
+                int userInput = -1;
+                while (userInput == -1){
+                    if(scanner.hasNextLine() || isSystemInput){
+                        userInput = scanner.nextInt();
+                        scanner.nextLine();
+                    }
+                }
 
                 if (userInput >= min && userInput <= max) {
                     return userInput;
@@ -94,7 +105,7 @@ public class InputHelper {
         while (true) {
         	printPromptInRows(prompt);
             System.out.print("> ");
-            String input = scanner.nextLine();
+            String input = readScanner();
             if (input.equalsIgnoreCase("stop")) {
             	List<Integer> stopList = new ArrayList<>();
                 stopList.add(-1);
@@ -164,7 +175,7 @@ public class InputHelper {
         while (true) {
         	printPromptInRows(question);
             System.out.print("> ");
-            String input = scanner.nextLine().toLowerCase();
+            String input = readScanner().toLowerCase();
 
             if (input.equals("y") || input.equals("yes")) {
                 return true;
@@ -180,9 +191,18 @@ public class InputHelper {
         scanner.close();
     }
 
-    public static void setInputStream(InputStream inputStream){
+    public static void setInputStream(ByteArrayInputStream inputStream){
+        isSystemInput = inputStream == originalInputStream;
         scanner = new Scanner(inputStream);
     }
 
-
+    public static String readScanner(){
+        String input = null;
+        while (input == null){
+            if(scanner.hasNextLine() || isSystemInput){
+                input = scanner.nextLine();
+            }
+        }
+        return input;
+    }
 }
