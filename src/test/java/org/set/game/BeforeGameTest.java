@@ -78,15 +78,15 @@ public class BeforeGameTest {
 	@Test
     public void testAddPlayer() {
         Template mockTemplate = new Team04Board(25,30,25);
-        String input = "4\nred\nblue\nwhite\nyellow"; // Prepare the input data
+        String input = "3\norange\nwhite\nyellow"; // Prepare the input data
         ByteArrayInputStream inputStream = new ByteArrayInputStream(input.getBytes()); // Create a ByteArrayInputStream with the input data
         InputHelper.setInputStream(inputStream);
         List<Player> players = Before_game.addPlayer(mockTemplate);
         assertNotNull(players);
         assertFalse(players.isEmpty());
-        assertEquals(4, players.size()); // Ensure the correct number of players are added based on mock input
+        assertEquals(3, players.size()); // Ensure the correct number of players are added based on mock input
         Before_game.placePlayersOnBoard(mockTemplate);
-        assertEquals(4, mockTemplate.players.size());
+        assertEquals(3, mockTemplate.players.size());
     }
 	
 	

@@ -1,4 +1,4 @@
-package org.set;
+package org.set.UI;
 
 import static org.junit.jupiter.api.Assertions.*;
 

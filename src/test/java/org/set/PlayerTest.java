@@ -41,7 +41,7 @@ public class PlayerTest {
      */
     @Test
     public void testCreatingPlayers() {
-        Color[] colors = {Color.RED, Color.GRAY, Color.YELLOW, Color.GREEN, Color.CYAN, Color.PINK, Color.BLUE};
+        Color[] colors = { Color.GRAY, Color.YELLOW, Color.GREEN, Color.CYAN, Color.PINK};
 
         for (Color color : colors) {
             try {

@@ -61,7 +61,6 @@ public abstract class Template extends JPanel {
         setConfiguration();
         initBoard();
         fillParentMap();
-        System.out.println(findStarterTiles().get(0));
     }
 
 
