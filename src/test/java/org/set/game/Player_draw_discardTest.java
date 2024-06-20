@@ -119,7 +119,7 @@ public class Player_draw_discardTest {
 		 * Tesing actioncards
 		 */
 	    @Test
-	    public void testPlayActionCardWithActionCard() {
+	    public void testPlayActionCardCartographer() {
 	    	Player player = players.get(0);
 	    	ActionCard ac=new ActionCard(ActionCardType.Cartographer);
 	    	player.myDeck.getDrawPile().clear();
@@ -129,9 +129,24 @@ public class Player_draw_discardTest {
 	        ByteArrayInputStream inputStream = new ByteArrayInputStream(input.getBytes()); // Create a ByteArrayInputStream with the input data
 	        InputHelper.setInputStream(inputStream);
 	        Player_draw_discard.PlayActionCard(board, player);
-	        assertEquals(0,player.myDeck.isThereActionAsset());
+	        assertEquals(-1,player.myDeck.isThereActionAsset());
+	        assertTrue(player.myDeck.getDiscardPile().contains(ac));
 	    }
-
+	    
+	    @Test
+	    public void testPlayActionCardTransmitter() {
+	    	Player player = players.get(0);
+	    	ActionCard ac=new ActionCard(ActionCardType.Transmitter);
+	    	player.myDeck.getDrawPile().clear();
+	    	player.myDeck.addCard(ac);
+	    	player.myDeck.draw(1);
+	    	String input = "y\n0\nProp_Plane\n";
+	        ByteArrayInputStream inputStream = new ByteArrayInputStream(input.getBytes()); // Create a ByteArrayInputStream with the input data
+	        InputHelper.setInputStream(inputStream);
+	        Player_draw_discard.PlayActionCard(board, player);
+	        assertEquals(-1,player.myDeck.isThereActionAsset());
+	        assertFalse(player.myDeck.getDiscardPile().contains(ac));
+	    }
 	}
 
 
