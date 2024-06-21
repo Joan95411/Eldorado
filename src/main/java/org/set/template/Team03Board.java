@@ -24,13 +24,14 @@ public class Team03Board extends Template{
 	public void setConfiguration() {
 		// TODO Auto-generated method stub
 		setPathString("Serpentine");
+		IntegrationWith03Board game03= new IntegrationWith03Board(pathString);
+        pathInfo=game03.Get03Path();
+        game03.Get03Frame(); //only if you want to compare our board to their board visually
 	}
 	
 	@Override
 	public void initBoard() {
-		IntegrationWith03Board game03= new IntegrationWith03Board(pathString);
-        pathInfo=game03.Get03Path();
-        game03.Get03Frame(); //only if you want to compare our board to their board visually
+		
     	 for (int i = 0; i < pathInfo.length(); i++) {
              JSONObject jsonObject = pathInfo.getJSONObject(i);
              double addRow = jsonObject.getDouble("addRow");

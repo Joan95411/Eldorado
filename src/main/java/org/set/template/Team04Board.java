@@ -13,10 +13,13 @@ public class Team04Board extends Template{
 		super(numRows, numCols, hexSize);
 	}
 	
+	public void setCordList(List<double[]> coordinateList){
+		this.coordinateList=coordinateList;
+	}
+	
 	@Override
 	public void initBoard() {
 		
-    	getLastTerrain().rotate(2);
         for (double[] coordinates : coordinateList) {
             Terrain terrainLatest=getLastTerrain();
             addTerrain(coordinates[0], coordinates[1], terrainLatest);
@@ -32,6 +35,8 @@ public class Team04Board extends Template{
                 new double[]{0, 8},
                 new double[]{-6, 4}
         ));
+
+    	getLastTerrain().rotate(2);
 	}
 
 }

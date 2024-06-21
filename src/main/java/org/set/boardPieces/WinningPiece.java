@@ -25,19 +25,7 @@ public class WinningPiece extends BoardPiece {
 		}
     }
 	
-	@Override
-	public void randomizeTiles() {
-		Random random = new Random();
-		double rand = random.nextDouble();
-		TileType color;
-		if (rand < 0.5) {
-			color = TileType.Machete;
-		} else {
-			color = TileType.Paddle;
-		}
-		setColor(color);
-		
-	}
+	
 	public void rotate(int degree, int axisX, int axisY) {
 		for (Tile tile : tiles) {
 			int[] temp=TileDataDic.tilesMap.get(tile.getRow()+","+tile.getCol());

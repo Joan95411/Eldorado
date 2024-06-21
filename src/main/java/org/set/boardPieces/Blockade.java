@@ -88,7 +88,7 @@ public class Blockade extends BoardPiece {
         return clonedBlock;
     }
     
-    @Override
+    
     public void randomizeTiles() {
         Random random = new Random();
         int index = random.nextInt(COLOR_RANGE.length);
