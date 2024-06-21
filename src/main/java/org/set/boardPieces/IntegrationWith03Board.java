@@ -40,9 +40,11 @@ private Path convertStringToPath(String pathString) {
             return Path.HillsOfGold;
     }
 }
+	public String Get03PathName() {
+		return board.getPath().name();
+	}
 
-	public JSONArray Get03Path() {
-		String path= board.getPath().name();
+	public JSONArray Get03Path(String path) {
 		JSONArray pathInfo=Util.readPathData(path);
 		for (Blockade block:board.getBlockades()) {
 			String sectionType1 = block.getSection1().getSectionType().toString();
