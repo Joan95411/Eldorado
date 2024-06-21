@@ -3,7 +3,7 @@ package org.set.tokens;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
-
+import org.set.player.Actionable;
 import org.set.boardPieces.Util;
 import org.set.cards.CardActionHandler;
 import org.set.cards.action.ActionCardType;
@@ -12,7 +12,7 @@ import org.set.player.Asset;
 import org.set.player.Player;
 import org.set.cards.CardType;
 
-public class Token extends Asset{
+public class Token extends Asset implements Actionable{
     
     private CardType cardType;
     private CaveTokenType caveTokenType;
@@ -29,9 +29,10 @@ public class Token extends Asset{
         return caveTokenType;
     }
 
-    public void useToken(Player player) {
+    public void doAction(Player player) {
         TokenActionHandler actionHandler = new TokenActionHandler();
         actionHandler.doAction(this, player);
+        player.myDeck.discardToken(this);
     }
     
     @Override

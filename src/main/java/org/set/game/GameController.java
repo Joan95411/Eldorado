@@ -65,7 +65,7 @@ public class GameController {
               Player_buy.PlayerBuy(board,currentPlayer,market);
               Player_draw_discard.PlayerDiscard(board,currentPlayer);
               boolean discardCard=InputHelper.getYesNoInput("Your turn will finish now.");
-              board.discardPhase=false;
+              
               
             }
 
@@ -75,7 +75,7 @@ public class GameController {
         if (FirstWinningIndex != -1) {
         	Final_round.FinalRound(board,FirstWinningIndex,players);
         }
-        Final_round.EndGame(players,FirstWinningIndex);
+        Final_round.EndGame(players);
     }
 
     

@@ -49,8 +49,7 @@ public class Player_move {
         }
             
 	public static void PlayerMove2(Template board, Player player) {
-	    
-	    board.discardPhase=true;
+	   
 	    while (player.myDeck.getMyasset().size() > 0) {
 	        boolean keepMoving = InputHelper.getYesNoInput("Do you want to make a movement?");
 	        if (!keepMoving) {
@@ -76,27 +75,25 @@ public class Player_move {
 	    }
 
 	    System.out.println("You have still " + player.myDeck.getCardsInHand().size() + " cards for this turn.");
-	    board.discardPhase=false;
+	    
 	}
-
 	
-	public static void baseCampMove(Template board, Player player) {
-		List<Integer> indexs = InputHelper.getIntListInput("Choose cards indices for basecamp movement;"
+	private static List<Card> chooseCardsToDiscard(Player player){
+		List<Integer> indexs = InputHelper.getIntListInput("Choose cards indices to discard;"
 				+ " Separate by comma, (e.g. 0,1,2);"
-				+ " Or 'stop' to stop the move", player.myDeck.getMyasset().size() - 1);
+				+ " Or 'stop' to stop the move", player.myDeck.getCardsInHand().size() - 1);
         
         if (indexs.get(0) == -1) {
-            return;
+            return null;
         }
-		List<Card> myCards=player.myDeck.getCardsInHand();
 		List<Card> toDiscard=new ArrayList<>();
-		for (int i : indexs) {
-		    if (i >= myCards.size()) {
-		        System.out.println("Incorrect index, need to be index from cards in your hand.");
-		        return; 
-		    }else{toDiscard.add(myCards.get(i));}
-		    }
-		System.out.println("You have the base camp moving Power of " + indexs.size());
+		for (int i : indexs) {toDiscard.add(player.myDeck.getCardsInHand().get(i));  }
+		return toDiscard;
+	}
+	
+	public static void baseCampMove(Template board, Player player) {
+		List<Card> toDiscard=chooseCardsToDiscard(player);
+		System.out.println("You have the base camp moving Power of " + toDiscard.size());
         String targetKey = player.getCurrentRow() + "," + player.getCurrentCol();
         Tile playerStandingTile = board.ParentMap.get(targetKey);
         int[] movingToInt = InputHelper.getPlayerMoveInput(board, playerStandingTile);
@@ -105,7 +102,7 @@ public class Player_move {
         }
         Tile movingTo=board.ParentMap.get(movingToInt[0]+","+movingToInt[1]);
         if(movingTo.getType()==TileType.BaseCamp||movingTo.getType()==TileType.Discard) {
-        	if(indexs.size()>=movingTo.getPoints()) {
+        	if(toDiscard.size()>=movingTo.getPoints()) {
         		player.setPlayerPosition(movingTo.getRow(), movingTo.getCol());
                 if(movingTo.getType()==TileType.Discard) {
                 	player.myDeck.discard(toDiscard);
@@ -154,7 +151,10 @@ public class Player_move {
 	        	if(NextToBlockade==-1) {System.out.println("You're not next to a blockade.");}
 	        	else {
 	        	Blockade block=(Blockade) board.boardPieces.get("Blockade_"+NextToBlockade);
-	        	if (Util.getColorFromString(selectedMovable.getCardType().toString()).equals(block.getColor())||selectedMovable.getCardType().equals(CardType.JOKER)) {
+	        	
+	        	if (Util.getColorFromString(selectedMovable.getCardType().toString()).equals(block.getColor())
+	        			||selectedMovable.getCardType().equals(CardType.JOKER)
+	        			) {
 		            if (residualPower >= block.getPoints()) {
 		                board.removeBlockade(NextToBlockade);
 		                residualPower -= block.getPoints();
@@ -165,15 +165,43 @@ public class Player_move {
 		            } else {
 		                System.out.println("Your " + selectedMovable + " does not have enough power to move blockade.");
 		            }
-		        } else {
+		        } else if(block.getTiles().getFirst().getType()==TileType.BaseCamp
+	        			||block.getTiles().getFirst().getType()==TileType.Discard){
+		        	if(block.getPoints()==1) {
+		        		boolean discardMovable = InputHelper.getYesNoInput("Are you sure to discard this " + selectedMovable + "?");
+			            if (discardMovable) {
+			            	board.removeBlockade(NextToBlockade);
+			                player.myDeck.earnBlockade(block);
+			                System.out.println("You have the blockade in your possession now");
+			                board.repaint();
+			                caveExplore(board, player);}
+		        		
+		        	}else {List<Card> toDiscard=chooseCardsToDiscard(player);
+			        if(toDiscard.size()>=block.getPoints()) {
+			        	board.removeBlockade(NextToBlockade);
+			        	player.myDeck.earnBlockade(block);
+			        	System.out.println("You have the blockade in your possession now");
+		                board.repaint();
+		                caveExplore(board, player);
+		        	}else {
+		        		System.out.println("You need to discard more card to remove this block.");}
+			        if(block.getTiles().getFirst().getType()==TileType.Discard) {
+			        	player.myDeck.discard(toDiscard);
+		        	}else {player.myDeck.removeCard(toDiscard);}
+			        board.repaint();
+			        residualPower=-1;}
+		        	
+		        }else {
 		            System.out.println("Color of " + selectedMovable + " does not match blockade color.");
 		            
-		        }}
+		           }
+	        	}
 	        }
 	        
 	        else {
 	        Tile movingTo=board.ParentMap.get(movingToInt[0]+","+movingToInt[1]);
-	        if (Util.getColorFromString(selectedMovable.getCardType().toString()).equals(movingTo.getColor())||selectedMovable.getCardType().equals(CardType.JOKER)) {
+	        if (Util.getColorFromString(selectedMovable.getCardType().toString()).equals(movingTo.getColor())
+	        		||selectedMovable.getCardType().equals(CardType.JOKER)) {
 	            if (residualPower >= movingTo.getPoints()) {
 	                player.setPlayerPosition(movingTo.getRow(), movingTo.getCol());
 	                residualPower -= movingTo.getPoints();

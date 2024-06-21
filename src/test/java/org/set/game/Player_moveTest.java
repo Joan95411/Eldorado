@@ -105,7 +105,19 @@ class Player_moveTest {
     	Player_move.caveExplore(board, player);
     	assertEquals(2,player.myDeck.getTokens().size());
     }
-
+    
+    @Test
+    public void testCaveExplore4() {//explore cave 4 times, no coin left
+    	Player_move.caveMap=Before_game.allocateTokens(board);
+    	Player player = players.get(0);
+    	for(int i=0;i<5;i++) {
+    	player.setPlayerPosition(3, 2);
+    	Player_move.caveExplore(board, player);
+    	assertEquals(i,player.myDeck.getTokens().size());
+    	player.setPlayerPosition(3, 3);
+    	Player_move.caveExplore(board, player);}
+    	assertEquals(4,player.myDeck.getTokens().size());
+    }
 	/**
 	 * Integrationtest
 	 * Classes used: ExpeditionCard, ExpeditionCardType, Template, Player, Marketplace, Team04Board, Tile, TileType, Cave
@@ -232,5 +244,38 @@ class Player_moveTest {
     	assertEquals(1,player.getCurrentRow());
     	assertEquals(5,player.getCurrentCol());
     	assertEquals(2,player.myDeck.getCardsInHand().size());
+    }
+    @Test
+    public void testBaseCampBlockRemove() {//remove discard block
+    	Player player = players.get(0);
+    	Before_game.placePlayersOnBoard(board);
+    	player.myDeck.draw(4);
+    	Blockade block=(Blockade) board.getFirstBlockade();
+    	block.setColor(TileType.Discard);
+    	block.setPoints(2);
+    	player.setPlayerPosition(6, 6);
+    	String input = "y\n0\nblock\n0,1\nn\n";
+        ByteArrayInputStream inputStream = new ByteArrayInputStream(input.getBytes()); 
+        InputHelper.setInputStream(inputStream);
+    	Player_move.PlayerMove2(board, player);
+    	assertEquals(2,player.myDeck.calculateBlockPoint());
+    	assertEquals(2,player.myDeck.getDiscardPile().size());
+    }
+    
+    @Test
+    public void testBaseCampBlockRemove2() {//remove basecamp block
+    	Player player = players.get(0);
+    	Before_game.placePlayersOnBoard(board);
+    	player.myDeck.draw(4);
+    	Blockade block=(Blockade) board.getFirstBlockade();
+    	block.setColor(TileType.BaseCamp);
+    	block.setPoints(2);
+    	player.setPlayerPosition(6, 6);
+    	String input = "y\n0\nblock\n0,1\nn\n";
+        ByteArrayInputStream inputStream = new ByteArrayInputStream(input.getBytes()); 
+        InputHelper.setInputStream(inputStream);
+    	Player_move.PlayerMove2(board, player);
+    	assertEquals(2,player.myDeck.calculateBlockPoint());
+    	assertEquals(0,player.myDeck.getDiscardPile().size());
     }
 }

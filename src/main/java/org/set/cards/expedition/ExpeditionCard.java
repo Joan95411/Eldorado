@@ -4,6 +4,7 @@ import java.awt.Graphics2D;
 
 import org.set.cards.Card;
 import org.set.cards.CardType;
+import org.set.player.Player;
 
 public class ExpeditionCard extends Card {
     private int power;
@@ -44,4 +45,6 @@ public class ExpeditionCard extends Card {
                 ", power=" + power +
                 '}';
     }
+
+	
 }

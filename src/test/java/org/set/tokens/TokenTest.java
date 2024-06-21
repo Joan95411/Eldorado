@@ -51,10 +51,10 @@ public class TokenTest {
     public void useCoinTokens() {
         Token token;
         token = new Token(CaveTokenType.CoinOne);
-        token.useToken(player);
+        token.doAction(player);
 
         token = new Token(CaveTokenType.CoinTwo);
-        token.useToken(player);
+        token.doAction(player);
     }
 
     // Test the paddle tokens
@@ -62,10 +62,10 @@ public class TokenTest {
     public void usePaddleTokens() {
         Token token;
         token = new Token(CaveTokenType.PaddleOne);
-        token.useToken(player);
+        token.doAction(player);
 
         token = new Token(CaveTokenType.PaddleTwo);
-        token.useToken(player);
+        token.doAction(player);
     }
 
     // Test the machete tokens
@@ -73,13 +73,13 @@ public class TokenTest {
     public void useMacheteTokens() {
         Token token;
         token = new Token(CaveTokenType.MacheteOne);
-        token.useToken(player);
+        token.doAction(player);
 
         token = new Token(CaveTokenType.MacheteTwo);
-        token.useToken(player);
+        token.doAction(player);
 
         token = new Token(CaveTokenType.MacheteThree);
-        token.useToken(player);
+        token.doAction(player);
     }
 
     /**
@@ -105,7 +105,7 @@ public class TokenTest {
         int initialMustBePlayedCardsInHand = player.myDeck.getMustBePlayedCardsInHand().size();
 
         Token drawToken = new Token(CaveTokenType.Draw);
-        drawToken.useToken(player);
+        drawToken.doAction(player);
 
         assertEquals(initialCardsInHand, player.myDeck.getCardsInHand().size(), "The player should not have any cards in his hand");
         assertEquals(initialMustBePlayedCardsInHand + 1, player.myDeck.getMustBePlayedCardsInHand().size(), "The player should have one card in his hand that must be played");
@@ -144,7 +144,7 @@ public class TokenTest {
         InputHelper.setInputStream(inputStream);
 
 
-        removeToken.useToken(player);
+        removeToken.doAction(player);
 
         assertEquals(initialCardsInHandSize - 1, player.myDeck.getCardsInHand().size(),  "The players hand should have one card less");
         assertEquals(initialDiscardPileSize, player.myDeck.getDiscardPile().size(),  "The player's deck should not have changed");
@@ -154,7 +154,7 @@ public class TokenTest {
     @Test
     public void useReplaceToken() {
         Token replaceToken = new Token(CaveTokenType.Replace);
-        replaceToken.useToken(player);
+        replaceToken.doAction(player);
     }
 
     // Test the immediate play token action
@@ -169,21 +169,21 @@ public class TokenTest {
         ByteArrayInputStream inputStream = new ByteArrayInputStream(input.getBytes());
         InputHelper.setInputStream(inputStream);
 
-        immediatePlayToken.useToken(player);
+        immediatePlayToken.doAction(player);
     }
 
     // Test the pass through token action
     @Test
     public void usePassThroughToken() {
         Token passThroughToken = new Token(CaveTokenType.PassThrough);
-        passThroughToken.useToken(player);
+        passThroughToken.doAction(player);
     }
 
     // Test the adjecent token action
     @Test
     public void useAdjacentToken() { System.out.println(player.myDeck.getCardsInHand().size());
         Token adjecentToken = new Token(CaveTokenType.Adjacent);
-        adjecentToken.useToken(player);
+        adjecentToken.doAction(player);
     }
 
     // Test the symbol token action

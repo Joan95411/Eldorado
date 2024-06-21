@@ -196,12 +196,13 @@ public class PlayerCardDeck {
 		assets.addAll(myTokens);
 		return assets;
 	}
-	public int isThereActionAsset() {
+	public List<Integer> isThereActionAsset() {
+		List<Integer> actionAsset = new ArrayList<>();
     	for(Asset asset:getMyasset()) {
     		if(asset.getCardType()==CardType.PURPLE) {
-    			return getMyasset().indexOf(asset);
+    			actionAsset.add(getMyasset().indexOf(asset));
     		}
-    	}return -1;
+    	}return actionAsset;
     }
 	public double getTotalValue() {
     	

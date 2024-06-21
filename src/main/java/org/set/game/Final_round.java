@@ -45,27 +45,35 @@ public static void FinalRound(Template board,int FirstWinningIndex,List<Player> 
 //        Player_buy.PlayerBuy(board,currentPlayer,market);//final round still need to buy cards?
 //        Player_draw_discard.PlayerDiscard(board,currentPlayer);
         boolean discardCard=InputHelper.getYesNoInput("Your turn will finish now.");
-        board.discardPhase=false;
+       
 	}
 	System.out.println("Game Over!");
     
 }
-public static void EndGame(List<Player> players,int FirstWinningIndex) {
-	int maxPoints = 0;
-	int index=-1;
-    InputHelper.closeScanner();
-    for(Player player:players) {
-    	if(player.getWinner()) {
-    		int points=player.myDeck.calculateBlockPoint();
-    		if (points > maxPoints) {
-    			maxPoints = points;
-    			index=players.indexOf(player);
-            }
-    	}
-    System.out.println("The winner is "+players.get(index));
-    }
-    
-    
-    //to be implemented, why final round? if there's already a winner
-}
+public static List<Integer> EndGame(List<Player> players) {
+	 int maxPoints = Integer.MIN_VALUE;
+     List<Integer> maxIndexes = new ArrayList<>();
+
+     // Iterate through players to find max points and corresponding indexes
+     for (Player player : players) {
+         if (player.getWinner()) {
+             int points = player.myDeck.calculateBlockPoint();
+             if (points > maxPoints) {
+                 maxPoints = points;
+                 maxIndexes.clear(); // Clear previous max indexes
+                 maxIndexes.add(players.indexOf(player));
+             } else if (points == maxPoints) {
+                 maxIndexes.add(players.indexOf(player));
+             }
+         }
+     }
+
+     if (maxIndexes.isEmpty()) {
+         System.out.println("No players found with points.");
+     } else {
+         System.out.println("The winner is:");
+         for (int index : maxIndexes) {
+             System.out.println("Player: " + players.get(index).getName());
+         }
+     }return maxIndexes;}
 }

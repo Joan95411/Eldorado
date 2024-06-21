@@ -33,6 +33,7 @@ public class Player_buy {
     	}
 	
 	public static void PlayerBuy(Template board,Player player,MarketPlace market) {
+		
     	List<Asset> assets = player.myDeck.getMyasset();
     	double totalGold = player.myDeck.getTotalValue();
     	System.out.println("You have "+totalGold+" gold now.");
@@ -92,7 +93,7 @@ public class Player_buy {
 	        }
 	    }
 
-	    board.discardPhase = true;
+	    
 	    board.currentPlayer = player;
 	    board.market = market;
 	    board.repaint();

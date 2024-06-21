@@ -91,4 +91,32 @@ class Final_roundTest {
         }
         assertEquals(2,i);
     }
+    
+    @Test
+    public void testEndGame() {//two player in final round in ending tiles, one with block
+    	Player player1=players.get(1);
+    	player1.setPlayerPosition(1, 23);
+        assertTrue(Final_round.isThereAwinnier(board, player1));
+        player1.myDeck.earnBlockade(board.getFirstBlockade());
+        Player player2=players.get(2);
+        player2.setPlayerPosition(1, 23);
+        assertTrue(Final_round.isThereAwinnier(board, player2));
+        List<Integer> maxIndexes =Final_round.EndGame(players);
+        assertEquals(1,maxIndexes.size());
+        assertEquals(1,maxIndexes.get(0));
+    }
+    
+    @Test
+    public void testEndGame2() {//two player in final round in ending tiles, both with 1 block
+    	Player player1=players.get(1);
+    	player1.setPlayerPosition(1, 23);
+        assertTrue(Final_round.isThereAwinnier(board, player1));
+        player1.myDeck.earnBlockade(board.getFirstBlockade());
+        Player player2=players.get(2);
+        player2.setPlayerPosition(1, 23);
+        player2.myDeck.earnBlockade(board.getLastBlockade());
+        assertTrue(Final_round.isThereAwinnier(board, player2));
+        List<Integer> maxIndexes =Final_round.EndGame(players);
+        assertEquals(2,maxIndexes.size());
+    }
 }

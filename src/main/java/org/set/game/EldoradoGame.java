@@ -27,7 +27,7 @@ public class EldoradoGame implements Runnable {
         frame.setVisible(true);
         gameControl = new GameController(board);
         gameControl.GameSession();
-        //        frame.dispose();
+        frame.dispose();
     }
 
 }

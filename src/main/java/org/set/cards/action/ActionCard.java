@@ -1,14 +1,16 @@
 package org.set.cards.action;
 
+import org.set.player.Actionable;
 import org.set.player.Player;
 import org.set.cards.Card;
 import org.set.cards.CardActionHandler;
 
-public class ActionCard extends Card {
+public class ActionCard extends Card implements Actionable{
     public ActionCard(ActionCardType card) {
         super(card.toString(), card.getCost(), card.isSingleUse());
     }
-
+    
+    @Override
     public void doAction(Player player) {
         if (!this.isPlayable()) {
         	System.out.println("This card is not playable");

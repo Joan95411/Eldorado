@@ -11,19 +11,22 @@ import org.set.boardPieces.Util;
 import org.set.boardPieces.WinningPiece;
 
 public class Team03Board extends Template{
-
+	
 	private String pathString;
 	public Team03Board(int numRows, int numCols, int hexSize) {
 		super(numRows, numCols, hexSize);
 	}
 	public void setPathString(String pathString) {
+		if(pathString==null) {
+			pathString="Serpentine";
+		}
         this.pathString = pathString;
     }
 	
 	@Override
 	public void setConfiguration() {
 		// TODO Auto-generated method stub
-		setPathString("Serpentine");
+		setPathString(pathString);
 		IntegrationWith03Board game03= new IntegrationWith03Board(pathString);
         pathInfo=game03.Get03Path(game03.Get03PathName());
         game03.Get03Frame(); //only if you want to compare our board to their board visually

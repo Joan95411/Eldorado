@@ -197,8 +197,8 @@ class Player_moveTest_Twinteamboard {
         ByteArrayInputStream inputStream = new ByteArrayInputStream(input.getBytes()); 
         InputHelper.setInputStream(inputStream);
     	Player_move.PlayerMove2(board, player);
-    	assertEquals(11,player.getCurrentRow());
-    	assertEquals(6,player.getCurrentCol());
+    	assertEquals(5,player.getCurrentRow());
+    	assertEquals(7,player.getCurrentCol());
     	assertEquals(3,player.myDeck.getCardsInHand().size());
     }
 }
