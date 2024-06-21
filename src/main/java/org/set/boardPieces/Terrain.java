@@ -36,7 +36,7 @@ public class Terrain extends BoardPiece {
         	TileType color = getRandomColor(random);
         	tile.setType(color);
 
-            if(tile.getType()==TileType.Cave || tile.getType()==TileType.Mountain) {
+            if(tile.getTileType()==TileType.Cave || tile.getTileType()==TileType.Mountain) {
             	tile.setPoints(0);
             }else {
                 double randValue = random.nextDouble(); // Generate a random number between 0 and 1

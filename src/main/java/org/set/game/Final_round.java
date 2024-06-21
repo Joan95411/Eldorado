@@ -20,7 +20,7 @@ public static boolean isThereAwinnier(Template board,Player player) {
         if(isWinning) {
         	WinningPiece wp=board.getAllWinningPieces().get(0);
         	for(Tile tile:wp.getTiles()) {
-        		if(tile.getType()==TileType.Eldorado&&board.isValidPosition(tile.getRow(), tile.getCol())) {
+        		if(tile.getTileType()==TileType.Eldorado&&board.isValidPosition(tile.getRow(), tile.getCol())) {
         			player.setPlayerPosition(tile.getRow(), tile.getCol());
         			System.out.println("You've reached the ending tile!");	
         			player.setWinner(true);

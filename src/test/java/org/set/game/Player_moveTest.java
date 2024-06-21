@@ -237,7 +237,7 @@ class Player_moveTest {
     	Player player = players.get(0);
     	Before_game.placePlayersOnBoard(board);
     	player.myDeck.draw(4);
-    	String input = "y\n-2\n0,1\n1,5\nn\n";
+    	String input = "y\n0\n1,5\n0,1\nn\n";
         ByteArrayInputStream inputStream = new ByteArrayInputStream(input.getBytes()); 
         InputHelper.setInputStream(inputStream);
     	Player_move.PlayerMove2(board, player);

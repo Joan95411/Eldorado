@@ -81,7 +81,7 @@ public abstract class BoardPiece {
                 clonedTile.setCol(closestCoordinate[1]);
                 clonedTile.setX(closestCoordinate[2]);
                 clonedTile.setY(closestCoordinate[3]);
-                clonedTile.setType(tile.getType());
+                clonedTile.setType(tile.getTileType());
                 clonedTile.setPoints(tile.getPoints());
                 clonedTile.setQ(tile.getQ());
                 clonedTile.setR(tile.getR());

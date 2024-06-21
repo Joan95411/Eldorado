@@ -6,6 +6,7 @@ import java.awt.Graphics2D;
 import java.util.Map;
 import java.util.Random;
 
+
 public class Blockade extends BoardPiece {
     private static int blockadeCount = 0;
     private int points=1;
@@ -31,6 +32,8 @@ public class Blockade extends BoardPiece {
     		tile.setType(color);
     	}
     }
+    
+   
     public Color getColor() {
         return color;
     }
@@ -84,7 +87,7 @@ public class Blockade extends BoardPiece {
     public Blockade clone(double addRow, double addCol,int hexSize) {
         Blockade clonedBlock = new Blockade();
         cloneTiles(clonedBlock, addRow, addCol, hexSize);
-        clonedBlock.setColor(tiles.get(0).getType());
+        clonedBlock.setColor(tiles.get(0).getTileType());
         return clonedBlock;
     }
     
@@ -122,4 +125,10 @@ public class Blockade extends BoardPiece {
         int textHeight = fm.getHeight();
         g2d.drawString(pointText, centerX - textWidth / 2, centerY + textHeight / 2);
     }
+
+	
+	public TileType getTileType() {
+		
+		return tiles.getFirst().getTileType();
+	}
 }

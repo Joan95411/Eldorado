@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.util.List;
+
 import java.util.ArrayList;
 
 public class Tile {
@@ -42,8 +43,9 @@ public class Tile {
     public void setType(TileType type) {
         this.type = type;
     }
-
-    public TileType getType() {
+    
+    
+    public TileType getTileType() {
         return type;
     }
     public int getX() {
@@ -95,7 +97,8 @@ public class Tile {
     public void setCol(int col) {
         this.col = col;
     }
-
+    
+    
     public Color getColor() {
     	color=Util.getColorFromString(type.toString());
     	

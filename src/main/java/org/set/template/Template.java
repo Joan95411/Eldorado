@@ -297,7 +297,7 @@ public abstract class Template extends JPanel {
     public List<Tile> findStarterTiles(){
     	List<Tile> starterTiles = new ArrayList<>();
     	for (Tile tile : getFirstTerrain().getTiles()) {
-    	    if (tile.getType().equals(TileType.Start)) {
+    	    if (tile.getTileType().equals(TileType.Start)) {
     	    	starterTiles.add(tile);
     	    }
     	} return starterTiles;
@@ -306,7 +306,7 @@ public abstract class Template extends JPanel {
     public List<Tile> findCaveTiles(){
     	for(Terrain terrain:getAllTerrains()) {
     	for (Tile tile : terrain.getTiles()) {
-    	    if (tile.getType().equals(TileType.Cave)) {
+    	    if (tile.getTileType().equals(TileType.Cave)) {
     	    	caveSet.add(tile);
     	    }}
     	} return caveSet;
@@ -377,7 +377,7 @@ public abstract class Template extends JPanel {
         for (int[] neighbor : tile.getNeighbors()) {
         	Tile temp = ParentMap.get(neighbor[0]+","+neighbor[1]);
         	if(temp==null) {continue;}
-        	if(temp.getType()==TileType.Cave) {
+        	if(temp.getTileType()==TileType.Cave) {
         		return temp;
         	}
         } return null;
@@ -386,7 +386,7 @@ public abstract class Template extends JPanel {
         for (int[] neighbor : tile.getNeighbors()) {
         	Tile temp = ParentMap.get(neighbor[0]+","+neighbor[1]);
         	if(temp==null) {continue;}
-        	if(temp.getType()==TileType.BaseCamp||temp.getType()==TileType.Discard) {
+        	if(temp.getTileType()==TileType.BaseCamp||temp.getTileType()==TileType.Discard) {
         		return true;
         	}
         } return false;
@@ -403,7 +403,7 @@ public abstract class Template extends JPanel {
     }
     
     public boolean isWinning(Tile tile) {
-    	if(tile.getType()==TileType.Winning) {
+    	if(tile.getTileType()==TileType.Winning) {
     		System.out.println("this triggers the final round");
     		return true;
     	} return false;
@@ -416,7 +416,7 @@ public abstract class Template extends JPanel {
             System.out.println("This tile doesn't belong in any board piece or is a block.");
             return false;
         }
-        if(temp.getType()==TileType.Mountain ||temp.getType()==TileType.Cave) {
+        if(temp.getTileType()==TileType.Mountain ||temp.getTileType()==TileType.Cave) {
         	System.out.println("Cannot move to a mountain.");
             return false;
         }

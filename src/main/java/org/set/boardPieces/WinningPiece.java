@@ -19,7 +19,7 @@ public class WinningPiece extends BoardPiece {
 	}
 	public void setColor(TileType color) {
 		for (Tile tile : tiles) {
-			if (tile.getType()==TileType.Winning) {
+			if (tile.getTileType()==TileType.Winning) {
 				tile.setType(color);
 			}
 		}
