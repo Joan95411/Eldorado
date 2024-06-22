@@ -61,7 +61,6 @@ public abstract class Template extends JPanel {
         initBoard();
     }
 
-
 	abstract public void initBoard();
 
 	public void loadTileData() {

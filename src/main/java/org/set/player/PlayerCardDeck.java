@@ -124,12 +124,19 @@ public class PlayerCardDeck {
         }
     }
 
-    public void addCard(Card card) {
+    public void addCard(Card card, boolean cardsMustBePlayedThisTurn) {
         cardsInHand.add(card);
+
+        if (cardsMustBePlayedThisTurn) {
+            mustBePlayedCardsInHand.add(card);
+        }
     }
 
     public void drawExpeditionCard(ExpeditionCardType expeditionCardType) {
-        cardsInHand.add(new ExpeditionCard(expeditionCardType));
+        ExpeditionCard expeditionCard = new ExpeditionCard(expeditionCardType);
+        cardsInHand.add(expeditionCard);
+
+
     }
 
     public void draw(int numberOfCards) {

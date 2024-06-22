@@ -47,6 +47,11 @@ public class BeforeGameTest {
 	 * Classes used: Template, Player, Cave, Team04Board and token
 	 * Testing the creation of tokens
 	*/
+    /**
+	 * Integrationtest
+	 * Classes used: Template, Player, Cave, Team04Board and token
+	 * Testing the creation of tokens
+	*/
 	@Test
     public void testCreateTokens() {
         ArrayList<Token> tokens = Before_game.createTokens();
@@ -63,7 +68,7 @@ public class BeforeGameTest {
 	*/
 	@Test
     public void testAllocateTokens() {
-        Template mockTemplate = new Team04Board(25,30,25); // Create a mock Template object for testing
+        Template mockTemplate = new Team04Board(25,30,25); // Create a mock Template.java object for testing
         Map<Tile, Cave> caves = Before_game.allocateTokens(mockTemplate);
         
         assertNotNull(caves);

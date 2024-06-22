@@ -54,22 +54,7 @@ public class TokenActionHandler {
 
     private void handleBasicTokens(CaveTokenType caveTokenType, Player player) {
         // Play machete, coin, or paddle tokens to move onto same-colored spaces.
-        CardType cardType = caveTokenType.getCardType();
-
-        if (cardType == CardType.GREEN) {
-            System.out.println("Machete token played");
-        }
-
-        if (cardType == CardType.YELLOW) {
-            System.out.println("Coin token played");
-        }
-
-        if (cardType == CardType.BLUE) {
-            System.out.println("Paddle token played");
-        }
-
-        System.out.println(player.getCurrentCol() + player.getCurrentRow());
-        System.out.println("Power" + caveTokenType.getPower());
+         player.myDeck.addCard(new ExpeditionCard(caveTokenType.name(), 0, true, caveTokenType.getPower()), true);
     }
 
     private void drawAction(Player player) {

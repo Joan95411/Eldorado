@@ -51,7 +51,7 @@ class Player_moveTest {
 
 	/**
 	 * Integrationtest
-	 * Classes used: ExpeditionCard, ExpeditionCardType, Template, Player, Marketplace, Team04Board, Tile, TileType, Cave
+	 * Classes used: ExpeditionCard, ExpeditionCardType, Template.java, Player, Marketplace, Team04Board, Tile, TileType, Cave
 	 * Tesing the exploration of caves
 	*/
     @Test
@@ -65,7 +65,7 @@ class Player_moveTest {
 
 	/**
 	 * Integrationtest
-	 * Classes used: ExpeditionCard, ExpeditionCardType, Template, Player, Marketplace, Team04Board, Tile, TileType, Cave
+	 * Classes used: ExpeditionCard, ExpeditionCardType, Template.java, Player, Marketplace, Team04Board, Tile, TileType, Cave
 	 * Tesing cave exploration twice
 	*/
     @Test
@@ -82,8 +82,40 @@ class Player_moveTest {
     
 	/**
 	 * Integrationtest
-	 * Classes used: ExpeditionCard, ExpeditionCardType, Template, Player, Marketplace, Team04Board, Tile, TileType, Cave
+	 * Classes used: ExpeditionCard, ExpeditionCardType, Template.java, Player, Marketplace, Team04Board, Tile, TileType, Cave
 	 * Tesing actioncards
+	*/
+    @Test
+    public void testCaveExplore3() {//go somewhere else and back to cave again
+    	Player_move.caveMap=Before_game.allocateTokens(board);
+    	Player player = players.get(0);
+    	player.setPlayerPosition(3, 3);
+    	Player_move.caveExplore(board, player);
+    	assertEquals(1,player.myDeck.getTokens().size());
+    	player.setPlayerPosition(3, 2);
+    	Player_move.caveExplore(board, player);
+    	assertEquals(1,player.myDeck.getTokens().size());
+    	player.setPlayerPosition(4, 2);
+    	Player_move.caveExplore(board, player);
+    	assertEquals(2,player.myDeck.getTokens().size());
+    }
+    
+    @Test
+    public void testCaveExplore4() {//explore cave 4 times, no coin left
+    	Player_move.caveMap=Before_game.allocateTokens(board);
+    	Player player = players.get(0);
+    	for(int i=0;i<5;i++) {
+    	player.setPlayerPosition(3, 2);
+    	Player_move.caveExplore(board, player);
+    	assertEquals(i,player.myDeck.getTokens().size());
+    	player.setPlayerPosition(3, 3);
+    	Player_move.caveExplore(board, player);}
+    	assertEquals(4,player.myDeck.getTokens().size());
+    }
+	/**
+	 * Integrationtest
+	 * Classes used: ExpeditionCard, ExpeditionCardType, Template.java, Player, Marketplace, Team04Board, Tile, TileType, Cave
+	 * Tesing moving without sufficient power
 	*/
     @Test
     public void testMovewithEnoughPower() {
@@ -123,7 +155,7 @@ class Player_moveTest {
     
 	/**
 	 * Integrationtest
-	 * Classes used: ExpeditionCard, ExpeditionCardType, Template, Player, Marketplace, Team04Board, Tile, TileType, Cave
+	 * Classes used: ExpeditionCard, ExpeditionCardType, Template.java, Player, Marketplace, Team04Board, Tile, TileType, Cave
 	 * Tesing removing blockade
 	*/
     @Test
@@ -146,7 +178,7 @@ class Player_moveTest {
     
 	/**
 	 * Integrationtest
-	 * Classes used: ExpeditionCard, ExpeditionCardType, Template, Player, Marketplace, Team04Board, Tile, TileType, Cave
+	 * Classes used: ExpeditionCard, ExpeditionCardType, Template.java, Player, Marketplace, Team04Board, Tile, TileType, Cave
 	 * Tesing basecamp with the cards needed to go to the basecamp
 	*/
     @Test

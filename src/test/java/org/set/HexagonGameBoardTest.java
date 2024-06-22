@@ -3,10 +3,13 @@ package org.set;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.set.boardPieces.Terrain;
+import org.set.game.InputHelper;
+import org.set.template.Team03Board;
 import org.set.template.Team04Board;
 import org.set.template.Template;
 import org.set.boardPieces.BoardPiece;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.Map;
@@ -15,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.set.PlayerTest.players;
 
 /**
- * Test class for the {@link HexagonGameBoard} class.
+ * Test class for the {@link Template} class.
  */
 public class HexagonGameBoardTest {
     private static Template hexagonGameBoard;
@@ -229,4 +232,3 @@ public class HexagonGameBoardTest {
 //         hexagonGameBoard.isValidPosition(hexagonGameBoard.players.get(0).getCurrentRow(), hexagonGameBoard.players.get(0).getCurrentCol());
     }
 }
-

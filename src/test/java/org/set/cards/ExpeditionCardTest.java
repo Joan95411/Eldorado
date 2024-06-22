@@ -86,4 +86,22 @@ public class ExpeditionCardTest {
         ExpeditionCard card = new ExpeditionCard(ExpeditionCardType.Sailor);
         card.draw(g2d, 0, 0 ,1,2);
     }
+
+    /**
+     * Test for getting expedition card value.
+     */
+    @Test
+    public void gettingExpeditionCardValue() {
+        for (Card card: cards) {
+            ExpeditionCard expeditionCard = (ExpeditionCard) card;
+
+            if (expeditionCard.getCardType() == CardType.YELLOW) {
+                assertEquals(card.getPower(), card.getValue());
+            } else {
+                assertEquals(0.5, card.getValue());
+            }
+
+            assertEquals("Card{cardType=" + card.getCardType() + ", name=" + card.getName() + ", power=" + card.getPower() + '}', card.toString());
+        }
+    }
 }

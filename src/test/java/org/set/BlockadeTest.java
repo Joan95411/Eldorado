@@ -13,7 +13,7 @@ import java.awt.image.BufferedImage;
  * Test class for the {@link Blockade} class.
  */
 public class BlockadeTest {
-    private static Template hexagonGameBoard;
+    private static Template board;
     private static int numRows = 15;
     private static int numCols = 35;
     private static int hexSize = 35;
@@ -25,7 +25,7 @@ public class BlockadeTest {
    @BeforeAll
    public static void setUp() {
        blockade = new Blockade();
-       hexagonGameBoard = new Team04Board(numRows, numCols, hexSize);
+       board = new Template(numRows, numCols, hexSize);
    }
 
     /**

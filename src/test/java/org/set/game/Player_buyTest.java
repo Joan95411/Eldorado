@@ -103,7 +103,7 @@ class Player_buyTest {
 	
     /**
      * Integrationtest
-     * Classes used: ExpeditionCard, ExpeditionCardType, Template, Player, Asset, Marketplace, Team04Board
+     * Classes used: ExpeditionCard, ExpeditionCardType, Template.java, Player, Asset, Marketplace, Team04Board
      * Testing if player can fill an empty marketslot
      */ 
 	@Test

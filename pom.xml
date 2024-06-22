@@ -93,9 +93,9 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.2.5</version>
                 <configuration>
-                    <excludes>
-                        <exclude>org/set/UI/*.java</exclude>
-                    </excludes>
+<!--                    <excludes>-->
+<!--                        <exclude>org/set/UI/*.java</exclude>-->
+<!--                    </excludes>-->
                 </configuration>
             </plugin>
             <plugin>
@@ -103,9 +103,9 @@
                 <artifactId>maven-failsafe-plugin</artifactId>
                 <version>3.2.5</version>
                 <configuration>
-                    <excludes>
-                        <exclude>org/set/UI/*.java</exclude>
-                    </excludes>
+<!--                    <excludes>-->
+<!--                        <exclude>org/set/UI/*.java</exclude>-->
+<!--                    </excludes>-->
                 </configuration>
             </plugin>
         </plugins>
