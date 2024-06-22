@@ -1,6 +1,5 @@
 package org.set.cards;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.set.cards.action.ActionCard;
 import org.set.cards.action.ActionCardType;
@@ -21,11 +20,11 @@ public class CardTest {
      */
     @Test
     public void createActionCard() {
-//        for (ActionCardType actionCardType: ActionCardType.values()) {
-//            cards.add(new ActionCard(actionCardType));
-//        }
-//
-//        assertEquals(cards.size(), ActionCardType.values().length);
+        // for (ActionCardType actionCardType: ActionCardType.values()) {
+        // cards.add(new ActionCard(actionCardType));
+        // }
+        //
+        // assertEquals(cards.size(), ActionCardType.values().length);
     }
 
     /**
@@ -33,16 +32,17 @@ public class CardTest {
      */
     @Test
     public void createExpeditionCard() {
-//        for (ActionCardType actionCardType: ActionCardType.values()) {
-//            cards.add(new ActionCard(actionCardType));
-//        }
-//
-//        assertEquals(cards.size(), ActionCardType.values().length);
+        // for (ActionCardType actionCardType: ActionCardType.values()) {
+        // cards.add(new ActionCard(actionCardType));
+        // }
+        //
+        // assertEquals(cards.size(), ActionCardType.values().length);
     }
 
     /**
      * Test for double removing a single use action and expedition card.
-     * This should not be possible because the single use card can only be remove once.
+     * This should not be possible because the single use card can only be remove
+     * once.
      */
     @Test
     public void doubleRemoveSingleUseCard() {
@@ -68,7 +68,8 @@ public class CardTest {
 
     /**
      * Test for removing a non single use action and expedition card.
-     * This should not be possible because card is not a single use card, therefore it cannot be removed from the game.
+     * This should not be possible because card is not a single use card, therefore
+     * it cannot be removed from the game.
      */
     @Test
     public void removeNonSingleUseCard() {
@@ -97,7 +98,7 @@ public class CardTest {
      */
     @Test
     public void cardTypes() {
-        String[] types = {"GREEN", "YELLOW", "BLUE", "PURPLE", "JOKER"};
+        String[] types = { "GREEN", "YELLOW", "BLUE", "PURPLE", "JOKER" };
         for (CardType cardType : CardType.values()) {
             assertTrue(Arrays.asList(types).contains(cardType.toString()));
         }

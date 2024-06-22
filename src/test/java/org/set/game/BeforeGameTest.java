@@ -4,10 +4,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.set.boardPieces.Tile;
-import org.set.cards.action.ActionCard;
-import org.set.cards.action.ActionCardType;
-import org.set.cards.expedition.ExpeditionCard;
-import org.set.cards.expedition.ExpeditionCardType;
 import org.set.template.Team04Board;
 import org.set.template.Template;
 import org.set.tokens.Cave;
@@ -15,10 +11,8 @@ import org.set.tokens.Token;
 import org.set.player.Player;
 
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -28,25 +22,30 @@ import static org.junit.jupiter.api.Assertions.*;
  * Test class for the {@link BeforeGameTest} class.
  */
 public class BeforeGameTest {
-	private static InputStream backupInputStream;
-    
-	@BeforeAll
+    private static InputStream backupInputStream;
+
+    @BeforeAll
     public static void start() {
-       
+
         backupInputStream = System.in;
     }
 
     @AfterEach
-    public void cleanup(){
+    public void cleanup() {
         System.setIn(backupInputStream);
     }
-    
+
     /**
-	 * Integrationtest
-	 * Classes used: Template, Player, Cave, Team04Board and token
-	 * Testing the creation of tokens
-	*/
-	@Test
+     * Integrationtest
+     * Classes used: Template, Player, Cave, Team04Board and token
+     * Testing the creation of tokens
+     */
+    /**
+     * Integrationtest
+     * Classes used: Template, Player, Cave, Team04Board and token
+     * Testing the creation of tokens
+     */
+    @Test
     public void testCreateTokens() {
         ArrayList<Token> tokens = Before_game.createTokens();
         System.out.print(tokens);
@@ -54,28 +53,31 @@ public class BeforeGameTest {
         assertFalse(tokens.isEmpty());
         assertEquals(42, tokens.size()); // Ensure all expected tokens are created
     }
-	
+
     /**
-	 * Integrationtest
-	 * Classes used: ExpeditionCard, ExpeditionCardType, Template, Player, Marketplace, Team04Board, Tile, TileType, Cave
-	 * Tesing the allocation of tokens
-	*/
-	@Test
+     * Integrationtest
+     * Classes used: ExpeditionCard, ExpeditionCardType, Template, Player,
+     * Marketplace, Team04Board, Tile, TileType, Cave
+     * Tesing the allocation of tokens
+     */
+    @Test
     public void testAllocateTokens() {
-        Template mockTemplate = new Team04Board(25,30,25); // Create a mock Template object for testing
+        Template mockTemplate = new Team04Board(25, 30, 25); // Create a mock Template.java object for testing
         Map<Tile, Cave> caves = Before_game.allocateTokens(mockTemplate);
-        
+
         assertNotNull(caves);
         assertFalse(caves.isEmpty());
-        // Perform assertions based on the logic of allocateTokens(), depending on mockTemplate's behavior
+        // Perform assertions based on the logic of allocateTokens(), depending on
+        // mockTemplate's behavior
     }
 
     /**
-	 * Integrationtest
-	 * Classes used: ExpeditionCard, ExpeditionCardType, Template, Player, Marketplace, Team04Board, Tile, TileType, Cave
-	 * Tesing multiple players
-	*/
-	@Test
+     * Integrationtest
+     * Classes used: ExpeditionCard, ExpeditionCardType, Template, Player,
+     * Marketplace, Team04Board, Tile, TileType, Cave
+     * Tesing multiple players
+     */
+    @Test
     public void testAddPlayer() {
         Template mockTemplate = new Team04Board(25,30,25);
         String input = "3\norange\nwhite\nyellow"; // Prepare the input data
@@ -88,7 +90,5 @@ public class BeforeGameTest {
         Before_game.placePlayersOnBoard(mockTemplate);
         assertEquals(3, mockTemplate.players.size());
     }
-	
-	
-	 
+
 }

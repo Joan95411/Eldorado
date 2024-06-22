@@ -4,7 +4,6 @@ import java.awt.Graphics2D;
 
 import org.set.cards.Card;
 import org.set.cards.CardType;
-import org.set.player.Player;
 
 public class ExpeditionCard extends Card {
     private int power;
@@ -28,15 +27,19 @@ public class ExpeditionCard extends Card {
     public int getPower() {
         return power;
     }
+
     public double getValue() {
-		if(cardType==CardType.YELLOW||cardType==CardType.JOKER) {
-        return power;}
-		else {return 0.5;}
+        if (cardType == CardType.YELLOW || cardType == CardType.JOKER) {
+            return power;
+        } else {
+            return 0.5;
+        }
     }
 
     public void setPower(int power) {
         this.power = power;
     }
+
     @Override
     public String toString() {
         return "Card{" +
@@ -46,5 +49,4 @@ public class ExpeditionCard extends Card {
                 '}';
     }
 
-	
 }

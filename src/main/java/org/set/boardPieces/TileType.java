@@ -1,6 +1,5 @@
 package org.set.boardPieces;
 
-
 public enum TileType {
     Machete,
     Coin,

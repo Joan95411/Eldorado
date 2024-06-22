@@ -1,6 +1,5 @@
 package org.set;
 
-
 import org.set.game.EldoradoGame;
 
 public class Main {
@@ -9,5 +8,4 @@ public class Main {
         EldoradoGame eldoradoGame = new EldoradoGame();
         eldoradoGame.run();
     }
-     }
-    
+}

@@ -2,19 +2,16 @@ package org.set.player;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.List;
-import org.set.tokens.Token;
 
 public class Player {
-    private static ArrayList<Color> usedColors = new ArrayList<>();
+    private ArrayList<Color> usedColors = new ArrayList<>();
     private String name;
     private int currentRow;
     private int currentCol;
     public Color color;
     public PlayerCardDeck myDeck;
     private boolean lastActionWasCaveExplore;
-    private boolean potentialWinner=false;
-
+    private boolean potentialWinner = false;
 
     public Player(Color selectedColor) {
         this.color = selectedColor;
@@ -24,8 +21,9 @@ public class Player {
         } else {
             usedColors.add(selectedColor);
         }
-        
+
     }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -45,6 +43,7 @@ public class Player {
     public Color getColor() {
         return color;
     }
+
     public void setWinner(boolean winner) {
         this.potentialWinner = winner;
     }
@@ -52,7 +51,7 @@ public class Player {
     public boolean getWinner() {
         return potentialWinner;
     }
-    
+
     public void setPlayerPosition(int row, int col) {
         this.currentRow = row;
         this.currentCol = col;
@@ -61,6 +60,7 @@ public class Player {
     public boolean isAtPosition(int row, int col) {
         return this.currentRow == row && this.currentCol == col;
     }
+
     public boolean isLastActionCaveExplore() {
         return lastActionWasCaveExplore;
     }
@@ -68,6 +68,7 @@ public class Player {
     public void setLastActionCaveExplore(boolean lastActionWasCaveExplore) {
         this.lastActionWasCaveExplore = lastActionWasCaveExplore;
     }
+
     public void draw(Graphics2D g2d, int size) {
         float[] hsbValues = Color.RGBtoHSB(color.getRed(), color.getGreen(), color.getBlue(), null);
         Color colorDraw = Color.getHSBColor(hsbValues[0], hsbValues[1], hsbValues[2] * 0.8f);
@@ -81,11 +82,12 @@ public class Player {
         int centerY = y + size / 5;
 
         // Draw a star representing player's position
-        int[] xPoints = { centerX, centerX + size / 4, centerX + size / 2, centerX + size * 3 / 4, centerX + size, centerX + size * 3 / 4, centerX + size / 2, centerX + size / 4 };
-        int[] yPoints = { centerY - size / 4, centerY - size / 4, centerY - size / 2, centerY - size / 4, centerY - size / 4, centerY, centerY + size / 4, centerY - size / 4 };
+        int[] xPoints = { centerX, centerX + size / 4, centerX + size / 2, centerX + size * 3 / 4, centerX + size,
+                centerX + size * 3 / 4, centerX + size / 2, centerX + size / 4 };
+        int[] yPoints = { centerY - size / 4, centerY - size / 4, centerY - size / 2, centerY - size / 4,
+                centerY - size / 4, centerY, centerY + size / 4, centerY - size / 4 };
         g2d.setColor(colorDraw);
         g2d.fillPolygon(xPoints, yPoints, 8);
     }
-    
-    
+
 }

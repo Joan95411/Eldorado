@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * Test class for the {@link Player} class.
  */
 public class PlayerTest {
-    protected static Player player = new Player(new Color(255,254,253));
+    protected static Player player = new Player(new Color(255, 254, 253));
     protected static ArrayList<Player> players = new ArrayList<>();
 
     /**
@@ -25,14 +25,16 @@ public class PlayerTest {
     }
 
     /**
-     * Tests that creates a player with a duplicate color that should throw an exception.
+     * Tests that creates a player with a duplicate color that should throw an
+     * exception.
      */
     @Test
     public void testCreatingPlayersWithSameColor() {
         try {
-            new Player(new Color(255,254,253));
+            new Player(new Color(255, 254, 253));
         } catch (IllegalArgumentException e) {
-            assertEquals(e.getMessage(), "The color " + new Color(255,254,253).toString() + " is already used", "A player's color is unique");
+            assertEquals(e.getMessage(), "The color " + new Color(255, 254, 253).toString() + " is already used",
+                    "A player's color is unique");
         }
     }
 
@@ -54,7 +56,8 @@ public class PlayerTest {
 
                 testPlayerColor(player, color);
             } catch (IllegalArgumentException e) {
-                assertEquals(e.getMessage(), "The color " + color.toString() + " is already used", "A player's color is unique");
+                assertEquals(e.getMessage(), "The color " + color.toString() + " is already used",
+                        "A player's color is unique");
             }
         }
     }
@@ -89,7 +92,7 @@ public class PlayerTest {
         BufferedImage image = new BufferedImage(100, 100, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2d = image.createGraphics();
 
-        Player player = new Player(new Color(0,1,2));
+        Player player = new Player(new Color(0, 1, 2));
         player.draw(g2d, 1);
     }
 }

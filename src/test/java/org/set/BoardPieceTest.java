@@ -2,15 +2,8 @@ package org.set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.io.InputStream;
-import java.util.Scanner;
-
-import javax.swing.JFrame;
-import javax.swing.JScrollPane;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.set.boardPieces.Tile;
@@ -36,7 +29,7 @@ class BoardPieceTest {
     	board.loadTileData();
     	board.pathInfo=Util.readPathData("WitchCauldron");
     	initBoard();
-    	Tile tile=board.getLastWinningPiece().getTiles().getFirst();
+    	Tile tile=board.getLastWinningPiece().getTiles().get(0);
 		assertEquals(14,tile.getRow());
 		assertEquals(10,tile.getCol());
     }
@@ -47,7 +40,7 @@ class BoardPieceTest {
     	board.loadTileData();
     	board.pathInfo=Util.readPathData("WindingPaths");
     	initBoard();
-    	Tile tile=board.getLastWinningPiece().getTiles().getFirst();
+    	Tile tile=board.getLastWinningPiece().getTiles().get(0);
 		assertEquals(4,tile.getRow());
 		assertEquals(33,tile.getCol());
     }
@@ -58,7 +51,7 @@ class BoardPieceTest {
     	board.loadTileData();
     	board.pathInfo=Util.readPathData("HillsOfGold");
     	initBoard();
-    	Tile tile=board.getLastWinningPiece().getTiles().getFirst();
+    	Tile tile=board.getLastWinningPiece().getTiles().get(0);
 		assertEquals(17,tile.getRow());
 		assertEquals(31,tile.getCol());
     }
@@ -68,7 +61,7 @@ class BoardPieceTest {
     	board.loadTileData();
     	board.pathInfo=Util.readPathData("Serpentine");
     	initBoard();
-    	Tile tile=board.getLastWinningPiece().getTiles().getFirst();
+    	Tile tile=board.getLastWinningPiece().getTiles().get(0);
 		assertEquals(13,tile.getRow());
 		assertEquals(24,tile.getCol());
     }

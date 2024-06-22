@@ -51,32 +51,34 @@ private Path convertStringToPath(String pathString) {
 			String sectionType1 = block.getSection1().getSectionType().toString();
             String sectionType2 = block.getSection2().getSectionType().toString();
             String color = block.getTileType().toString();
-            System.out.println(sectionType1+" "+sectionType2);
-            for (int i = 0; i < pathInfo.length()-1; i++) {
+            System.out.println(sectionType1 + " " + sectionType2);
+            for (int i = 0; i < pathInfo.length() - 1; i++) {
                 JSONObject section1 = pathInfo.getJSONObject(i);
-                JSONObject section2 = pathInfo.getJSONObject(i+1);
-                if (section1.getString("sectionType").equals(sectionType1) && section2.getString("sectionType").equals(sectionType2)) {
-                	section2.put("blockColor", color);
+                JSONObject section2 = pathInfo.getJSONObject(i + 1);
+                if (section1.getString("sectionType").equals(sectionType1)
+                        && section2.getString("sectionType").equals(sectionType2)) {
+                    section2.put("blockColor", color);
                     double addRow = section2.getDouble("addRow");
                     double addCol = section2.getDouble("addCol");
-                    if(addRow>1) {
-                    section2.put("addRow", addRow + 1);}
-                    else if(addRow<-1) {
-                    section2.put("addRow", addRow - 1);}
-                    else if(addCol>1){
-                    	section2.put("addCol", addCol +1);
-                    }else if(addCol<-1){
-                    	section2.put("addCol", addCol -1);
+                    if (addRow > 1) {
+                        section2.put("addRow", addRow + 1);
+                    } else if (addRow < -1) {
+                        section2.put("addRow", addRow - 1);
+                    } else if (addCol > 1) {
+                        section2.put("addCol", addCol + 1);
+                    } else if (addCol < -1) {
+                        section2.put("addCol", addCol - 1);
                     }
                 }
-    	}
-    	}
-    	System.out.println(pathInfo);
-	return pathInfo;
-}
-	public void Get03Frame() {
-		
-		JFrame frame = new JFrame(gameController.getGame().getGameName());
+            }
+        }
+        System.out.println(pathInfo);
+        return pathInfo;
+    }
+
+    public void Get03Frame() {
+
+        JFrame frame = new JFrame(gameController.getGame().getGameName());
         gameController.getGame().placePlayersStart();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -85,6 +87,6 @@ private Path convertStringToPath(String pathString) {
         frame.setSize(1250, 650);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
-	}
-	
+    }
+
 }

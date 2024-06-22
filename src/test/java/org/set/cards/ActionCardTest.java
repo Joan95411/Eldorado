@@ -38,7 +38,7 @@ public class ActionCardTest {
     }
 
     @AfterEach
-    public void cleanup(){
+    public void cleanup() {
         System.setIn(backupInputStream);
     }
 
@@ -75,7 +75,7 @@ public class ActionCardTest {
         String input = "Explorer\n"; // Prepare the input data
         ByteArrayInputStream inputStream = new ByteArrayInputStream(input.getBytes()); // Create a ByteArrayInputStream
                                                                                        // with the input data
-        //System.setIn(inputStream); // Set System.in to use the ByteArrayInputStream
+        // System.setIn(inputStream); // Set System.in to use the ByteArrayInputStream
         InputHelper.setInputStream(inputStream);
 
         if (transmitter.isPlayable()) {
@@ -103,9 +103,8 @@ public class ActionCardTest {
             ByteArrayInputStream inputStream = new ByteArrayInputStream(input.getBytes()); // Create a
                                                                                            // ByteArrayInputStream with
                                                                                            // the input data
-            //System.setIn(inputStream); // Set System.in to use the ByteArrayInputStream
+            // System.setIn(inputStream); // Set System.in to use the ByteArrayInputStream
             InputHelper.setInputStream(inputStream);
-
 
             transmitter.doAction(player);
         }
@@ -148,9 +147,8 @@ public class ActionCardTest {
 
         String input = "y\n0\n";
         ByteArrayInputStream inputStream = new ByteArrayInputStream(input.getBytes());
-        //System.setIn(inputStream);
+        // System.setIn(inputStream);
         InputHelper.setInputStream(inputStream);
-
 
         if (scientist.isPlayable()) {
             scientist.doAction(player);
@@ -193,7 +191,7 @@ public class ActionCardTest {
         String input = "y\n0\nn\n"; // Prepare the input data
         ByteArrayInputStream inputStream = new ByteArrayInputStream(input.getBytes()); // Create a ByteArrayInputStream
                                                                                        // with the input data
-        //System.setIn(inputStream); // Set System.in to use the ByteArrayInputStream
+        // System.setIn(inputStream); // Set System.in to use the ByteArrayInputStream
         InputHelper.setInputStream(inputStream);
 
         assertEquals(0, player.myDeck.getCardsInHand().size());

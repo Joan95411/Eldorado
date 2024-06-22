@@ -7,9 +7,9 @@ import org.set.template.Template;
 
 public class EldoradoGame implements Runnable {
 
-   public Template board;
-   public JFrame frame;
-   public GameController gameControl;
+    public Template board;
+    public JFrame frame;
+    public GameController gameControl;
 
     @Override
     public void run() {

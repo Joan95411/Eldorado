@@ -18,8 +18,8 @@ public class GameControllerDrawTest {
      * For each UI game controller test a new game controller should be created.
      */
     @BeforeEach
-    public void setUp(){
-    	Template board=new Team04Board(25,35,25);
+    public void setUp() {
+        Template board = new Team04Board(25, 35, 25);
         gameController = new GameController(board);
     }
 
@@ -28,7 +28,7 @@ public class GameControllerDrawTest {
      * TODO: This test is not finished
      */
     @Test
-    public void playerDrawCardTest(){
+    public void playerDrawCardTest() {
         Player player = new Player(Color.GREEN);
     }
 

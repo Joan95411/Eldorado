@@ -1,15 +1,15 @@
 package org.set.cards;
 
 import org.set.cards.action.ActionCardType;
-import org.set.cards.expedition.ExpeditionCard;
 import org.set.cards.expedition.ExpeditionCardType;
 import org.set.player.Asset;
 
 import java.awt.*;
 import java.util.Arrays;
 import org.set.boardPieces.Util;
+import org.set.tokens.CaveTokenType;
 
-public abstract class Card extends Asset{
+public abstract class Card extends Asset {
 	public String name;
 	public CardType cardType;
 	public int cost;
@@ -22,20 +22,25 @@ public abstract class Card extends Asset{
 		this.cost = cost;
 		this.singleUse = singleUse;
 	}
-	
+
 	@Override
 	public CardType getCardType() {
 		String[] greenCardTypes = { ExpeditionCardType.Explorer.toString(), ExpeditionCardType.Scout.toString(), ExpeditionCardType.Trailblazer.toString(), ExpeditionCardType.Pioneer.toString(), ExpeditionCardType.Giant_Machete.toString() };
+		String[] greenTokenTypes = { CaveTokenType.MacheteOne.toString(), CaveTokenType.MacheteTwo.toString(), CaveTokenType.MacheteThree.toString() };
 		String[] blueCardTypes = { ExpeditionCardType.Sailor.toString(), ExpeditionCardType.Captain.toString() };
+		String[] blueTokenTypes = { CaveTokenType.PaddleOne.toString(), CaveTokenType.PaddleTwo.toString() };
 		String[] yellowCardTypes = { ExpeditionCardType.Traveller.toString(), ExpeditionCardType.Photographer.toString(), ExpeditionCardType.Journalist.toString(), ExpeditionCardType.Treasure_Chest.toString(), ExpeditionCardType.Millionaire.toString() };
+		String[] yellowTokenTypes = { CaveTokenType.CoinOne.toString(), CaveTokenType.CoinTwo.toString() };
 		String[] jokerCardTypes = { ExpeditionCardType.Jack.toString(), ExpeditionCardType.Adventurer.toString(), ExpeditionCardType.Prop_Plane.toString() };
 		String[] purpleCardTypes = { ActionCardType.Transmitter.toString(), ActionCardType.Cartographer.toString(), ActionCardType.Scientist.toString(), ActionCardType.Compass.toString(), ActionCardType.Travel_Log.toString(), ActionCardType.Native.toString() };
 
-		if (Arrays.asList(greenCardTypes).contains(this.name)) {
+		System.out.println(this.name);
+
+		if (Arrays.asList(greenCardTypes).contains(this.name) || Arrays.asList(greenTokenTypes).contains(this.name)) {
 			return CardType.GREEN;
-		} else if (Arrays.asList(blueCardTypes).contains(this.name)) {
+		} else if (Arrays.asList(blueCardTypes).contains(this.name) || Arrays.asList(blueTokenTypes).contains(this.name)) {
 			return CardType.BLUE;
-		} else if (Arrays.asList(yellowCardTypes).contains(this.name)) {
+		} else if (Arrays.asList(yellowCardTypes).contains(this.name) || Arrays.asList(yellowTokenTypes).contains(this.name)) {
 			return CardType.YELLOW;
 		} else if (Arrays.asList(jokerCardTypes).contains(this.name) || this.name.equals("Native")) {
 			return CardType.JOKER;
@@ -45,39 +50,43 @@ public abstract class Card extends Asset{
 			throw new IllegalStateException("The explorer card type is illegal.");
 		}
 	}
-	
+
 	public int getCost() {
 		return cost;
-    }
+	}
+
 	@Override
 	public String getName() {
 		return name;
-    }
+	}
+
 	@Override
 	public double getValue() {
 		return 0.5;
-    }
+	}
+
 	public void removeCard() {
 		if (!singleUse) {
 			System.out.println("This is not a single use card, so this card cannot be removed.");
 			return;
 		} else if (removedCard) {
-			
+
 			System.out.println("This card is already removed and cannot be removed once again.");
 			return;
 		} else {
 			removedCard = true;
 		}
 	}
+
 	@Override
-    public String toString() {
-        return "Card{" +
-                "cardType=" + cardType +
-                ", name=" + name +
-                ", cost=" + cost +
-                '}';
-    }
-	
+	public String toString() {
+		return "Card{" +
+				"cardType=" + cardType +
+				", name=" + name +
+				", cost=" + cost +
+				'}';
+	}
+
 	@Override
 	public void draw(Graphics2D g2d, int x, int y, int width, int height) {
 		Color color = Util.getColorFromString(cardType.toString());

@@ -13,7 +13,7 @@ import java.awt.image.BufferedImage;
  * Test class for the {@link Blockade} class.
  */
 public class BlockadeTest {
-    private static Template hexagonGameBoard;
+    private static Template board;
     private static int numRows = 15;
     private static int numCols = 35;
     private static int hexSize = 35;
@@ -22,11 +22,11 @@ public class BlockadeTest {
     /**
      * Test that a new blockade can be created.
      */
-   @BeforeAll
-   public static void setUp() {
-       blockade = new Blockade();
-       hexagonGameBoard = new Team04Board(numRows, numCols, hexSize);
-   }
+    @BeforeAll
+    public static void setUp() {
+        blockade = new Blockade();
+        board = new Team04Board(25, 30, 25);
+    }
 
     /**
      * Test to set the color of the blockade.
@@ -42,7 +42,7 @@ public class BlockadeTest {
     @Test
     public void setBlockadePoints() {
         blockade.setPoints(5);
-    	
+
     }
 
     /**
@@ -50,8 +50,9 @@ public class BlockadeTest {
      */
     @Test
     public void cloneBlockade() {
-        hexagonGameBoard.loadTileData();
-//        blockade.clone(0, 1,hexSize);// this would fail, as there's no tiles in the blockade
+        // hexagonGameBoard.loadTileData();
+        // blockade.clone(0, 1,hexSize);// this would fail, as there's no tiles in the
+        // blockade
     }
 
     /**
@@ -64,8 +65,7 @@ public class BlockadeTest {
         Graphics2D g2d = image.createGraphics();
 
         // TODO: fix drawing blockade
-//        hexagonGameBoard.loadTileData();
-//        blockade.draw(g2d, 1, hexagonGameBoard.tilesMap);
+        // hexagonGameBoard.loadTileData();
+        // blockade.draw(g2d, 1, hexagonGameBoard.tilesMap);
     }
 }
-
