@@ -139,8 +139,8 @@ public class Player_move {
 		            } else {
 		                System.out.println("Your " + selectedAsset + " does not have enough power to move blockade.");
 		            }
-		        } else if(block.getTiles().getFirst().getTileType()==TileType.BaseCamp
-	        			||block.getTiles().getFirst().getTileType()==TileType.Discard){
+		        } else if(block.getTiles().get(0).getTileType()==TileType.BaseCamp
+	        			||block.getTiles().get(0).getTileType()==TileType.Discard){
 		        	if(!(selectedAsset instanceof Card)) {System.out.println("Choose a card, not a Token.");break;}
 		        	List<Card> toDiscard=new ArrayList<>();
 		        	toDiscard.add((Card)selectedAsset);

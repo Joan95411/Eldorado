@@ -40,7 +40,7 @@ public class Player_draw_discard {
     	while(player.myDeck.isThereActionAsset().size()>0){    		
         	boolean toPlay=InputHelper.getYesNoInput("Do you want to play action cards/token?");
         	if(!toPlay) {break;}
-        	int cardIndex=player.myDeck.isThereActionAsset().getFirst();
+        	int cardIndex=player.myDeck.isThereActionAsset().get(0);
         	if(player.myDeck.isThereActionAsset().size()>1) {
         	cardIndex = InputHelper.getIntInput("Choose 1 action card/token to play;"
         			+ " Input index (e.g. 0);"

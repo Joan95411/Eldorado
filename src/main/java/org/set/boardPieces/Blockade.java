@@ -129,6 +129,6 @@ public class Blockade extends BoardPiece {
 	
 	public TileType getTileType() {
 		
-		return tiles.getFirst().getTileType();
+		return tiles.get(0).getTileType();
 	}
 }
