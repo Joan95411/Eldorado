@@ -25,7 +25,7 @@ public class BlockadeTest {
     @BeforeAll
     public static void setUp() {
         blockade = new Blockade();
-        board = new Template(numRows, numCols, hexSize);
+        board = new Team04Board(25, 30, 25);
     }
 
     /**
