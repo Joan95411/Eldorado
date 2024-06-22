@@ -118,7 +118,7 @@ public class Player_move {
 	            if (discardMovable) {
 	                residualPower = 0;
 	                break;
-	            } else if(selectedAsset.getPower()>residualPower) {
+	            } else{
 	                System.out.println("You can discard the " + selectedAsset + " or make a movement with the remaining power.");
 	                continue;
 	            } 
@@ -141,22 +141,26 @@ public class Player_move {
 		            }
 		        } else if(block.getTiles().getFirst().getTileType()==TileType.BaseCamp
 	        			||block.getTiles().getFirst().getTileType()==TileType.Discard){
+		        	if(!(selectedAsset instanceof Card)) {System.out.println("Choose a card, not a Token.");break;}
+		        	List<Card> toDiscard=new ArrayList<>();
+		        	toDiscard.add((Card)selectedAsset);
 		        	if(block.getPoints()==1) {
 		        		boolean discardMovable = InputHelper.getYesNoInput("Are you sure to discard this " + selectedAsset + "?");
 			            if (discardMovable) {
 			            	executeRemoveBlock(board, player,NextToBlockade, block, residualPower);}
 			            
-		        	}else {System.out.println("You need to discard more card to get here.");
-		        	List<Card> toDiscard=chooseCardsToDiscard(player);
+		        	}if(board.boardPieces.get(block.getName())!=null) {
+		        		System.out.println("You need to discard more card to get here.");
+		        	toDiscard=chooseCardsToDiscard(player);
 			        if(toDiscard.size()>=block.getPoints()) {
 			        	executeRemoveBlock(board, player,NextToBlockade, block, residualPower);
 		        	}else {
-		        		System.out.println("You need to discard more card to remove this block.");}
-			        if(block.getTiles().getFirst().getTileType()==TileType.Discard) {
-			        	player.myDeck.discard(toDiscard);
-		        	}else {player.myDeck.removeCard(toDiscard);}
-			        board.repaint();
-			        residualPower=-1;}
+		        		System.out.println("You need to discard more card to remove this block.");
+		        		break;}}
+			        if(block.getTileType()==TileType.BaseCamp) {
+			        	player.myDeck.removeCard(toDiscard);
+		        	}else {player.myDeck.discard(toDiscard);}
+			        residualPower=-1;
 		        	
 		        }else {
 		            System.out.println("Color of " + selectedAsset + " does not match blockade color.");
@@ -177,21 +181,32 @@ public class Player_move {
 	            }
 	        }else if(movingTo.getTileType()==TileType.BaseCamp
         			||movingTo.getTileType()==TileType.Discard){
+	        	List<Card> toDiscard=new ArrayList<>();
+	        	toDiscard.add((Card)selectedAsset);
+	        	if(!(selectedAsset instanceof Card)) {System.out.println("Choose a card, not a Token.");break;}
+	        	
 	        	if(movingTo.getPoints()==1) {
 	        		boolean discardMovable = InputHelper.getYesNoInput("Are you sure to discard this " + selectedAsset + "?");
 		            if (discardMovable) {
-		            	executeMove( board,  player, movingTo,residualPower);}
-	        	}else {System.out.println("You need to discard more card to get here.");
-	        	List<Card> toDiscard=chooseCardsToDiscard(player);
+		            	executeMove( board,  player, movingTo,residualPower);
+		            	}
+	        	}
+	        	if(player.getCurrentRow()!=movingTo.getRow()||player.getCurrentCol()!=movingTo.getCol()) {
+	        		System.out.println("You need to discard "+movingTo.getPoints()+" card to get here. Choose all the cards.");
+	        		toDiscard=chooseCardsToDiscard(player);
 		        if(toDiscard.size()>=movingTo.getPoints()) {
 		        	executeMove( board,  player, movingTo,residualPower);
-	        	}else {
-	        		System.out.println("You need to discard more card to get here.");}
-		        if(movingTo.getTileType()==TileType.Discard) {
-		        	player.myDeck.discard(toDiscard);
-	        	}else {player.myDeck.removeCard(toDiscard);}
-		        board.repaint();
-		        residualPower=-1;}
+	        	}
+		        else {
+	        		System.out.println("You need to discard "+movingTo.getPoints()+" card to get here. Choose all the cards.");
+	        		break;}}
+		        
+	        if(movingTo.getTileType()==TileType.BaseCamp) {
+	        	player.myDeck.removeCard(toDiscard);
+		        
+        	}else {
+        		player.myDeck.discard(toDiscard);}
+	        residualPower=-1;
 	        }
 	        else {
 	            System.out.println("Color of " + selectedAsset + " does not match tile color."+selectedAsset.getCardType());

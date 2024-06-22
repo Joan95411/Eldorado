@@ -138,7 +138,22 @@ class Player_moveTest {
     	assertEquals(2,player.getCurrentRow());
     	assertEquals(4,player.getCurrentCol());
     }
-
+    @Test
+    public void testMovewithTooMuchPower() {//discard the leftover power
+    	Player player = players.get(0);
+    	Before_game.placePlayersOnBoard(board);
+    	player.myDeck.getDrawPile().clear();
+        for(int i=0;i<4;i++) {
+        player.myDeck.addCard(new ExpeditionCard(ExpeditionCardType.Giant_Machete));}
+    	player.myDeck.draw(4);
+    	String input = "y\n0\n2,4\nstop\nn\nstop\ny\nn\n";
+        ByteArrayInputStream inputStream = new ByteArrayInputStream(input.getBytes()); 
+        InputHelper.setInputStream(inputStream);
+    	Player_move.PlayerMove2(board, player);
+    	assertEquals(2,player.getCurrentRow());
+    	assertEquals(4,player.getCurrentCol());
+    	assertEquals(3,player.myDeck.getCardsInHand().size());
+    }
     @Test
     public void testMovewithNotCorrectColor() {
     	Player player = players.get(0);
@@ -167,7 +182,6 @@ class Player_moveTest {
     	Player_move.PlayerMove2(board, player);
     	assertEquals(4,player.getCurrentRow());
     	assertEquals(4,player.getCurrentCol());
-    	
     }
     
 	/**
@@ -233,17 +247,63 @@ class Player_moveTest {
     	assertEquals(0,player.myDeck.calculateBlockPoint());
     }
     @Test
-    public void testBaseCampMoveWithEnoughCardsToDiscard() {
+    public void testRemoveBlockwithTooMuchPower() {//discard the leftover power
+    	Player player = players.get(0);
+    	Before_game.placePlayersOnBoard(board);
+    	player.myDeck.getDrawPile().clear();
+        player.myDeck.addCard(new ExpeditionCard(ExpeditionCardType.Giant_Machete));
+    	player.myDeck.draw(1);
+    	Blockade block=(Blockade) board.boardPieces.get("Blockade_1");
+    	block.setColor(TileType.Machete);
+    	block.setPoints(2);
+    	player.setPlayerPosition(6, 6);
+    	String input = "y\n0\nblock\nstop\nn\nstop\ny\nn\n";
+        ByteArrayInputStream inputStream = new ByteArrayInputStream(input.getBytes()); 
+        InputHelper.setInputStream(inputStream);
+    	Player_move.PlayerMove2(board, player);
+    	assertEquals(0,player.myDeck.getCardsInHand().size());
+    	assertEquals(2,player.myDeck.calculateBlockPoint());
+    }
+    @Test
+    public void testBaseCampMoveWith1CardsToDiscard() {
     	Player player = players.get(0);
     	Before_game.placePlayersOnBoard(board);
     	player.myDeck.draw(4);
-    	String input = "y\n0\n1,5\n0,1\nn\n";
+    	String input = "y\n0\n1,5\ny\nn\n";
         ByteArrayInputStream inputStream = new ByteArrayInputStream(input.getBytes()); 
         InputHelper.setInputStream(inputStream);
     	Player_move.PlayerMove2(board, player);
     	assertEquals(1,player.getCurrentRow());
     	assertEquals(5,player.getCurrentCol());
-    	assertEquals(2,player.myDeck.getCardsInHand().size());
+    	assertEquals(3,player.myDeck.getCardsInHand().size());
+    }
+    @Test
+    public void testBaseCampMoveWith1CardsToDiscardRegret() {
+    	Player player = players.get(0);
+    	Before_game.placePlayersOnBoard(board);
+    	player.myDeck.draw(4);
+    	String input = "y\n0\n1,5\nn\n1\nn\n";
+        ByteArrayInputStream inputStream = new ByteArrayInputStream(input.getBytes()); 
+        InputHelper.setInputStream(inputStream);
+    	Player_move.PlayerMove2(board, player);
+    	assertEquals(1,player.getCurrentRow());
+    	assertEquals(5,player.getCurrentCol());
+    	assertEquals(3,player.myDeck.getCardsInHand().size());
+    }
+    @Test
+    public void testBaseCampMoveWithNotMoreCardsToDiscard() {
+    	Player player = players.get(0);
+    	Before_game.placePlayersOnBoard(board);
+    	player.myDeck.draw(4);
+    	Tile tile=board.ParentMap.get("1,5");
+    	tile.setPoints(3);
+    	String input = "y\n0\n1,5\n0,1,2\nn\n";
+        ByteArrayInputStream inputStream = new ByteArrayInputStream(input.getBytes()); 
+        InputHelper.setInputStream(inputStream);
+    	Player_move.PlayerMove2(board, player);
+    	assertEquals(1,player.getCurrentRow());
+    	assertEquals(5,player.getCurrentCol());
+    	assertEquals(1,player.myDeck.getCardsInHand().size());
     }
     @Test
     public void testBaseCampBlockRemove() {//remove discard block
