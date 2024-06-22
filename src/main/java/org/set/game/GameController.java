@@ -60,7 +60,7 @@ public class GameController {
 
               Player_buy.PlayerBuy(board,currentPlayer,market);
               Player_draw_discard.PlayerDiscard(board,currentPlayer);
-              boolean discardCard=InputHelper.getYesNoInput("Your turn will finish now.");
+              boolean TurnOVER=InputHelper.getYesNoInput("Your turn will finish now.");
               
               
             }

@@ -18,15 +18,19 @@ public class IntegrationWith03Board {
 	public GameController gameController;
 	
 public  IntegrationWith03Board(String pathString) {
+	
 	Path path= convertStringToPath(pathString);
 		mainPanel = new Main(path);
         gameController = mainPanel.getGameController();
         board=gameController.getGame().getBoard();
+	 
 	
 }
 private Path convertStringToPath(String pathString) {
     switch (pathString.toLowerCase()) {
-        case "homestretch":
+    case "hillsofgold":
+        return Path.HillsOfGold;    
+    case "homestretch":
             return Path.HomeStretch;
         case "swamplands":
             return Path.Swamplands;
@@ -37,13 +41,10 @@ private Path convertStringToPath(String pathString) {
         case "serpentine":
             return Path.Serpentine;
         default:
-            return Path.HillsOfGold;
+            return Path.Swamplands;
     }
 }
-	public String Get03PathName() {
-		return board.getPath().name();
-	}
-
+	
 	public JSONArray Get03Path(String path) {
 		JSONArray pathInfo=Util.readPathData(path);
 		for (Blockade block:board.getBlockades()) {

@@ -27,9 +27,15 @@ public class Team03Board extends Template{
 	public void setConfiguration() {
 		// TODO Auto-generated method stub
 		setPathString(pathString);
+		try {
+
 		IntegrationWith03Board game03= new IntegrationWith03Board(pathString);
-        pathInfo=game03.Get03Path(game03.Get03PathName());
-        game03.Get03Frame(); //only if you want to compare our board to their board visually
+        pathInfo=game03.Get03Path(pathString);
+        game03.Get03Frame();} //only if you want to compare our board to their board visually
+		catch (Exception e) {
+	        e.printStackTrace(); 
+	        pathInfo=Util.readPathData("Serpentine");}
+		
 	}
 	
 	@Override
