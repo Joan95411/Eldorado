@@ -7,8 +7,8 @@ import org.set.cards.CardType;
 
 public abstract class Asset {
     protected int power;
-    protected CardType cardType; // Assuming cardType is a String. Adjust if it's a different type.
-    protected Color color; // Assuming Movable objects have a color.
+    protected CardType cardType;
+    protected Color color;
 
     public int getPower() {
         return power;
@@ -21,7 +21,10 @@ public abstract class Asset {
     public Color getColor() {
         return color;
     }
+
     abstract public String getName();
+
     abstract public double getValue();
+
     abstract public void draw(Graphics2D g2d, int x, int y, int width, int height);
 }

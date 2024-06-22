@@ -1,44 +1,5 @@
 {
-  "Default": [
-    {
-      "sectionType": "B",
-      "rotation": 1,
-      "addRow": 14,
-      "addCol": 0
-    },
-    {
-      "sectionType": "C",
-      "rotation": -2,
-      "addRow": -6,
-      "addCol": 4
-    },
-    {
-      "sectionType": "N",
-      "rotation": 1,
-      "addRow": -1,
-      "addCol": 8
-    },
-    {
-      "sectionType": "I",
-      "rotation": 1,
-      "addRow": 0,
-      "addCol": 8
-    },
-    {
-      "sectionType": "K",
-      "rotation": -1,
-      "addRow": -6,
-      "addCol": 4
-    },
-
-    {
-      "sectionType": "ElDoradoTwo",
-      "rotation": -1,
-      "addRow": 0,
-      "addCol": 0
-    }
-  ],
-    "Serpentine": [
+      "Serpentine": [
       {
         "sectionType": "A",
         "rotation": 1,

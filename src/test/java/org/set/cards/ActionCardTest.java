@@ -12,7 +12,8 @@ import org.set.cards.action.ActionCard;
 import org.set.cards.action.ActionCardType;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 /**
  * Test class for the {@link ActionCard} class.
  */
@@ -51,12 +52,11 @@ public class ActionCardTest {
                 assertEquals(true, card.isPlayable());
                 card.doAction(player);
                 assertEquals(false, card.isPlayable());
-
-                try {
-                    card.doAction(player);
-                } catch (IllegalStateException e) {
-                    assertEquals("This card is not playable", e.getMessage());
-                }
+                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                System.setOut(new PrintStream(outputStream));
+                card.doAction(player);
+                String expectedOutput = "This card is not playable" + System.lineSeparator();
+                assertEquals(expectedOutput, outputStream.toString());
             }
         }
     }

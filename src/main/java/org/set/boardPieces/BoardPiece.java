@@ -37,35 +37,35 @@ public abstract class BoardPiece {
         this.tiles = tiles;
     }
 
-    public abstract void randomizeTiles();
-    
     public abstract void draw(Graphics2D g2d, int size);
 
-    public abstract BoardPiece clone(double addRow, double addCol,int hexSize);
+    public abstract BoardPiece clone(double addRow, double addCol, int hexSize);
 
-    
-    public void move(double addRow, double addCol,int hexSize) {
-    	int addX = (int)(addCol * 1.5 * hexSize);
-        int addY = (int)(addRow *  Math.sqrt(3) * hexSize);
+    public void move(double addRow, double addCol, int hexSize) {
+        int addX = (int) (addCol * 1.5 * hexSize);
+        int addY = (int) (addRow * Math.sqrt(3) * hexSize);
         if (addCol % 2 == 1) {
-        	addY += (int) (Math.sqrt(3) / 2 * hexSize);
+            addY += (int) (Math.sqrt(3) / 2 * hexSize);
         }
         for (Tile tile : tiles) {
-        	int[] temp = TileDataDic.tilesMap.get(tile.getRow()+","+tile.getCol());
-        	int newX = temp[0]+addX;
-          	int newY = temp[1]+addY;
-          	int[] closestCoordinate = TileDataDic.findClosestCoordinate(newX, newY);
-//          	System.out.println(tile.getX()+" "+tile.getY()+" "+addX+" "+addY+" "+closestCoordinate[2]+" "+closestCoordinate[3]);
-//          	System.out.println(tile.getRow()+" "+tile.getCol()+" "+tile.getParent()+" "+closestCoordinate[0]+" "+closestCoordinate[1]);
-          	 if (closestCoordinate != null) {
-            tile.setRow(closestCoordinate[0]);
-            tile.setCol(closestCoordinate[1]);}
+            int[] temp = TileDataDic.tilesMap.get(tile.getRow() + "," + tile.getCol());
+            int newX = temp[0] + addX;
+            int newY = temp[1] + addY;
+            int[] closestCoordinate = TileDataDic.findClosestCoordinate(newX, newY);
+            // System.out.println(tile.getX()+" "+tile.getY()+" "+addX+" "+addY+"
+            // "+closestCoordinate[2]+" "+closestCoordinate[3]);
+            // System.out.println(tile.getRow()+" "+tile.getCol()+" "+tile.getParent()+"
+            // "+closestCoordinate[0]+" "+closestCoordinate[1]);
+            if (closestCoordinate != null) {
+                tile.setRow(closestCoordinate[0]);
+                tile.setCol(closestCoordinate[1]);
+            }
         }
     }
-    
+
     protected void cloneTiles(BoardPiece clonedPiece, double addRow, double addCol, int hexSize) {
-        int addX = (int)(addCol * 1.5 * hexSize);
-        int addY = (int)(addRow * Math.sqrt(3) * hexSize);
+        int addX = (int) (addCol * 1.5 * hexSize);
+        int addY = (int) (addRow * Math.sqrt(3) * hexSize);
         if (addCol % 2 == 1) {
             addY += (int) (Math.sqrt(3) / 2 * hexSize);
         }
@@ -81,7 +81,7 @@ public abstract class BoardPiece {
                 clonedTile.setCol(closestCoordinate[1]);
                 clonedTile.setX(closestCoordinate[2]);
                 clonedTile.setY(closestCoordinate[3]);
-                clonedTile.setType(tile.getType());
+                clonedTile.setType(tile.getTileType());
                 clonedTile.setPoints(tile.getPoints());
                 clonedTile.setQ(tile.getQ());
                 clonedTile.setR(tile.getR());

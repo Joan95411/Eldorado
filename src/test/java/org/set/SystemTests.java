@@ -1,20 +1,11 @@
 package org.set;
 
 import java.io.*;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 
-import javax.swing.*;
-import org.junit.jupiter.api.BeforeEach;
 import org.set.game.EldoradoGame;
-import org.set.game.GameController;
 import org.set.game.InputHelper;
-import org.set.template.Team03Board;
-import org.set.template.Team04Board;
-import org.set.template.Template;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 public class SystemTests {
     public EldoradoGame eldoradoGame;

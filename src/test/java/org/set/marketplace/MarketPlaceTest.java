@@ -1,21 +1,16 @@
 package org.set.marketplace;
 
-import org.json.JSONObject;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.set.boardPieces.Util;
 import org.set.cards.expedition.ExpeditionCard;
 import org.set.cards.expedition.ExpeditionCardType;
 
-import java.io.FileNotFoundException;
 import java.util.HashMap;
 import org.set.cards.*;
 import org.set.cards.action.ActionCard;
 import org.set.cards.action.ActionCardType;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 /**
  * Test class for the {@link MarketPlace} class.

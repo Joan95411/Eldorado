@@ -1,21 +1,13 @@
 package org.set.boardPieces;
 
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.awt.Color;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
 import io.github.cdimascio.dotenv.Dotenv;
 import io.github.cdimascio.dotenv.DotenvException;
-
 
 public class TileDataDic {
     public static Dotenv dotenv;
@@ -23,8 +15,7 @@ public class TileDataDic {
     public WinningPiece wpa;
     public static Map<String, int[]> tilesMap;
     public static Map<String, int[]> coordinateMap;
-    
-    
+
     public TileDataDic(int numRows, int numCols, int hexSize) {
         terrainA = new Terrain();
         wpa = new WinningPiece();
@@ -49,9 +40,9 @@ public class TileDataDic {
         }
 
         fillTilesMap(numRows, numCols, hexSize, tileInfo, winningPieceInfo);
-        
+
     }
-       
+
     public void fillTilesMap(int numRows, int numCols, int hexSize, JSONObject tileInfo, JSONObject winningPieceInfo) {
         for (int row = 0; row < numRows; row++) {
             for (int col = 0; col < numCols; col++) {
@@ -83,29 +74,32 @@ public class TileDataDic {
                 }
 
                 String colorName = currentTileInfo.getString("color");
-                TileType type=Util.getTileTypeFromString(colorName);
+                TileType type = Util.getTileTypeFromString(colorName);
                 int points = currentTileInfo.getInt("points");
-                
-                String qrString=currentTileInfo.getString("qr");
+
+                String qrString = currentTileInfo.getString("qr");
                 String[] parts = qrString.split(",");
                 tile.setQ(Integer.parseInt(parts[0]));
-                tile.setR(Integer.parseInt(parts[1]));;
+                tile.setR(Integer.parseInt(parts[1]));
+                ;
                 tile.setType(type);
                 tile.setPoints(points);
-                
-                tilesMap.put(key, new int[] {x,y});
-                coordinateMap.put(x+","+y, new int[] {row,col});
+
+                tilesMap.put(key, new int[] { x, y });
+                coordinateMap.put(x + "," + y, new int[] { row, col });
             }
         }
-        
+
     }
+
     public static int[] findClosestCoordinate(int x, int y) {
         double minDistance = Double.MAX_VALUE;
         int[] closestCoordinate = null;
-        int[] tileFoundCorMap=coordinateMap.get(x+","+y);
-        if(tileFoundCorMap!=null) {
-        	closestCoordinate = new int[] { tileFoundCorMap[0], tileFoundCorMap[1],x,y };
-        	return closestCoordinate; }
+        int[] tileFoundCorMap = coordinateMap.get(x + "," + y);
+        if (tileFoundCorMap != null) {
+            closestCoordinate = new int[] { tileFoundCorMap[0], tileFoundCorMap[1], x, y };
+            return closestCoordinate;
+        }
         for (Entry<String, int[]> entry : tilesMap.entrySet()) {
             String key = entry.getKey();
             String[] parts = key.split(",");
@@ -116,14 +110,11 @@ public class TileDataDic {
             double distance = Math.sqrt(Math.pow(tileX - x, 2) + Math.pow(tileY - y, 2));
             if (distance < minDistance) {
                 minDistance = distance;
-                closestCoordinate = new int[] { Integer.parseInt(parts[0]), Integer.parseInt(parts[1]),tileX,tileY };
+                closestCoordinate = new int[] { Integer.parseInt(parts[0]), Integer.parseInt(parts[1]), tileX, tileY };
             }
         }
 
         return closestCoordinate;
     }
-    
-    
 
-	
 }

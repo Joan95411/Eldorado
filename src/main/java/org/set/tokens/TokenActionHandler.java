@@ -6,10 +6,7 @@ import org.set.cards.expedition.ExpeditionCard;
 import org.set.game.InputHelper;
 import org.set.player.Player;
 
-import java.util.Scanner;
-
 public class TokenActionHandler {
-    
 
     public void doAction(Token token, Player player) {
         CaveTokenType caveTokenType = token.getType();
@@ -72,7 +69,9 @@ public class TokenActionHandler {
                 System.out.println("(" + counter + ") - " + card.name);
                 counter++;
             }
-            int cardIndex = InputHelper.getIntInput("What card do you want to remove?; Input index (e.g. 0), or '-1' to stop",player.myDeck.getCardsInHand().size()-1,-1);
+            int cardIndex = InputHelper.getIntInput(
+                    "What card do you want to remove?; Input index (e.g. 0), or '-1' to stop",
+                    player.myDeck.getCardsInHand().size() - 1, -1);
             Card selectedCard = player.myDeck.getCardsInHand().get(cardIndex);
 
             player.myDeck.removeCard(selectedCard);
@@ -125,22 +124,23 @@ public class TokenActionHandler {
             System.out.println("(" + counter + ") - " + card.name + " with power: " + expeditionCard.getPower());
             counter++;
         }
-        int cardIndex = InputHelper.getIntInput("What expedition card do you want to play and change the symbol?; Input index (e.g. 0), or '-1' to stop",player.myDeck.getCardsInHand().size()-1,-1);
-        
-        
+        int cardIndex = InputHelper.getIntInput(
+                "What expedition card do you want to play and change the symbol?; Input index (e.g. 0), or '-1' to stop",
+                player.myDeck.getCardsInHand().size() - 1, -1);
+
         ExpeditionCard expeditionCard = (ExpeditionCard) player.myDeck.getCardsInHand().get(cardIndex);
 
-        
         counter = 0;
-        for(CardType ct:CardType.values()) {
-        	System.out.println("(" + counter + ") - " + ct );
+        for (CardType ct : CardType.values()) {
+            System.out.println("(" + counter + ") - " + ct);
             counter++;
         }
-        int cardTypeIndex = InputHelper.getIntInput("What symbol do you want to change " + expeditionCard.name + " to?",4,0);
-//        System.out.println(expeditionCard.name);
+        int cardTypeIndex = InputHelper.getIntInput("What symbol do you want to change " + expeditionCard.name + " to?",
+                4, 0);
+        // System.out.println(expeditionCard.name);
 
         expeditionCard.cardType = CardType.values()[cardTypeIndex];
 
-//        System.out.println(expeditionCard.name);
+        // System.out.println(expeditionCard.name);
     }
 }

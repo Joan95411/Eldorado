@@ -3,12 +3,7 @@ package org.set.game;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.set.boardPieces.Tile;
-import org.set.cards.action.ActionCard;
-import org.set.cards.action.ActionCardType;
-import org.set.cards.expedition.ExpeditionCard;
-import org.set.cards.expedition.ExpeditionCardType;
 import org.set.template.Team04Board;
 import org.set.template.Template;
 import org.set.tokens.Cave;
@@ -16,10 +11,8 @@ import org.set.tokens.Token;
 import org.set.player.Player;
 
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -84,15 +77,15 @@ public class BeforeGameTest {
 	@Test
     public void testAddPlayer() {
         Template mockTemplate = new Team04Board(25,30,25);
-        String input = "4\nred\nblue\nwhite\nyellow"; // Prepare the input data
+        String input = "3\norange\nwhite\nyellow"; // Prepare the input data
         ByteArrayInputStream inputStream = new ByteArrayInputStream(input.getBytes()); // Create a ByteArrayInputStream with the input data
         InputHelper.setInputStream(inputStream);
         List<Player> players = Before_game.addPlayer(mockTemplate);
         assertNotNull(players);
         assertFalse(players.isEmpty());
-        assertEquals(4, players.size()); // Ensure the correct number of players are added based on mock input
+        assertEquals(3, players.size()); // Ensure the correct number of players are added based on mock input
         Before_game.placePlayersOnBoard(mockTemplate);
-        assertEquals(4, mockTemplate.players.size());
+        assertEquals(3, mockTemplate.players.size());
     }
 	
 	

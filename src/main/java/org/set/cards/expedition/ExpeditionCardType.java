@@ -26,11 +26,10 @@ public enum ExpeditionCardType {
         this.singleUse = singleUse;
         this.power = power;
     }
-    
+
     public int getCost() {
-    	return cost;
+        return cost;
     }
-    
 
     public boolean isSingleUse() {
         return singleUse;

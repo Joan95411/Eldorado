@@ -7,6 +7,7 @@ import org.set.game.InputHelper;
 import org.set.template.Team03Board;
 import org.set.template.Team04Board;
 import org.set.template.Template;
+import org.set.boardPieces.Blockade;
 import org.set.boardPieces.BoardPiece;
 
 import javax.swing.*;
@@ -15,7 +16,6 @@ import java.awt.image.BufferedImage;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.set.PlayerTest.players;
 
 /**
  * Test class for the {@link Template} class.
@@ -107,7 +107,15 @@ public class HexagonGameBoardTest {
         assertEquals(1,countBlockade1-countBlockade2, "Actual count: " + (countBlockade1-countBlockade2));
         //remove 1 blockade, should have 1 less;
     }
+    
+    @Test
+    public void testGetLastBlock() {
+        int countBlockade1=hexagonGameBoard.getAllBlockades().size();
 
+        Blockade block=hexagonGameBoard.getLastBlockade();
+        assertEquals("Blockade_3",block.getName());
+        //remove 1 blockade, should have 1 less;
+    }
    /**
     * Tests the getLocation() method of HexagonGameBoard works as expected.
     */
