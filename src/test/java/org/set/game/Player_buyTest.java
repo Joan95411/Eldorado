@@ -20,6 +20,8 @@ import org.set.player.Asset;
 import org.set.player.Player;
 import org.set.template.Team04Board;
 import org.set.template.Template;
+import org.set.tokens.CaveTokenType;
+import org.set.tokens.Token;
 
 /**
  * Test class for the {@link Player_buyTest} class.
@@ -100,7 +102,19 @@ class Player_buyTest {
         Player_buy.PlayerBuy(board, player, market);
         assertEquals(0, player.myDeck.getDiscardPile().size());
     }
-	
+	@Test
+    public void testUseTokenToBuy() {
+        Player player = players.get(0);
+        player.myDeck.getDrawPile().clear();
+        for(int i=0;i<4;i++) {
+        Token token=new Token(CaveTokenType.CoinOne);
+    	player.myDeck.addToken(token);}
+    	String input = "y\n0\n0,1,2,3\nn\n";
+        ByteArrayInputStream inputStream = new ByteArrayInputStream(input.getBytes()); 
+        InputHelper.setInputStream(inputStream);
+        Player_buy.PlayerBuy(board, player, market);
+        assertEquals(1, player.myDeck.getDiscardPile().size());
+    }
     /**
      * Integrationtest
      * Classes used: ExpeditionCard, ExpeditionCardType, Template, Player, Asset, Marketplace, Team04Board

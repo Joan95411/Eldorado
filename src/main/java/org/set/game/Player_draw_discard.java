@@ -43,7 +43,7 @@ public class Player_draw_discard {
         	int cardIndex=player.myDeck.isThereActionAsset().getFirst();
         	if(player.myDeck.isThereActionAsset().size()>1) {
         	cardIndex = InputHelper.getIntInput("Choose 1 action card/token to play;"
-        			+ " Input index (e.g. "+player.myDeck.isThereActionAsset()+");"
+        			+ " Input index (e.g. 0);"
         					+ " or '-1' to stop",player.myDeck.getMyasset().size()-1,-1);
 	        if (cardIndex == -1) {
 	            break;

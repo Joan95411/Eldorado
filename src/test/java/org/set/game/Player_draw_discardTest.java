@@ -5,9 +5,13 @@ import org.junit.jupiter.api.Test;
 import org.set.boardPieces.Tile;
 import org.set.cards.action.ActionCard;
 import org.set.cards.action.ActionCardType;
+import org.set.cards.expedition.ExpeditionCard;
+import org.set.cards.expedition.ExpeditionCardType;
 import org.set.player.Player;
 import org.set.template.Team04Board;
 import org.set.template.Template;
+import org.set.tokens.CaveTokenType;
+import org.set.tokens.Token;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -145,6 +149,66 @@ public class Player_draw_discardTest {
 	        InputHelper.setInputStream(inputStream);
 	        Player_draw_discard.PlayActionCard(board, player);
 	        assertEquals(0,player.myDeck.isThereActionAsset().size());
+	        assertFalse(player.myDeck.getDiscardPile().contains(ac));
+	    }
+	    @Test
+	    public void testPlay2ActionCards() {
+	    	Player player = players.get(0);
+	    	ActionCard ac=new ActionCard(ActionCardType.Scientist);
+	    	ActionCard ac2=new ActionCard(ActionCardType.Native);
+	    	player.myDeck.getDrawPile().clear();
+	    	player.myDeck.addCard(ac);
+	    	player.myDeck.addCard(ac2);
+	    	player.myDeck.draw(2);
+	    	int i=player.myDeck.getCardsInHand().indexOf(ac2);
+	    	System.out.println(ac2.getCardType());
+	    	String input = "y\n0\n0\nn\n";
+	        ByteArrayInputStream inputStream = new ByteArrayInputStream(input.getBytes()); // Create a ByteArrayInputStream with the input data
+	        InputHelper.setInputStream(inputStream);
+	        Player_draw_discard.PlayActionCard(board, player);
+	        assertEquals(0,player.myDeck.isThereActionAsset().size());
+	        assertTrue(player.myDeck.getDiscardPile().contains(ac));
+	    }
+	    
+	    @Test
+	    public void testPlayActionToken2() {
+	    	Player player = players.get(0);
+	    	ActionCard ac=new ActionCard(ActionCardType.Scientist);
+	    	ActionCard ac2=new ActionCard(ActionCardType.Compass);
+	    	Token token=new Token(CaveTokenType.CoinOne);
+	    	player.myDeck.getDrawPile().clear();
+	    	player.myDeck.addCard(ac);
+	    	player.myDeck.addCard(ac2);
+	    	player.myDeck.addToken(token);
+	    	player.myDeck.draw(2);
+	    	int i=player.myDeck.getMyasset().indexOf(token);
+	    	
+	    	String input = "y\n"+i+"\nn\n";
+	        ByteArrayInputStream inputStream = new ByteArrayInputStream(input.getBytes()); // Create a ByteArrayInputStream with the input data
+	        InputHelper.setInputStream(inputStream);
+	        Player_draw_discard.PlayActionCard(board, player);
+	        assertEquals(2,player.myDeck.isThereActionAsset().size());
+	        assertTrue(player.myDeck.getMyasset().contains(token));
+	    }
+	    @Test
+	    public void testPlayActionCardChooseNonAction() {
+	    	Player player = players.get(0);
+	    	ExpeditionCard cd=new ExpeditionCard(ExpeditionCardType.Adventurer);
+	    	ActionCard ac=new ActionCard(ActionCardType.Scientist);
+	    	ActionCard ac2=new ActionCard(ActionCardType.Travel_Log);
+	    	ActionCard ac3=new ActionCard(ActionCardType.Compass);
+	    	player.myDeck.getDrawPile().clear();
+	    	player.myDeck.addCard(cd);
+	    	player.myDeck.addCard(ac);
+	    	player.myDeck.addCard(ac2);
+	    	player.myDeck.addCard(ac3);
+	    	player.myDeck.draw(4);
+	    	int i=player.myDeck.getCardsInHand().indexOf(cd);
+	    	String input = "y\n"+i+"\nn\n";
+	        ByteArrayInputStream inputStream = new ByteArrayInputStream(input.getBytes()); // Create a ByteArrayInputStream with the input data
+	        InputHelper.setInputStream(inputStream);
+	        Player_draw_discard.PlayActionCard(board, player);
+	        assertEquals(3,player.myDeck.isThereActionAsset().size());
 	        assertFalse(player.myDeck.getDiscardPile().contains(ac));
 	    }
 	}

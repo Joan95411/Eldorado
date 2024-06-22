@@ -26,6 +26,8 @@ import org.set.player.Player;
 import org.set.template.Team04Board;
 import org.set.template.Template;
 import org.set.tokens.Cave;
+import org.set.tokens.CaveTokenType;
+import org.set.tokens.Token;
 
 class Player_moveTest {
 	private Template board;
@@ -183,7 +185,20 @@ class Player_moveTest {
     	assertEquals(4,player.getCurrentRow());
     	assertEquals(4,player.getCurrentCol());
     }
-    
+    @Test
+    public void testUseToKenToMove() {
+    	Player player = players.get(0);
+    	Before_game.placePlayersOnBoard(board);
+    	player.myDeck.getDrawPile().clear();
+    	Token token=new Token(CaveTokenType.MacheteOne);
+        player.myDeck.addToken(token);
+    	String input = "y\n0\n2,4\nn\n";
+        ByteArrayInputStream inputStream = new ByteArrayInputStream(input.getBytes()); 
+        InputHelper.setInputStream(inputStream);
+    	Player_move.PlayerMove2(board, player);
+    	assertEquals(2,player.getCurrentRow());
+    	assertEquals(4,player.getCurrentCol());
+    }
 	/**
 	 * Integrationtest
 	 * Classes used: ExpeditionCard, ExpeditionCardType, Template, Player, Marketplace, Team04Board, Tile, TileType, Cave
@@ -304,6 +319,36 @@ class Player_moveTest {
     	assertEquals(1,player.getCurrentRow());
     	assertEquals(5,player.getCurrentCol());
     	assertEquals(1,player.myDeck.getCardsInHand().size());
+    }
+    @Test
+    public void testMoveToMountain() {
+    	Player player = players.get(0);
+    	Before_game.placePlayersOnBoard(board);
+    	player.myDeck.draw(4);
+    	Tile tile=board.ParentMap.get("1,5");
+    	tile.setType(TileType.Mountain);;
+    	String input = "y\n0\n1,5\nstop\nn\n";
+        ByteArrayInputStream inputStream = new ByteArrayInputStream(input.getBytes()); 
+        InputHelper.setInputStream(inputStream);
+    	Player_move.PlayerMove2(board, player);
+    	assertEquals(1,player.getCurrentRow());
+    	assertEquals(4,player.getCurrentCol());
+    	assertEquals(4,player.myDeck.getCardsInHand().size());
+    }
+    @Test
+    public void testMoveToBlock() {
+    	Player player = players.get(0);
+    	Before_game.placePlayersOnBoard(board);
+    	player.myDeck.getDrawPile().clear();
+        player.myDeck.addCard(new ExpeditionCard(ExpeditionCardType.Giant_Machete));
+    	player.myDeck.draw(1);
+    	player.setPlayerPosition(6, 6);
+    	String input = "y\n0\n7,6\nstop\nn\n";
+        ByteArrayInputStream inputStream = new ByteArrayInputStream(input.getBytes()); 
+        InputHelper.setInputStream(inputStream);
+    	Player_move.PlayerMove2(board, player);
+    	assertEquals(6,player.getCurrentRow());
+    	assertEquals(6,player.getCurrentCol());
     }
     @Test
     public void testBaseCampBlockRemove() {//remove discard block
