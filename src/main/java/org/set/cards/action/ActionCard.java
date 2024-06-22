@@ -8,16 +8,16 @@ import java.awt.Graphics2D;
 import org.set.cards.Card;
 import org.set.cards.CardActionHandler;
 
-public class ActionCard extends Card implements Actionable{
+public class ActionCard extends Card implements Actionable {
     public ActionCard(ActionCardType card) {
         super(card.toString(), card.getCost(), card.isSingleUse());
     }
-    
+
     @Override
     public void doAction(Player player) {
         if (!this.isPlayable()) {
-        	System.out.println("This card is not playable");
-        	return;
+            System.out.println("This card is not playable");
+            return;
         }
 
         CardActionHandler handler = new CardActionHandler();
@@ -34,11 +34,12 @@ public class ActionCard extends Card implements Actionable{
     public boolean isPlayable() {
         return !super.singleUse || !super.removedCard;
     }
-    
+
     @Override
     public void draw(Graphics2D g2d, int x, int y, int width, int height) {
         super.draw(g2d, x, y, width, height);
-        if(this.singleUse) {
-        g2d.drawString("SingleUse ", x + 5, y + 15);}
+        if (this.singleUse) {
+            g2d.drawString("SingleUse ", x + 5, y + 15);
+        }
     }
 }

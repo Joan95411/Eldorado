@@ -9,7 +9,6 @@ import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 
 import org.junit.jupiter.api.AfterEach;
@@ -21,11 +20,9 @@ import org.set.boardPieces.Tile;
 import org.set.boardPieces.TileType;
 import org.set.cards.expedition.ExpeditionCard;
 import org.set.cards.expedition.ExpeditionCardType;
-import org.set.marketplace.MarketPlace;
 import org.set.player.Player;
 import org.set.template.Team04Board;
 import org.set.template.Template;
-import org.set.tokens.Cave;
 import org.set.tokens.CaveTokenType;
 import org.set.tokens.Token;
 

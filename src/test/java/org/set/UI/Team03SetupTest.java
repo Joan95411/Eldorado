@@ -10,13 +10,7 @@ import javax.swing.JScrollPane;
 import org.set.template.Team03Board;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.set.boardPieces.IntegrationWith03Board;
-import org.set.boardPieces.Tile;
 import org.set.boardPieces.Util;
-import org.set.game.Before_game;
-import org.set.game.GameController;
-import org.set.game.Player_move;
-import org.set.player.Player;
 
 class Team03SetupTest {
 	 private JFrame frame;

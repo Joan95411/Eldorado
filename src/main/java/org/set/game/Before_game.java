@@ -3,7 +3,6 @@ package org.set.game;
 import java.awt.Color;
 import java.util.*;
 
-import org.set.game.InputHelper;
 import org.set.marketplace.MarketPlace;
 import org.set.player.Player;
 import org.set.template.Template;
@@ -16,77 +15,77 @@ import org.set.cards.Card;
 
 public class Before_game {
 
-    
-	public static ArrayList<Token> createTokens() {
-		ArrayList<Token> tokens = new ArrayList<>();
-		for(int i = 0; i < 3; i++) {
-        tokens.add(new Token(CaveTokenType.CoinOne));
-        tokens.add(new Token(CaveTokenType.CoinTwo));
-        tokens.add(new Token(CaveTokenType.PaddleOne));
-        tokens.add(new Token(CaveTokenType.PaddleTwo));
-        tokens.add(new Token(CaveTokenType.MacheteOne));
-        tokens.add(new Token(CaveTokenType.MacheteTwo));
-        tokens.add(new Token(CaveTokenType.MacheteThree));
+    public static ArrayList<Token> createTokens() {
+        ArrayList<Token> tokens = new ArrayList<>();
+        for (int i = 0; i < 3; i++) {
+            tokens.add(new Token(CaveTokenType.CoinOne));
+            tokens.add(new Token(CaveTokenType.CoinTwo));
+            tokens.add(new Token(CaveTokenType.PaddleOne));
+            tokens.add(new Token(CaveTokenType.PaddleTwo));
+            tokens.add(new Token(CaveTokenType.MacheteOne));
+            tokens.add(new Token(CaveTokenType.MacheteTwo));
+            tokens.add(new Token(CaveTokenType.MacheteThree));
 
-        tokens.add(new Token(CaveTokenType.Draw));
-        tokens.add(new Token(CaveTokenType.Remove));
-        tokens.add(new Token(CaveTokenType.Replace));
-        tokens.add(new Token(CaveTokenType.ImmediatePlay));
-        tokens.add(new Token(CaveTokenType.PassThrough));
-        tokens.add(new Token(CaveTokenType.Adjacent));
-        tokens.add(new Token(CaveTokenType.Symbol));}
-		return tokens;
+            tokens.add(new Token(CaveTokenType.Draw));
+            tokens.add(new Token(CaveTokenType.Remove));
+            tokens.add(new Token(CaveTokenType.Replace));
+            tokens.add(new Token(CaveTokenType.ImmediatePlay));
+            tokens.add(new Token(CaveTokenType.PassThrough));
+            tokens.add(new Token(CaveTokenType.Adjacent));
+            tokens.add(new Token(CaveTokenType.Symbol));
         }
-	
-	public static Map<Tile, Cave> allocateTokens(Template board2) {
-		
-	    Map<Tile, Cave> caves = new HashMap<>();
-	    ArrayList<Token> tokenList = createTokens(); 
-	    List<Tile> caveSet = board2.findCaveTiles();
-	    Random random = new Random();
+        return tokens;
+    }
 
-	    for (Tile tile : caveSet) {
-	        Cave cave = new Cave(tile);
+    public static Map<Tile, Cave> allocateTokens(Template board2) {
 
-	        // Randomly draw 4 unique tokens from the tokenList
-	        List<Token> selectedTokens = new ArrayList<>();
-	        for (int i = 0; i < 4; i++) {
-	            int index = random.nextInt(tokenList.size());
-	            selectedTokens.add(tokenList.remove(index));
-	        }
+        Map<Tile, Cave> caves = new HashMap<>();
+        ArrayList<Token> tokenList = createTokens();
+        List<Tile> caveSet = board2.findCaveTiles();
+        Random random = new Random();
 
-	        for (Token token : selectedTokens) {
-	            cave.addToken(token);
-	        }
+        for (Tile tile : caveSet) {
+            Cave cave = new Cave(tile);
 
-	        caves.put(tile, cave); 
-	    }
+            // Randomly draw 4 unique tokens from the tokenList
+            List<Token> selectedTokens = new ArrayList<>();
+            for (int i = 0; i < 4; i++) {
+                int index = random.nextInt(tokenList.size());
+                selectedTokens.add(tokenList.remove(index));
+            }
 
-	    return caves;
-	}
+            for (Token token : selectedTokens) {
+                cave.addToken(token);
+            }
+
+            caves.put(tile, cave);
+        }
+
+        return caves;
+    }
 
     public static List<Player> addPlayer(Template board) {
         int numPlayers;
         do {
-            numPlayers = InputHelper.getIntInput("How many players are playing?",4,1);
-            
+            numPlayers = InputHelper.getIntInput("How many players are playing?", 4, 1);
+
         } while (numPlayers < 1 || numPlayers > 4);
 
         // Create an array to store player instances
         List<Player> players = new ArrayList<>();
-        List <Color> colors=new ArrayList<>();
+        List<Color> colors = new ArrayList<>();
         // Loop through each player
         for (int i = 0; i < numPlayers; i++) {
             String color = InputHelper.getInput("Player " + (i + 1) + ", choose your color:", 1)[0];
-            if(colors.contains(Util.getColorFromString(color))) {
-            	System.out.println("This color is not available, choose another color.");
-            	i--;
+            if (colors.contains(Util.getColorFromString(color))) {
+                System.out.println("This color is not available, choose another color.");
+                i--;
+            } else {
+                Player player = new Player(Util.getColorFromString(color));
+                player.setName(color);
+                colors.add(Util.getColorFromString(color));
+                players.add(player);
             }
-            else {
-            Player player = new Player(Util.getColorFromString(color));
-            player.setName(color);
-            colors.add(Util.getColorFromString(color));
-            players.add(player);}
         }
 
         board.players = players;
@@ -94,22 +93,23 @@ public class Before_game {
     }
 
     public static void placePlayersOnBoard(Template board2) {
-    	List<Tile> starterTiles=board2.findStarterTiles();
-    	for (int i = 0; i < board2.players.size(); i++) {
-    	    Player player = board2.players.get(i);
-    	    Tile tile = starterTiles.get(i % starterTiles.size());
-    	    player.setPlayerPosition(tile.getRow(), tile.getCol());
-    	}
+        List<Tile> starterTiles = board2.findStarterTiles();
+        for (int i = 0; i < board2.players.size(); i++) {
+            Player player = board2.players.get(i);
+            Tile tile = starterTiles.get(i % starterTiles.size());
+            player.setPlayerPosition(tile.getRow(), tile.getCol());
+        }
 
         board2.repaint();
     }
-    
-    public static void displayMarketInfo(Template board,MarketPlace market) {
-    	HashMap<Card, Integer> marketoption = market.getMarketBoardOptions();
-    	for (Map.Entry<Card, Integer> entry : marketoption.entrySet()) {
-    	    entry.setValue(3); // Set every value to 3, because it doesn't make sense when it's not on market, the value is 1
-    	    //there are always 3 cards, doesn't matter if you put the pile on market or not
-    	}
-        board.market=market;
+
+    public static void displayMarketInfo(Template board, MarketPlace market) {
+        HashMap<Card, Integer> marketoption = market.getMarketBoardOptions();
+        for (Map.Entry<Card, Integer> entry : marketoption.entrySet()) {
+            entry.setValue(3); // Set every value to 3, because it doesn't make sense when it's not on market,
+                               // the value is 1
+            // there are always 3 cards, doesn't matter if you put the pile on market or not
+        }
+        board.market = market;
     }
 }

@@ -4,10 +4,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.set.boardPieces.Tile;
-import org.set.cards.action.ActionCard;
-import org.set.cards.action.ActionCardType;
-import org.set.cards.expedition.ExpeditionCard;
-import org.set.cards.expedition.ExpeditionCardType;
 import org.set.template.Team04Board;
 import org.set.template.Template;
 import org.set.tokens.Cave;
@@ -15,10 +11,8 @@ import org.set.tokens.Token;
 import org.set.player.Player;
 
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 

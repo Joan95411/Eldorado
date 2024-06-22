@@ -18,12 +18,13 @@ public class Tile {
     private String parent;
     private int q;
     private int r;
+
     public Tile(int row, int col) {
         this.row = row;
         this.col = col;
-        this.type=TileType.Default;
+        this.type = TileType.Default;
     }
-    
+
     @Override
     public String toString() {
         return "Tile{" +
@@ -32,6 +33,7 @@ public class Tile {
                 ", type=" + type +
                 '}';
     }
+
     public void setParent(String parent) {
         this.parent = parent;
     }
@@ -43,11 +45,11 @@ public class Tile {
     public void setType(TileType type) {
         this.type = type;
     }
-    
-    
+
     public TileType getTileType() {
         return type;
     }
+
     public int getX() {
         return x;
     }
@@ -63,8 +65,7 @@ public class Tile {
     public void setY(int y) {
         this.y = y;
     }
-    
-    
+
     public int getQ() {
         return q;
     }
@@ -80,8 +81,7 @@ public class Tile {
     public void setR(int r) {
         this.r = r;
     }
-    
-    
+
     public int getRow() {
         return row;
     }
@@ -97,15 +97,12 @@ public class Tile {
     public void setCol(int col) {
         this.col = col;
     }
-    
-    
+
     public Color getColor() {
-    	color=Util.getColorFromString(type.toString());
-    	
+        color = Util.getColorFromString(type.toString());
+
         return color;
     }
-
-    
 
     public int getPoints() {
         return points;
@@ -114,22 +111,22 @@ public class Tile {
     public void setPoints(int points) {
         this.points = points;
     }
-    
+
     protected Tile clone() {
-        return new Tile(this.row,this.col);
+        return new Tile(this.row, this.col);
     }
-    
+
     public int[] rotate(int originX, int originY, int degree) {
         int[] newCoordinate = new int[2]; // Array to hold the new coordinates
         final double COS_60 = 0.5;
         final double SIN_60 = Math.sqrt(3) / 2;
-        
+
         int translatedX = x - originX;
         int translatedY = y - originY;
-        
+
         int rotatedX = translatedX;
         int rotatedY = translatedY;
-        
+
         int rotations = Math.abs(degree);
         boolean clockwise = degree > 0;
 
@@ -144,28 +141,24 @@ public class Tile {
                 rotatedX = tempX;
             }
         }
-        
+
         newCoordinate[0] = rotatedX + originX;
         newCoordinate[1] = rotatedY + originY;
 
         return newCoordinate;
     }
 
-
-
-    
-
     public void drawTile(Graphics2D g2d, int size, Color tileColor, Color border) {
-    	int row = this.getRow();
+        int row = this.getRow();
         int col = this.getCol();
-    	String targetKey = row + "," + col;
+        String targetKey = row + "," + col;
         int[] temp = TileDataDic.tilesMap.get(targetKey);
         int x = temp[0];
         int y = temp[1];
         int points = this.getPoints();
-        if(this.type==TileType.Start) {
-        	tileColor=new Color(0,200,0);
-    	}
+        if (this.type == TileType.Start) {
+            tileColor = new Color(0, 200, 0);
+        }
         drawHexagon(g2d, x, y, size, tileColor, border);
 
         // Draw row and column numbers
@@ -206,9 +199,9 @@ public class Tile {
         int[][] directions;
 
         if (col % 2 == 0) { // Check if current column is even
-            directions = new int[][] {{ -1, 0 }, { 1, 0 }, { 0, -1 }, { -1, -1 }, { 0, 1 }, { -1, 1 }};
+            directions = new int[][] { { -1, 0 }, { 1, 0 }, { 0, -1 }, { -1, -1 }, { 0, 1 }, { -1, 1 } };
         } else { // Current column is odd
-            directions = new int[][] {{ -1, 0 }, { 1, 0 }, { 0, -1 }, { 1, -1 }, { 0, 1 }, { 1, 1 }};
+            directions = new int[][] { { -1, 0 }, { 1, 0 }, { 0, -1 }, { 1, -1 }, { 0, 1 }, { 1, 1 } };
         }
 
         for (int[] dir : directions) {

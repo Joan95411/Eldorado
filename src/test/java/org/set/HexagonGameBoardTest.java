@@ -13,7 +13,6 @@ import java.awt.image.BufferedImage;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.set.PlayerTest.players;
 
 /**
  * Test class for the {@link HexagonGameBoard} class.

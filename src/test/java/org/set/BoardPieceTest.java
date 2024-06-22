@@ -2,15 +2,8 @@ package org.set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.io.InputStream;
-import java.util.Scanner;
-
-import javax.swing.JFrame;
-import javax.swing.JScrollPane;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.set.boardPieces.Tile;

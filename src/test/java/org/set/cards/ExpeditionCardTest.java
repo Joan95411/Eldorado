@@ -9,8 +9,6 @@ import org.junit.jupiter.api.Test;
 import org.set.cards.expedition.ExpeditionCard;
 import org.set.cards.expedition.ExpeditionCardType;
 
-import javax.swing.*;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**

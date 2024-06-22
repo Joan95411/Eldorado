@@ -5,13 +5,11 @@ import javax.swing.*;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.awt.*;
-import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.set.boardPieces.Terrain;
-import org.set.boardPieces.Tile;
 import org.set.boardPieces.WinningPiece;
 import org.set.boardPieces.TileDataDic;
 

@@ -3,7 +3,6 @@ package org.set;
 import org.junit.jupiter.api.Test;
 import org.set.boardPieces.Tile;
 import org.set.boardPieces.TileType;
-import org.set.player.PlayerCardDeck;
 
 import static org.junit.jupiter.api.Assertions.*;
 import java.awt.Color;
@@ -14,13 +13,13 @@ import java.util.Arrays;
  * Test class for the {@link TileTest} class.
  */
 class TileTest {
-	//HexagonGameBoard gameBoard = new HexagonGameBoard(15, 35, 30);
+    // HexagonGameBoard gameBoard = new HexagonGameBoard(15, 35, 30);
     @Test
     void testTileInitialization() {
         Tile tile = new Tile(2, 3);
         assertEquals(2, tile.getRow());
         assertEquals(3, tile.getCol());
-        assertEquals(Color.WHITE,tile.getColor());
+        assertEquals(Color.WHITE, tile.getColor());
         assertEquals(0, tile.getPoints());
         assertNull(tile.getParent());
     }
@@ -33,7 +32,7 @@ class TileTest {
         tile.setType(TileType.Machete);
         tile.setPoints(5);
         tile.setParent("Parent");
-        
+
         assertEquals(10, tile.getX());
         assertEquals(20, tile.getY());
         assertEquals(Color.GREEN, tile.getColor());
@@ -41,19 +40,16 @@ class TileTest {
         assertEquals("Parent", tile.getParent());
     }
 
-    
-
     @Test
     void testGetNeighbors() {
         Tile tile = new Tile(3, 4);
         List<int[]> expectedNeighbors = Arrays.asList(
-            new int[]{2, 4}, new int[]{4, 4},
-            new int[]{2, 3}, new int[]{3, 3},
-            new int[]{2, 5}, new int[]{3, 5}
-        );
+                new int[] { 2, 4 }, new int[] { 4, 4 },
+                new int[] { 2, 3 }, new int[] { 3, 3 },
+                new int[] { 2, 5 }, new int[] { 3, 5 });
 
         List<int[]> actualNeighbors = tile.getNeighbors();
-        
+
         assertEquals(expectedNeighbors.size(), actualNeighbors.size());
         for (int[] expectedNeighbor : expectedNeighbors) {
             boolean found = false;
@@ -63,7 +59,8 @@ class TileTest {
                     break;
                 }
             }
-            assertTrue(found, "Expected neighbor " + Arrays.toString(expectedNeighbor) + " not found in actual neighbors.");
+            assertTrue(found,
+                    "Expected neighbor " + Arrays.toString(expectedNeighbor) + " not found in actual neighbors.");
         }
     }
 }

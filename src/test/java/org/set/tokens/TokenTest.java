@@ -1,6 +1,5 @@
 package org.set.tokens;
 
-import org.set.cards.Card;
 import org.set.cards.expedition.ExpeditionCard;
 import org.set.cards.expedition.ExpeditionCardType;
 import org.set.game.InputHelper;
@@ -11,7 +10,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.awt.*;
 import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
-import java.util.Random;
 
 /**
  * Test class for the {@link Token} class.

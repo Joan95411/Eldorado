@@ -1,12 +1,6 @@
 package org.set.marketplace;
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.FontMetrics;
-import java.awt.Graphics2D;
-import java.io.FileNotFoundException;
+
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map.Entry;
 
 import org.set.boardPieces.Util;
 import org.set.cards.*;
@@ -22,8 +16,8 @@ public class MarketPlace {
     private HashMap<Card, Integer> marketBoardOptions = new HashMap<Card, Integer>();
     private HashMap<Card, Integer> currentMarketBoard = new HashMap<Card, Integer>();
 
-    private HashMap<String, String>  cardType = new HashMap<String, String>();
-    
+    private HashMap<String, String> cardType = new HashMap<String, String>();
+
     public MarketPlace() {
         try {
             cardData = Util.readJsonData("src/main/java/org/set/marketplace", "marketcardData.json", "MarketCards");
@@ -34,11 +28,11 @@ public class MarketPlace {
         LoadDataIntoVariables();
     }
 
-    public HashMap<Card, Integer> getCurrentMarketBoard(){
+    public HashMap<Card, Integer> getCurrentMarketBoard() {
         return currentMarketBoard;
     }
 
-    public HashMap<Card, Integer> getMarketBoardOptions(){
+    public HashMap<Card, Integer> getMarketBoardOptions() {
         return marketBoardOptions;
     }
 
@@ -52,6 +46,7 @@ public class MarketPlace {
             return null;
         }
     }
+
     public void moveOptionToCurrentMarket(Card card) {
         if (marketBoardOptions.containsKey(card)) {
             // Retrieve the quantity from marketBoardOptions
@@ -64,7 +59,7 @@ public class MarketPlace {
         }
     }
 
-    private Card CreateCard(String cardName){
+    private Card CreateCard(String cardName) {
         Card boughtCard = null;
 
         if (this.cardType.get(cardName).equals("PURPLE")) {
@@ -76,7 +71,7 @@ public class MarketPlace {
         return boughtCard;
     }
 
-    private boolean AddCardToMarketBoard(Card card, Integer goldAmount){
+    private boolean AddCardToMarketBoard(Card card, Integer goldAmount) {
         boolean succes = false;
 
         if (this.marketBoardOptions.containsKey(card)) {
@@ -87,15 +82,15 @@ public class MarketPlace {
 
         return succes;
     }
-    
+
     private boolean TakeCard(Card card, Integer goldAmount) {
         boolean succes = false;
-        
+
         if (this.currentMarketBoard.containsKey(card)) {
-            if (CheckSufficientGold(card,goldAmount)) {
+            if (CheckSufficientGold(card, goldAmount)) {
                 Integer numberOfCards = this.currentMarketBoard.get(card);
-                if ((numberOfCards-1) > 0) {
-                    this.currentMarketBoard.put(card,(numberOfCards-1));
+                if ((numberOfCards - 1) > 0) {
+                    this.currentMarketBoard.put(card, (numberOfCards - 1));
                 } else {
                     this.currentMarketBoard.remove(card);
                 }
@@ -118,7 +113,7 @@ public class MarketPlace {
         }
     }
 
-    private void LoadDataIntoVariables(){
+    private void LoadDataIntoVariables() {
         for (String currentKey : this.cardData.keySet()) {
             JSONObject currentCardInfo = this.cardData.getJSONObject(currentKey);
 
@@ -133,12 +128,7 @@ public class MarketPlace {
                 this.currentMarketBoard.put(card, 3);
             }
 
-
-
-
         }
     }
-    
-    
-}
 
+}

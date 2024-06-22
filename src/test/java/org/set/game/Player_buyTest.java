@@ -16,7 +16,6 @@ import org.junit.jupiter.api.Test;
 import org.set.cards.expedition.ExpeditionCard;
 import org.set.cards.expedition.ExpeditionCardType;
 import org.set.marketplace.MarketPlace;
-import org.set.player.Asset;
 import org.set.player.Player;
 import org.set.template.Team04Board;
 import org.set.template.Template;

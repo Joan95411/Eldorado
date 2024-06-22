@@ -1,6 +1,5 @@
 package org.set.cards;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.set.cards.action.ActionCard;
 import org.set.cards.action.ActionCardType;
