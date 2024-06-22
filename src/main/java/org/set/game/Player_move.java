@@ -148,8 +148,8 @@ public class Player_move {
 		        		boolean discardMovable = InputHelper.getYesNoInput("Are you sure to discard this " + selectedAsset + "?");
 			            if (discardMovable) {
 			            	executeRemoveBlock(board, player,NextToBlockade, block, residualPower);}
-			            
-		        	}if(board.boardPieces.get(block.getName())!=null) {
+		        	}
+		        	if(board.boardPieces.get(block.getName())!=null) {
 		        		System.out.println("You need to discard more card to get here.");
 		        	toDiscard=chooseCardsToDiscard(player);
 			        if(toDiscard.size()>=block.getPoints()) {

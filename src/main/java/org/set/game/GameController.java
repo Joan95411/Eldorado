@@ -49,11 +49,7 @@ public class GameController {
                 Player_draw_discard.PlayActionCard(board, currentPlayer);
                 Player_move.PlayerMove2(board,currentPlayer);
                 Player_draw_discard.PlayActionCard(board, currentPlayer);
-      //the next 3 lines are only for testing purpose, to be deleted
-//      int[] position = InputHelper.getPositionInput(board);
-//      currentPlayer.setPlayerPosition(position[0], position[1]);
-//      Player_move.caveExplore(board, currentPlayer);
-
+      
                 if(Final_round.isThereAwinnier(board, currentPlayer)) {
                 	System.out.println("Final Round!");	
                 	if(currentPlayerIndex!=players.size()-1) {

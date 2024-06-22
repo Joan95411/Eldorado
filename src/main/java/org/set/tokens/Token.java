@@ -28,7 +28,8 @@ public class Token extends Asset implements Actionable{
     public CaveTokenType getType() {
         return caveTokenType;
     }
-
+    
+    @Override
     public void doAction(Player player) {
         TokenActionHandler actionHandler = new TokenActionHandler();
         actionHandler.doAction(this, player);
