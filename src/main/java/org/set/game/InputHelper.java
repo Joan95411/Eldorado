@@ -175,7 +175,7 @@ public class InputHelper {
         scanner.close();
     }
 
-    public static void setInputStream(ByteArrayInputStream inputStream) {
+    public static void setInputStream(InputStream inputStream){
         isSystemInput = inputStream == originalInputStream;
         scanner = new Scanner(inputStream);
     }

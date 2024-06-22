@@ -4,7 +4,7 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class Player {
-    private static ArrayList<Color> usedColors = new ArrayList<>();
+    private ArrayList<Color> usedColors = new ArrayList<>();
     private String name;
     private int currentRow;
     private int currentCol;
