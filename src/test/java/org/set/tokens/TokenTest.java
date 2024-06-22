@@ -166,7 +166,7 @@ public class TokenTest {
     @Test
     public void useImmediatePlayToken() {
         ExpeditionCard expeditionCard = new ExpeditionCard(ExpeditionCardType.Giant_Machete);
-        player.myDeck.addCard(expeditionCard);
+        player.myDeck.addCard(expeditionCard, false);
 
         Token immediatePlayToken = new Token(CaveTokenType.ImmediatePlay);
 

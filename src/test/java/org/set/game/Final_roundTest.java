@@ -85,7 +85,7 @@ class Final_roundTest {
         players.get(0).setPlayerPosition(2, 23);
         players.get(0).myDeck.getDrawPile().clear();
         for (int i = 0; i < 4; i++) {
-            players.get(0).myDeck.addCard(new ExpeditionCard(ExpeditionCardType.Explorer));
+            players.get(0).myDeck.addCard(new ExpeditionCard(ExpeditionCardType.Explorer), false);
         }
         String input = "y\n0\n2,24\nn\n"; // Prepare the input data
         ByteArrayInputStream inputStream = new ByteArrayInputStream(input.getBytes()); // Create a ByteArrayInputStream

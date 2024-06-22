@@ -126,7 +126,7 @@ public class Player_draw_discardTest {
 	    	Player player = players.get(0);
 	    	ActionCard ac=new ActionCard(ActionCardType.Cartographer);
 	    	player.myDeck.getDrawPile().clear();
-	    	player.myDeck.addCard(ac);
+	    	player.myDeck.addCard(ac, false);
 	    	player.myDeck.draw(1);
 	    	String input = "y\n0\nn\n";
 	        ByteArrayInputStream inputStream = new ByteArrayInputStream(input.getBytes()); // Create a ByteArrayInputStream with the input data
@@ -141,7 +141,7 @@ public class Player_draw_discardTest {
 	    	Player player = players.get(0);
 	    	ActionCard ac=new ActionCard(ActionCardType.Transmitter);
 	    	player.myDeck.getDrawPile().clear();
-	    	player.myDeck.addCard(ac);
+	    	player.myDeck.addCard(ac, false);
 	    	player.myDeck.draw(1);
 	    	String input = "y\nProp_Plane\n";
 	        ByteArrayInputStream inputStream = new ByteArrayInputStream(input.getBytes()); // Create a ByteArrayInputStream with the input data
@@ -156,8 +156,8 @@ public class Player_draw_discardTest {
 	    	ActionCard ac=new ActionCard(ActionCardType.Scientist);
 	    	ActionCard ac2=new ActionCard(ActionCardType.Native);
 	    	player.myDeck.getDrawPile().clear();
-	    	player.myDeck.addCard(ac);
-	    	player.myDeck.addCard(ac2);
+	    	player.myDeck.addCard(ac, false);
+	    	player.myDeck.addCard(ac2, false);
 	    	player.myDeck.draw(2);
 	    	int i=player.myDeck.getCardsInHand().indexOf(ac2);
 	    	System.out.println(ac2.getCardType());
@@ -176,8 +176,8 @@ public class Player_draw_discardTest {
 	    	ActionCard ac2=new ActionCard(ActionCardType.Compass);
 	    	Token token=new Token(CaveTokenType.CoinOne);
 	    	player.myDeck.getDrawPile().clear();
-	    	player.myDeck.addCard(ac);
-	    	player.myDeck.addCard(ac2);
+	    	player.myDeck.addCard(ac, false);
+	    	player.myDeck.addCard(ac2, false);
 	    	player.myDeck.addToken(token);
 	    	player.myDeck.draw(2);
 	    	int i=player.myDeck.getMyasset().indexOf(token);
@@ -197,10 +197,10 @@ public class Player_draw_discardTest {
 	    	ActionCard ac2=new ActionCard(ActionCardType.Travel_Log);
 	    	ActionCard ac3=new ActionCard(ActionCardType.Compass);
 	    	player.myDeck.getDrawPile().clear();
-	    	player.myDeck.addCard(cd);
-	    	player.myDeck.addCard(ac);
-	    	player.myDeck.addCard(ac2);
-	    	player.myDeck.addCard(ac3);
+	    	player.myDeck.addCard(cd, false);
+	    	player.myDeck.addCard(ac, false);
+	    	player.myDeck.addCard(ac2, false);
+	    	player.myDeck.addCard(ac3, false);
 	    	player.myDeck.draw(4);
 	    	int i=player.myDeck.getCardsInHand().indexOf(cd);
 	    	String input = "y\n"+i+"\nn\n";
