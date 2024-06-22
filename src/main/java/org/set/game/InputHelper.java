@@ -151,7 +151,7 @@ public class InputHelper {
 
     public static boolean getYesNoInput(String question) {
         while (true) {
-        	printPromptInRows(question);
+        	printPromptInRows(question + " (y/n)");
             System.out.print("> ");
             String input = readScanner().toLowerCase();
 
