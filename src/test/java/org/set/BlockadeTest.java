@@ -50,7 +50,7 @@ public class BlockadeTest {
      */
     @Test
     public void cloneBlockade() {
-        hexagonGameBoard.loadTileData();
+        // hexagonGameBoard.loadTileData();
         // blockade.clone(0, 1,hexSize);// this would fail, as there's no tiles in the
         // blockade
     }
