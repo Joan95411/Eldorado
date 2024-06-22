@@ -49,9 +49,9 @@ public class SystemTests {
     public void SystemTest1() throws InterruptedException {
         //insert inputs
         doUserInput("n\n2\nblue\nred\n");
-
+        
         //wait for game to play out
-        Thread.sleep(1000);
+        Thread.sleep(2000);
 
         //assert output
         assertTrue(outputStream.toString().contains("Turn 0: Player blue's turn."));

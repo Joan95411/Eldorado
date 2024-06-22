@@ -9,7 +9,7 @@ import org.set.marketplace.MarketPlace;
 public class GameController {
     private Template board;
     private List<Player> players;
-    private boolean isGameOver = false;
+    public boolean isGameOver = false;
     public int turnCounter;
     public MarketPlace market = new MarketPlace();
 

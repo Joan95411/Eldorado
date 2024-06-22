@@ -35,7 +35,7 @@ public class Team03Board extends Template {
         game03.Get03Frame();} //only if you want to compare our board to their board visually
 		catch (Exception e) {
 	        e.printStackTrace(); 
-	        pathInfo=Util.readPathData("Serpentine");}
+	        pathInfo=Util.readPathData(pathString);}
 
 	}
 
