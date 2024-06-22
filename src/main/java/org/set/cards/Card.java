@@ -7,6 +7,7 @@ import org.set.player.Asset;
 import java.awt.*;
 import java.util.Arrays;
 import org.set.boardPieces.Util;
+import org.set.tokens.CaveTokenType;
 
 public abstract class Card extends Asset {
 	public String name;
@@ -24,26 +25,22 @@ public abstract class Card extends Asset {
 
 	@Override
 	public CardType getCardType() {
-		String[] greenCardTypes = { ExpeditionCardType.Explorer.toString(), ExpeditionCardType.Scout.toString(),
-				ExpeditionCardType.Trailblazer.toString(), ExpeditionCardType.Pioneer.toString(),
-				ExpeditionCardType.Giant_Machete.toString() };
+		String[] greenCardTypes = { ExpeditionCardType.Explorer.toString(), ExpeditionCardType.Scout.toString(), ExpeditionCardType.Trailblazer.toString(), ExpeditionCardType.Pioneer.toString(), ExpeditionCardType.Giant_Machete.toString() };
+		String[] greenTokenTypes = { CaveTokenType.MacheteOne.toString(), CaveTokenType.MacheteTwo.toString(), CaveTokenType.MacheteThree.toString() };
 		String[] blueCardTypes = { ExpeditionCardType.Sailor.toString(), ExpeditionCardType.Captain.toString() };
-		String[] yellowCardTypes = { ExpeditionCardType.Traveller.toString(),
-				ExpeditionCardType.Photographer.toString(), ExpeditionCardType.Journalist.toString(),
-				ExpeditionCardType.Treasure_Chest.toString(), ExpeditionCardType.Millionaire.toString() };
-		String[] jokerCardTypes = { ExpeditionCardType.Jack.toString(), ExpeditionCardType.Adventurer.toString(),
-				ExpeditionCardType.Prop_Plane.toString() };
-		String[] purpleCardTypes = { ActionCardType.Transmitter.toString(), ActionCardType.Cartographer.toString(),
-				ActionCardType.Scientist.toString(), ActionCardType.Compass.toString(),
-				ActionCardType.Travel_Log.toString(), ActionCardType.Native.toString() };
+		String[] blueTokenTypes = { CaveTokenType.PaddleOne.toString(), CaveTokenType.PaddleTwo.toString() };
+		String[] yellowCardTypes = { ExpeditionCardType.Traveller.toString(), ExpeditionCardType.Photographer.toString(), ExpeditionCardType.Journalist.toString(), ExpeditionCardType.Treasure_Chest.toString(), ExpeditionCardType.Millionaire.toString() };
+		String[] yellowTokenTypes = { CaveTokenType.CoinOne.toString(), CaveTokenType.CoinTwo.toString() };
+		String[] jokerCardTypes = { ExpeditionCardType.Jack.toString(), ExpeditionCardType.Adventurer.toString(), ExpeditionCardType.Prop_Plane.toString() };
+		String[] purpleCardTypes = { ActionCardType.Transmitter.toString(), ActionCardType.Cartographer.toString(), ActionCardType.Scientist.toString(), ActionCardType.Compass.toString(), ActionCardType.Travel_Log.toString(), ActionCardType.Native.toString() };
 
 		System.out.println(this.name);
 
-		if (Arrays.asList(greenCardTypes).contains(this.name)) {
+		if (Arrays.asList(greenCardTypes).contains(this.name) || Arrays.asList(greenTokenTypes).contains(this.name)) {
 			return CardType.GREEN;
-		} else if (Arrays.asList(blueCardTypes).contains(this.name)) {
+		} else if (Arrays.asList(blueCardTypes).contains(this.name) || Arrays.asList(blueTokenTypes).contains(this.name)) {
 			return CardType.BLUE;
-		} else if (Arrays.asList(yellowCardTypes).contains(this.name)) {
+		} else if (Arrays.asList(yellowCardTypes).contains(this.name) || Arrays.asList(yellowTokenTypes).contains(this.name)) {
 			return CardType.YELLOW;
 		} else if (Arrays.asList(jokerCardTypes).contains(this.name) || this.name.equals("Native")) {
 			return CardType.JOKER;
