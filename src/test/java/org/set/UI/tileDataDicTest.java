@@ -58,15 +58,16 @@ public class tileDataDicTest extends JPanel {
     }
 
     /**
-     * This is used for every UI hexagon game board draw test to get the input of the user
+     * This is used for every UI hexagon game board draw test to get the input of
+     * the user
      * This does not test anything, it is just to get the user input
      */
     private void waitForUserInput() {
-    	// Prompt the user to continue
+        // Prompt the user to continue
         System.out.println("Press any key to continue to the next test. Press f if failed");
         Scanner scanner = new Scanner(System.in);
         String input = scanner.nextLine();
-        
+
         if (input.equalsIgnoreCase("f")) {
             fail("Test failed by user input.");
         }
@@ -81,7 +82,7 @@ public class tileDataDicTest extends JPanel {
     @Test
     public void testTerrainDraw() {
         Terrain ta = tdd.terrainA;
-        
+
         ta.draw(g2d, hexSize);
         waitForUserInput();
     }
@@ -92,23 +93,22 @@ public class tileDataDicTest extends JPanel {
     @Test
     public void testWPDraw() {
         // Draw the terrain
-    	WinningPiece wp = tdd.wpa;
-        
+        WinningPiece wp = tdd.wpa;
+
         wp.draw(g2d, hexSize);
         waitForUserInput();
     }
+
     @Test
     public void testTileRotate() {
         // Draw the terrain
-    	WinningPiece wp = tdd.wpa;
-    	wp.rotate(4, 180, 200);
-//        for(Tile tile:wp.getTiles()) {
-//        	tile.rotate60Clockwise();
-//        }
+        WinningPiece wp = tdd.wpa;
+        wp.rotate(4, 180, 200);
+        // for(Tile tile:wp.getTiles()) {
+        // tile.rotate60Clockwise();
+        // }
 
         wp.draw(g2d, hexSize);
         waitForUserInput();
     }
 }
-
-

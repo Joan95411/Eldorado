@@ -17,7 +17,7 @@ import org.set.boardPieces.BoardPiece;
  * UI user test class for the {@link HexagonGameBoard} class.
  */
 public class HexgonGameBoardDrawTest {
-	private Template board;
+    private Template board;
     private JFrame frame;
 
     int numRows = 15;
@@ -25,11 +25,12 @@ public class HexgonGameBoardDrawTest {
     int hexSize = 30;
 
     /**
-     * For each UI hexagon game board draw test a new hexagon game board should be created.
+     * For each UI hexagon game board draw test a new hexagon game board should be
+     * created.
      */
     @BeforeEach
     void setUp() {
-    	board = new Team04Board(numRows, numCols, hexSize);
+        board = new Team04Board(numRows, numCols, hexSize);
 
         frame = new JFrame("GameBoardTest");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -40,7 +41,8 @@ public class HexgonGameBoardDrawTest {
     }
 
     /**
-     * This is used for every UI hexagon game board draw test to get the input of the user
+     * This is used for every UI hexagon game board draw test to get the input of
+     * the user
      * This does not test anything, it is just to get the user input
      */
     private void waitForUserInput() {
@@ -58,9 +60,9 @@ public class HexgonGameBoardDrawTest {
      */
     @Test
     public void testRemoveBlockade() {
-    	System.out.println("This should remove the first blockade");
-    	board.removeBlockade(1);
-    	board.repaint();
+        System.out.println("This should remove the first blockade");
+        board.removeBlockade(1);
+        board.repaint();
         waitForUserInput();
     }
 
@@ -70,7 +72,7 @@ public class HexgonGameBoardDrawTest {
     @Test
     public void testLoadModelData() {
         System.out.println("This should load the original json file and draw the pieces on board.");
-        Map<String, BoardPiece> bp=board.boardPieces;
+        Map<String, BoardPiece> bp = board.boardPieces;
         bp.clear();
         board.loadTileData();
 
@@ -83,17 +85,17 @@ public class HexgonGameBoardDrawTest {
      */
     @Test
     public void testAddTerrain() {
-    	System.out.println("This should add 2 terrains cloned after the json file terrain.");
-    	System.out.println("The first cloned terrain should have a blockade after.");
-    	System.out.println("This second cloned terrain shouldn't have a blockade after.");
-    	Map<String, BoardPiece> bp=board.boardPieces;
+        System.out.println("This should add 2 terrains cloned after the json file terrain.");
+        System.out.println("The first cloned terrain should have a blockade after.");
+        System.out.println("This second cloned terrain shouldn't have a blockade after.");
+        Map<String, BoardPiece> bp = board.boardPieces;
         bp.clear();
         board.loadTileData();
-    	
-    	board.addTerrain(0, 8, board.getAllTerrains().get(0));//should have block
-    	board.addTerrain(5, 4, board.getAllTerrains().get(1));//should not have block
- 	   
-    	board.repaint();
+
+        board.addTerrain(0, 8, board.getAllTerrains().get(0));// should have block
+        board.addTerrain(5, 4, board.getAllTerrains().get(1));// should not have block
+
+        board.repaint();
         waitForUserInput();
     }
 }

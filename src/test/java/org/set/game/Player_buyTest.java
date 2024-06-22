@@ -26,56 +26,60 @@ import org.set.tokens.Token;
  * Test class for the {@link Player_buyTest} class.
  */
 class Player_buyTest {
-	private Template board;
+    private Template board;
     private List<Player> players;
     private static InputStream backupInputStream;
     private MarketPlace market;
 
-     /**
+    /**
      * Creating inputstream
      */
     @BeforeAll
     public static void start() {
-       
+
         backupInputStream = System.in;
     }
 
-     /**
+    /**
      * Setting up the board and players
      */
     @BeforeEach
     public void setUp() {
-        board = new Team04Board(25,30,25); // Example dimensions
+        board = new Team04Board(25, 30, 25); // Example dimensions
         Random random = new Random();
         players = new ArrayList<>();
-        players.add(new Player(new Color(random.nextInt(256),random.nextInt(256),random.nextInt(256))));
-        market=new MarketPlace();
+        players.add(new Player(new Color(random.nextInt(256), random.nextInt(256), random.nextInt(256))));
+        market = new MarketPlace();
         board.players = players;
 
     }
-    
-     /**
+
+    /**
      * Cleaning up the system
      */
     @AfterEach
-    public void cleanup(){
+    public void cleanup() {
         System.setIn(backupInputStream);
     }
-    
-     /**
+
+    /**
      * Integrationtest
-     * Classes used: ExpeditionCard, ExpeditionCardType, Template, Player, Asset, Marketplace, Team04Board
+     * Classes used: ExpeditionCard, ExpeditionCardType, Template, Player, Asset,
+     * Marketplace, Team04Board
      * Test for buying new cards with enough money
      */
-	@Test
+    @Test
     public void testPlayerBuy() {
         Player player = players.get(0);
         player.myDeck.getDrawPile().clear();
-        for(int i=0;i<4;i++) {
-        player.myDeck.addCard(new ExpeditionCard(ExpeditionCardType.Traveller));}
-    	player.myDeck.draw(4);
-    	String input = "y\n0\n0,1,2,3\n";
-        ByteArrayInputStream inputStream = new ByteArrayInputStream(input.getBytes()); 
+
+        for (int i = 0; i < 4; i++) {
+            player.myDeck.addCard(new ExpeditionCard(ExpeditionCardType.Traveller), false);
+        }
+
+        player.myDeck.draw(4);
+        String input = "y\n0\n0,1,2,3\n";
+        ByteArrayInputStream inputStream = new ByteArrayInputStream(input.getBytes());
         InputHelper.setInputStream(inputStream);
 
         Player_buy.PlayerBuy(board, player, market);
@@ -84,18 +88,21 @@ class Player_buyTest {
 
     /**
      * Integrationtest
-     * Classes used: ExpeditionCard, ExpeditionCardType, Template, Player, Asset, Marketplace, Team04Board
+     * Classes used: ExpeditionCard, ExpeditionCardType, Template, Player, Asset,
+     * Marketplace, Team04Board
      * Test for buying new cards with not enough money
-     */   
-	@Test
+     */
+    @Test
     public void testPlayerBuy2() {
         Player player = players.get(0);
         player.myDeck.getDrawPile().clear();
-        for(int i=0;i<4;i++) {
-        player.myDeck.addCard(new ExpeditionCard(ExpeditionCardType.Sailor));}
-    	player.myDeck.draw(1);
-    	String input = "y\n0\n0\nstop\nn\n";
-        ByteArrayInputStream inputStream = new ByteArrayInputStream(input.getBytes()); 
+
+        for (int i = 0; i < 4; i++) {
+            player.myDeck.addCard(new ExpeditionCard(ExpeditionCardType.Sailor), false);
+        }
+        player.myDeck.draw(1);
+        String input = "y\n0\n0\nstop\nn\n";
+        ByteArrayInputStream inputStream = new ByteArrayInputStream(input.getBytes());
         InputHelper.setInputStream(inputStream);
 
         Player_buy.PlayerBuy(board, player, market);
@@ -116,18 +123,18 @@ class Player_buyTest {
     }
     /**
      * Integrationtest
-     * Classes used: ExpeditionCard, ExpeditionCardType, Template.java, Player, Asset, Marketplace, Team04Board
+     * Classes used: ExpeditionCard, ExpeditionCardType, Template.java, Player,
+     * Asset, Marketplace, Team04Board
      * Testing if player can fill an empty marketslot
-     */ 
-	@Test
+     */
+    @Test
     public void testFillMarket() {
-	market.getCurrentMarketBoard().clear();
-	String input = "y\n0\n";
-    ByteArrayInputStream inputStream = new ByteArrayInputStream(input.getBytes()); 
-    InputHelper.setInputStream(inputStream);
-	Player_buy.fillEmptyMarketSpace(board, market);
-	assertEquals(1,market.getCurrentMarketBoard().size());
-	}
-	
-	
+        market.getCurrentMarketBoard().clear();
+        String input = "y\n0\n";
+        ByteArrayInputStream inputStream = new ByteArrayInputStream(input.getBytes());
+        InputHelper.setInputStream(inputStream);
+        Player_buy.fillEmptyMarketSpace(board, market);
+        assertEquals(1, market.getCurrentMarketBoard().size());
+    }
+
 }

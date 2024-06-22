@@ -28,69 +28,72 @@ import java.util.Random;
  */
 public class Player_draw_discardTest {
 
-	    private Template board;
-	    private List<Player> players;
-	    private static InputStream backupInputStream;
-	    
-		/**
-		 * Setting up input stream
-		 */
-	    @BeforeAll
-	    public static void start() {
-	       
-	        backupInputStream = System.in;
-	    }
+	private Template board;
+	private List<Player> players;
+	private static InputStream backupInputStream;
 
-		/**
-		 * Setting up the board
-		 */
-	    @BeforeEach
-	    public void setUp() {
-	        board = new Team04Board(25,30,25); // Example dimensions
-	        Random random = new Random();
-	        players = new ArrayList<>();
-	        for(int i=0;i<4;i++) {
-	        players.add(new Player(new Color(random.nextInt(256),random.nextInt(256),random.nextInt(256))));}
-	        
-	        // Set the players in the template
-	        board.players = players;
+	/**
+	 * Setting up input stream
+	 */
+	@BeforeAll
+	public static void start() {
 
-	    }
+		backupInputStream = System.in;
+	}
 
-		/**
-		 * Cleaning up the board
-		 */	    
-	    @AfterEach
-	    public void cleanup(){
-	        System.setIn(backupInputStream);
-	    }
+	/**
+	 * Setting up the board
+	 */
+	@BeforeEach
+	public void setUp() {
+		board = new Team04Board(25, 30, 25); // Example dimensions
+		Random random = new Random();
+		players = new ArrayList<>();
+		for (int i = 0; i < 4; i++) {
+			players.add(new Player(new Color(random.nextInt(256), random.nextInt(256), random.nextInt(256))));
+		}
 
-		/**
-		 * Integrationtest
-		 * Classes used: ExpeditionCard, ExpeditionCardType, Template, Player, Marketplace, Team04Board
-		 * Test for the amount of players on the board
-		 */
-	    @Test
-	    public void testPlacePlayersOnBoard() {
-	        Before_game.placePlayersOnBoard(board);
+		// Set the players in the template
+		board.players = players;
 
-	        List<Tile> starterTiles = board.findStarterTiles();
-	        for (int i = 0; i < players.size(); i++) {
-	            Player player = players.get(i);
-	            Tile tile = starterTiles.get(i % starterTiles.size());
-	            assertEquals(tile.getRow(), player.getCurrentRow());
-	            assertEquals(tile.getCol(), player.getCurrentCol());
-	        }
-	    }
+	}
 
-		/**
-		 * Integrationtest
-		 * Classes used: ExpeditionCard, ExpeditionCardType, Template, Player, Marketplace, Team04Board
-		 * Test the drawing of new cards
-		 */
-	    @Test
-	    public void testPlayerDrawCards() {
-	        Player player = players.get(0);
+	/**
+	 * Cleaning up the board
+	 */
+	@AfterEach
+	public void cleanup() {
+		System.setIn(backupInputStream);
+	}
+
+	/**
+	 * Integrationtest
+	 * Classes used: ExpeditionCard, ExpeditionCardType, Template, Player,
+	 * Marketplace, Team04Board
+	 * Test for the amount of players on the board
+	 */
+	@Test
+	public void testPlacePlayersOnBoard() {
+		Before_game.placePlayersOnBoard(board);
+
+		List<Tile> starterTiles = board.findStarterTiles();
+		for (int i = 0; i < players.size(); i++) {
+			Player player = players.get(i);
+			Tile tile = starterTiles.get(i % starterTiles.size());
+			assertEquals(tile.getRow(), player.getCurrentRow());
+			assertEquals(tile.getCol(), player.getCurrentCol());
+		}
+	}
+
+	/**
+	 * Integrationtest
+	 * Classes used: ExpeditionCard, ExpeditionCardType, Template, Player,
+	 * Marketplace, Team04Board
+	 * Test the drawing of new cards
+	 */
+	@Test
+	public void testPlayerDrawCards() {
+		Player player = players.get(0);
 
 	        Player_draw_discard.PlayerDrawCards(board, player);
 	        assertEquals(4, player.myDeck.getCardsInHand().size());

@@ -22,7 +22,7 @@ public class ExpeditionCardTest {
      */
     @BeforeAll
     public static void createActionCards() {
-        for (ExpeditionCardType expeditionCardType: ExpeditionCardType.values()) {
+        for (ExpeditionCardType expeditionCardType : ExpeditionCardType.values()) {
             cards.add(new ExpeditionCard(expeditionCardType));
         }
 
@@ -57,9 +57,9 @@ public class ExpeditionCardTest {
         assertEquals(card.singleUse, true);
         assertEquals(card.removedCard, false);
 
-         card.removeCard();
-         assertEquals(card.singleUse, true);
-         assertEquals(card.removedCard, true);
+        card.removeCard();
+        assertEquals(card.singleUse, true);
+        assertEquals(card.removedCard, true);
     }
 
     /**
@@ -82,7 +82,7 @@ public class ExpeditionCardTest {
         Graphics2D g2d = image.createGraphics();
 
         ExpeditionCard card = new ExpeditionCard(ExpeditionCardType.Sailor);
-        card.draw(g2d, 0, 0 ,1,2);
+        card.draw(g2d, 0, 0, 1, 2);
     }
 
     /**
@@ -90,7 +90,7 @@ public class ExpeditionCardTest {
      */
     @Test
     public void gettingExpeditionCardValue() {
-        for (Card card: cards) {
+        for (Card card : cards) {
             ExpeditionCard expeditionCard = (ExpeditionCard) card;
 
             if (expeditionCard.getCardType() == CardType.YELLOW) {
@@ -99,7 +99,8 @@ public class ExpeditionCardTest {
                 assertEquals(0.5, card.getValue());
             }
 
-            assertEquals("Card{cardType=" + card.getCardType() + ", name=" + card.getName() + ", power=" + card.getPower() + '}', card.toString());
+            assertEquals("Card{cardType=" + card.getCardType() + ", name=" + card.getName() + ", power="
+                    + card.getPower() + '}', card.toString());
         }
     }
 }

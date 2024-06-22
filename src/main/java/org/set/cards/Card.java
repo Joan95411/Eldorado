@@ -37,6 +37,8 @@ public abstract class Card extends Asset {
 				ActionCardType.Scientist.toString(), ActionCardType.Compass.toString(),
 				ActionCardType.Travel_Log.toString(), ActionCardType.Native.toString() };
 
+		System.out.println(this.name);
+
 		if (Arrays.asList(greenCardTypes).contains(this.name)) {
 			return CardType.GREEN;
 		} else if (Arrays.asList(blueCardTypes).contains(this.name)) {

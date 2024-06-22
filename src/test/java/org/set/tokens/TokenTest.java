@@ -17,7 +17,7 @@ import java.util.ArrayList;
 public class TokenTest {
     private static ArrayList<Token> basicTokens = new ArrayList<>();
     private static ArrayList<Token> tokens = new ArrayList<>();
-    private static Player player = new Player(new Color(124,123,211));
+    private static Player player = new Player(new Color(124, 123, 211));
 
     /**
      * Test for creating all the tokens.
@@ -82,18 +82,19 @@ public class TokenTest {
 
     /**
      * Test for using all the tokens.
-     * TODO: When the actions for the tokens are finished they should be tested individually like {@link org.set.cards.ActionCardTest}
+     * TODO: When the actions for the tokens are finished they should be tested
+     * individually like {@link org.set.cards.ActionCardTest}
      */
     @Test
     public void useBasicToken() {
         System.out.println(player.myDeck.getCardsInHand().size());
         System.out.println(basicTokens.size());
 
-//        for (Token basicToken : basicTokens) {
-//            basicToken.useToken(player);
-//        }
+        // for (Token basicToken : basicTokens) {
+        // basicToken.useToken(player);
+        // }
 
-//        System.out.println(player.myDeck.getCardsInHand().size());
+        // System.out.println(player.myDeck.getCardsInHand().size());
     }
 
     // Test the draw token action
@@ -105,11 +106,14 @@ public class TokenTest {
         Token drawToken = new Token(CaveTokenType.Draw);
         drawToken.doAction(player);
 
-        assertEquals(initialCardsInHand, player.myDeck.getCardsInHand().size(), "The player should not have any cards in his hand");
-        assertEquals(initialMustBePlayedCardsInHand + 1, player.myDeck.getMustBePlayedCardsInHand().size(), "The player should have one card in his hand that must be played");
+        assertEquals(initialCardsInHand, player.myDeck.getCardsInHand().size(),
+                "The player should not have any cards in his hand");
+        assertEquals(initialMustBePlayedCardsInHand + 1, player.myDeck.getMustBePlayedCardsInHand().size(),
+                "The player should have one card in his hand that must be played");
     }
 
-    // Test the remove token action and if it can be played without having any cards in hand to remove
+    // Test the remove token action and if it can be played without having any cards
+    // in hand to remove
     @Test
     public void useRemoveTokenWhenNoCardsInDeck() {
         for (int i = 0; i < player.myDeck.getCardsInHand().size(); i++) {
@@ -120,13 +124,16 @@ public class TokenTest {
         int initialDiscardPileSize = player.myDeck.getDiscardPile().size();
 
         Token removeToken = new Token(CaveTokenType.Remove);
-//        removeToken.useToken(player);
-//
-//        assertEquals(initialCardsInHandSize, player.myDeck.getCardsInHand().size(), "The player should have the same amount of cards in his hands");
-//        assertEquals(initialDiscardPileSize, player.myDeck.getDiscardPile().size(), "The player should have the same amount of cards on the discard pile");
+        // removeToken.useToken(player);
+        //
+        // assertEquals(initialCardsInHandSize, player.myDeck.getCardsInHand().size(),
+        // "The player should have the same amount of cards in his hands");
+        // assertEquals(initialDiscardPileSize, player.myDeck.getDiscardPile().size(),
+        // "The player should have the same amount of cards on the discard pile");
     }
 
-    // Test the remove token action and if it can be played when you have at least one card in hand to remove
+    // Test the remove token action and if it can be played when you have at least
+    // one card in hand to remove
     @Test
     public void useRemoveTokenWithCardsInDeck() {
         player.myDeck.draw(1);
@@ -136,16 +143,16 @@ public class TokenTest {
 
         Token removeToken = new Token(CaveTokenType.Remove);
 
-
         String input = "0\n";
         ByteArrayInputStream inputStream = new ByteArrayInputStream(input.getBytes());
         InputHelper.setInputStream(inputStream);
 
-
         removeToken.doAction(player);
 
-        assertEquals(initialCardsInHandSize - 1, player.myDeck.getCardsInHand().size(),  "The players hand should have one card less");
-        assertEquals(initialDiscardPileSize, player.myDeck.getDiscardPile().size(),  "The player's deck should not have changed");
+        assertEquals(initialCardsInHandSize - 1, player.myDeck.getCardsInHand().size(),
+                "The players hand should have one card less");
+        assertEquals(initialDiscardPileSize, player.myDeck.getDiscardPile().size(),
+                "The player's deck should not have changed");
     }
 
     // Test the replace token action
@@ -179,7 +186,8 @@ public class TokenTest {
 
     // Test the adjecent token action
     @Test
-    public void useAdjacentToken() { System.out.println(player.myDeck.getCardsInHand().size());
+    public void useAdjacentToken() {
+        System.out.println(player.myDeck.getCardsInHand().size());
         Token adjecentToken = new Token(CaveTokenType.Adjacent);
         adjecentToken.doAction(player);
     }
@@ -188,26 +196,36 @@ public class TokenTest {
     // TODO: the expedition card is not played, does it need to be played?
     @Test
     public void useSymbolToken() {
-//        ExpeditionCardType initialSymbolToken = ExpeditionCardType.Explorer;
-//        ExpeditionCardType finalSymbolToken = ExpeditionCardType.Sailor;
-//
-//        player.myDeck.drawExpeditionCard(initialSymbolToken);
-//
-//        assertEquals(1, player.myDeck.getCardsInHand().size(), 1, "The player should have 1 card in his hand");
-//        assertEquals(initialSymbolToken.toString(), player.myDeck.getCardsInHand().get(0).name,  "The player must have 1 Expedition (" + initialSymbolToken.toString() + ") card in his hand");
-//        assertEquals(0, player.myDeck.getDiscardPile().size(), "The player should not have discarded any cards");
-//
-//        Token symbolToken = new Token(CaveTokenType.Symbol);
+        // ExpeditionCardType initialSymbolToken = ExpeditionCardType.Explorer;
+        // ExpeditionCardType finalSymbolToken = ExpeditionCardType.Sailor;
+        //
+        // player.myDeck.drawExpeditionCard(initialSymbolToken);
+        //
+        // assertEquals(1, player.myDeck.getCardsInHand().size(), 1, "The player should
+        // have 1 card in his hand");
+        // assertEquals(initialSymbolToken.toString(),
+        // player.myDeck.getCardsInHand().get(0).name, "The player must have 1
+        // Expedition (" + initialSymbolToken.toString() + ") card in his hand");
+        // assertEquals(0, player.myDeck.getDiscardPile().size(), "The player should not
+        // have discarded any cards");
+        //
+        // Token symbolToken = new Token(CaveTokenType.Symbol);
 
-//        String input = ("0\n" + finalSymbolToken + "\n");
-//        System.out.println(input);
-//        ByteArrayInputStream inputStream = new ByteArrayInputStream(input.getBytes()); // Create a ByteArrayInputStream with the input data
-//        System.setIn(inputStream); // Set System.in to use the ByteArrayInputStream
-//
-//        symbolToken.useToken(player);
-//
-//        assertEquals(1, player.myDeck.getCardsInHand().size(), "The player should have 1 card in his hand");
-//        assertEquals(finalSymbolToken.toString(), player.myDeck.getCardsInHand().get(0).name, "The player must have 1 Expedition (" + finalSymbolToken.toString() + ") card in his hand");
-//        assertEquals(0, player.myDeck.getDiscardPile().size(), "The player should not have discarded any cards");
+        // String input = ("0\n" + finalSymbolToken + "\n");
+        // System.out.println(input);
+        // ByteArrayInputStream inputStream = new
+        // ByteArrayInputStream(input.getBytes()); // Create a ByteArrayInputStream with
+        // the input data
+        // System.setIn(inputStream); // Set System.in to use the ByteArrayInputStream
+        //
+        // symbolToken.useToken(player);
+        //
+        // assertEquals(1, player.myDeck.getCardsInHand().size(), "The player should
+        // have 1 card in his hand");
+        // assertEquals(finalSymbolToken.toString(),
+        // player.myDeck.getCardsInHand().get(0).name, "The player must have 1
+        // Expedition (" + finalSymbolToken.toString() + ") card in his hand");
+        // assertEquals(0, player.myDeck.getDiscardPile().size(), "The player should not
+        // have discarded any cards");
     }
 }
