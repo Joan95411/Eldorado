@@ -93,7 +93,7 @@ public class ExpeditionCardTest {
         for (Card card : cards) {
             ExpeditionCard expeditionCard = (ExpeditionCard) card;
 
-            if (expeditionCard.getCardType() == CardType.YELLOW) {
+            if (expeditionCard.getCardType() == CardType.YELLOW  || expeditionCard.getCardType() == CardType.JOKER) {
                 assertEquals(card.getPower(), card.getValue());
             } else {
                 assertEquals(0.5, card.getValue());
